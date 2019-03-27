@@ -5,6 +5,7 @@
 - 21 carte armi	
 
 - pensare alla struttura dati dei marchi 
+>Possibile soluzione: stessa delle munizioni del giocatore
 
 - per i turni dei vari personaggi possiamo tener conto di un indice head...
 
@@ -14,3 +15,4 @@ carte senza potenziamento = 18. Tra queste non ci sono munizioni con cubi tutti 
 
 - l'adrenalina possiamo modellarla con un decorator
 
+-Square potrebbe essere interfaccia(?)
