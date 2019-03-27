@@ -1,0 +1,9 @@
+﻿Come specificare il  giocatore di turno
+
+schematizzare le azioni rimaste ad un giocatore
+
+21 carte armi	
+
+pensare alla struttura dati dei marchi 
+
+per i turni dei vari personaggi possiamo tener conto di un indice head...
