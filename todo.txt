@@ -7,3 +7,7 @@ schematizzare le azioni rimaste ad un giocatore
 pensare alla struttura dati dei marchi 
 
 per i turni dei vari personaggi possiamo tener conto di un indice head...
+
+numero di carte munizioni:
+carte con potenziamento = 18. Di queste, per ogni colore, ce ne sono 2 con cubi uguali. Inoltre ce ne sono 4 per ogni altra combinazione.
+carte senza potenziamento = 18. Tra queste non ci sono munizioni con cubi tutti dello stesso colore. Per tutte le combinazioni restanti ci sono tre carte munizioni.
