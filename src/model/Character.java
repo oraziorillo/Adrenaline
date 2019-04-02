@@ -1,9 +1,9 @@
 package model;
 
 public class Character {
-    private CharColour damage[]=new CharColour[12];
-    private Weapon weapons[]=new Weapon[3];
-    private Powerup powerups[]=new Powerup[3];
+    private CharColour[] damage=new CharColour[12];
+    private Weapon[] weapons=new Weapon[3];
+    private Powerup[] powerups=new Powerup[3];
     private CharColour[][] marks;
     private int points;
     private short numOfDeath;

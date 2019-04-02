@@ -16,14 +16,10 @@ public class AmmoCard {
         return colour;
     }
 
-    public AmmoCard(AmmoEnum colour,short[] ammos){
+    public AmmoCard(AmmoEnum colour,short[] ammos,boolean hasPowerup){
         this.colour=colour;
         this.ammos=ammos;
-        this.hasPowerup=false;
+        this.hasPowerup=hasPowerup;
     }
-    public AmmoCard(AmmoEnum colour,short[] ammos,Powerup powerup){
-        this.colour=colour;
-        this.ammos=ammos;
-        this.hasPowerup=true;
-    }
+
 }
