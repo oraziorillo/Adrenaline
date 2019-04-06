@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DeckTest {
 
     @Test
-    public void genericTest(){
+    public void containsAddedObjects(){
         Deck<Integer> tested=new Deck<>();
         tested.add(1);
         tested.add(2);
@@ -22,7 +22,7 @@ public class DeckTest {
     }
 
     @Test
-    public void drawTest(){
+    public void doesNotCantainDrawnCard(){
         Deck<Integer> tested=new Deck<>();
         ArrayList<Integer> support=new ArrayList<>();
         tested.add(1);
@@ -42,7 +42,7 @@ public class DeckTest {
     }
 
     @Test
-    public void equalsTest(){
+    public void equalsIfSameCardsInside(){
         Deck<String> d1=new Deck<>();
         Deck<String> d2=new Deck<>();
         ArrayList<String> al=new ArrayList<>();
@@ -61,7 +61,7 @@ public class DeckTest {
         assertNotEquals(d2,d1);
     }
     @Test
-    public void hashCodeTest(){
+    public void sameHashcodeWithSameCards(){
         Deck<String> d1=new Deck<>();
         Deck<String> d2=new Deck<>();
         ArrayList<String> al=new ArrayList<>();

@@ -17,19 +17,19 @@ public class AmmoCardTest {
     @DataPoints
     public static final short[][] ammos={{1,1,1},{3,0,0},{2,0,0},{0,-1,4},{4,5,6}};
     @Theory
-    public void constructorAndGettersTest(short[] ammos, boolean hasPowerup){
+    public void doesNotAlterCostructionParameters(short[] ammos, boolean hasPowerup){
         assumeTrue("Invalid parameters",AmmoCard.validParameters(ammos, hasPowerup));
         AmmoCard tested=new AmmoCard(ammos,hasPowerup);
         assertEquals("Different ammos",ammos,tested.getAmmos());
         assertEquals("Different powerup",hasPowerup,tested.containsPowerup());
     }
     @Theory
-    public void exceptionTest(short[] ammos, boolean hasPowerup){
+    public void throwsExceptionOnInvalidParameters(short[] ammos, boolean hasPowerup){
         assumeFalse("Valid parameters",AmmoCard.validParameters(ammos, hasPowerup));
         assertThrows("Exception not thrown",IllegalArgumentException.class,()->{new AmmoCard(ammos,hasPowerup);});
     }
     @Theory
-    public void paramValidatorTest(short[] ammos,boolean hasPowerup){
+    public void parameterValidatorWorksFine(short[] ammos,boolean hasPowerup){
         boolean correct=true;
         short t=0;
         if(hasPowerup){
