@@ -4,8 +4,8 @@ public class AmmoCard {
     /**
      * Index this array with AmmoEnum
      */
-    private final short[] ammos;
-    private final boolean hasPowerup;
+    private short[] ammos;
+    private boolean hasPowerup;
     /**
      * Standard getter
      * @return ammos
@@ -27,7 +27,7 @@ public class AmmoCard {
      */
     public AmmoCard(short[] ammos,boolean hasPowerup){
         if(!validParameters(ammos,hasPowerup)){
-            throw new IllegalArgumentException("illegal ammo card");
+            throw new IllegalArgumentException("illegal AmmoCard");
         }
         this.ammos=ammos;
         this.hasPowerup=hasPowerup;
