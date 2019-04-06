@@ -1,7 +1,5 @@
 package model;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class AmmoCard {
     /**
@@ -9,7 +7,7 @@ public class AmmoCard {
      */
     private final short[] ammos;
     private final boolean hasPowerup;
-    private static final short AMMOSFORCARD=3;
+    public static final short AMMOSFORCARD=3;
     /**
      * Standard getter
      * @return ammos
@@ -44,8 +42,7 @@ public class AmmoCard {
      * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMOSFORCARD. true otherwise.
      */
 
-    @Contract(pure = true)
-    public static boolean validParameters(@NotNull short[] ammos, boolean hasPowerup){
+    public static boolean validParameters(short[] ammos, boolean hasPowerup){
         short t=0;
         //Save in t the sum of the elements in ammos
         for(short s: ammos){

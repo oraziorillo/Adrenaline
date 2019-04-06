@@ -1,11 +1,14 @@
 package model;
 
+
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 import static org.junit.Assume.*;
+import static org.junit.Assert.*;
+
+
 
 @RunWith(Theories.class)
 public class AmmoCardTest {
@@ -29,13 +32,16 @@ public class AmmoCardTest {
     public void paramValidatorTest(short[] ammos,boolean hasPowerup){
         boolean correct=true;
         short t=0;
+        if(hasPowerup){
+            t++;
+        }
         for(short s:ammos){
             if(s<0){
                 correct=false;
             }
             t+=s;
         }
-        if(!((hasPowerup&&t==2)||(t==3))){
+        if(t!=AmmoCard.AMMOSFORCARD){
             correct=false;
         }
         assertEquals(AmmoCard.validParameters(ammos, hasPowerup),correct);
