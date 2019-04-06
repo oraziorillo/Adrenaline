@@ -35,14 +35,14 @@ public class Game {
         return  remainigActions;
     }
 
-    public void setRemainigActions(short n) throws NonValidNumberException{
+    public void setRemainigActions(short n) throws IllegalArgumentException{
         if(n < 0 || n > 2)
-            throw NonValidNumberException;
+            throw new IllegalArgumentException();
         remainigActions = n;
     }
 
     public Character getCurrentCharacter(){
-        return characters(currentCharacterIndex);
+        return characters.get(currentCharacterIndex);
     }
 
     public Killshot[] getKillShotTrack() {
