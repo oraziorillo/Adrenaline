@@ -8,7 +8,7 @@ public class Character {
     private int points;
     private short numOfDeath;
     private short ammos[]=new short[3];
-    private Square position;
+    private Tile position;
     private CharColour colour;
 
     public void addDamage(CharColour colour, int damage, int marks){
