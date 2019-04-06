@@ -7,7 +7,7 @@ public class Deck<E> {
     /**
      * The concrete container for cards
      */
-    private ArrayList<E> cards=new ArrayList<>();
+    private ArrayList<E> cards=new ArrayList<E>();
     /**
      * used for random insertion
      */

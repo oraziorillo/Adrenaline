@@ -42,32 +42,60 @@ public class Character {
         }
         marks[colour.ordinal()] = inflictedMarks;        //conviene implementare un metodo SetMask?
     }
+
     public void collectWeapon(Weapon w){
         short index = 0;
         short newWeaponIndex;
-        while(index < 3 && weapons[i] != null){
+        while(index < weapons.length() && weapons[i] != null){
             index +=1;
         }
-        if(index = 3){
+        if(index = weapons.length()){
             newWeaponIndex = dropWeapon();       //da implementare: chiedi all'utente quale arma vuole lasciare
         }
-        weapons[newWeaponIndex] = w;
+        weapons[newWeaponIndex] = w;        //l'arma deve poi essere rimossa dal punto di generazione
     }
-    public void collectPowerup(Powerup p){
-        //TODO: method
-    }
-    public void addPoints(int points){
-        this.points+=points;
-    }       //TODO: qui il controller dovrebbe fare dei controlli per vedere se è morto
 
-    public void collectAmmos(short[] ammos){
-        if(ammos.length!=this.ammos.length){
+    public void collectWeapon(Weapon newWeapon, Weapon WeaponToDrop){
+        short index = 0;
+        //da continuare
+    }
+
+    public short dropWeapon(Weapon[] weaponpoint,  Weapon w){
+        short index = 0;
+        while (index < 3 && !weapons[index].equals(w)){
+            index += 1;
+        }
+        if (index == 3){
+            throw new NonValidArgumentException ("You don't really have this weapon!");
+        }
+
+    }
+
+    public void collectPowerup(){
+        short index = 0;
+        while (index < powerups.length() && powerups[i] != null){
+            index += 1;
+        }
+        if (index < powerups.length()){
+            powerups[i] = Ammodeck.draw();        //da implementare AmmoDeck
+        }
+    }
+
+    public void addPoints(int points){
+        this.points += points;
+    }
+
+    public void collectAmmos(AmmoCard card){
+        if (ammos.length()!=this.card.length()){
             throw new IllegalArgumentException("Array di dimensione errata");
         }
-        for(int i=0; i<ammos.length; i++){
+        for (int i=0; i<card.length(); i++){
             this.ammos[i]+=ammos[i];
             if(ammos[i]>3)
                 ammos[i]=3;
+        }
+        if(card.hasPowerUp()){      //da rivedere, troppo dipendente dalla classe AmmoCard??
+            collectPowerup();
         }
     }
 
