@@ -3,9 +3,12 @@ package model;
 import java.util.Collection;
 
 public abstract class Tile {
-    //TODO: choose wich collections to use
+    //TODO: What about using a Map?
     Collection<Character> characters;
-    Tile[] atOneMove;
+    private int x;
+    private int y;
     Collection<Tile> visibles;
-    //TODO: think about methods
+    public static int distance(Tile t1, Tile t2){
+        return Math.abs(t1.x+t1.y-t2.x-t2.y);
+    }
 }
