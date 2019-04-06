@@ -4,8 +4,8 @@ public class AmmoCard {
     /**
      * Index this array with AmmoEnum
      */
-    private short[] ammos;
-    private boolean hasPowerup;
+    private final short[] ammos;
+    private final boolean hasPowerup;
     /**
      * Standard getter
      * @return ammos

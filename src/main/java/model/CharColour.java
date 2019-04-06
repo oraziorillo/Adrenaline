@@ -4,6 +4,6 @@ public enum CharColour {
     GREY,
     GREEN,
     YELLOW,
-    POURPLE,
+    PURPLE,
     BLUE;
 }

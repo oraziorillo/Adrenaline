@@ -8,8 +8,20 @@ public class Character {
     private int points;
     private short numOfDeath;
     private short ammos[]=new short[3];
-    private Square position;
+    private Tile position;
     private CharColour colour;
+
+    public Character (CharColour colour){
+        this.damage = new CharColour[12];
+        this.weapons = new Weapon[3];
+        this.powerups = new Powerup[3];
+        this.marks = new short[4];       //l'inizializzazione di ogni giocatore avviene dopo aver definito il numero totale di giocatori
+        this.points = 0;
+        this.numOfDeath = 0;
+        this.ammos = new short[3];
+        this.position = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
+        this.colour = colour;
+    }
 
     public void addDamage(CharColour colour, int damage, int marks){
         //TODO: method
