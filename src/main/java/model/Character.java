@@ -1,7 +1,7 @@
 package model;
 
 public class Character {
-    private CharColour[] damage;
+    private CharColour[] damageTrack;
     private Weapon[] weapons;
     private Powerup[] powerups;
     private short[] marks;
@@ -12,10 +12,10 @@ public class Character {
     private CharColour colour;
 
     public Character (CharColour colour){
-        this.damage = new CharColour[12];
+        this.damageTrack = new CharColour[12];
         this.weapons = new Weapon[3];
         this.powerups = new Powerup[3];
-        this.marks = new short[4];
+        this.marks = new short[5];
         this.points = 0;
         this.numOfDeath = 0;
         this.ammos = new short[3];
@@ -23,20 +23,35 @@ public class Character {
         this.colour = colour;
     }
 
-    public void addDamage(CharColour colour, int damage, int marks){
-        //TODO: method
+    public void addDamage(CharColour colour, int inflictedDamage, int inflictedMarks){
         int index = 0;
-        while (damage[i] != null){
-            i = i + 1;
+        int TotalDamage = marks[colour.ordinal()] + inflictedDamage;
+        boolean overkilled = false;
+        while (damageTrack[index] != null){
+            index = index + 1;
         }
-
+        while(TotalDamage != 0){       //il controller dovrà controllare ogni volta se il giocatore è morto, verificando che all'indice 10 il valore sia != null
+            damageTrack[index] = colour;
+            if(index > 10){
+                overkilled = true;
+                TotalDamage = 0;
+            }
+            else{
+                index += 1;
+            }
+        }
+        marks[colour.ordinal()] = inflictedMarks;        //conviene implementare un metodo SetMask?
     }
     public void collectWeapon(Weapon w){
-        //TODO: method
-    }
-    public Weapon dropWeapon(Weapon w){
-        //TODO: method
-        return new Weapon();
+        short index = 0;
+        short newWeaponIndex;
+        while(index < 3 && weapons[i] != null){
+            index +=1;
+        }
+        if(index = 3){
+            newWeaponIndex = dropWeapon();       //da implementare: chiedi all'utente quale arma vuole lasciare
+        }
+        weapons[newWeaponIndex] = w;
     }
     public void collectPowerup(Powerup p){
         //TODO: method
