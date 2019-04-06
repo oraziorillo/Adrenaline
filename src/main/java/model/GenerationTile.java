@@ -1,6 +1,6 @@
 package model;
 
-public class GenerationSquare extends Square {
+public class GenerationTile extends Tile {
     private Weapon[] weapons;
 
     public Weapon[] getWeapons() {

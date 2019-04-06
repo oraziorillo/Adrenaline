@@ -1,6 +1,6 @@
 package model;
 
-public class AmmoSquare extends Square{
+public class AmmoTile extends Tile {
     private AmmoCard card;
 
     public AmmoCard getCard() {
