@@ -7,9 +7,9 @@ public class Game {
     private int currentCharacterIndex;
     private ArrayList<Character> characters;
     private Killshot[] killShotTrack;
-    private Deck<AmmoCard> ammosDeck;
-    private Deck<Weapon> weaponsDeck;
-    private Deck<Powerup> powerUpsDeck;
+    Deck<AmmoCard> ammosDeck;
+    Deck<Weapon> weaponsDeck;
+    Deck<Powerup> powerUpsDeck;
 
     public Game(){
         remainigActions = 2;
