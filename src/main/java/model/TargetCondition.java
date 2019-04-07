@@ -1,5 +1,5 @@
 package model;
 
 public interface TargetCondition {
-    public boolean isValid(Character[] c,Tile startingTile);
+    public boolean isValid(Character[] c, Tile startingTile);
 }
