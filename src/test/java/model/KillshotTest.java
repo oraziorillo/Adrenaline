@@ -31,6 +31,6 @@ public class KillshotTest {
     public void throwsExceptionIfKilled2Times(CharColourEnum charColours, boolean aBoolean){
         Killshot tested=new Killshot();
         tested.kill(charColours,aBoolean);
-        assertThrows("Exception not thrown",IllegalStateException.class,()->{tested.kill(charColours,aBoolean);});
+        assertThrows("Exception not thrown",IllegalStateException.class,()->tested.kill(charColours,aBoolean));
     }
 }

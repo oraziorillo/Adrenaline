@@ -5,8 +5,11 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import static org.junit.Assume.*;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 
 
@@ -26,7 +29,7 @@ public class AmmoCardTest {
     @Theory
     public void throwsExceptionOnInvalidParameters(short[] ammos, boolean hasPowerup){
         assumeFalse("Valid parameters",AmmoCard.validParameters(ammos, hasPowerup));
-        assertThrows("Exception not thrown",IllegalArgumentException.class,()->{new AmmoCard(ammos,hasPowerup);});
+        assertThrows("Exception not thrown",IllegalArgumentException.class,()->new AmmoCard(ammos,hasPowerup));
     }
     @Theory
     public void parameterValidatorWorksFine(short[] ammos,boolean hasPowerup){

@@ -29,7 +29,7 @@ public abstract class Tile {
     }
 
     public void addVisible(Tile t){
-
+        visibles.add(t);
     }
 
     public int getX() {
