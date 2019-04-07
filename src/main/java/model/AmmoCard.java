@@ -1,11 +1,13 @@
 package model;
 
+
 public class AmmoCard {
     /**
      * Index this array with AmmoEnum
      */
-    private short[] ammos;
-    private boolean hasPowerup;
+    private final short[] ammos;
+    private final boolean hasPowerup;
+    public static final short AMMOSFORCARD=3;
     /**
      * Standard getter
      * @return ammos
@@ -32,14 +34,28 @@ public class AmmoCard {
         this.ammos=ammos;
         this.hasPowerup=hasPowerup;
     }
+
+    /**
+     * Checks if a card of given parameters could exist
+     * @param ammos an array of ammonitions
+     * @param hasPowerup true iif the card has a powerup inside
+     * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMOSFORCARD. true otherwise.
+     */
+
     public static boolean validParameters(short[] ammos, boolean hasPowerup){
         short t=0;
+        //Save in t the sum of the elements in ammos
         for(short s: ammos){
+            //if any element is negative the parameters are invalid
             if(s<0){
                 return false;
             }
             t+=s;
         }
-        return ((hasPowerup&&t==2)||(t==3));
+        //powerup counts as an ammo
+        if(hasPowerup){
+            t++;
+        }
+        return t==AMMOSFORCARD;
     }
 }
