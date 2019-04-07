@@ -1,5 +1,11 @@
 package model;
 
 public class DoubleFiremodeWeapon {
-    //TODO
+    private WeaponEffect alternativeFiremode;
+
+    DoubleFiremodeWeapon (short blueAmmos, short redAmmos, short yellowAmmos,
+                          WeaponEffect primaryEffect, WeaponEffect secondaryEffect){
+        super(blueAmmos, redAmmos, yellowAmmos, primaryEffect);
+        alternativeFiremode = secondaryEffect;
+    }
 }

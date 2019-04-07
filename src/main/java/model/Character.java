@@ -113,7 +113,7 @@ public class Character {
     public void respawn(RoomColourEnum colour){
         this.damageTrack = new CharColourEnum[12];
         numOfDeath = (short)(numOfDeath + 1);
-        this.currentTile = respawnpoint(colour);//TODO: è dato dal colour che viene passato come parametro
+        this.currentTile = getGenerationTile(colour);//TODO: è dato dal colour che viene passato come parametro
     }
 
 
