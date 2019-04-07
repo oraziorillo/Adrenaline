@@ -11,7 +11,7 @@ public class KillshotTest {
     @DataPoints
     public static boolean[] aBoolean={true,false};
     @DataPoints
-    public static CharColour[] charColours=CharColour.values();
+    public static CharColourEnum[] charColours= CharColourEnum.values();
 
     @Theory
     public void beginsSkulled(){
@@ -19,7 +19,7 @@ public class KillshotTest {
     }
 
     @Theory
-    public void killMethodWorksFine(CharColour charColours,boolean aBoolean){
+    public void killMethodWorksFine(CharColourEnum charColours, boolean aBoolean){
         Killshot tested=new Killshot();
         tested.kill(charColours,aBoolean);
         assertEquals(tested.isOverkilled(),aBoolean);
@@ -28,7 +28,7 @@ public class KillshotTest {
     }
 
     @Theory
-    public void throwsExceptionIfKilled2Times(CharColour charColours,boolean aBoolean){
+    public void throwsExceptionIfKilled2Times(CharColourEnum charColours, boolean aBoolean){
         Killshot tested=new Killshot();
         tested.kill(charColours,aBoolean);
         assertThrows("Exception not thrown",IllegalStateException.class,()->{tested.kill(charColours,aBoolean);});

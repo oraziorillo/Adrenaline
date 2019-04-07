@@ -7,15 +7,19 @@ public class Game {
     private int currentCharacterIndex;
     private ArrayList<Character> characters;
     private Killshot[] killShotTrack;
-    private Deck AmmosDeck;
-    private Deck WeaponsDeck;
-    private Deck PowerUpsDeck;
+    private Deck<AmmoCard> ammosDeck;
+    private Deck<Weapon> weaponsDeck;
+    private Deck<Powerup> powerUpsDeck;
 
     public Game(){
         remainigActions = 2;
         currentCharacterIndex = 0;
         characters = new ArrayList<>(1);
         killShotTrack = new Killshot[8];
+        ammosDeck = new Deck<>();
+        weaponsDeck = new Deck<>();
+        powerUpsDeck = new Deck<>();
+        initDecks();
     }
 
     public Game(int n){
@@ -23,6 +27,10 @@ public class Game {
         currentCharacterIndex = 0;
         characters = new ArrayList<>(n);
         killShotTrack = new Killshot[8];
+        ammosDeck = new Deck<>();
+        weaponsDeck = new Deck<>();
+        powerUpsDeck = new Deck<>();
+        initDecks();
     }
 
     public void nextTurn(){
@@ -49,19 +57,18 @@ public class Game {
         return killShotTrack;
     }
 
-    public void initDecks(){
-        //TODO
+    private void initDecks() {
     }
 
     public Deck getAmmosDeck() {
-        return AmmosDeck;
+        return ammosDeck;
     }
 
     public Deck getPowerUpsDeck() {
-        return PowerUpsDeck;
+        return powerUpsDeck;
     }
 
     public Deck getWeaponsDeck() {
-        return WeaponsDeck;
+        return weaponsDeck;
     }
 }

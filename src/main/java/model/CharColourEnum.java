@@ -1,6 +1,6 @@
 package model;
 
-public enum CharColour {
+public enum CharColourEnum {
     GREY,
     GREEN,
     YELLOW,

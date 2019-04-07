@@ -2,7 +2,7 @@ package model;
 
 
 public class Character {
-    private CharColour[] damageTrack;
+    private CharColourEnum[] damageTrack;
     private Weapon[] weapons;
     private Powerup[] powerups;
     private short[] marks;
@@ -10,10 +10,10 @@ public class Character {
     private short numOfDeath;
     private short ammos[];
     private Tile position;
-    private CharColour colour;
+    private CharColourEnum colour;
 
-    public Character (CharColour colour){
-        this.damageTrack = new CharColour[12];
+    public Character (CharColourEnum colour){
+        this.damageTrack = new CharColourEnum[12];
         this.weapons = new Weapon[3];
         this.powerups = new Powerup[3];
         this.marks = new short[5];
@@ -24,7 +24,7 @@ public class Character {
         this.colour = colour;
     }
 
-    public void addDamage(CharColour colour, int inflictedDamage, int inflictedMarks){
+    public void addDamage(CharColourEnum colour, int inflictedDamage, int inflictedMarks){
         int index = 0;
         int TotalDamage = marks[colour.ordinal()] + inflictedDamage;
         boolean overkilled = false;
@@ -125,7 +125,7 @@ public class Character {
     }
 
     public void respawn(RoomColour colour){
-        this.damageTrack = new CharColour[12];
+        this.damageTrack = new CharColourEnum[12];
         numOfDeath = numOfDeath + 1;
         this.position = //TODO: è dato dal colour che viene passato come parametro
     }

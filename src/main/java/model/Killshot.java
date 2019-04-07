@@ -1,10 +1,10 @@
 package model;
 
 public class Killshot {
-    private CharColour colour;
+    private CharColourEnum colour;
     private boolean skulled=true;
     private boolean overkilled;
-    public void kill(CharColour killer, boolean overkill){
+    public void kill(CharColourEnum killer, boolean overkill){
         if(skulled) {
             this.colour = killer;
             this.overkilled = overkill;
@@ -22,7 +22,7 @@ public class Killshot {
         return overkilled;
     }
 
-    public CharColour getColour() {
+    public CharColourEnum getColour() {
         return colour;
     }
 }
