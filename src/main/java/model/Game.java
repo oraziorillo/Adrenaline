@@ -71,4 +71,8 @@ public class Game {
     public Deck getWeaponsDeck() {
         return weaponsDeck;
     }
+
+    public GenerationTile respawnpoint (CharColourEnum colour){
+        //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
+    }
 }

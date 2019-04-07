@@ -6,8 +6,8 @@ public class Character {
     private Weapon[] weapons;
     private Powerup[] powerups;
     private short[] marks;
-    private int points;
-    private int numOfDeath;
+    private short points;
+    private short numOfDeath;
     private short ammos[];
     private Tile currentTile;
     private CharColourEnum colour;
@@ -24,17 +24,15 @@ public class Character {
         this.colour = colour;
     }
 
-    public void addDamage(CharColourEnum colour, int inflictedDamage, int inflictedMarks){
+    public void addDamage(CharColourEnum colour, short inflictedDamage, short inflictedMarks){
         int index = 0;
-        int TotalDamage = marks[colour.ordinal()] + inflictedDamage;
-        boolean overkilled = false;
+        short TotalDamage = (short)(marks[colour.ordinal()] + inflictedDamage);
         while (damageTrack[index] != null){
             index = index + 1;
         }
         while(TotalDamage != 0){       //il controller dovrà controllare ogni volta se il giocatore è morto, verificando che all'indice 10 il valore sia != null
             damageTrack[index] = colour;
             if(index > 10){
-                overkilled = true;
                 TotalDamage = 0;
             }
             else{
@@ -57,12 +55,12 @@ public class Character {
         if( index < 0 || index > 3){
             throw new IllegalArgumentException("This index is not valid");
         }
-        temp = weapons[index]
+        temp = weapons[index];
         return temp;
     }
 
     public void collectWeapon(int WeaponIndex){        //l'arma deve poi essere rimossa dal punto di generazione
-        if(! ( instanceof GenerationTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+        if(! (currentTile instanceof GenerationTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in a GenerationTile");
         }
         GenerationTile workingTile = (GenerationTile) currentTile;
@@ -82,12 +80,13 @@ public class Character {
     }
 
     public void collectPowerup(){
+
         int index = 0;
         while (index < powerups.length && powerups[index] != null){
             index += 1;
         }
         if (index < powerups.length){
-            powerups[index] = ammosDeck.draw();        //da implementare AmmoDeck
+            powerups[index] = ammosDeck.draw();
         }
     }
 
@@ -113,8 +112,10 @@ public class Character {
 
     public void respawn(RoomColourEnum colour){
         this.damageTrack = new CharColourEnum[12];
-        numOfDeath = numOfDeath + 1;
-        this.currentTile = //TODO: è dato dal colour che viene passato come parametro
+        numOfDeath = (short)(numOfDeath + 1);
+        this.currentTile = respawnpoint(colour);//TODO: è dato dal colour che viene passato come parametro
     }
+
+
 
 }

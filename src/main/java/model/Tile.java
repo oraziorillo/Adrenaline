@@ -45,4 +45,6 @@ public abstract class Tile {
         this.y=y;
     }
 
+    //TODO: VALE LA PENA AGGIUNGERE DUE METODI isGenerationTile E isAmmoTile ??
+
 }
