@@ -7,9 +7,9 @@ public class Character {
     private Powerup[] powerups;
     private short[] marks;
     private int points;
-    private short numOfDeath;
+    private int numOfDeath;
     private short ammos[];
-    private Tile position;
+    private Tile currentTile;
     private CharColourEnum colour;
 
     public Character (CharColourEnum colour){
@@ -20,7 +20,7 @@ public class Character {
         this.points = 0;
         this.numOfDeath = 0;
         this.ammos = new short[3];
-        this.position = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
+        this.currentTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
         this.colour = colour;
     }
 
@@ -46,63 +46,67 @@ public class Character {
 
     public boolean isFullyArmed(){
         int index = 0;
-        while(index < weapons.length() && weapons[index] != null){
+        while(index < weapons.length && weapons[index] != null){
             index += 1;
         }
         return index == 3;
     }
 
     private Weapon weaponIndex (int index){
+        Weapon temp;
         if( index < 0 || index > 3){
-            throw new IllegalArgumentException("Questo indice non è valido");
+            throw new IllegalArgumentException("This index is not valid");
         }
-        return weapons[index];
+        temp = weapons[index]
+        return temp;
     }
 
     public void collectWeapon(int WeaponIndex){        //l'arma deve poi essere rimossa dal punto di generazione
-        if(! (position instanceof GenerationTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
-            throw new IllegalStateException("You are not in a generation tile");
+        if(! ( instanceof GenerationTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+            throw new IllegalStateException("You are not in a GenerationTile");
         }
-        GenerationTile workingTile = (GenerationTile) position;
+        GenerationTile workingTile = (GenerationTile) currentTile;
         int index = 0;
-        while(index < weapons.length() && weapons[index] != null){
+        while(index < weapons.length && weapons[index] != null){
             index += 1;
         }
         weapons[index] = workingTile.pickWeapon(WeaponIndex);
     }
 
     public void collectWeapon(int DesiredWeaponIndex, int ToDropWeaponIndex){
-        if(! (position instanceof GenerationTile)){
-            throw new IllegalStateException("You are not in a generation tile");
+        if(! (currentTile instanceof GenerationTile)){
+            throw new IllegalStateException("You are not in a GenerationTile");
         }
-        GenerationTile workingTile = (GenerationTile) position;
-        weapons[index] = workingTile.switchWeapon(DesiredWeaponIndex, weaponIndex(ToDropWeaponIndex));
+        GenerationTile workingTile = (GenerationTile) currentTile;
+        weapons[ToDropWeaponIndex] = workingTile.switchWeapon(DesiredWeaponIndex, weaponIndex(ToDropWeaponIndex));
     }
 
     public void collectPowerup(){
         int index = 0;
-        while (index < powerups.length() && powerups[index] != null){
+        while (index < powerups.length && powerups[index] != null){
             index += 1;
         }
-        if (index < powerups.length()){
-            powerups[i] = Ammodeck.draw();        //da implementare AmmoDeck
+        if (index < powerups.length){
+            powerups[index] = ammosDeck.draw();        //da implementare AmmoDeck
         }
     }
 
-    public void addPoints(int points){
-        this.points += points;
+    public void addPoints(int newpoints){
+        this.points += newpoints;
     }
 
-    public void collectAmmos(AmmoCard card){
-        if (ammos.length()!=this.card.length()){
-            throw new IllegalArgumentException("Array di dimensione errata");
+    public void collectAmmos(){
+        if(! (currentTile instanceof AmmoTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+            throw new IllegalStateException("You are not in an AmmoTile");
         }
-        for (int i=0; i<card.length(); i++){
-            this.ammos[i]+=ammos[i];
-            if(ammos[i]>3)
-                ammos[i]=3;
+        AmmoTile workingTile = (AmmoTile) currentTile;
+        AmmoCard card = workingTile.drawCard();
+        for (int i = 0; i < card.getAmmos().length; i++){
+            this.ammos[i] += ammos[i];
+            if(ammos[i] > 3)
+                ammos[i] = 3;
         }
-        if(card.hasPowerUp()){      //da rivedere, troppo dipendente dalla classe AmmoCard??
+        if(card.containsPowerup()){      //da rivedere, troppo dipendente dalla classe AmmoCard??
             collectPowerup();
         }
     }
@@ -110,7 +114,7 @@ public class Character {
     public void respawn(RoomColour colour){
         this.damageTrack = new CharColourEnum[12];
         numOfDeath = numOfDeath + 1;
-        this.position = //TODO: è dato dal colour che viene passato come parametro
+        this.currentTile = //TODO: è dato dal colour che viene passato come parametro
     }
 
 }
