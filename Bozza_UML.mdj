@@ -7474,24 +7474,6 @@
 															"height": 13,
 															"text": "-ammos: short[3]",
 															"horizontalAlignment": 0
-														},
-														{
-															"_type": "UMLAttributeView",
-															"_id": "AAAAAAFp3qJ4F36P84Y=",
-															"_parent": {
-																"$ref": "AAAAAAFpxKYsDTBAlUc="
-															},
-															"model": {
-																"$ref": "AAAAAAFp3qJ3v35rzF0="
-															},
-															"fillColor": "#ffd6ad",
-															"font": "Arial;13;0",
-															"left": 1157,
-															"top": 781,
-															"width": 157.904296875,
-															"height": 13,
-															"text": "-tempEffect: WeaponEffect",
-															"horizontalAlignment": 0
 														}
 													],
 													"fillColor": "#ffd6ad",
@@ -7499,7 +7481,7 @@
 													"left": 1152,
 													"top": 761,
 													"width": 167.904296875,
-													"height": 38
+													"height": 23
 												},
 												{
 													"_type": "UMLOperationCompartmentView",
@@ -7523,7 +7505,7 @@
 															"fillColor": "#ffd6ad",
 															"font": "Arial;13;0",
 															"left": 1157,
-															"top": 804,
+															"top": 789,
 															"width": 157.904296875,
 															"height": 13,
 															"text": "+selectEffect()",
@@ -7541,7 +7523,7 @@
 															"fillColor": "#ffd6ad",
 															"font": "Arial;13;0",
 															"left": 1157,
-															"top": 819,
+															"top": 804,
 															"width": 157.904296875,
 															"height": 13,
 															"text": "+attachUpgrade()",
@@ -7559,7 +7541,7 @@
 															"fillColor": "#ffd6ad",
 															"font": "Arial;13;0",
 															"left": 1157,
-															"top": 834,
+															"top": 819,
 															"width": 157.904296875,
 															"height": 13,
 															"text": "+shoot()",
@@ -7569,7 +7551,7 @@
 													"fillColor": "#ffd6ad",
 													"font": "Arial;13;0",
 													"left": 1152,
-													"top": 799,
+													"top": 784,
 													"width": 167.904296875,
 													"height": 53
 												},
@@ -15463,18 +15445,6 @@
 											"visibility": "private",
 											"type": "short",
 											"multiplicity": "3"
-										},
-										{
-											"_type": "UMLAttribute",
-											"_id": "AAAAAAFp3qJ3v35rzF0=",
-											"_parent": {
-												"$ref": "AAAAAAFpxKYsDDA4YVQ="
-											},
-											"name": "tempEffect",
-											"visibility": "private",
-											"type": {
-												"$ref": "AAAAAAFpxK17G6ZK4pk="
-											}
 										}
 									],
 									"operations": [
