@@ -1,6 +1,6 @@
 package model;
 
-public enum RoomColour {
+public enum RoomColourEnum {
     RED,
     YELLOW,
     GREEN,

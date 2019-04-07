@@ -124,7 +124,7 @@ public class Character {
         }
     }
 
-    public void respawn(RoomColour colour){
+    public void respawn(RoomColourEnum colour){
         this.damageTrack = new CharColourEnum[12];
         numOfDeath = numOfDeath + 1;
         this.position = //TODO: è dato dal colour che viene passato come parametro
