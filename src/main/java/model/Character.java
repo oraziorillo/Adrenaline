@@ -44,6 +44,21 @@ public class Character {
         marks[colour.ordinal()] = inflictedMarks;        //conviene implementare un metodo SetMask?
     }
 
+    public boolean isFullyArmed(){
+        int index = 0;
+        while(index < weapons.length() && weapons[index] != null){
+            index += 1;
+        }
+        return index == 3;
+    }
+
+    private Weapon weaponIndex (int index){
+        if( index < 0 || index > 3){
+            throw new IllegalArgumentException("Questo indice non è valido");
+        }
+        return weapons[index];
+    }
+
     public void collectWeapon(int WeaponIndex){        //l'arma deve poi essere rimossa dal punto di generazione
         if(! (position instanceof GenerationTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in a generation tile");
@@ -56,48 +71,16 @@ public class Character {
         weapons[index] = workingTile.pickWeapon(WeaponIndex);
     }
 
-    public void collectWeapon(int DesiredWeaponIndex, Weapon ToDropWeapon){
+    public void collectWeapon(int DesiredWeaponIndex, int ToDropWeaponIndex){
         if(! (position instanceof GenerationTile)){
             throw new IllegalStateException("You are not in a generation tile");
         }
         GenerationTile workingTile = (GenerationTile) position;
-        int index = 0;
-        while(index < weapons.length() && weapons[index] != null){
-            index += 1;
-        }
-        weapons[index] = workingTile.switchWeapon(DesiredWeaponIndex, ToDropWeapon);
-    }
-
-    public boolean isFullyArmed(){
-        int index = 0;
-        while(index < weapons.length() && weapons[index] != null){
-            index += 1;
-        }
-        return index == 3;
-    }
-
-    public void collectWeapon(Weapon WeaponToDrop){
-        short index = 0;
-        short newWeaponIndex;
-        if(index = weapons.length()){
-            newWeaponIndex = dropWeapon();       //da implementare: chiedi all'utente quale arma vuole lasciare
-        }
-        //da continuare
-    }
-
-    public Weapon dropWeapon(Weapon[] weaponpoint,  Weapon w){
-        short index = 0;
-        while (index < 3 && !weapons[index].equals(w)){
-            index += 1;
-        }
-        if (index == 3){
-            throw new IllegalArgumentException ("You don't really have this weapon!");
-        }
-
+        weapons[index] = workingTile.switchWeapon(DesiredWeaponIndex, weaponIndex(ToDropWeaponIndex));
     }
 
     public void collectPowerup(){
-        short index = 0;
+        int index = 0;
         while (index < powerups.length() && powerups[index] != null){
             index += 1;
         }
