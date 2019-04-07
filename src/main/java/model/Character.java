@@ -1,5 +1,6 @@
 package model;
 
+
 public class Character {
     private CharColour[] damageTrack;
     private Weapon[] weapons;
@@ -43,37 +44,61 @@ public class Character {
         marks[colour.ordinal()] = inflictedMarks;        //conviene implementare un metodo SetMask?
     }
 
-    public void collectWeapon(Weapon w){
+    public void collectWeapon(int WeaponIndex){        //l'arma deve poi essere rimossa dal punto di generazione
+        if(! (position instanceof GenerationTile)){     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+            throw new IllegalStateException("You are not in a generation tile");
+        }
+        GenerationTile workingTile = (GenerationTile) position;
+        int index = 0;
+        while(index < weapons.length() && weapons[index] != null){
+            index += 1;
+        }
+        weapons[index] = workingTile.pickWeapon(WeaponIndex);
+    }
+
+    public void collectWeapon(int DesiredWeaponIndex, Weapon ToDropWeapon){
+        if(! (position instanceof GenerationTile)){
+            throw new IllegalStateException("You are not in a generation tile");
+        }
+        GenerationTile workingTile = (GenerationTile) position;
+        int index = 0;
+        while(index < weapons.length() && weapons[index] != null){
+            index += 1;
+        }
+        weapons[index] = workingTile.switchWeapon(DesiredWeaponIndex, ToDropWeapon);
+    }
+
+    public boolean isFullyArmed(){
+        int index = 0;
+        while(index < weapons.length() && weapons[index] != null){
+            index += 1;
+        }
+        return index == 3;
+    }
+
+    public void collectWeapon(Weapon WeaponToDrop){
         short index = 0;
         short newWeaponIndex;
-        while(index < weapons.length() && weapons[i] != null){
-            index +=1;
-        }
         if(index = weapons.length()){
             newWeaponIndex = dropWeapon();       //da implementare: chiedi all'utente quale arma vuole lasciare
         }
-        weapons[newWeaponIndex] = w;        //l'arma deve poi essere rimossa dal punto di generazione
-    }
-
-    public void collectWeapon(Weapon newWeapon, Weapon WeaponToDrop){
-        short index = 0;
         //da continuare
     }
 
-    public short dropWeapon(Weapon[] weaponpoint,  Weapon w){
+    public Weapon dropWeapon(Weapon[] weaponpoint,  Weapon w){
         short index = 0;
         while (index < 3 && !weapons[index].equals(w)){
             index += 1;
         }
         if (index == 3){
-            throw new NonValidArgumentException ("You don't really have this weapon!");
+            throw new IllegalArgumentException ("You don't really have this weapon!");
         }
 
     }
 
     public void collectPowerup(){
         short index = 0;
-        while (index < powerups.length() && powerups[i] != null){
+        while (index < powerups.length() && powerups[index] != null){
             index += 1;
         }
         if (index < powerups.length()){
@@ -100,7 +125,7 @@ public class Character {
     }
 
     public void respawn(RoomColour colour){
-        this.damage = new CharColour[12];
+        this.damageTrack = new CharColour[12];
         numOfDeath = numOfDeath + 1;
         this.position = //TODO: è dato dal colour che viene passato come parametro
     }
