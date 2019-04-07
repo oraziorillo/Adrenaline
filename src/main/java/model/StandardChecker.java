@@ -12,7 +12,7 @@ public class StandardChecker implements TargetCondition {
         for(Character character:c){
             boolean minDistOK=Tile.distance(character.getPosition(),startingTile)>=minDistance;
             boolean maxDistOK=Tile.distance(character.getPosition(),startingTile)<=maxDistance;
-            boolean visibilityOK=(!needVisibility)||(startingTile.visibles.contains(character.getPosition()));
+            boolean visibilityOK=(!needVisibility)||(startingTile.getVisibles().contains(character.getPosition()));
             if(!(minDistOK&&maxDistOK&&visibilityOK)){
                 valid = false;
                 break;

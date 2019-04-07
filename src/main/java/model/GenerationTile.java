@@ -1,6 +1,10 @@
 package model;
 
 public class GenerationTile extends Tile {
+
+    GenerationTile(int x,int y,Deck<Weapon> deck){
+        super(x,y);
+    }
     private Weapon[] weapons;
 
     public Weapon[] getWeapons() {
