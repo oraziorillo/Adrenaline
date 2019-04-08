@@ -1,4 +1,4 @@
-package model;
+package model.target_checker;
 
 public abstract class TargetConditionDecorator implements TargetCondition{
     TargetCondition base;

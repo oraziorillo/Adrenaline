@@ -1,5 +1,9 @@
-package model;
+package model.target_checker;
 
+import model.Character;
+import model.Tile;
+
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class BlindnessDecorator extends TargetConditionDecorator {
@@ -9,11 +13,11 @@ public class BlindnessDecorator extends TargetConditionDecorator {
     }
 
     @Override
-    public boolean isValid(Character[] c,Tile startingTile) {
-        return base.isValid(c,startingTile)&&notInSight(c,startingTile);
+    public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
+        return base.isValid(characters,startingTile)&&notInSight(characters,startingTile);
     }
 
-    boolean notInSight(Character[] c, Tile startingTile){
+    boolean notInSight(ArrayList<Character> c, Tile startingTile){
         boolean noOneInSight=true;
         Collection visibles=startingTile.getVisibles();
         for(Character character:c){

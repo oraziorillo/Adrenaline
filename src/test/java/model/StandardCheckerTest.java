@@ -1,5 +1,6 @@
 package model;
 
+import model.target_checker.StandardChecker;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

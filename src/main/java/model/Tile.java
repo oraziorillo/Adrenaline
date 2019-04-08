@@ -5,9 +5,10 @@ import java.util.HashSet;
 
 public abstract class Tile {
     private HashSet<Character> characters=new HashSet<>();
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private HashSet<Tile> visibles=new HashSet<>();
+    private final RoomColourEnum roomColour;
 
     public static int distance(Tile t1, Tile t2){
         return Math.abs(t1.x+t1.y-t2.x-t2.y);
@@ -40,11 +41,15 @@ public abstract class Tile {
         return y;
     }
 
-    Tile(int x,int y){
-        this.x=x;
-        this.y=y;
+    public RoomColourEnum getRoomColour(){
+        return roomColour;
     }
 
-    //TODO: VALE LA PENA AGGIUNGERE DUE METODI isGenerationTile E isAmmoTile ??
+    Tile(int x,int y,RoomColourEnum colour){
+        this.x=x;
+        this.y=y;
+        this.roomColour=colour;
+    }
+
 
 }

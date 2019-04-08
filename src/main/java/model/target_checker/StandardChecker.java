@@ -1,5 +1,10 @@
-package model;
+package model.target_checker;
 
+
+import model.Character;
+import model.Tile;
+
+import java.util.ArrayList;
 
 public class StandardChecker implements TargetCondition {
     private int minDistance;
@@ -7,9 +12,9 @@ public class StandardChecker implements TargetCondition {
     private boolean needVisibility;
 
     @Override
-    public boolean isValid(Character[] c,Tile startingTile) {
+    public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
         boolean valid=true;
-        for(Character character:c){
+        for(Character character: characters){
             boolean minDistOK=Tile.distance(character.getPosition(),startingTile)>=minDistance;
             boolean maxDistOK=Tile.distance(character.getPosition(),startingTile)<=maxDistance;
             boolean visibilityOK=(!needVisibility)||(startingTile.getVisibles().contains(character.getPosition()));
@@ -29,4 +34,5 @@ public class StandardChecker implements TargetCondition {
         this.minDistance=minDistance;
         this.maxDistance=maxDistance;
     }
+
 }

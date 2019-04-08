@@ -1,4 +1,9 @@
-package model;
+package model.target_checker;
+
+import model.Character;
+import model.Tile;
+
+import java.util.ArrayList;
 
 public class StraightLineDecorator extends TargetConditionDecorator {
 
@@ -7,11 +12,11 @@ public class StraightLineDecorator extends TargetConditionDecorator {
     }
 
     @Override
-    public boolean isValid(Character[] c, Tile startingTile) {
-        return base.isValid(c,startingTile)&&(sameX(c,startingTile)||sameY(c,startingTile));
+    public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
+        return base.isValid(characters,startingTile)&&(sameX(characters,startingTile)||sameY(characters,startingTile));
     }
 
-    private boolean sameX(Character[] c, Tile startingTile){
+    private boolean sameX(ArrayList<Character> c, Tile startingTile){
         boolean sameX=true;
         for(Character character:c){
             if(character.getPosition().getX()!=startingTile.getX()){
@@ -22,7 +27,7 @@ public class StraightLineDecorator extends TargetConditionDecorator {
         return sameX;
     }
 
-    private boolean sameY(Character[] c, Tile startingTile){
+    private boolean sameY(ArrayList<Character> c, Tile startingTile){
         boolean sameY=true;
         for(Character character:c){
             if(character.getPosition().getY()!=startingTile.getY()){
