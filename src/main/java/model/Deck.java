@@ -7,12 +7,20 @@ public class Deck<E> {
     /**
      * The concrete container for cards
      */
-    private ArrayList<E> cards = new ArrayList<>();
+    private ArrayList<E> cards;
 
     /**
      * used for random insertion
      */
-    private Random random = new Random();
+    private Random random;
+
+    /**
+     * Default constructor
+     */
+    public Deck<E> {
+        cards = new ArrayList<>();
+        random = new Random();
+    }
 
     /**
      * Adds the given card to a random position

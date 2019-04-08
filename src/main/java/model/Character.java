@@ -44,7 +44,7 @@ public class Character {
         return temp;
     }
 
-    public void collectWeapon(int WeaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
+    public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
         if (!(currentTile instanceof GenerationTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in a GenerationTile");
         }
@@ -53,15 +53,15 @@ public class Character {
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
         }
-        weapons[index] = workingTile.pickWeapon(WeaponIndex);
+        weapons[index] = workingTile.pickWeapon(weaponIndex);
     }
 
-    public void collectWeapon(int DesiredWeaponIndex, int ToDropWeaponIndex) {
+    public void collectWeapon(int desiredWeaponIndex, int toDropWeaponIndex) {
         if (!(currentTile instanceof GenerationTile)) {
             throw new IllegalStateException("You are not in a GenerationTile");
         }
         GenerationTile workingTile = (GenerationTile) currentTile;
-        weapons[ToDropWeaponIndex] = workingTile.switchWeapon(DesiredWeaponIndex, weaponIndex(ToDropWeaponIndex));
+        weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponIndex(toDropWeaponIndex));
     }
 
     public void collectAmmos() {
@@ -81,14 +81,14 @@ public class Character {
     }
 
     public void collectPowerup() {
-
         int index = 0;
         while (index < powerUps.length && powerUps[index] != null) {
             index += 1;
         }
-        if (index < powerUps.length) {
+        if (index < powerUps.length) {      //lo facciamo gestire dal controller?
             //TODO
-            //powerUps[index] = ammosDeck.draw();
+            //Deck<Powerup> powerUpsDeck;
+            //powerUps[index] = powerUpsDeck.draw();
         }
     }
 

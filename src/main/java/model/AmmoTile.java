@@ -2,7 +2,7 @@ package model;
 
 public class AmmoTile extends Tile {
     private AmmoCard card;
-    private /*static*/ Deck<AmmoCard> ammoCardDeck;
+    private /*static*/ Deck<AmmoCard> ammoCardDeck;         //Dubbi su questo attributo
 
     AmmoTile(int x, int y, RoomColourEnum colour, Deck<AmmoCard> deck) {
         super(x, y, colour);
@@ -11,10 +11,16 @@ public class AmmoTile extends Tile {
     }
 
     public AmmoCard drawCard() {
-        //TODO: se la carta viene ripristinata a fine turno questo metodo va riscritto
+        //TODO: qui dovrà essere inserito un observer che notifica che la carta è stata pescata e deve essere sostituita
         AmmoCard oldCard = card;
-        card = ammoCardDeck.draw();
+        card = null;
         return oldCard;
+    }
+
+    public void drawCardFromDeck(){
+        if (card == null){
+            //TODO: pesca una nuova carta dal deck
+        }
     }
 
 
