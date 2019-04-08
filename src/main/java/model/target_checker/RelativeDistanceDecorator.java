@@ -22,7 +22,7 @@ public class RelativeDistanceDecorator extends TargetConditionDecorator{
         boolean ok=true;
         for(int i=0; i<c.size();i++){
             for(int j=i;j<c.size();j++){
-                if(Tile.distance(c.get(i).getPosition(),c.get(j).getPosition())!=relativeDistance){
+                if(Tile.distance(c.get(i).getCurrentTile(),c.get(j).getCurrentTile())!=relativeDistance){
                     ok=false;
                     break;
                 }

@@ -21,7 +21,7 @@ public class BlindnessDecorator extends TargetConditionDecorator {
         boolean noOneInSight=true;
         Collection visibles=startingTile.getVisibles();
         for(Character character:c){
-            if(visibles.contains(character.getPosition())){
+            if(visibles.contains(character.getCurrentTile())){
                 noOneInSight=false;
                 break;
             }

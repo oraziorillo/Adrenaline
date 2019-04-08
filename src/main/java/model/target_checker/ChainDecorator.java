@@ -19,7 +19,7 @@ public class ChainDecorator extends TargetConditionDecorator{
     private boolean inChain(ArrayList<Character> c,Tile startingTile){
         boolean inChain=true;
         for (int i=0;i<c.size()-1;i++){
-            if(!(c.get(i).getPosition().getVisibles().contains(c.get(i+1).getPosition()))){
+            if(!(c.get(i).getCurrentTile().getVisibles().contains(c.get(i+1).getCurrentTile()))){
                 inChain=false;
                 break;
             }

@@ -10,16 +10,16 @@ public abstract class Weapon {
     private HashSet<WeaponEffect> effects;
     private HashSet<WeaponEffect> upgrades;
 
-    Weapon(short blueAmmos, short redAmmos, short yellowAmmos, HashSet<WeaponEffect> effects, HashSet<WeaponEffect> upgrades){
+    Weapon(short blueAmmos, short redAmmos, short yellowAmmos, HashSet<WeaponEffect> effects, HashSet<WeaponEffect> upgrades) {
         ammos = new short[3];
-        if(blueAmmos <= 3 && blueAmmos >= 0)
+        if (blueAmmos <= 3 && blueAmmos >= 0)
             ammos[AmmoEnum.BLUE.ordinal()] = blueAmmos;
-        if(redAmmos <= 3 && redAmmos >= 0)
+        if (redAmmos <= 3 && redAmmos >= 0)
             ammos[AmmoEnum.RED.ordinal()] = redAmmos;
-        if(yellowAmmos <= 3 && yellowAmmos >= 0)
+        if (yellowAmmos <= 3 && yellowAmmos >= 0)
             ammos[AmmoEnum.YELLOW.ordinal()] = yellowAmmos;
-        this.effects=effects;
-        this.upgrades=upgrades;
+        this.effects = effects;
+        this.upgrades = upgrades;
     }
 
     public short[] getAmmos() {
@@ -27,10 +27,10 @@ public abstract class Weapon {
     }
 
     public Collection<WeaponEffect> getEffects() {
-        return (HashSet<WeaponEffect>)effects.clone();
+        return (HashSet<WeaponEffect>) effects.clone();
     }
 
     public Collection<WeaponEffect> getUpgrades() {
-        return (HashSet<WeaponEffect>)upgrades.clone();
+        return (HashSet<WeaponEffect>) upgrades.clone();
     }
 }

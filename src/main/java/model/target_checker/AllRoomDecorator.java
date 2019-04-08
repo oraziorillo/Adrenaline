@@ -20,7 +20,7 @@ public class AllRoomDecorator extends TargetConditionDecorator{
     private boolean sameRoom(ArrayList<Character> characters){
         boolean sameRoom=true;
         for(Character c:characters){
-            if(c.getPosition().getRoomColour()!=characters.get(0).getPosition().getRoomColour()){
+            if(c.getCurrentTile().getRoomColour()!=characters.get(0).getCurrentTile().getRoomColour()){
                 sameRoom=false;
                 break;
             }
@@ -32,8 +32,8 @@ public class AllRoomDecorator extends TargetConditionDecorator{
         boolean allInRoom=true;
 
         for(Character character:c){
-            for (Tile tile:character.getPosition().getVisibles()){
-                if(tile.getRoomColour()==character.getPosition().getRoomColour()&&!c.containsAll(tile.getCharacters())){
+            for (Tile tile:character.getCurrentTile().getVisibles()){
+                if(tile.getRoomColour()==character.getCurrentTile().getRoomColour()&&!c.containsAll(tile.getCharacters())){
                         allInRoom=false;
                         break;
                 }

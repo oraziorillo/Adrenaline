@@ -20,7 +20,7 @@ public class DifferentTilesDecorator extends TargetConditionDecorator{
         boolean different=true;
         for(int i=0;i<c.size();i++){
             for(int j=i;j<c.size();j++){
-                if(c.get(i).getPosition().equals(c.get(j).getPosition())){
+                if(c.get(i).getCurrentTile().equals(c.get(j).getCurrentTile())){
                     different=false;
                     break;
                 }

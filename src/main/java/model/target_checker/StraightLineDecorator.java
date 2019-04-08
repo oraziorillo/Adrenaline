@@ -19,7 +19,7 @@ public class StraightLineDecorator extends TargetConditionDecorator {
     private boolean sameX(ArrayList<Character> c, Tile startingTile){
         boolean sameX=true;
         for(Character character:c){
-            if(character.getPosition().getX()!=startingTile.getX()){
+            if(character.getCurrentTile().getX()!=startingTile.getX()){
                 sameX=false;
                 break;
             }
@@ -30,7 +30,7 @@ public class StraightLineDecorator extends TargetConditionDecorator {
     private boolean sameY(ArrayList<Character> c, Tile startingTile){
         boolean sameY=true;
         for(Character character:c){
-            if(character.getPosition().getY()!=startingTile.getY()){
+            if(character.getCurrentTile().getY()!=startingTile.getY()){
                 sameY=false;
                 break;
             }
