@@ -1,9 +1,11 @@
 package model;
 
 public abstract class Powerup {
-    private RoomColourEnum colour;          //è giusto metterlo di tipo RoomColourEnum??
+    private AmmoEnum colour;          //è giusto metterlo di tipo RoomColourEnum??
 
-    public RoomColourEnum getColour{ return colour; }
+    public AmmoEnum getColour(){
+        return colour;
+    }
 
     public abstract void useEffect();
 

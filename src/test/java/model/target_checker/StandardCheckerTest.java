@@ -1,5 +1,7 @@
-package model;
+package model.target_checker;
 
+import model.*;
+import model.Character;
 import model.target_checker.StandardChecker;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,11 +58,12 @@ public class StandardCheckerTest {
 
     @Test
     public void minDistFailsTest() {
-        StandardChecker testes = new StandardChecker(3, 5, true);
+        StandardChecker tested = new StandardChecker(3, 5, true);
         ArrayList<Character> list2 = new ArrayList<>();
         list2.add(c2);
         t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
-        assertFalse("Più vicini di mindist", testes.isValid(list2, t1));
+        Mockito.when(c2.getCurrentTile()).thenReturn(t2);
+        assertFalse("Più vicini di mindist", tested.isValid(list2, t1));
     }
 
     @Test
@@ -74,7 +77,7 @@ public class StandardCheckerTest {
 
     @Test
     public void exceptionOnMinDistBiggerThanMaxDist() {
-        assertThrows("not valid parameters", IllegalArgumentException.class, () -> new StandardChecker(1, 0, true));
+        assertThrows( IllegalArgumentException.class, () -> {new StandardChecker(1, 0, true);});
     }
 
 }

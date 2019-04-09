@@ -17,7 +17,7 @@ public class Deck<E> {
     /**
      * Default constructor
      */
-    public Deck<E> {
+    public Deck() {
         cards = new ArrayList<>();
         random = new Random();
     }

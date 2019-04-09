@@ -68,6 +68,7 @@ public class Game {
 
     /* public GenerationTile respawnpoint(CharColourEnum colour) {
         //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
+        return new GenerationTile(0,0,null);
     }
 
      */

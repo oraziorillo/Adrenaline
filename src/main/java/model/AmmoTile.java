@@ -4,7 +4,7 @@ public class AmmoTile extends Tile {
     private AmmoCard card;
     private /*static*/ Deck<AmmoCard> ammoCardDeck;         //Dubbi su questo attributo
 
-    AmmoTile(int x, int y, RoomColourEnum colour, Deck<AmmoCard> deck) {
+    public AmmoTile(int x, int y, RoomColourEnum colour, Deck<AmmoCard> deck) {
         super(x, y, colour);
         ammoCardDeck = deck;
         card = ammoCardDeck.draw();

@@ -6,7 +6,7 @@ public class GenerationTile extends Tile {
 
     private /*static*/ Deck<Weapon> weaponDeck;
 
-    GenerationTile(int x, int y, RoomColourEnum colour, Deck<Weapon> deck) {
+    public GenerationTile(int x, int y, RoomColourEnum colour, Deck<Weapon> deck) {
         super(x, y, colour);
         weapons = new Weapon[3];
         weaponDeck = deck;

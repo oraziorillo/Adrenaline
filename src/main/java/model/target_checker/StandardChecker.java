@@ -15,8 +15,10 @@ public class StandardChecker implements TargetCondition {
     public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
         boolean valid=true;
         for(Character character: characters){
-            boolean minDistOK=Tile.distance(character.getCurrentTile(),startingTile)>=minDistance;
-            boolean maxDistOK=Tile.distance(character.getCurrentTile(),startingTile)<=maxDistance;
+            Tile currentTile=character.getCurrentTile();
+            int distance=Tile.distance(character.getCurrentTile(),startingTile);
+            boolean minDistOK=distance>=minDistance;
+            boolean maxDistOK=distance<=maxDistance;
             boolean visibilityOK=(!needVisibility)||(startingTile.getVisibles().contains(character.getCurrentTile()));
             if(!(minDistOK&&maxDistOK&&visibilityOK)){
                 valid = false;

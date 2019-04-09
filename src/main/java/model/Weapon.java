@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 public abstract class Weapon {
     private short[] ammos;
+    private WeaponEffect currentEffect;
     private HashSet<WeaponEffect> effects;
     private HashSet<WeaponEffect> upgrades;
 
@@ -32,5 +33,19 @@ public abstract class Weapon {
 
     public Collection<WeaponEffect> getUpgrades() {
         return (HashSet<WeaponEffect>) upgrades.clone();
+    }
+
+    public void selectEffect(WeaponEffect effect) throws IllegalArgumentException{
+        if(!effects.contains(effect)){
+            throw new IllegalArgumentException("This weapon can't do that");
+        }
+        currentEffect=effect;
+    }
+
+    public void attachUpgrade(WeaponEffect upgrade) throws IllegalArgumentException{
+        if(!upgrades.contains(upgrade)){
+            throw new IllegalArgumentException("This weapon can't be upgraded that way");
+        }
+        currentEffect=WeaponEffect.upgrade(currentEffect,upgrade);
     }
 }
