@@ -11,8 +11,8 @@ public class VisibleDecorator extends TargetCheckerDecorator {
     //private int minDistance;
     //private int maxDistance;
     //private boolean needVisibility;
-    public VisibleDecorator(Character character) {
-        this.thisCharacter = character;
+    public VisibleDecorator(TargetChecker decorated) {
+        this.base = decorated;
     }
 
     @Override  //forse non è un'override
@@ -25,6 +25,6 @@ public class VisibleDecorator extends TargetCheckerDecorator {
             valid = true;
         }
 
-        return isValid(thisCharacter) && valid;
+        return base.isValid(possibleTargetCharacter) && valid;
     }
 }

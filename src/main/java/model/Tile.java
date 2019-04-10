@@ -50,5 +50,13 @@ public abstract class Tile {
         return roomColour;
     }
 
+    public boolean equals(Tile t1){
+        boolean equal = false;
+        if(this.x == t1.x && this.y == t1.y){
+            equal == true;
+        }
+        return equal;
+    }
+
 
 }
