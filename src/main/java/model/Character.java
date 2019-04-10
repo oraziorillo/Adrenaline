@@ -11,10 +11,11 @@ public class Character {
     private Tile currentTile;
     private CharacterColourEnum colour;
 
+
     public Character(CharacterColourEnum colour) {
         this.damageTrack = new CharacterColourEnum[12];
         this.weapons = new WeaponCard[3];
-        this.powerUps = new PowerUpCard[3];
+        this.powerUps = new PowerUpCard[4];         //ricordare questa particolarità
         this.marks = new short[5];
         this.points = 0;
         this.numOfDeath = 0;
@@ -24,11 +25,21 @@ public class Character {
     }
 
     public boolean isFullyArmed() {
-        int index = 0;
-        while (index < weapons.length && weapons[index] != null) {
-            index += 1;
+        for (int index = 0; index < weapons.length) {
+            if(weapons[index] == null){
+                return false;
+            }
         }
-        return index == 3;
+        return true;
+    }
+
+    public boolean isFullyPoweredUp(){
+        for (int index = 0; index < powerUps.length -1) {
+            if(powerUps[index] == null){
+                return false;
+            }
+        }
+        return true;
     }
 
     public Tile getCurrentTile() {
@@ -73,6 +84,7 @@ public class Character {
             throw new IllegalStateException("You are not in an AmmoTile");
         }
         AmmoTile workingTile = (AmmoTile) currentTile;
+
         AmmoCard card = workingTile.drawCard();
         for (int i = 0; i < card.getAmmos().length; i++) {
             this.ammos[i] += ammos[i];
@@ -84,15 +96,13 @@ public class Character {
         }
     }
 
-    public void collectPowerup() {
+    public void collectPowerup(Powerup p) {
         int index = 0;
         while (index < powerUps.length && powerUps[index] != null) {
             index += 1;
         }
         if (index < powerUps.length) {      //lo facciamo gestire dal controller?
-            //TODO
-            //Deck<PowerUpCard> powerUpsDeck;
-            //powerUps[index] = powerUpsDeck.draw();
+            powerUps[index] = p;
         }
     }
 

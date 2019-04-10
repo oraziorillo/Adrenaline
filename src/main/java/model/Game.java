@@ -19,7 +19,13 @@ public class Game {
         killShotTrack = new Killshot[8];
         initDecks();
     }
-
+    /**
+     *
+     * @param colourOfMapTile
+     * @param row
+     * @param coloumn
+     * @param doorsInMap
+     */ //bisogna aggiungere o un altro parametro in ingresso che specifichi il tipo di tile o rendiamo tile una classe concreta
     public void initMap(List<RoomColourEnum> colourOfMapTile, int row, int coloumn, List<int> doorsInMap){
         int k;
         List<RoomColourEnum> tempList = new LinkedList<>();

@@ -519,7 +519,7 @@
 															"top": 252,
 															"width": 392.0439453125,
 															"height": 13,
-															"text": "-powerups: Powerup[3]",
+															"text": "-powerups: Powerup[4]",
 															"horizontalAlignment": 0
 														},
 														{
@@ -15446,7 +15446,7 @@
 											"type": {
 												"$ref": "AAAAAAFpuqmVUzEyDIA="
 											},
-											"multiplicity": "3"
+											"multiplicity": "4"
 										},
 										{
 											"_type": "UMLAttribute",
