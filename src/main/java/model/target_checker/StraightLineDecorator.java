@@ -5,9 +5,9 @@ import model.Tile;
 
 import java.util.ArrayList;
 
-public class StraightLineDecorator extends TargetConditionDecorator {
+public class StraightLineDecorator extends TargetCheckerDecorator {
 
-    public StraightLineDecorator(TargetCondition decorated) {
+    public StraightLineDecorator(TargetChecker decorated) {
         super(decorated);
     }
 

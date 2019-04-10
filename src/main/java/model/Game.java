@@ -8,39 +8,23 @@ public class Game {
     private ArrayList<Character> characters;
     private Killshot[] killShotTrack;
     Deck<AmmoCard> ammosDeck = new Deck<>();
-    Deck<Weapon> weaponsDeck = new Deck<>();
-    Deck<Powerup> powerUpsDeck = new Deck<>();
+    Deck<WeaponCard> weaponsDeck = new Deck<>();
+    Deck<PowerUpCard> powerUpsDeck = new Deck<>();
 
-    public Game() {
-        remainigActions = 2;
-        currentCharacterIndex = 0;
-        characters = new ArrayList<>(1);
-        killShotTrack = new Killshot[8];
+    public Game(String gameID) {
+        this.remainigActions = 2;
+        this.currentCharacterIndex = 0;
+        this.characters = new ArrayList<>(1);
+        this.killShotTrack = new Killshot[8];
         initDecks();
-    }
-
-    public Game(int n) {
-        remainigActions = 2;
-        currentCharacterIndex = 0;
-        characters = new ArrayList<>(n);
-        killShotTrack = new Killshot[8];
-        initDecks();
-    }
-
-    public void nextTurn() {
-        if (currentCharacterIndex == characters.size() - 1)
-            currentCharacterIndex = 0;
-        currentCharacterIndex++;
     }
 
     public short getRemainigActions() {
         return remainigActions;
     }
 
-    public void setRemainigActions(short n) throws IllegalArgumentException {
-        if (n < 0 || n > 2)
-            throw new IllegalArgumentException();
-        remainigActions = n;
+    public void decreaseRemainigActions() {
+        remainigActions--;
     }
 
     public Character getCurrentCharacter() {
@@ -66,7 +50,13 @@ public class Game {
         return weaponsDeck;
     }
 
-    /* public GenerationTile respawnpoint(CharColourEnum colour) {
+    public void nextTurn() {
+        if (currentCharacterIndex == characters.size() - 1)
+            currentCharacterIndex = 0;
+        currentCharacterIndex++;
+    }
+
+    /* public GenerationTile respawnpoint(CharacterColourEnum colour) {
         //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
     }
 

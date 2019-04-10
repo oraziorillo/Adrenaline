@@ -5,9 +5,9 @@ import model.Tile;
 
 import java.util.ArrayList;
 
-public class ChainDecorator extends TargetConditionDecorator{
+public class ChainDecorator extends TargetCheckerDecorator {
 
-    public ChainDecorator(TargetCondition decorated) {
+    public ChainDecorator(TargetChecker decorated) {
         super(decorated);
     }
 

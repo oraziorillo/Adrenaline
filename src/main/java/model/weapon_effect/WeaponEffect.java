@@ -1,53 +1,56 @@
 package model.weapon_effect;
 
+import model.Character;
+import model.Server;
+import model.target_checker.TargetChecker;
+import org.json.simple.JSONObject;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
+
 public class WeaponEffect {
-    private final short[] cost;
-    private final int damage;
-    private final int marks;
-    private final int moveOnMe;
-    private final int moveEnemy;
-    private final boolean explosiveDamage;
-    private final int numberOfTargets;
+    private short[] cost;
+    private LinkedList<Action> actions;
+    private HashSet<Character> targets;
+    private TargetChecker targetChecker;
 
-    public WeaponEffect(short[] cost,int damage, int marks, int moveOnMe, int moveEnemy, boolean explosiveDamage, int numberOfTargets){
-        this.cost=cost;
-        this.damage=damage;
-        this.marks=marks;
-        this.moveOnMe =moveOnMe;
-        this.moveEnemy = moveEnemy;
-        this.explosiveDamage=explosiveDamage;
-        this.numberOfTargets=numberOfTargets;
+
+    public WeaponEffect(String jsonName) {
+        try {
+            JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
+            this.cost = (short[]) jsonObject.get("cost");
+            this.targets = new HashSet<>();
+            //this.targetChecker =
+            this.actions = new LinkedList<>();
+            Action[] temp = (Action[]) jsonObject.get("actions");
+            Collections.addAll(actions, temp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    WeaponEffect(){
-        this(new short[]{1,0,0},0,0,0,0,false,0);
+    public short[] getCost(){
+        return cost.clone();
     }
 
-    public int getDamage() {
-        return damage;
+    public Set<Character> validTargets() {
+        //TODO metodo incompleto
+        HashSet<Character> validTargets = new HashSet<>();
+        for (Character character : game.getCharacters())
+            if (targetChecker.isValid(character))
+                validTargets.add(character);
+        return validTargets;
     }
 
-    public int getMarks() {
-        return marks;
-    }
-
-    public int getMoveOnMe() {
-        return moveOnMe;
-    }
-
-    public int getNumberOfTargets() {
-        return numberOfTargets;
-    }
-
-    public boolean isExplosiveDamage() {
-        return explosiveDamage;
-    }
-
-    public int getMoveOnEnemy() {
-        return moveEnemy;
-    }
-
-    public short[] getCost() {
-        return cost;
+    public void execute() {
+        for (Character currCharacter : targets){
+            for (Action currAction : actions) {
+                currAction.applyOn(currCharacter);
+            }
+        }
+        targets.clear();
     }
 }

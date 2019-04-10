@@ -5,9 +5,9 @@ import model.Tile;
 
 import java.util.ArrayList;
 
-public class AllRoomDecorator extends TargetConditionDecorator{
+public class AllRoomDecorator extends TargetCheckerDecorator {
 
-    public AllRoomDecorator(TargetCondition decorated) {
+    public AllRoomDecorator(TargetChecker decorated) {
         super(decorated);
     }
 

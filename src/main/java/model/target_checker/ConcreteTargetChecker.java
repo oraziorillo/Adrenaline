@@ -4,15 +4,13 @@ package model.target_checker;
 import model.Character;
 import model.Tile;
 
-import java.util.ArrayList;
-
-public class StandardChecker implements TargetCondition {
+public class ConcreteTargetChecker implements TargetChecker {
     private int minDistance;
     private int maxDistance;
     private boolean needVisibility;
 
     @Override
-    public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
+    public boolean isValid(Character characters) {
         boolean valid=true;
         for(Character character: characters){
             boolean minDistOK=Tile.distance(character.getCurrentTile(),startingTile)>=minDistance;
@@ -26,7 +24,7 @@ public class StandardChecker implements TargetCondition {
         return valid;
     }
 
-    public StandardChecker(int minDistance,int maxDistance,boolean needVisibility){
+    public ConcreteTargetChecker(int minDistance, int maxDistance, boolean needVisibility) {
         if(maxDistance<minDistance){
             throw new IllegalArgumentException("maxDistance must be greater or equal to minDistance");
         }

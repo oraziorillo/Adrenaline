@@ -1,20 +1,20 @@
 package model;
 
 public class Character {
-    private CharColourEnum[] damageTrack;
-    private Weapon[] weapons;
-    private Powerup[] powerUps;
+    private CharacterColourEnum[] damageTrack;
+    private WeaponCard[] weapons;
+    private PowerUpCard[] powerUps;
     private short[] marks;
     private short points;
     private short numOfDeath;
     private short ammos[];
     private Tile currentTile;
-    private CharColourEnum colour;
+    private CharacterColourEnum colour;
 
-    public Character(CharColourEnum colour) {
-        this.damageTrack = new CharColourEnum[12];
-        this.weapons = new Weapon[3];
-        this.powerUps = new Powerup[3];
+    public Character(CharacterColourEnum colour) {
+        this.damageTrack = new CharacterColourEnum[12];
+        this.weapons = new WeaponCard[3];
+        this.powerUps = new PowerUpCard[3];
         this.marks = new short[5];
         this.points = 0;
         this.numOfDeath = 0;
@@ -31,17 +31,21 @@ public class Character {
         return index == 3;
     }
 
-    public Tile getCurrentTile () {
+    public Tile getCurrentTile() {
         return this.currentTile;
     }
 
-    private Weapon weaponIndex(int index) {
-        Weapon temp;
+    private WeaponCard weaponIndex(int index) {
+        WeaponCard temp;
         if (index < 0 || index > 3) {
             throw new IllegalArgumentException("This index is not valid");
         }
         temp = weapons[index];
         return temp;
+    }
+
+    public void move(CardinalDirectionEnum dir){
+        //TODO
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
@@ -87,12 +91,12 @@ public class Character {
         }
         if (index < powerUps.length) {      //lo facciamo gestire dal controller?
             //TODO
-            //Deck<Powerup> powerUpsDeck;
+            //Deck<PowerUpCard> powerUpsDeck;
             //powerUps[index] = powerUpsDeck.draw();
         }
     }
 
-    public void takeDamage(short damage, CharColourEnum colour) {
+    public void takeDamage(short damage) {
         int index = 0;
         short totaldamage = (short) (marks[colour.ordinal()] + damage);
         while (damageTrack[index] != null) {
@@ -108,7 +112,7 @@ public class Character {
         }
     }
 
-    public void takeMarks (short marks, CharColourEnum colour){
+    public void takeMarks(short marks) {
         this.marks[colour.ordinal()] = marks;
     }
 
@@ -117,10 +121,21 @@ public class Character {
     }
 
     public void respawn(RoomColourEnum colour) {
-        this.damageTrack = new CharColourEnum[12];
+        this.damageTrack = new CharacterColourEnum[12];
         numOfDeath = (short) (numOfDeath + 1);
         //TODO: è dato dal colour che viene passato come parametro
         //this.currentTile = getGenerationTile(colour);
+    }
+
+    public void payAmmos(short[] ammos) throws NotEnoughAmmosException {
+        if (this.ammos[AmmoEnum.BLUE.ordinal()] < ammos[AmmoEnum.BLUE.ordinal()] ||
+                this.ammos[AmmoEnum.RED.ordinal()] < ammos[AmmoEnum.RED.ordinal()] ||
+                this.ammos[AmmoEnum.YELLOW.ordinal()] < ammos[AmmoEnum.YELLOW.ordinal()]) {
+            throw new NotEnoughAmmosException();
+        }
+        this.ammos[AmmoEnum.BLUE.ordinal()] -= ammos[AmmoEnum.BLUE.ordinal()];
+        this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
+        this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
     }
 
 

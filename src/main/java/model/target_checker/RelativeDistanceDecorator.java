@@ -5,8 +5,8 @@ import model.Tile;
 
 import java.util.ArrayList;
 
-public class RelativeDistanceDecorator extends TargetConditionDecorator{
-    public RelativeDistanceDecorator(TargetCondition decorated, int relativeDistancec) {
+public class RelativeDistanceDecorator extends TargetCheckerDecorator {
+    public RelativeDistanceDecorator(TargetChecker decorated, int relativeDistancec) {
         super(decorated);
         this.relativeDistance=relativeDistancec;
     }

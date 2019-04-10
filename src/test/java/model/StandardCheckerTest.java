@@ -1,6 +1,6 @@
 package model;
 
-import model.target_checker.StandardChecker;
+import model.target_checker.ConcreteTargetChecker;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ public class StandardCheckerTest {
     @Mock
     Deck<AmmoCard> aDeck;
     @Mock
-    Deck<Weapon> wDeck;
+    Deck<WeaponCard> wDeck;
     Tile t1;
     Tile t2;
 
@@ -41,8 +41,8 @@ public class StandardCheckerTest {
 
     @Test
     public void needVisibilityWorksFine() {
-        StandardChecker vis = new StandardChecker(3, 5, true);
-        StandardChecker nonVis = new StandardChecker(3, 5, false);
+        ConcreteTargetChecker vis = new ConcreteTargetChecker(3, 5, true);
+        ConcreteTargetChecker nonVis = new ConcreteTargetChecker(3, 5, false);
         ArrayList<Character> list1 = new ArrayList<>();
         ArrayList<Character> list2 = new ArrayList<>();
         list1.add(c1);
@@ -56,7 +56,7 @@ public class StandardCheckerTest {
 
     @Test
     public void minDistFailsTest() {
-        StandardChecker testes = new StandardChecker(3, 5, true);
+        ConcreteTargetChecker testes = new ConcreteTargetChecker(3, 5, true);
         ArrayList<Character> list2 = new ArrayList<>();
         list2.add(c2);
         t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
@@ -65,7 +65,7 @@ public class StandardCheckerTest {
 
     @Test
     public void maxDistFailsTest() {
-        StandardChecker testes = new StandardChecker(0, 0, true);
+        ConcreteTargetChecker testes = new ConcreteTargetChecker(0, 0, true);
         ArrayList<Character> list2 = new ArrayList<>();
         list2.add(c2);
         t2 = new GenerationTile(1, 1, RoomColourEnum.RED, wDeck);
@@ -74,7 +74,7 @@ public class StandardCheckerTest {
 
     @Test
     public void exceptionOnMinDistBiggerThanMaxDist() {
-        assertThrows("not valid parameters", IllegalArgumentException.class, () -> new StandardChecker(1, 0, true));
+        assertThrows("not valid parameters", IllegalArgumentException.class, () -> new ConcreteTargetChecker(1, 0, true));
     }
 
 }

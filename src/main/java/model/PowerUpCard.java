@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Powerup {
+public abstract class PowerUpCard {
     private RoomColourEnum colour;          //è giusto metterlo di tipo RoomColourEnum??
 
     public RoomColourEnum getColour{ return colour; }

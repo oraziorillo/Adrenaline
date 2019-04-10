@@ -6,9 +6,9 @@ import model.Tile;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class BlindnessDecorator extends TargetConditionDecorator {
+public class BlindnessDecorator extends TargetCheckerDecorator {
 
-    public BlindnessDecorator(TargetCondition decorated) {
+    public BlindnessDecorator(TargetChecker decorated) {
         super(decorated);
     }
 
