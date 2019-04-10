@@ -25,7 +25,7 @@ public class Character {
     }
 
     public boolean isFullyArmed() {
-        for (int index = 0; index < weapons.length) {
+        for (int index = 0; index < weapons.length; index++) {
             if(weapons[index] == null){
                 return false;
             }
@@ -34,7 +34,7 @@ public class Character {
     }
 
     public boolean isFullyPoweredUp(){
-        for (int index = 0; index < powerUps.length -1) {
+        for (int index = 0; index < powerUps.length -1; index++) {
             if(powerUps[index] == null){
                 return false;
             }
@@ -55,8 +55,22 @@ public class Character {
         return temp;
     }
 
-    public void move(CardinalDirectionEnum dir){
-        //TODO
+    public void move(CardinalDirectionEnum dir) {
+        //TODO eventualmente controllo se il movimento è possibile
+        switch (dir) {
+            case NORTH:
+                this.currentTile = game.map[currentTile.getX()][currentTile.getY() + 1];
+                break;
+            case EAST:
+                this.currentTile = game.map[currentTile.getX() + 1][currentTile.getY()];
+                break;
+            case SOUTH:
+                this.currentTile = game.map[currentTile.getX()][currentTile.getY() - 1];
+                break;
+            case WEST:
+                this.currentTile = game.map[currentTile.getX() - 1][currentTile.getY()];
+                break;
+        }
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
@@ -92,11 +106,11 @@ public class Character {
                 ammos[i] = 3;
         }
         if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoCard??
-            collectPowerup();
+            collectPowerUp();
         }
     }
 
-    public void collectPowerup(Powerup p) {
+    public void collectPowerUp(PowerUpCard p) {
         int index = 0;
         while (index < powerUps.length && powerUps[index] != null) {
             index += 1;
