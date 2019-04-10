@@ -18,6 +18,22 @@ public abstract class Tile {
         this.visibles = new HashSet<>();
     }
 
+    public HashSet<Tile> distanceOf(int distance){
+        if(distance < 0){
+            throw new IllegalArgumentException("Distance has to be positive");
+        }
+        HashSet<Tile> temp = new HashSet<>();
+        if(distance == 0){
+            temp.add(this);
+        }
+        else {
+            for(Tile t1 : this.getVisibles()){
+                temp.addAll(t1.distanceOf(distance-1));
+            }
+        }
+        return temp;
+    }
+
     public void addCharacter(Character c) {
         characters.add(c);
     }

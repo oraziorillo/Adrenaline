@@ -2,14 +2,11 @@ package model.target_checker;
 
 import model.Character;
 import model.Game;
-import model.Tile;
-
-import java.util.ArrayList;
 
 
-public abstract static class TargetChecker {
+public abstract class TargetChecker {
 
-    Game game;
-    boolean isValid(Character character);
-
+    public Game game;
+    abstract boolean isValid(Character decorated);
+    //serve inserire un costruttore??
 }
