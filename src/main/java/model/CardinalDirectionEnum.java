@@ -1,6 +1,6 @@
 package model;
 
-public enum CardinalDirections {
+public enum CardinalDirectionEnum {
     NORTH,
     EAST,
     SOUTH,

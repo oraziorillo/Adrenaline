@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     private short remainigActions;
@@ -12,28 +9,26 @@ public class Game {
     private Killshot[] killShotTrack;
     private final Tile[][] map;
     Deck<AmmoCard> ammosDeck = new Deck<>();
-    Deck<Weapon> weaponsDeck = new Deck<>();
-    Deck<Powerup> powerUpsDeck = new Deck<>();
+    Deck<WeaponCard> weaponsDeck = new Deck<>();
+    Deck<PowerUpCard> powerUpsDeck = new Deck<>();
 
-    public Game() {             //perchè i deck non vengono istanziati nel costruttore ma fuori?
+    public Game() {
         remainigActions = 2;
         currentCharacterIndex = 0;
         characters = new ArrayList<>(1);
         killShotTrack = new Killshot[8];
         initDecks();
     }
-
-    public Game(int n) {
-        remainigActions = 2;
-        currentCharacterIndex = 0;
-        characters = new ArrayList<>(n);
-        killShotTrack = new Killshot[8];
-        initDecks();
-    }
-
+    /**
+     *
+     * @param colourOfMapTile
+     * @param row
+     * @param coloumn
+     * @param doorsInMap
+     */ //bisogna aggiungere o un altro parametro in ingresso che specifichi il tipo di tile o rendiamo tile una classe concreta
     public void initMap(List<RoomColourEnum> colourOfMapTile, int row, int coloumn, List<int> doorsInMap){
         int k;
-        List<RoomColourEnum> tempList = new List<>;
+        List<RoomColourEnum> tempList = new LinkedList<>();
         if(colourOfMapTile.size() != row*coloumn){
             throw new IllegalArgumentException("This list doesn't have the right dimension");
         }
@@ -67,22 +62,12 @@ public class Game {
 
     }
 
-
-
-    public void nextTurn() {
-        if (currentCharacterIndex == characters.size() - 1)
-            currentCharacterIndex = 0;
-        currentCharacterIndex++;
-    }
-
     public short getRemainigActions() {
         return remainigActions;
     }
 
-    public void setRemainigActions(short n) throws IllegalArgumentException {
-        if (n < 0 || n > 2)
-            throw new IllegalArgumentException();
-        remainigActions = n;
+    public void decreaseRemainigActions() {
+        remainigActions--;
     }
 
     public Character getCurrentCharacter() {
@@ -108,7 +93,13 @@ public class Game {
         return weaponsDeck;
     }
 
-    /* public GenerationTile respawnpoint(CharColourEnum colour) {
+    public void nextTurn() {
+        if (currentCharacterIndex == characters.size() - 1)
+            currentCharacterIndex = 0;
+        currentCharacterIndex++;
+    }
+
+    /* public GenerationTile respawnpoint(CharacterColourEnum colour) {
         //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
         return new GenerationTile(0,0,null);
     }

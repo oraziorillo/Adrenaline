@@ -2,30 +2,30 @@ package model;
 
 public class GenerationTile extends Tile {
 
-    private Weapon[] weapons;
+    private WeaponCard[] weapons;
 
-    private /*static*/ Deck<Weapon> weaponDeck;
+    private /*static*/ Deck<WeaponCard> weaponDeck;
 
-    public GenerationTile(int x, int y, RoomColourEnum colour, Deck<Weapon> deck) {
+    GenerationTile(int x, int y, RoomColourEnum colour, Deck<WeaponCard> deck) {
         super(x, y, colour);
-        weapons = new Weapon[3];
+        weapons = new WeaponCard[3];
         weaponDeck = deck;
         for (int i = 0; i < 3; i++)
             weapons[i] = weaponDeck.draw();
     }
 
-    public Weapon[] getWeapons() {
+    public WeaponCard[] getWeapons() {
         return weapons;
     }
 
-    public Weapon pickWeapon(int index) {
-        Weapon temp = weapons[index];
+    public WeaponCard pickWeapon(int index) {
+        WeaponCard temp = weapons[index];
         weapons[index] = null;
         return temp;
     }
 
-    public Weapon switchWeapon(int index, Weapon w) {
-        Weapon temp = weapons[index];
+    public WeaponCard switchWeapon(int index, WeaponCard w) {
+        WeaponCard temp = weapons[index];
         weapons[index] = w;
         return temp;
     }

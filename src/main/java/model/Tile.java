@@ -10,14 +10,28 @@ public abstract class Tile {
     private HashSet<Tile> visibles = new HashSet<>();
     private final RoomColourEnum roomColour;
 
-    Tile(int x, int y, RoomColourEnum colour) {
+    public Tile(int x, int y, RoomColourEnum colour) {
         this.x = x;
         this.y = y;
         this.roomColour = colour;
+        this.characters = new HashSet<>();
+        this.visibles = new HashSet<>();
     }
 
-    public static int distance(Tile t1, Tile t2) {
-        return Math.abs(t1.x + t1.y - t2.x - t2.y);
+    public HashSet<Tile> distanceOf(int distance){
+        if(distance < 0){
+            throw new IllegalArgumentException("Distance has to be positive");
+        }
+        HashSet<Tile> temp = new HashSet<>();
+        if(distance == 0){
+            temp.add(this);
+        }
+        else {
+            for(Tile t1 : this.getVisibles()){
+                temp.addAll(t1.distanceOf(distance-1));
+            }
+        }
+        return temp;
     }
 
     public void addCharacter(Character c) {
@@ -28,12 +42,12 @@ public abstract class Tile {
         characters.remove(c);
     }
 
-    public Collection<Character> getCharacters() {
-        return (Collection<Character>) characters.clone();
+    public HashSet<Character> getCharacters() {
+        return (HashSet<Character>) characters.clone();
     }
 
-    public Collection<Tile> getVisibles() {
-        return (Collection<Tile>) visibles.clone();
+    public HashSet<Tile> getVisibles() {
+        return (HashSet<Tile>) visibles.clone();
     }
 
     public void addVisible(Tile t) {
@@ -50,6 +64,14 @@ public abstract class Tile {
 
     public RoomColourEnum getRoomColour() {
         return roomColour;
+    }
+
+    public boolean equals(Tile t1){
+        boolean equal = false;
+        if(this.x == t1.x && this.y == t1.y){
+            equal == true;
+        }
+        return equal;
     }
 
 
