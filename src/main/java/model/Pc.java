@@ -5,6 +5,7 @@ import model.Exceptions.NotEnoughAmmosException;
 import java.util.HashSet;
 
 public class Pc {
+
     private final Game currGame;
     private PcColourEnum[] damageTrack;
     private short points;
@@ -21,7 +22,7 @@ public class Pc {
         this.currGame = game;
         this.damageTrack = new PcColourEnum[12];
         this.weapons = new WeaponCard[3];
-        this.powerUps = new HashSet<>();         //ricordare questa particolarità
+        this.powerUps = new HashSet<>();
         this.marks = new short[5];
         this.points = 0;
         this.numOfDeath = 0;
@@ -60,24 +61,15 @@ public class Pc {
         return temp;
     }
 
-    public void move(CardinalDirectionEnum dir) {
-        //TODO eventualmente controllo se il movimento è possibile
-        switch (dir) {
-            case NORTH:
-                this.currentTile = currGame.getTile(currentTile.getX(),currentTile.getY() + 1);
-                break;
-            case EAST:
-                this.currentTile = currGame.getTile(currentTile.getX() + 1, currentTile.getY());
-                break;
-            case SOUTH:
-                this.currentTile = currGame.getTile(currentTile.getX(), currentTile.getY() - 1);
-                break;
-            case WEST:
-                this.currentTile = currGame.getTile(currentTile.getX() - 1, currentTile.getY());
-                break;
-            default:
-                break;
+    //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di game)
+    public void move(int x,int y,int maxDist) {
+        Tile targetTile=currGame.getMap()[x][y];
+        if(!currentTile.atDistance(maxDist).contains(targetTile)){
+            throw new IllegalArgumentException("Too far away");
         }
+        currentTile.removeCharacter(this);
+        targetTile.addCharacter(this);
+        this.currentTile=targetTile;
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
@@ -174,8 +166,6 @@ public class Pc {
         this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
         this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
     }
-
-
 }
 
 

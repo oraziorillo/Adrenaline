@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Optional;
 
 public abstract class Tile {
     private final int x;
@@ -46,11 +47,31 @@ public abstract class Tile {
         return temp;
     }
 
+
     public TileColourEnum getRoomColour() {
         return roomColour;
     }
 
-    public Set<Pc> getPcs() {
+    public Optional<Tile> OnDirection(CardinalDirectionEnum direction){
+        Optional<Tile> temp = null;
+        switch(direction) {
+            case NORTH:
+                temp = visibles.stream().filter(elem -> elem.getY() == this.getY() + 1 && elem.getX() == this.getX()).findFirst();
+                break;
+            case EAST:
+                temp = visibles.stream().filter(elem -> elem.getX() == this.getX() + 1 && elem.getY() == this.getY()).findFirst();
+                break;
+            case SOUTH:
+                temp = visibles.stream().filter(elem -> elem.getY() == this.getY() - 1 && elem.getX() == this.getX()).findFirst();
+                break;
+            case WEST:
+                temp = visibles.stream().filter(elem -> elem.getX() == this.getX() - 1 && elem.getY() == this.getY()).findFirst();
+                break;
+        }
+        return temp;
+    }
+
+    public HashSet<Pc> getPcs() {
         return (HashSet<Pc>) pcs.clone();
     }
 

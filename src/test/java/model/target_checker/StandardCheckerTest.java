@@ -16,9 +16,15 @@ import static org.junit.Assert.*;
 public class StandardCheckerTest {
 
     @Mock
+<<<<<<< Updated upstream
     Pc pc1;
     @Mock
     Pc pc2;
+=======
+    Pc c1;
+    @Mock
+    Pc c2;
+>>>>>>> Stashed changes
     @Mock
     Deck<AmmoCard> aDeck;
     @Mock
@@ -45,8 +51,13 @@ public class StandardCheckerTest {
         ConcreteTargetChecker nonVis = new ConcreteTargetChecker(3, 5, false);
         ArrayList<Pc> list1 = new ArrayList<>();
         ArrayList<Pc> list2 = new ArrayList<>();
+<<<<<<< Updated upstream
         list1.add(pc1);
         list2.add(pc2);
+=======
+        list1.add(c1);
+        list2.add(c2);
+>>>>>>> Stashed changes
         assertTrue("con vis puoi sparare da t1 a t2", vis.isValid(list2, t1));
         assertFalse("con vis non puoi sparare da t2 a t1", vis.isValid(list2, t2));
         assertTrue("con nonVis t1 spara a t2", nonVis.isValid(list2, t1));
@@ -58,17 +69,35 @@ public class StandardCheckerTest {
     public void minDistFailsTest() {
         ConcreteTargetChecker testes = new ConcreteTargetChecker(3, 5, true);
         ArrayList<Pc> list2 = new ArrayList<>();
+<<<<<<< Updated upstream
         list2.add(pc2);
+<<<<<<< HEAD:src/test/java/model/StandardCheckerTest.java
         t2 = new SpawnTile(0, 1, TileColourEnum.RED, wDeck);
         assertFalse("Più vicini di mindist", testes.isValid(list2, t1));
+=======
+=======
+        list2.add(c2);
+>>>>>>> Stashed changes
+        t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
+        Mockito.when(c2.getCurrentTile()).thenReturn(t2);
+        assertFalse("Più vicini di mindist", tested.isValid(list2, t1));
+>>>>>>> f50f154c96dd1898424e0578900e99c4cc4fc400:src/test/java/model/target_checker/StandardCheckerTest.java
     }
 
     @Test
     public void maxDistFailsTest() {
         ConcreteTargetChecker testes = new ConcreteTargetChecker(0, 0, true);
         ArrayList<Pc> list2 = new ArrayList<>();
+<<<<<<< Updated upstream
         list2.add(pc2);
+<<<<<<< HEAD:src/test/java/model/StandardCheckerTest.java
         t2 = new SpawnTile(1, 1, TileColourEnum.RED, wDeck);
+=======
+=======
+        list2.add(c2);
+>>>>>>> Stashed changes
+        t2 = new GenerationTile(1, 1, RoomColourEnum.RED, wDeck);
+>>>>>>> f50f154c96dd1898424e0578900e99c4cc4fc400:src/test/java/model/target_checker/StandardCheckerTest.java
         assertFalse("Più lontani di maxDist", testes.isValid(list2, t1));
     }
 

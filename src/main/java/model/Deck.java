@@ -6,16 +6,12 @@ import java.util.*;
 public class Deck<E> {
 
     private Game currGame;
-    private ArrayList<E> cards;
-
     /**
      * used for random insertion
      */
     private Random random;
+    private ArrayList<E> cards;
 
-    /**
-     * Default constructor
-     */
     public Deck(Game currGame) {
         this.currGame = currGame;
         cards = new ArrayList<>();
