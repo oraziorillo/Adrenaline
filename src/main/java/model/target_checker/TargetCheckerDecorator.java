@@ -7,25 +7,38 @@ import java.util.Optional;
 
 public abstract class TargetCheckerDecorator extends TargetChecker {
     TargetChecker base;
-
-    public TargetCheckerDecorator(TargetChecker decorated) {
+    public TargetCheckerDecorator(TargetChecker decorated){
         this.base = decorated;
     }
-
     abstract boolean isValid(Pc possibleTarget);
 }
 
 class VisibleDecorator extends TargetCheckerDecorator {
-    public VisibleDecorator(TargetChecker decorated) {
+    public VisibleDecorator(TargetChecker decorated){
         super(decorated);
     }
     public boolean isValid(Pc possibleTarget) {
-        game = new Game();
         boolean valid = false;
-        HashSet<Tile> actionTile;
-        actionTile = (HashSet<Tile>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (actionTile.contains(possibleTarget.getCurrentTile())) {
+        HashSet<TileColourEnum> actionTile;
+        actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrentTile().getVisibles();
+        if (actionTile.contains(possibleTarget.getCurrentTile().getRoomColour())) {
             valid = true;
+        }
+        return base.isValid(possibleTarget) && valid;
+    }
+}
+
+
+class BlindnessDecorator extends TargetCheckerDecorator {
+    public BlindnessDecorator(TargetChecker decorated){
+        super(decorated);
+    }
+    public boolean isValid(Pc possibleTarget) {
+        boolean valid = true;
+        HashSet<TileColourEnum> actionTile;
+        actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrentTile().getVisibles();
+        if (actionTile.contains(possibleTarget.getCurrentTile())) {
+            valid = false;
         }
         return base.isValid(possibleTarget) && valid;
     }
@@ -53,114 +66,6 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
                 if (temp.isEmpty()) break;
                 valid = temp.equals(possibleTargetTile);
             } while (temp.isPresent() && !valid);
-        }
-        return base.isValid(possibleTarget) && valid;
-    }
-}
-
-
-class SameRoomDecorator extends TargetCheckerDecorator {
-    public SameRoomDecorator(TargetChecker decorated){
-        super(decorated);
-    }
-    public boolean isValid(Pc possibleTarget) {
-        boolean valid = false;
-        RoomColourEnum colour;
-        HashSet<Tile> actionTile;
-        colour = game.getCurrentPc().getCurrentTile().getRoomColour();
-        actionTile = (HashSet<Tile>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (possibleTarget.getCurrentTile().getRoomColour()==colour && actionTile.contains(possibleTarget.getCurrentTile())){
-            valid = true;
-        }
-        return base.isValid(possibleTarget) && valid;
-    }
-}
-
-
-class MinDistanceDecorator extends TargetCheckerDecorator {
-    private int minDistance;
-    public MinDistanceDecorator(TargetChecker decorated, int minDistanceAllowed){
-        super(decorated);
-        this.minDistance = minDistanceAllowed;
-    }
-    public boolean isValid(Pc possibleTarget) {
-        boolean valid = true;
-        HashSet<Tile> temp;
-        for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
-            temp = game.getCurrentPc().getCurrentTile().distanceOf(tempMinDistance);
-            if (temp.contains(possibleTarget.getCurrentTile())) {
-                valid = false;
-                break;
-            }
-        }
-        return base.isValid(possibleTarget) && valid;
-    }
-}
-
-
-class MaxDistanceDecorator extends TargetCheckerDecorator {
-    private int maxDistance;
-    public MaxDistanceDecorator(TargetChecker decorated, int maxDistanceAllowed) {
-        super(decorated);
-        this.maxDistance = maxDistanceAllowed;
-    }
-    public boolean isValid(Pc possibleTarget) {
-        boolean valid = false;
-        HashSet<Tile> temp;
-        for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
-            temp = game.getCurrentPc().getCurrentTile().distanceOf(tempMaxDistance);
-            if (temp.contains(possibleTarget.getCurrentTile())) {
-                valid = true;
-                break;
-            }
-        }
-        return base.isValid(possibleTarget) && valid;
-    }
-}
-
-
-class DifferentTileDecorator extends TargetCheckerDecorator {
-    public DifferentTileDecorator(TargetChecker decorated) {
-        super(decorated);
-    }
-    public boolean isValid(Pc possibleTarget) {
-        Tile actionTile;
-        actionTile = game.getCurrentPc().getCurrentTile();
-        boolean valid;
-        if (possibleTarget.getCurrentTile().equals(actionTile)) {
-            valid = false;
-        } else valid = true;
-        return base.isValid(possibleTarget) && valid;
-    }
-}
-
-
-class DifferentRoomDecorator extends TargetCheckerDecorator {
-    public DifferentRoomDecorator(TargetChecker decorated){
-        super(decorated);
-    }
-    public boolean isValid(Pc possibleTarget) {
-        boolean valid = false;
-        RoomColourEnum colour;
-        colour = game.getCurrentPc().getCurrentTile().getRoomColour();
-        if (possibleTarget.getCurrentTile().getRoomColour() != colour){
-            valid = true;
-        }
-        return base.isValid(possibleTarget) && valid;
-    }
-}
-
-
-class BlindnessDecorator extends TargetCheckerDecorator {
-    public BlindnessDecorator(TargetChecker decorated) {
-        super(decorated);
-    }
-    public boolean isValid(Pc possibleTarget) {
-        boolean valid = true;
-        HashSet<Tile> actionTile;
-        actionTile = (HashSet<Tile>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (actionTile.contains(possibleTarget.getCurrentTile())) {
-            valid = false;
         }
         return base.isValid(possibleTarget) && valid;
     }
@@ -204,6 +109,76 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
                     valid = true;
                 }
                 break;
+        }
+        return base.isValid(possibleTarget) && valid;
+    }
+}
+
+
+class SameRoomDecorator extends TargetCheckerDecorator {
+    public SameRoomDecorator(TargetChecker decorated){
+        super(decorated);
+    }
+    public boolean isValid(Pc possibleTarget) {
+        boolean valid = false;
+        if (possibleTarget.getCurrentTile().getRoomColour()==game.getCurrentPc().getCurrentTile().getRoomColour()){
+            valid = true;
+        }
+        return base.isValid(possibleTarget) && valid;
+    }
+}
+
+
+class DifferentRoomDecorator extends TargetCheckerDecorator {
+    public DifferentRoomDecorator(TargetChecker decorated){
+        super(decorated);
+    }
+    public boolean isValid(Pc possibleTarget) {
+        boolean valid = false;
+        if (possibleTarget.getCurrentTile().getRoomColour() != game.getCurrentPc().getCurrentTile().getRoomColour()){
+            valid = true;
+        }
+        return base.isValid(possibleTarget) && valid;
+    }
+}
+
+
+class MinDistanceDecorator extends TargetCheckerDecorator {
+    private int minDistance;
+    public MinDistanceDecorator(TargetChecker decorated, int minDistanceAllowed){
+        super(decorated);
+        this.minDistance = minDistanceAllowed;
+    }
+    public boolean isValid(Pc possibleTarget) {
+        boolean valid = true;
+        HashSet<Tile> temp;
+        for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
+            temp = game.getCurrentPc().getCurrentTile().atDistance(tempMinDistance);
+            if (temp.contains(possibleTarget.getCurrentTile())) {
+                valid = false;
+                break;
+            }
+        }
+        return base.isValid(possibleTarget) && valid;
+    }
+}
+
+
+class MaxDistanceDecorator extends TargetCheckerDecorator {
+    private int maxDistance;
+    public MaxDistanceDecorator(TargetChecker decorated, int maxDistanceAllowed) {
+        super(decorated);
+        this.maxDistance = maxDistanceAllowed;
+    }
+    public boolean isValid(Pc possibleTarget) {
+        boolean valid = false;
+        HashSet<Tile> temp;
+        for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
+            temp = game.getCurrentPc().getCurrentTile().atDistance(tempMaxDistance);
+            if (temp.contains(possibleTarget.getCurrentTile())) {
+                valid = true;
+                break;
+            }
         }
         return base.isValid(possibleTarget) && valid;
     }
