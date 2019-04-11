@@ -53,7 +53,7 @@ class MovementAction implements Action {
     @Override
     public void applyOn(Pc pc) {
         for (int i = moves; i > 0; i--) {
-            pc.move(pc.game.requestDirection());
+            pc.move(/*richiedi direzione*/);
         }
     }
 }

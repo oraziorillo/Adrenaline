@@ -1,8 +1,7 @@
 package model.target_checker;
 
 import model.Character;
-import model.RoomColourEnum;
-import model.Tile;
+import model.TileColourEnum;
 
 public class DifferentRoomDecorator extends TargetCheckerDecorator {
     public DifferentRoomDecorator(TargetChecker decorated){
@@ -11,7 +10,7 @@ public class DifferentRoomDecorator extends TargetCheckerDecorator {
 
     public boolean isValid(Character possibleTargetCharacter) {
         boolean valid = false;
-        RoomColourEnum colour;
+        TileColourEnum colour;
         colour = game.getCurrentCharacter().getCurrentTile().getRoomColour();
         if (possibleTargetCharacter.getCurrentTile().getRoomColour() != colour){
             valid = true;

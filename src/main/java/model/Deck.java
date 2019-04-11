@@ -4,9 +4,8 @@ package model;
 import java.util.*;
 
 public class Deck<E> {
-    /**
-     * The concrete container for cards
-     */
+
+    private Game currGame;
     private ArrayList<E> cards;
 
     /**
@@ -17,9 +16,14 @@ public class Deck<E> {
     /**
      * Default constructor
      */
-    public Deck<E> {
+    public Deck(Game currGame) {
+        this.currGame = currGame;
         cards = new ArrayList<>();
         random = new Random();
+    }
+
+    public Game getCurrGame(){
+        return currGame;
     }
 
     /**

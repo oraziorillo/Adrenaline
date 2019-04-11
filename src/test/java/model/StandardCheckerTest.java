@@ -29,8 +29,8 @@ public class StandardCheckerTest {
     @Before
     public void setup() {
         Mockito.when(aDeck.draw()).thenReturn(new AmmoCard(new short[]{1, 2, 0}, false));
-        t1 = new AmmoTile(0, 1, RoomColourEnum.BLUE, aDeck);
-        t2 = new GenerationTile(2, 3, RoomColourEnum.RED, wDeck);
+        t1 = new AmmoTile(0, 1, TileColourEnum.BLUE, aDeck);
+        t2 = new SpawnTile(2, 3, TileColourEnum.RED, wDeck);
         Mockito.when(pc1.getCurrentTile()).thenReturn(t1);//pc1 è su t1
         Mockito.when(pc2.getCurrentTile()).thenReturn(t2);//pc2 è su t2
         //t1 vede t2
@@ -59,7 +59,7 @@ public class StandardCheckerTest {
         ConcreteTargetChecker testes = new ConcreteTargetChecker(3, 5, true);
         ArrayList<Pc> list2 = new ArrayList<>();
         list2.add(pc2);
-        t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
+        t2 = new SpawnTile(0, 1, TileColourEnum.RED, wDeck);
         assertFalse("Più vicini di mindist", testes.isValid(list2, t1));
     }
 
@@ -68,7 +68,7 @@ public class StandardCheckerTest {
         ConcreteTargetChecker testes = new ConcreteTargetChecker(0, 0, true);
         ArrayList<Pc> list2 = new ArrayList<>();
         list2.add(pc2);
-        t2 = new GenerationTile(1, 1, RoomColourEnum.RED, wDeck);
+        t2 = new SpawnTile(1, 1, TileColourEnum.RED, wDeck);
         assertFalse("Più lontani di maxDist", testes.isValid(list2, t1));
     }
 

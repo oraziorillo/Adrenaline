@@ -6,11 +6,11 @@ import java.util.Set;
 public abstract class Tile {
     private final int x;
     private final int y;
-    private final RoomColourEnum roomColour;
+    private final TileColourEnum roomColour;
     private HashSet<Pc> pcs = new HashSet<>();
     private HashSet<Tile> visibles = new HashSet<>();
 
-    public Tile(int x, int y, RoomColourEnum colour) {
+    public Tile(int x, int y, TileColourEnum colour) {
         this.x = x;
         this.y = y;
         this.roomColour = colour;
@@ -26,24 +26,27 @@ public abstract class Tile {
         return y;
     }
 
-    public HashSet<Tile> distanceOf(int distance){
-        if(distance < 0){
+    /**
+     * @param dist distance of Tiles returned
+     * @return HashSet of Tiles at distance dist
+     */
+    public HashSet<Tile> atDistance(int dist){
+        if(dist < 0){
             throw new IllegalArgumentException("Distance has to be positive");
         }
         HashSet<Tile> temp = new HashSet<>();
-        if(distance == 0){
+        if(dist == 0){
             temp.add(this);
         }
         else {
             for(Tile t1 : this.getVisibles()){
-                temp.addAll(t1.distanceOf(distance-1));
+                temp.addAll(t1.atDistance(dist-1));
             }
         }
         return temp;
     }
 
-
-    public RoomColourEnum getRoomColour() {
+    public TileColourEnum getRoomColour() {
         return roomColour;
     }
 
@@ -67,17 +70,20 @@ public abstract class Tile {
         visibles.add(t);
     }
 
+    public boolean equals(Tile t){
+        return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
+    }
 
 }
 
 
-class GenerationTile extends Tile {
+class SpawnTile extends Tile {
     //TODO da rivedere se abbiamo un'istanza di game dappertutto
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
 
-    GenerationTile(int x, int y, RoomColourEnum colour, Deck<WeaponCard> deck) {
+    SpawnTile(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck) {
         super(x, y, colour);
         weapons = new WeaponCard[3];
         weaponDeck = deck;
@@ -95,10 +101,6 @@ class GenerationTile extends Tile {
         return temp;
     }
 
-    public boolean equals(Tile t){
-        return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
-    }
-
     public WeaponCard switchWeapon(int index, WeaponCard w) {
         WeaponCard temp = weapons[index];
         weapons[index] = w;
@@ -112,7 +114,7 @@ class AmmoTile extends Tile {
     private AmmoCard card;
     private Deck<AmmoCard> ammoCardDeck;
 
-    AmmoTile(int x, int y, RoomColourEnum colour, Deck<AmmoCard> deck) {
+    AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck) {
         super(x, y, colour);
         ammoCardDeck = deck;
         card = ammoCardDeck.draw();
@@ -124,12 +126,14 @@ class AmmoTile extends Tile {
         card = null;
         return oldCard;
     }
-
-    public void drawCardFromDeck(){
-        if (card == null){
-            //TODO: pesca una nuova carta dal deck
-        }
-    }
+}
 
 
+enum TileColourEnum {
+    RED,
+    YELLOW,
+    GREEN,
+    WHITE,
+    VIOLET,
+    BLUE;
 }

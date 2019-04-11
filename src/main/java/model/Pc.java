@@ -1,21 +1,27 @@
 package model;
 
+import model.Exceptions.NotEnoughAmmosException;
+
+import java.util.HashSet;
+
 public class Pc {
-    private CharacterColourEnum[] damageTrack;
-    private WeaponCard[] weapons;
-    private PowerUpCard[] powerUps;
-    private short[] marks;
+    private final Game currGame;
+    private PcColourEnum[] damageTrack;
     private short points;
+    private short[] marks;
     private short numOfDeath;
+    private HashSet<PowerUpCard> powerUps;
+    private WeaponCard[] weapons;
     private short ammos[];
     private Tile currentTile;
-    private CharacterColourEnum colour;
+    private PcColourEnum colour;
 
 
-    public Pc(CharacterColourEnum colour) {
-        this.damageTrack = new CharacterColourEnum[12];
+    public Pc(PcColourEnum colour, Game game) {
+        this.currGame = game;
+        this.damageTrack = new PcColourEnum[12];
         this.weapons = new WeaponCard[3];
-        this.powerUps = new PowerUpCard[4];         //ricordare questa particolarità
+        this.powerUps = new HashSet<>();         //ricordare questa particolarità
         this.marks = new short[5];
         this.points = 0;
         this.numOfDeath = 0;
@@ -34,12 +40,11 @@ public class Pc {
     }
 
     public boolean isFullyPoweredUp(){
-        for (int index = 0; index < powerUps.length -1; index++) {
-            if(powerUps[index] == null){
-                return false;
-            }
-        }
-        return true;
+        return powerUps.size() == 3;
+    }
+
+    public Game getCurrGame(){
+        return currGame;
     }
 
     public Tile getCurrentTile() {
@@ -59,16 +64,16 @@ public class Pc {
         //TODO eventualmente controllo se il movimento è possibile
         switch (dir) {
             case NORTH:
-                this.currentTile = game.map[currentTile.getX()][currentTile.getY() + 1];
+                this.currentTile = currGame.getTile(currentTile.getX(),currentTile.getY() + 1);
                 break;
             case EAST:
-                this.currentTile = game.map[currentTile.getX() + 1][currentTile.getY()];
+                this.currentTile = currGame.getTile(currentTile.getX() + 1, currentTile.getY());
                 break;
             case SOUTH:
-                this.currentTile = game.map[currentTile.getX()][currentTile.getY() - 1];
+                this.currentTile = currGame.getTile(currentTile.getX(), currentTile.getY() - 1);
                 break;
             case WEST:
-                this.currentTile = game.map[currentTile.getX() - 1][currentTile.getY()];
+                this.currentTile = currGame.getTile(currentTile.getX() - 1, currentTile.getY());
                 break;
             default:
                 break;
@@ -76,10 +81,10 @@ public class Pc {
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
-        if (!(currentTile instanceof GenerationTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
-            throw new IllegalStateException("You are not in a GenerationTile");
+        if (!(currentTile instanceof SpawnTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+            throw new IllegalStateException("You are not in a SpawnTile");
         }
-        GenerationTile workingTile = (GenerationTile) currentTile;
+        SpawnTile workingTile = (SpawnTile) currentTile;
         int index = 0;
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
@@ -88,10 +93,10 @@ public class Pc {
     }
 
     public void collectWeapon(int desiredWeaponIndex, int toDropWeaponIndex) {
-        if (!(currentTile instanceof GenerationTile)) {
-            throw new IllegalStateException("You are not in a GenerationTile");
+        if (!(currentTile instanceof SpawnTile)) {
+            throw new IllegalStateException("You are not in a SpawnTile");
         }
-        GenerationTile workingTile = (GenerationTile) currentTile;
+        SpawnTile workingTile = (SpawnTile) currentTile;
         weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponIndex(toDropWeaponIndex));
     }
 
@@ -108,10 +113,15 @@ public class Pc {
                 ammos[i] = 3;
         }
         if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoCard??
-            collectPowerUp();
+            drawPowerUp();
         }
     }
 
+    public void drawPowerUp(){
+        powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
+
+    }
+    /* METODO STUPIDO A MIO AVVISO
     public void collectPowerUp(PowerUpCard p) {
         int index = 0;
         while (index < powerUps.length && powerUps[index] != null) {
@@ -121,6 +131,7 @@ public class Pc {
             powerUps[index] = p;
         }
     }
+     */
 
     public void takeDamage(short damage) {
         int index = 0;
@@ -146,8 +157,8 @@ public class Pc {
         this.points += n;
     }
 
-    public void respawn(RoomColourEnum colour) {
-        this.damageTrack = new CharacterColourEnum[12];
+    public void respawn(TileColourEnum colour) {
+        this.damageTrack = new PcColourEnum[12];
         numOfDeath = (short) (numOfDeath + 1);
         //TODO: è dato dal colour che viene passato come parametro
         //this.currentTile = getGenerationTile(colour);
@@ -165,4 +176,13 @@ public class Pc {
     }
 
 
+}
+
+
+enum PcColourEnum {
+    GREY,
+    GREEN,
+    YELLOW,
+    PURPLE,
+    BLUE;
 }
