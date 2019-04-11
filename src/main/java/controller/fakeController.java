@@ -36,20 +36,12 @@ public class fakeController {
                     int y=Integer.parseInt(xy[1]);
                     currentTile=currrentPc.getCurrentTile();
                     Tile targetTile=currentGame.getMap()[x][y];
-
-                    //TODO: l'attuazione dello spostamento si potrebbe gestire nel model. lo spostamento attraverso le cardinalDirections è terribile, sarebbe meglio un setCurrentTile
                     try{
-                        currrentPc.move(x,y);
+                        currrentPc.move(x,y,3);
                     }catch (IllegalArgumentException e){
                         e.printStackTrace();
                     }
-                    /*if(!currentTile.distanceOf(3).contains(targetTile)){
-                        System.out.println("Troppo distante");
-                        continue;
-                    }
-                    currentTile.removeCharacter(currrentPc);
-                    targetTile.addCharacter(currrentPc);
-                    currrentPc.setCurrentTile(targetTile);*/
+
                     break;
                 case "collect":
                     String[] cmdArgs=cmd[1].split(",");
@@ -66,11 +58,11 @@ public class fakeController {
                             e.printStackTrace();
                         }
                     }
-                    //raccogli
+                    currrentPc.getCurrentTile().collect();
                     break;
                 case "shoot":
                     cmdArgs=cmd[1].split(",",2);
-                    WeaponCard weaponCard
+                    WeaponCard weaponCard=currrentPc.getWeapons[cmd[1]];
                     do{
                         try {
                             cmd=in.readLine().split(" ");
@@ -80,6 +72,20 @@ public class fakeController {
                         }
                         switch (cmd[0]){
                             case "select":
+                                weaponCard.addEffect(Integer.parseInt(cmd[1]));
+                                break;
+                            case "attach":
+                                for(int i=1; i<cmd.length-1;i++) {
+                                    weaponCard.addEffect(i);
+                                }
+                                break;
+                            case "shoot":
+                                weaponCard.use();
+                                break;
+                                default:
+                                    System.out.println("Comando non riconosciuto");
+                                    break;
+
 
                         }
                     }while (!cmd[0].equals("shoot"));
