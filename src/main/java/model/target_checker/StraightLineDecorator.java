@@ -1,6 +1,6 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 import model.Tile;
 
 import java.util.ArrayList;
@@ -12,14 +12,14 @@ public class StraightLineDecorator extends TargetCheckerDecorator {
     }
 
     @Override
-    public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
-        return base.isValid(characters,startingTile)&&(sameX(characters,startingTile)||sameY(characters,startingTile));
+    public boolean isValid(ArrayList<Pc> pcs, Tile startingTile) {
+        return base.isValid(pcs,startingTile)&&(sameX(pcs,startingTile)||sameY(pcs,startingTile));
     }
 
-    private boolean sameX(ArrayList<Character> c, Tile startingTile){
+    private boolean sameX(ArrayList<Pc> c, Tile startingTile){
         boolean sameX=true;
-        for(Character character:c){
-            if(character.getCurrentTile().getX()!=startingTile.getX()){
+        for(Pc pc :c){
+            if(pc.getCurrentTile().getX()!=startingTile.getX()){
                 sameX=false;
                 break;
             }
@@ -27,10 +27,10 @@ public class StraightLineDecorator extends TargetCheckerDecorator {
         return sameX;
     }
 
-    private boolean sameY(ArrayList<Character> c, Tile startingTile){
+    private boolean sameY(ArrayList<Pc> c, Tile startingTile){
         boolean sameY=true;
-        for(Character character:c){
-            if(character.getCurrentTile().getY()!=startingTile.getY()){
+        for(Pc pc :c){
+            if(pc.getCurrentTile().getY()!=startingTile.getY()){
                 sameY=false;
                 break;
             }

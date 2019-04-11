@@ -1014,7 +1014,7 @@
 															"top": 478,
 															"width": 287.00927734375,
 															"height": 13,
-															"text": "-characters: Collection<Character>",
+															"text": "-pcs: Collection<Character>",
 															"horizontalAlignment": 0
 														},
 														{
@@ -15608,7 +15608,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFpup8gby4QuIg="
 											},
-											"name": "characters",
+											"name": "pcs",
 											"visibility": "private",
 											"type": "Collection<Character>"
 										},

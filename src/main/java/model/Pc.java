@@ -1,6 +1,6 @@
 package model;
 
-public class Character {
+public class Pc {
     private CharacterColourEnum[] damageTrack;
     private WeaponCard[] weapons;
     private PowerUpCard[] powerUps;
@@ -12,7 +12,7 @@ public class Character {
     private CharacterColourEnum colour;
 
 
-    public Character(CharacterColourEnum colour) {
+    public Pc(CharacterColourEnum colour) {
         this.damageTrack = new CharacterColourEnum[12];
         this.weapons = new WeaponCard[3];
         this.powerUps = new PowerUpCard[4];         //ricordare questa particolarità
@@ -25,8 +25,8 @@ public class Character {
     }
 
     public boolean isFullyArmed() {
-        for (int index = 0; index < weapons.length; index++) {
-            if(weapons[index] == null){
+        for (WeaponCard weapon : weapons) {
+            if (weapon == null) {
                 return false;
             }
         }
@@ -69,6 +69,8 @@ public class Character {
                 break;
             case WEST:
                 this.currentTile = game.map[currentTile.getX() - 1][currentTile.getY()];
+                break;
+            default:
                 break;
         }
     }

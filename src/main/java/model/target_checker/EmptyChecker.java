@@ -1,13 +1,10 @@
 package model.target_checker;
 
-import model.Character;
-import model.Tile;
-
-import java.util.ArrayList;
+import model.Pc;
 
 public class EmptyChecker extends TargetChecker {
     @Override
-    public boolean isValid(Character characters) {
+    public boolean isValid(Pc characters) {
         return true;
     }
 }

@@ -1,6 +1,6 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 import model.Tile;
 
 import java.util.ArrayList;
@@ -12,15 +12,15 @@ public class AllRoomDecorator extends TargetCheckerDecorator {
     }
 
     @Override
-        public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
-        return base.isValid(characters,startingTile)&&sameRoom(characters)&&allInRoom(characters);
+        public boolean isValid(ArrayList<Pc> pcs, Tile startingTile) {
+        return base.isValid(pcs, startingTile)&&sameRoom(pcs)&&allInRoom(pcs);
 
     }
 
-    private boolean sameRoom(ArrayList<Character> characters){
+    private boolean sameRoom(ArrayList<Pc> pcs){
         boolean sameRoom=true;
-        for(Character c:characters){
-            if(c.getCurrentTile().getRoomColour()!=characters.get(0).getCurrentTile().getRoomColour()){
+        for(Pc c: pcs){
+            if(c.getCurrentTile().getRoomColour()!= pcs.get(0).getCurrentTile().getRoomColour()){
                 sameRoom=false;
                 break;
             }
@@ -28,12 +28,12 @@ public class AllRoomDecorator extends TargetCheckerDecorator {
         return sameRoom;
     }
 
-    private boolean allInRoom(ArrayList<Character> c){
+    private boolean allInRoom(ArrayList<Pc> c){
         boolean allInRoom=true;
 
-        for(Character character:c){
-            for (Tile tile:character.getCurrentTile().getVisibles()){
-                if(tile.getRoomColour()==character.getCurrentTile().getRoomColour()&&!c.containsAll(tile.getCharacters())){
+        for(Pc pc :c){
+            for (Tile tile: pc.getCurrentTile().getVisibles()){
+                if(tile.getRoomColour()== pc.getCurrentTile().getRoomColour()&&!c.containsAll(tile.getPcs())){
                         allInRoom=false;
                         break;
                 }

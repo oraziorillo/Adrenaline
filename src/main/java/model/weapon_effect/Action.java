@@ -1,11 +1,10 @@
 package model.weapon_effect;
 
-import model.Character;
-
+import model.Pc;
 
 
 public interface Action {
-    void applyOn(Character c);
+    void applyOn(Pc pc);
 }
 
 
@@ -19,8 +18,8 @@ class DamageAction implements Action {
     }
 
     @Override
-    public void applyOn(Character c) {
-        c.takeDamage(damage);
+    public void applyOn(Pc pc) {
+        pc.takeDamage(damage);
     }
 }
 
@@ -35,8 +34,8 @@ class MarksAction implements Action {
     }
 
     @Override
-    public void applyOn(Character c) {
-        c.takeMarks(marks);
+    public void applyOn(Pc pc) {
+        pc.takeMarks(marks);
     }
 }
 
@@ -52,9 +51,9 @@ class MovementAction implements Action {
 
 
     @Override
-    public void applyOn(Character c) {
+    public void applyOn(Pc pc) {
         for (int i = moves; i > 0; i--) {
-            c.move(c.game.requestDirection());
+            pc.move(pc.game.requestDirection());
         }
     }
 }

@@ -1,6 +1,6 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 import model.Tile;
 
 import java.util.ArrayList;
@@ -13,15 +13,15 @@ public class BlindnessDecorator extends TargetCheckerDecorator {
     }
 
     @Override
-    public boolean isValid(ArrayList<Character> characters, Tile startingTile) {
-        return base.isValid(characters,startingTile)&&notInSight(characters,startingTile);
+    public boolean isValid(ArrayList<Pc> pcs, Tile startingTile) {
+        return base.isValid(pcs,startingTile)&&notInSight(pcs,startingTile);
     }
 
-    boolean notInSight(ArrayList<Character> c, Tile startingTile){
+    boolean notInSight(ArrayList<Pc> c, Tile startingTile){
         boolean noOneInSight=true;
         Collection visibles=startingTile.getVisibles();
-        for(Character character:c){
-            if(visibles.contains(character.getCurrentTile())){
+        for(Pc pc :c){
+            if(visibles.contains(pc.getCurrentTile())){
                 noOneInSight=false;
                 break;
             }

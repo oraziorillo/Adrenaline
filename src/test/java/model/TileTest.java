@@ -48,16 +48,16 @@ public class TileTest {
 
     @Test
     public void addAndRemoveCharacterWorksFine() {
-        Character c1 = Mockito.mock(Character.class);
-        Character c2 = Mockito.mock(Character.class);
+        Pc c1 = Mockito.mock(Pc.class);
+        Pc c2 = Mockito.mock(Pc.class);
         Tile tester = new ConcreteTile(0, 0);
         tester.addCharacter(c1);
         tester.addCharacter(c2);
-        assertTrue(tester.getCharacters().contains(c1));
-        assertTrue(tester.getCharacters().contains(c2));
+        assertTrue(tester.getPcs().contains(c1));
+        assertTrue(tester.getPcs().contains(c2));
         tester.removeCharacter(c1);
-        assertFalse(tester.getCharacters().contains(c1));
-        assertTrue(tester.getCharacters().contains(c2));
+        assertFalse(tester.getPcs().contains(c1));
+        assertTrue(tester.getPcs().contains(c2));
     }
 
 

@@ -1,7 +1,7 @@
 package model.target_checker;
 
 
-import model.Character;
+import model.Pc;
 import model.Game;
 import model.Tile;
 
@@ -16,15 +16,15 @@ public class VisibleDecorator extends TargetCheckerDecorator {
     }
 
     @Override  //forse non è un'override
-    public boolean isValid(Character possibleTargetCharacter) {
+    public boolean isValid(Pc possibleTarget) {
         game = new Game();
         boolean valid = false;
         HashSet<Tile> actionTile;
         actionTile = game.getCurrentCharacter().getCurrentTile().getVisibles();
-        if (actionTile.contains(possibleTargetCharacter.getCurrentTile())) {
+        if (actionTile.contains(possibleTarget.getCurrentTile())) {
             valid = true;
         }
 
-        return base.isValid(possibleTargetCharacter) && valid;
+        return base.isValid(possibleTarget) && valid;
     }
 }

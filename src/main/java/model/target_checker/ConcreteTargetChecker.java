@@ -1,28 +1,27 @@
 package model.target_checker;
 
 
-import model.Character;
+import model.Pc;
 import model.Game;
 import model.Tile;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class VisibleDecorator extends TargetCheckerDecorator {
     //private int minDistance;
     //private int maxDistance;
     //private boolean needVisibility;
-    public VisibleDecorator(Character character) {
-        this.thisCharacter = character;
+    public VisibleDecorator(Pc pc) {
+        this.thisCharacter = pc;
     }
 
     @Override
-    public boolean isValid(Character PossibleTargetCharacter) {
+    public boolean isValid(Pc possibleTarget) {
         game = new Game();
         boolean valid = false;
         HashSet<Tile> actionTile;
         actionTile = game.getCurrentCharacter().getCurrentTile().getVisibles();
-        if (actionTile.contains(PossibleTargetCharacter.getCurrentTile())) {
+        if (actionTile.contains(possibleTarget.getCurrentTile())) {
             valid = true;
         }
 

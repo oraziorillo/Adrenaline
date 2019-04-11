@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
 public class StandardCheckerTest {
 
     @Mock
-    Character c1;
+    Pc pc1;
     @Mock
-    Character c2;
+    Pc pc2;
     @Mock
     Deck<AmmoCard> aDeck;
     @Mock
@@ -31,8 +31,8 @@ public class StandardCheckerTest {
         Mockito.when(aDeck.draw()).thenReturn(new AmmoCard(new short[]{1, 2, 0}, false));
         t1 = new AmmoTile(0, 1, RoomColourEnum.BLUE, aDeck);
         t2 = new GenerationTile(2, 3, RoomColourEnum.RED, wDeck);
-        Mockito.when(c1.getCurrentTile()).thenReturn(t1);//c1 è su t1
-        Mockito.when(c2.getCurrentTile()).thenReturn(t2);//c2 è su t2
+        Mockito.when(pc1.getCurrentTile()).thenReturn(t1);//pc1 è su t1
+        Mockito.when(pc2.getCurrentTile()).thenReturn(t2);//pc2 è su t2
         //t1 vede t2
         t1.addVisible(t2);
 
@@ -43,10 +43,10 @@ public class StandardCheckerTest {
     public void needVisibilityWorksFine() {
         ConcreteTargetChecker vis = new ConcreteTargetChecker(3, 5, true);
         ConcreteTargetChecker nonVis = new ConcreteTargetChecker(3, 5, false);
-        ArrayList<Character> list1 = new ArrayList<>();
-        ArrayList<Character> list2 = new ArrayList<>();
-        list1.add(c1);
-        list2.add(c2);
+        ArrayList<Pc> list1 = new ArrayList<>();
+        ArrayList<Pc> list2 = new ArrayList<>();
+        list1.add(pc1);
+        list2.add(pc2);
         assertTrue("con vis puoi sparare da t1 a t2", vis.isValid(list2, t1));
         assertFalse("con vis non puoi sparare da t2 a t1", vis.isValid(list2, t2));
         assertTrue("con nonVis t1 spara a t2", nonVis.isValid(list2, t1));
@@ -57,8 +57,8 @@ public class StandardCheckerTest {
     @Test
     public void minDistFailsTest() {
         ConcreteTargetChecker testes = new ConcreteTargetChecker(3, 5, true);
-        ArrayList<Character> list2 = new ArrayList<>();
-        list2.add(c2);
+        ArrayList<Pc> list2 = new ArrayList<>();
+        list2.add(pc2);
         t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
         assertFalse("Più vicini di mindist", testes.isValid(list2, t1));
     }
@@ -66,8 +66,8 @@ public class StandardCheckerTest {
     @Test
     public void maxDistFailsTest() {
         ConcreteTargetChecker testes = new ConcreteTargetChecker(0, 0, true);
-        ArrayList<Character> list2 = new ArrayList<>();
-        list2.add(c2);
+        ArrayList<Pc> list2 = new ArrayList<>();
+        list2.add(pc2);
         t2 = new GenerationTile(1, 1, RoomColourEnum.RED, wDeck);
         assertFalse("Più lontani di maxDist", testes.isValid(list2, t1));
     }

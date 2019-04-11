@@ -1,6 +1,6 @@
 package model.weapon_effect;
 
-import model.Character;
+import model.Pc;
 import model.Server;
 import model.target_checker.TargetChecker;
 import org.json.simple.JSONObject;
@@ -13,7 +13,7 @@ import java.util.Set;
 public class WeaponEffect {
     private short[] cost;
     private LinkedList<Action> actions;
-    private HashSet<Character> targets;
+    private HashSet<Pc> targets;
     private TargetChecker targetChecker;
 
 
@@ -36,19 +36,19 @@ public class WeaponEffect {
         return cost.clone();
     }
 
-    public Set<Character> validTargets() {
+    public Set<Pc> validTargets() {
         //TODO metodo incompleto
-        HashSet<Character> validTargets = new HashSet<>();
-        for (Character character : game.getCharacters())
-            if (targetChecker.isValid(character))
-                validTargets.add(character);
+        HashSet<Pc> validTargets = new HashSet<>();
+        for (Pc pc : game.getCharacters())
+            if (targetChecker.isValid(pc))
+                validTargets.add(pc);
         return validTargets;
     }
 
     public void execute() {
-        for (Character currCharacter : targets){
+        for (Pc currPc : targets){
             for (Action currAction : actions) {
-                currAction.applyOn(currCharacter);
+                currAction.applyOn(currPc);
             }
         }
         targets.clear();

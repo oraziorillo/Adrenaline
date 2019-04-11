@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Game {
     private short remainigActions;
-    private int currentCharacterIndex;
-    private ArrayList<Character> characters;
+    private int currentPcIndex;
+    private ArrayList<Pc> pcs;
     private Killshot[] killShotTrack;
     private final Tile[][] map;
     Deck<AmmoCard> ammosDeck = new Deck<>();
@@ -14,11 +14,12 @@ public class Game {
 
     public Game() {
         remainigActions = 2;
-        currentCharacterIndex = 0;
-        characters = new ArrayList<>(1);
+        currentPcIndex = 0;
+        pcs = new ArrayList<>(1);
         killShotTrack = new Killshot[8];
         initDecks();
     }
+
     /**
      *
      * @param colourOfMapTile
@@ -70,8 +71,8 @@ public class Game {
         remainigActions--;
     }
 
-    public Character getCurrentCharacter() {
-        return characters.get(currentCharacterIndex);
+    public Pc getCurrentPc() {
+        return pcs.get(currentPcIndex);
     }
 
     public Killshot[] getKillShotTrack() {
@@ -79,6 +80,7 @@ public class Game {
     }
 
     private void initDecks() {
+        //TODO
     }
 
     public Deck getAmmosDeck() {
@@ -94,9 +96,9 @@ public class Game {
     }
 
     public void nextTurn() {
-        if (currentCharacterIndex == characters.size() - 1)
-            currentCharacterIndex = 0;
-        currentCharacterIndex++;
+        if (currentPcIndex == pcs.size() - 1)
+            currentPcIndex = 0;
+        currentPcIndex++;
     }
 
     /* public GenerationTile respawnpoint(CharacterColourEnum colour) {

@@ -7,14 +7,14 @@ public abstract class Tile {
     private final int x;
     private final int y;
     private final RoomColourEnum roomColour;
-    private HashSet<Character> characters = new HashSet<>();
+    private HashSet<Pc> pcs = new HashSet<>();
     private HashSet<Tile> visibles = new HashSet<>();
 
     public Tile(int x, int y, RoomColourEnum colour) {
         this.x = x;
         this.y = y;
         this.roomColour = colour;
-        this.characters = new HashSet<>();
+        this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
     }
 
@@ -30,20 +30,20 @@ public abstract class Tile {
         return roomColour;
     }
 
-    public Set<Character> getCharacters() {
-        return (HashSet<Character>) characters.clone();
+    public Set<Pc> getPcs() {
+        return (HashSet<Pc>) pcs.clone();
     }
 
     public Set<Tile> getVisibles() {
         return (HashSet<Tile>) visibles.clone();
     }
 
-    public void addCharacter(Character c) {
-        characters.add(c);
+    public void addCharacter(Pc c) {
+        pcs.add(c);
     }
 
-    public void removeCharacter(Character c) {
-        characters.remove(c);
+    public void removeCharacter(Pc c) {
+        pcs.remove(c);
     }
 
     public void addVisible(Tile t) {
