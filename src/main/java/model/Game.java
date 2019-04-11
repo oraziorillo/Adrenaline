@@ -18,6 +18,7 @@ public class Game {
         pcs = new ArrayList<>(1);
         killShotTrack = new Killshot[8];
         initDecks();
+        map = null;
     }
 
     /**

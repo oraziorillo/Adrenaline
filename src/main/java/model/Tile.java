@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.Optional;
 
 public abstract class Tile {
-    private HashSet<Pc> pcs = new HashSet<>();
     private final int x;
     private final int y;
     private final RoomColourEnum roomColour;
