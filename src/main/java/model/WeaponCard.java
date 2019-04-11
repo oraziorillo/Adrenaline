@@ -5,27 +5,37 @@ import org.json.simple.JSONObject;
 import java.util.LinkedList;
 
 public abstract class WeaponCard {
+    private Deck<WeaponCard> weaponCardDeck;
     private boolean loaded;
     private String name;
     private short[] ammos;
-    private short[] currentCost;
+    private short[] currentCost = new short[3];
     private WeaponEffect[] fireModes;
     private WeaponEffect[] upgrades;
     private LinkedList<WeaponEffect> currEffect;
 
 
-    WeaponCard(String jsonName) {
+    /**
+     * constructor for WeaponCard
+     * @param jsonName name of the json file on which cards are described
+     * @param deck deck in which this card is put
+     */
+    WeaponCard(String jsonName, Deck deck) {
         try {
+            weaponCardDeck = deck;
             JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
             this.name = (String) jsonObject.get("name");
             this.ammos = (short[]) jsonObject.get("ammos");
-            this.currentCost = new short[];
             //this.fireModes =
             //this.upgrades =
             this.currEffect = new LinkedList<>();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Deck getDeck(){
+        return weaponCardDeck;
     }
 
     public boolean isLoaded(){

@@ -4,22 +4,22 @@ package model;
 import java.util.*;
 
 public class Deck<E> {
-    /**
-     * The concrete container for cards
-     */
-    private ArrayList<E> cards;
 
+    private Game currGame;
     /**
      * used for random insertion
      */
     private Random random;
+    private ArrayList<E> cards;
 
-    /**
-     * Default constructor
-     */
-    public Deck() {
+    public Deck(Game currGame) {
+        this.currGame = currGame;
         cards = new ArrayList<>();
         random = new Random();
+    }
+
+    public Game getCurrGame(){
+        return currGame;
     }
 
     /**
