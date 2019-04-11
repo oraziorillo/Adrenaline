@@ -218,9 +218,9 @@ class ChainDecorator extends TargetCheckerDecorator {
         super(decorated);
         this.chainPc = selectedChainPc;
     }
-    public boolean isValid(Pc possibleTarget) {
-        chainTile = chainPc.getCurrentTile();
-    }
+//    public boolean isValid(Pc possibleTarget) {
+//        chainTile = chainPc.getCurrentTile();
+//    }
 }
 
 
