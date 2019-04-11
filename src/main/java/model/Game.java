@@ -100,11 +100,16 @@ public class Game {
         if (currentPcIndex == pcs.size() - 1)
             currentPcIndex = 0;
         currentPcIndex++;
+        remainigActions=2;
+    }
 
+    public Tile[][] getMap(){
+        return map.clone();
     }
 
     /* public GenerationTile respawnpoint(CharacterColourEnum colour) {
         //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
+        return new GenerationTile(0,0,null);
     }
 
      */

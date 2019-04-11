@@ -25,8 +25,8 @@ public class Pc {
     }
 
     public boolean isFullyArmed() {
-        for (int index = 0; index < weapons.length) {
-            if(weapons[index] == null){
+        for (WeaponCard weapon : weapons) {
+            if (weapon == null) {
                 return false;
             }
         }
@@ -34,7 +34,7 @@ public class Pc {
     }
 
     public boolean isFullyPoweredUp(){
-        for (int index = 0; index < powerUps.length -1) {
+        for (int index = 0; index < powerUps.length -1; index++) {
             if(powerUps[index] == null){
                 return false;
             }
@@ -55,8 +55,24 @@ public class Pc {
         return temp;
     }
 
-    public void move(CardinalDirectionEnum dir){
-        //TODO
+    public void move(CardinalDirectionEnum dir) {
+        //TODO eventualmente controllo se il movimento è possibile
+        switch (dir) {
+            case NORTH:
+                this.currentTile = game.map[currentTile.getX()][currentTile.getY() + 1];
+                break;
+            case EAST:
+                this.currentTile = game.map[currentTile.getX() + 1][currentTile.getY()];
+                break;
+            case SOUTH:
+                this.currentTile = game.map[currentTile.getX()][currentTile.getY() - 1];
+                break;
+            case WEST:
+                this.currentTile = game.map[currentTile.getX() - 1][currentTile.getY()];
+                break;
+            default:
+                break;
+        }
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
@@ -92,11 +108,11 @@ public class Pc {
                 ammos[i] = 3;
         }
         if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoCard??
-            collectPowerup();
+            collectPowerUp();
         }
     }
 
-    public void collectPowerup(Powerup p) {
+    public void collectPowerUp(PowerUpCard p) {
         int index = 0;
         while (index < powerUps.length && powerUps[index] != null) {
             index += 1;

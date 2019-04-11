@@ -75,7 +75,8 @@ public class StandardCheckerTest {
         list2.add(c2);
 >>>>>>> Stashed changes
         t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
-        assertFalse("Più vicini di mindist", testes.isValid(list2, t1));
+        Mockito.when(c2.getCurrentTile()).thenReturn(t2);
+        assertFalse("Più vicini di mindist", tested.isValid(list2, t1));
     }
 
     @Test
