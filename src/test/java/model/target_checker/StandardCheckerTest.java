@@ -35,8 +35,8 @@ public class StandardCheckerTest {
     @Before
     public void setup() {
         Mockito.when(aDeck.draw()).thenReturn(new AmmoCard(new short[]{1, 2, 0}, false));
-        t1 = new AmmoTile(0, 1, RoomColourEnum.BLUE, aDeck);
-        t2 = new GenerationTile(2, 3, RoomColourEnum.RED, wDeck);
+        t1 = new AmmoTile(0, 1, TileColourEnum.BLUE, aDeck);
+        t2 = new SpawnTile(2, 3, TileColourEnum.RED, wDeck);
         Mockito.when(pc1.getCurrentTile()).thenReturn(t1);//pc1 è su t1
         Mockito.when(pc2.getCurrentTile()).thenReturn(t2);//pc2 è su t2
         //t1 vede t2
@@ -71,12 +71,17 @@ public class StandardCheckerTest {
         ArrayList<Pc> list2 = new ArrayList<>();
 <<<<<<< Updated upstream
         list2.add(pc2);
+<<<<<<< HEAD:src/test/java/model/StandardCheckerTest.java
+        t2 = new SpawnTile(0, 1, TileColourEnum.RED, wDeck);
+        assertFalse("Più vicini di mindist", testes.isValid(list2, t1));
+=======
 =======
         list2.add(c2);
 >>>>>>> Stashed changes
         t2 = new GenerationTile(0, 1, RoomColourEnum.RED, wDeck);
         Mockito.when(c2.getCurrentTile()).thenReturn(t2);
         assertFalse("Più vicini di mindist", tested.isValid(list2, t1));
+>>>>>>> f50f154c96dd1898424e0578900e99c4cc4fc400:src/test/java/model/target_checker/StandardCheckerTest.java
     }
 
     @Test
@@ -85,10 +90,14 @@ public class StandardCheckerTest {
         ArrayList<Pc> list2 = new ArrayList<>();
 <<<<<<< Updated upstream
         list2.add(pc2);
+<<<<<<< HEAD:src/test/java/model/StandardCheckerTest.java
+        t2 = new SpawnTile(1, 1, TileColourEnum.RED, wDeck);
+=======
 =======
         list2.add(c2);
 >>>>>>> Stashed changes
         t2 = new GenerationTile(1, 1, RoomColourEnum.RED, wDeck);
+>>>>>>> f50f154c96dd1898424e0578900e99c4cc4fc400:src/test/java/model/target_checker/StandardCheckerTest.java
         assertFalse("Più lontani di maxDist", testes.isValid(list2, t1));
     }
 

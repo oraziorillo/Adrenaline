@@ -9,20 +9,10 @@ public class AmmoCard {
     private final boolean hasPowerup;
     public static final short AMMOSFORCARD = 3;
 
-    /**
-     * Standard getter
-     *
-     * @return ammos
-     */
     public short[] getAmmos() {
         return ammos;
     }
 
-    /**
-     * standard getter
-     *
-     * @return hasPowerup
-     */
     public boolean containsPowerup() {
         return hasPowerup;
     }
@@ -30,7 +20,7 @@ public class AmmoCard {
     /**
      * Constructor
      *
-     * @param ammos      every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 else
+     * @param ammos      every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
      * @param hasPowerup for 2ammos-1powerup cards
      */
     public AmmoCard(short[] ammos, boolean hasPowerup) {
@@ -66,3 +56,12 @@ public class AmmoCard {
         return t == AMMOSFORCARD;
     }
 }
+
+
+enum AmmoEnum {
+    BLUE,
+    RED,
+    YELLOW;
+}
+
+

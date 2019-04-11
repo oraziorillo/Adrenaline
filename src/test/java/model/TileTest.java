@@ -10,7 +10,7 @@ public class TileTest {
     class ConcreteTile extends Tile {
 
         ConcreteTile(int x, int y) {
-            super(x, y, RoomColourEnum.GREEN);
+            super(x, y, TileColourEnum.GREEN);
         }
     }
 

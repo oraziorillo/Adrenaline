@@ -75,7 +75,7 @@ class MovementAction implements Action {
     public void applyOn(Pc c) {
 >>>>>>> Stashed changes
         for (int i = moves; i > 0; i--) {
-            pc.move(pc.game.requestDirection());
+            pc.move(/*richiedi direzione*/);
         }
     }
 }

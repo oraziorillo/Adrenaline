@@ -2,6 +2,7 @@ package model.weapon_effect;
 
 import model.Pc;
 import model.Server;
+import model.WeaponCard;
 import model.target_checker.TargetChecker;
 import org.json.simple.JSONObject;
 import java.util.Collections;
@@ -11,15 +12,22 @@ import java.util.Set;
 
 
 public class WeaponEffect {
+    private WeaponCard card;
     private short[] cost;
     private LinkedList<Action> actions;
     private HashSet<Pc> targets;
     private TargetChecker targetChecker;
 
 
-    public WeaponEffect(String jsonName) {
+    /**
+     * constructor for WeaponEffect
+     * @param jsonName name of json file containing card effects
+     * @param card card in which this effect is used
+     */
+    public WeaponEffect(String jsonName, WeaponCard card) {
         try {
             JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
+            this.card = card;
             this.cost = (short[]) jsonObject.get("cost");
             this.targets = new HashSet<>();
             //this.targetChecker =
@@ -39,7 +47,7 @@ public class WeaponEffect {
     public Set<Pc> validTargets() {
         //TODO metodo incompleto
         HashSet<Pc> validTargets = new HashSet<>();
-        for (Pc pc : game.getCharacters())
+        for (Pc pc : this.card.getDeck().getCurrGame().getPcs())
             if (targetChecker.isValid(pc))
                 validTargets.add(pc);
         return validTargets;
