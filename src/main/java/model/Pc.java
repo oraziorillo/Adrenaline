@@ -1,13 +1,14 @@
 package model;
 
 public class Pc {
+    private Game game;
     private CharacterColourEnum[] damageTrack;
     private WeaponCard[] weapons;
     private PowerUpCard[] powerUps;
     private short[] marks;
     private short points;
     private short numOfDeath;
-    private short ammos[];
+    private short[] ammos;
     private Tile currentTile;
     private CharacterColourEnum colour;
 
@@ -55,24 +56,15 @@ public class Pc {
         return temp;
     }
 
-    public void move(CardinalDirectionEnum dir) {
-        //TODO eventualmente controllo se il movimento è possibile
-        switch (dir) {
-            case NORTH:
-                this.currentTile = game.map[currentTile.getX()][currentTile.getY() + 1];
-                break;
-            case EAST:
-                this.currentTile = game.map[currentTile.getX() + 1][currentTile.getY()];
-                break;
-            case SOUTH:
-                this.currentTile = game.map[currentTile.getX()][currentTile.getY() - 1];
-                break;
-            case WEST:
-                this.currentTile = game.map[currentTile.getX() - 1][currentTile.getY()];
-                break;
-            default:
-                break;
+    //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di game)
+    public void move(int x,int y,int maxDist) {
+        Tile targetTile=game.getMap()[x][y];
+        if(!currentTile.distanceOf(maxDist).contains(targetTile)){
+            throw new IllegalArgumentException("Too far away");
         }
+        currentTile.removeCharacter(this);
+        targetTile.addCharacter(this);
+        this.currentTile=targetTile;
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
@@ -163,6 +155,7 @@ public class Pc {
         this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
         this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
     }
+
 
 
 }
