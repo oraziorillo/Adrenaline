@@ -4,29 +4,27 @@ import model.Pc;
 import model.Game;
 import model.Tile;
 
+import java.util.HashSet;
+
 public class MaxDistanceDecorator extends TargetCheckerDecorator{
-    boolean valid
-}
 
+    private int maxDistance;
 
-
-public class DifferentTileDecorator extends  TargetCheckerDecorator{
-
-    public DifferentTileDecorator(Pc pc){
-        this.thisCharacter = pc;
+    public MaxDistanceDecorator(TargetChecker decorated, int maxDistanceAllowed){
+        super(decorated);
+        this.maxDistance = maxDistanceAllowed;
     }
 
     public boolean isValid(Pc possibleTarget) {
-        game = new Game();
         boolean valid = false;
-        Tile actionTile;
-        actionTile = game.getCurrentCharacter().getCurrentTile();
-        if(possibleTarget.getCurrentTile().equals(actionTile)) {
-            valid == false;
+        HashSet<Tile> temp;
+        for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
+            temp = game.getCurrentPc().getCurrentTile().distanceOf(tempMaxDistance);
+            if (temp.contains(possibleTarget.getCurrentTile())) {
+                valid = true;
+                break;
+            }
         }
-        else valid == true;
-        return thisCharacter.is;
+        return base.isValid(possibleTarget) && valid;
     }
-
-
 }
