@@ -1,19 +1,15 @@
 package model.target_checker;
 
-import model.Character;
 import model.Game;
 import model.Tile;
+import model.Character;
 
-public class MaxDistanceDecorator extends TargetCheckerDecorator{
-    boolean valid
-}
-
-
+import java.util.HashSet;
 
 public class DifferentTileDecorator extends  TargetCheckerDecorator{
 
-    public DifferentTileDecorator(Character character){
-        this.thisCharacter = character;
+    public DifferentTileDecorator(TargetChecker decorated){
+        this.base = decorated;
     }
 
     public boolean isValid(Character possibleTargetCharacter) {
@@ -25,7 +21,7 @@ public class DifferentTileDecorator extends  TargetCheckerDecorator{
             valid == false;
         }
         else valid == true;
-        return thisCharacter.is;
+        return base.isValid(possibleTargetCharacter) && valid;
     }
 
 

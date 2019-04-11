@@ -78,6 +78,10 @@ class GenerationTile extends Tile {
         return temp;
     }
 
+    public boolean equals(Tile t){
+        return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
+    }
+
     public WeaponCard switchWeapon(int index, WeaponCard w) {
         WeaponCard temp = weapons[index];
         weapons[index] = w;
