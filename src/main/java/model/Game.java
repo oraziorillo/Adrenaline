@@ -99,6 +99,7 @@ public class Game {
         if (currentPcIndex == pcs.size() - 1)
             currentPcIndex = 0;
         currentPcIndex++;
+
     }
 
     /* public GenerationTile respawnpoint(CharacterColourEnum colour) {

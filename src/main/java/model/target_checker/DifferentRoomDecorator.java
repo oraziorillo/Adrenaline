@@ -1,21 +1,20 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 import model.RoomColourEnum;
-import model.Tile;
 
 public class DifferentRoomDecorator extends TargetCheckerDecorator {
     public DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
 
-    public boolean isValid(Character possibleTargetCharacter) {
+    public boolean isValid(Pc possibleTarget) {
         boolean valid = false;
         RoomColourEnum colour;
         colour = game.getCurrentCharacter().getCurrentTile().getRoomColour();
-        if (possibleTargetCharacter.getCurrentTile().getRoomColour() != colour){
+        if (possibleTarget.getCurrentTile().getRoomColour() != colour){
             valid = true;
         }
-        return base.isValid(possibleTargetCharacter) && valid;
+        return base.isValid(possibleTarget) && valid;
     }
 }

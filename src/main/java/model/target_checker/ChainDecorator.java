@@ -6,13 +6,20 @@ import model.Tile;
 import java.util.ArrayList;
 
 public class ChainDecorator extends TargetCheckerDecorator {
-
-    public ChainDecorator(TargetChecker decorated) {
+    private Pc chainPc;
+    public ChainDecorator(TargetChecker decorated, Pc selectedChainPc) {
         super(decorated);
+        this.chainPc = selectedChainPc;
     }
+    //TODO da rivedere l'utilità di questo decorator a seconda di come utilizziamo visibleDecorator
+
+    public boolean isValid(Pc possibleTarget) {
+        chainTile = chainPc.getCurrentTile();
+
 
     @Override
     public boolean isValid(ArrayList<Pc> pcs, Tile startingTile) {
+
         return base.isValid(pcs,startingTile)&&inChain(pcs,startingTile);
     }
 

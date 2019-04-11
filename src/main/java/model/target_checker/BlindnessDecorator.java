@@ -10,18 +10,6 @@ public class BlindnessDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    /*
-    boolean notInSight(ArrayList<Pc> c, Tile startingTile, Pc possibleTarget){
-        boolean noOneInSight=true;
-        Collection visibles=startingTile.getVisibles();
-        for(Pc pc :c) {
-            if (visibles.contains(pc.getCurrentTile())) {
-                noOneInSight = false;
-                break;
-            }
-        }
-     */
-
     public boolean isValid(Pc possibleTarget) {
         boolean valid = true;
         HashSet<Tile> actionTile;

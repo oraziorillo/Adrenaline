@@ -3,9 +3,8 @@ package model.target_checker;
 import model.Pc;
 import model.Game;
 
-
 public abstract class TargetChecker {
-
-    Game game;
-    public abstract boolean isValid(Pc pc);
+    public Game game;
+    abstract boolean isValid(Pc decorated);
+    //serve inserire un costruttore??
 }

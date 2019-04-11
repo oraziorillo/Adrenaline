@@ -1,10 +1,9 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 import model.RoomColourEnum;
 import model.Tile;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SameRoomDecorator extends TargetCheckerDecorator {
@@ -13,15 +12,15 @@ public class SameRoomDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public boolean isValid(Character possibleTargetCharacter) {
+    public boolean isValid(Pc possibleTarget) {
         boolean valid = false;
         RoomColourEnum colour;
         HashSet<Tile> actionTile;
         colour = game.getCurrentCharacter().getCurrentTile().getRoomColour();
         actionTile = game.getCurrentCharacter().getCurrentTile().getVisibles();
-        if (possibleTargetCharacter.getCurrentTile().getRoomColour()==colour && actionTile.contains(possibleTargetCharacter.getCurrentTile())){
+        if (possibleTarget.getCurrentTile().getRoomColour()==colour && actionTile.contains(possibleTarget.getCurrentTile())){
             valid = true;
         }
-        return base.isValid(possibleTargetCharacter) && valid;
+        return base.isValid(possibleTarget) && valid;
     }
 }

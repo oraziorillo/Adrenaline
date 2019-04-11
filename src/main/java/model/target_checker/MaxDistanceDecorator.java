@@ -7,7 +7,6 @@ import model.Tile;
 import java.util.HashSet;
 
 public class MaxDistanceDecorator extends TargetCheckerDecorator{
-
     private int maxDistance;
 
     public MaxDistanceDecorator(TargetChecker decorated, int maxDistanceAllowed){

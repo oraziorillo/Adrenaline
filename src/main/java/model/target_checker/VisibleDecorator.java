@@ -20,7 +20,5 @@ public class VisibleDecorator extends TargetCheckerDecorator {
         if (actionTile.contains(possibleTarget.getCurrentTile())) {
             valid = true;
         }
-
         return base.isValid(possibleTarget) && valid;
-
 }
