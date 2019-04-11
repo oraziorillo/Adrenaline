@@ -1,11 +1,18 @@
 package model.weapon_effect;
 
-import model.Character;
+import model.Pc;
+<<<<<<< Updated upstream
+
+
+public interface Action {
+    void applyOn(Pc pc);
+=======
 
 
 
 public interface Action {
-    void applyOn(Character c);
+    void applyOn(Pc c);
+>>>>>>> Stashed changes
 }
 
 
@@ -19,8 +26,13 @@ class DamageAction implements Action {
     }
 
     @Override
-    public void applyOn(Character c) {
+<<<<<<< Updated upstream
+    public void applyOn(Pc pc) {
+        pc.takeDamage(damage);
+=======
+    public void applyOn(Pc c) {
         c.takeDamage(damage);
+>>>>>>> Stashed changes
     }
 }
 
@@ -35,8 +47,13 @@ class MarksAction implements Action {
     }
 
     @Override
-    public void applyOn(Character c) {
+<<<<<<< Updated upstream
+    public void applyOn(Pc pc) {
+        pc.takeMarks(marks);
+=======
+    public void applyOn(Pc c) {
         c.takeMarks(marks);
+>>>>>>> Stashed changes
     }
 }
 
@@ -52,9 +69,13 @@ class MovementAction implements Action {
 
 
     @Override
-    public void applyOn(Character c) {
+<<<<<<< Updated upstream
+    public void applyOn(Pc pc) {
+=======
+    public void applyOn(Pc c) {
+>>>>>>> Stashed changes
         for (int i = moves; i > 0; i--) {
-            c.move(c.game.requestDirection());
+            pc.move(pc.game.requestDirection());
         }
     }
 }

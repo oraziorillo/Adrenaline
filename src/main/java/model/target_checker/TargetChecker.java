@@ -1,12 +1,10 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 import model.Game;
 
-
 public abstract class TargetChecker {
-
     public Game game;
-    abstract boolean isValid(Character decorated);
+    abstract boolean isValid(Pc decorated);
     //serve inserire un costruttore??
 }

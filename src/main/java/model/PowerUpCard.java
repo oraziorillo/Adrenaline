@@ -1,9 +1,9 @@
 package model;
 
 public abstract class PowerUpCard {
-    private RoomColourEnum colour;          //è giusto metterlo di tipo RoomColourEnum??
+    private AmmoEnum colour;
 
-    public RoomColourEnum getColour{ return colour; }
+    public AmmoEnum getColour(){ return this.colour; }
 
     public abstract void useEffect();
 

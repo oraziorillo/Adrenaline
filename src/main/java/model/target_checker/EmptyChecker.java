@@ -1,11 +1,13 @@
 package model.target_checker;
 
-import model.Character;
+import model.Pc;
 
 public class EmptyChecker extends TargetChecker {
+
     @Override
-    public boolean isValid(Character targetChecker) {
+    public boolean isValid(Pc possibleTarget) {
         return true;
     }
+
 }
 
