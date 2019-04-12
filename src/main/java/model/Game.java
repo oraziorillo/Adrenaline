@@ -11,7 +11,7 @@ public class Game {
     Deck<WeaponCard> weaponsDeck;
     Deck<PowerUpCard> powerUpsDeck;
     private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;
-    private final Tile[][] map;
+    public final Tile[][] map;
 
     public Game(String jsonName) {
         remainigActions = 2;
@@ -40,9 +40,9 @@ public class Game {
         for(int i = 0; i < row; i++){
             for(int j = 0; j < coloumn; j++){
                 if (/* qui va inserita la condizione per cui il punto (i,j) sia nell'array spawnTiles*/)) {
-                    map[i][j] = new SpawnTile(i, j, colourOfMapTile[i*row + j], weaponsDeck);
+                    map[i][j] = new SpawnTile(i, j, colourOfMapTile[i*row + j], weaponsDeck, this);
                 } else {
-                    map[i][j] = new AmmoTile(i, j, colourOfMapTile[i*row + j], ammosDeck);
+                    map[i][j] = new AmmoTile(i, j, colourOfMapTile[i*row + j], ammosDeck, this);
                 }
             }
         }
@@ -104,9 +104,6 @@ public class Game {
         remainigActions=2;
     }
 
-    public Tile[][] getMap(){
-        return map.clone();
-    }
 
     /* public SpawnTile respawnpoint(TileColourEnum colour) {
         //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE

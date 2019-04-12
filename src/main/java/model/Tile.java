@@ -5,18 +5,24 @@ import java.util.Set;
 import java.util.Optional;
 
 public abstract class Tile {
+    private Game currGame;
     private final int x;
     private final int y;
     private final TileColourEnum roomColour;
     private HashSet<Pc> pcs = new HashSet<>();
-    private HashSet<Tile> visibles = new HashSet<>();
+    private HashSet<TileColourEnum> visibles = new HashSet<>();
 
-    public Tile(int x, int y, TileColourEnum colour) {
+    public Tile(int x, int y, TileColourEnum colour, Game currGame) {
+        this.currGame = currGame;
         this.x = x;
         this.y = y;
         this.roomColour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
+    }
+
+    public Game getCurrGame(){
+        return currGame;
     }
 
     public int getX() {
@@ -42,7 +48,7 @@ public abstract class Tile {
         }
         else {
             for(CardinalDirectionEnum direction : CardinalDirectionEnum.values()){
-                tempTile = this.OnDirection(direction);
+                tempTile = this.onDirection(direction);
                 if(tempTile.isPresent()) {
                     temp.addAll(tempTile.get().atDistance(dist - 1));
                 }
@@ -52,11 +58,11 @@ public abstract class Tile {
     }
 
 
-    public TileColourEnum getRoomColour() {
+    public TileColourEnum getTileColour() {
         return roomColour;
     }
 
-    public Optional<Tile> OnDirection(CardinalDirectionEnum direction){
+    public Optional<Tile> onDirection(CardinalDirectionEnum direction){
         Optional<Tile> temp = null;
         switch(direction) {
             case NORTH:
@@ -103,13 +109,13 @@ public abstract class Tile {
 
 
 class SpawnTile extends Tile {
-    //TODO da rivedere se abbiamo un'istanza di game dappertutto
+    //TODO da rivedere se abbiamo un'istanza di currGame dappertutto
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
 
-    SpawnTile(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck) {
-        super(x, y, colour);
+    SpawnTile(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck, Game game) {
+        super(x, y, colour, game);
         weapons = new WeaponCard[3];
         weaponDeck = deck;
         for (int i = 0; i < 3; i++)
@@ -135,12 +141,12 @@ class SpawnTile extends Tile {
 
 
 class AmmoTile extends Tile {
-    //TODO da rivedere se abbiamo un'istanza di game dappertutto
+    //TODO da rivedere se abbiamo un'istanza di currGame dappertutto
     private AmmoCard card;
     private Deck<AmmoCard> ammoCardDeck;
 
-    AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck) {
-        super(x, y, colour);
+    AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck, Game game) {
+        super(x, y, colour, game);
         ammoCardDeck = deck;
         card = ammoCardDeck.draw();
     }
@@ -154,7 +160,7 @@ class AmmoTile extends Tile {
 }
 
 
- enum TileColourEnum {
+enum TileColourEnum {
     RED,
     YELLOW,
     GREEN,
