@@ -1,7 +1,6 @@
 package model;
 
 import java.util.*;
-import model.Tile;
 
 public class Game {
     private short remainigActions;
@@ -50,16 +49,16 @@ public class Game {
         /*vanno definiti i metodi in rosso se vuoi continuare ad usarli*/
         for(int i = 0; i < row; i++){
             for( int j = 0; j < coloumn; j++){
-                tempList.add(map[i][j].getRoomColour());
+                tempList.add(map[i][j].getTileColour());
                 while(doorsInMap.contains(i*row+j) && doorsInMap.indexOf(i*row+j)%2==0){
                     k = doorsInMap[i*row+j+1];
-                    tempList.add(map[k%row][k/coloumn].getRoomColour());
+                    tempList.add(map[k%row][k/coloumn].getTileColour());
                     doorsInMap.remove(i*row+j);
                     doorsInMap.remove(i*row+j+1);
                 }
                 for(int m = 0; m < row; m++){
                     for(int n = 0; n < coloumn; n++){
-                        if(tempList.contains(map[m][n].getRoomColour())){
+                        if(tempList.contains(map[m][n].getTileColour())){
                             map[i][j].addVisible(map[m][n]);
                         }
                     }

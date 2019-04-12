@@ -21,7 +21,7 @@ class VisibleDecorator extends TargetCheckerDecorator {
         boolean valid = false;
         HashSet<TileColourEnum> actionTile;
         actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (actionTile.contains(possibleTarget.getCurrentTile().getRoomColour())) {
+        if (actionTile.contains(possibleTarget.getCurrentTile().getTileColour())) {
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;
@@ -62,7 +62,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         }
         else {
             do {
-                temp = attackerTile.OnDirection(direction);
+                temp = attackerTile.onDirection(direction);
                 if (temp.isEmpty()) break;
                 valid = temp.equals(possibleTargetTile);
             } while (temp.isPresent() && !valid);
@@ -121,26 +121,27 @@ class SameRoomDecorator extends TargetCheckerDecorator {
     }
     public boolean isValid(Pc possibleTarget) {
         boolean valid = false;
-        if (possibleTarget.getCurrentTile().getRoomColour()==game.getCurrentPc().getCurrentTile().getRoomColour()){
+        if (possibleTarget.getCurrentTile().getTileColour()==game.getCurrentPc().getCurrentTile().getTileColour()){
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;
     }
 }
 
-
+/*
 class DifferentRoomDecorator extends TargetCheckerDecorator {
     public DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
     public boolean isValid(Pc possibleTarget) {
         boolean valid = false;
-        if (possibleTarget.getCurrentTile().getRoomColour() != game.getCurrentPc().getCurrentTile().getRoomColour()){
+        if (possibleTarget.getCurrentTile().getTileColour() != game.getCurrentPc().getCurrentTile().getTileColour()){
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;
     }
 }
+ */
 
 
 class MinDistanceDecorator extends TargetCheckerDecorator {
@@ -184,7 +185,7 @@ class MaxDistanceDecorator extends TargetCheckerDecorator {
     }
 }
 
-
+/*
 class ChainDecorator extends TargetCheckerDecorator {
     //TODO da rivedere l'utilità di questo decorator a seconda di come utilizziamo VisibleDecorator
     private Pc chainPc;
@@ -196,7 +197,8 @@ class ChainDecorator extends TargetCheckerDecorator {
 //    public boolean isValid(Pc possibleTarget) {
 //        chainTile = chainPc.getCurrentTile();
 //    }
-}
+*/
+
 
 
 

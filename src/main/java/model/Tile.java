@@ -154,7 +154,7 @@ class AmmoTile extends Tile {
 }
 
 
- class enum TileColourEnum {
+ enum TileColourEnum {
     RED,
     YELLOW,
     GREEN,
