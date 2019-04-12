@@ -65,7 +65,7 @@ public class AmmoTileTest {
 
     @Test
     public void roomColourSettedFine(){
-        assertEquals(tested.getRoomColour(),colour);
+        assertEquals(tested.getTileColour(),colour);
     }
 
 }

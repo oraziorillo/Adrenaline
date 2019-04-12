@@ -49,7 +49,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         }
         else {
             do {
-                temp = attackerTile.OnDirection(direction);
+                temp = attackerTile.onDirection(direction);
                 if (temp.isEmpty()) break;
                 valid = temp.equals(possibleTargetTile);
             } while (temp.isPresent() && !valid);
@@ -67,9 +67,9 @@ class SameRoomDecorator extends TargetCheckerDecorator {
         boolean valid = false;
         RoomColourEnum colour;
         HashSet<Tile> actionTile;
-        colour = game.getCurrentPc().getCurrentTile().getRoomColour();
+        colour = game.getCurrentPc().getCurrentTile().getTileColour();
         actionTile = (HashSet<Tile>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (possibleTarget.getCurrentTile().getRoomColour()==colour && actionTile.contains(possibleTarget.getCurrentTile())){
+        if (possibleTarget.getCurrentTile().getTileColour()==colour && actionTile.contains(possibleTarget.getCurrentTile())){
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;
@@ -142,8 +142,8 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
     public boolean isValid(Pc possibleTarget) {
         boolean valid = false;
         RoomColourEnum colour;
-        colour = game.getCurrentPc().getCurrentTile().getRoomColour();
-        if (possibleTarget.getCurrentTile().getRoomColour() != colour){
+        colour = game.getCurrentPc().getCurrentTile().getTileColour();
+        if (possibleTarget.getCurrentTile().getTileColour() != colour){
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;

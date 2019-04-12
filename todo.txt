@@ -3,3 +3,5 @@
 - Square potrebbe essere interfaccia(?)
 
 - i return di oggetti devono restituire cloni
+
+- isValid è usata per controllare che un tile sia valido; viene chiamato un metodo per selezionare tutti i tile validi; viene chiamato un metodo per selezionare tutti i target su quei tile

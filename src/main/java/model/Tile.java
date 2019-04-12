@@ -48,11 +48,11 @@ public abstract class Tile {
     }
 
 
-    public TileColourEnum getRoomColour() {
+    public TileColourEnum getTileColour() {
         return roomColour;
     }
 
-    public Optional<Tile> OnDirection(CardinalDirectionEnum direction){
+    public Optional<Tile> onDirection(CardinalDirectionEnum direction){
         Optional<Tile> temp = null;
         switch(direction) {
             case NORTH:
