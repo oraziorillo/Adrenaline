@@ -35,13 +35,17 @@ public abstract class Tile {
         if(dist < 0){
             throw new IllegalArgumentException("Distance has to be positive");
         }
+        Optional<Tile> tempTile;
         HashSet<Tile> temp = new HashSet<>();
         if(dist == 0){
             temp.add(this);
         }
         else {
-            for(Tile t1 : this.getVisibles()){
-                temp.addAll(t1.atDistance(dist-1));
+            for(CardinalDirectionEnum direction : CardinalDirectionEnum.values()){
+                tempTile = this.OnDirection(direction);
+                if(tempTile.isPresent()) {
+                    temp.addAll(tempTile.get().atDistance(dist - 1));
+                }
             }
         }
         return temp;
@@ -75,8 +79,8 @@ public abstract class Tile {
         return (HashSet<Pc>) pcs.clone();
     }
 
-    public Set<Tile> getVisibles() {
-        return (HashSet<Tile>) visibles.clone();
+    public Set<TileColourEnum> getVisibles() {
+        return (HashSet<TileColourEnum>) visibles.clone();
     }
 
     public void addCharacter(Pc pc) {
@@ -87,7 +91,7 @@ public abstract class Tile {
         pcs.remove(c);
     }
 
-    public void addVisible(Tile t) {
+    public void addVisible(TileColourEnum t) {
         visibles.add(t);
     }
 
@@ -150,7 +154,7 @@ class AmmoTile extends Tile {
 }
 
 
-enum TileColourEnum {
+class public enum TileColourEnum {
     RED,
     YELLOW,
     GREEN,
