@@ -2,6 +2,7 @@ package model;
 
 import model.Enumerations.CardinalDirectionEnum;
 import model.Enumerations.TileColourEnum;
+import org.json.simple.JSONObject;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -11,14 +12,14 @@ public abstract class TargetCheckerDecorator extends TargetChecker {
     public TargetCheckerDecorator(TargetChecker decorated){
         this.base = decorated;
     }
-    abstract boolean isValid(Pc possibleTarget);
+    abstract boolean isValid(Tile t);
 }
 
 class VisibleDecorator extends TargetCheckerDecorator {
     public VisibleDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         HashSet<TileColourEnum> actionTile;
         actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrTile().getVisibles();
@@ -34,7 +35,7 @@ class BlindnessDecorator extends TargetCheckerDecorator {
     public BlindnessDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = true;
         HashSet<TileColourEnum> actionTile;
         actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrTile().getVisibles();
@@ -52,7 +53,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         super(decorated);
         this.direction = selectedDirection;
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         Tile attackerTile, possibleTargetTile;
         Optional<Tile> temp;
@@ -84,7 +85,7 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
         this.maxDistance = maxDistanceAllowed;
     }
 
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         Tile attackerTile, possibleTargetTile;
         attackerTile = game.getCurrentPc().getCurrTile();
@@ -120,7 +121,7 @@ class SameRoomDecorator extends TargetCheckerDecorator {
     public SameRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         if (possibleTarget.getCurrTile().getTileColour()==game.getCurrentPc().getCurrTile().getTileColour()){
             valid = true;
@@ -129,12 +130,12 @@ class SameRoomDecorator extends TargetCheckerDecorator {
     }
 }
 
-/*
+
 class DifferentRoomDecorator extends TargetCheckerDecorator {
     public DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         if (possibleTarget.getCurrTile().getTileColour() != game.getCurrentPc().getCurrTile().getTileColour()){
             valid = true;
@@ -142,16 +143,15 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
         return base.isValid(possibleTarget) && valid;
     }
 }
- */
 
 
 class MinDistanceDecorator extends TargetCheckerDecorator {
     private int minDistance;
-    public MinDistanceDecorator(TargetChecker decorated, int minDistanceAllowed){
+    public MinDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
         super(decorated);
-        this.minDistance = minDistanceAllowed;
+        this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = true;
         HashSet<Tile> temp;
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
@@ -168,11 +168,12 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
 
 class MaxDistanceDecorator extends TargetCheckerDecorator {
     private int maxDistance;
-    public MaxDistanceDecorator(TargetChecker decorated, int maxDistanceAllowed) {
+    public MaxDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
         super(decorated);
-        this.maxDistance = maxDistanceAllowed;
+        this.maxDistance = (int)jsonTargetChecker.get("maxDistance");
     }
-    public boolean isValid(Pc possibleTarget) {
+    }
+    public boolean isValid(Tile t) {
         boolean valid = false;
         HashSet<Tile> temp;
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {

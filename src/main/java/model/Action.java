@@ -55,9 +55,30 @@ class DamageMarksAction extends Action {
         this.damage = (short) jsonAction.get("damage");
         this.marks = (short) jsonAction.get("marks");
         for (int i = 1; jsonAction.get("targetChecker" + i) != null; i++) {
-            switch ((String)jsonAction.get("targetChecker")){
+            JSONObject jsonTargetChecker = (JSONObject) jsonAction.get("targetChecker" + i);;
+            switch ((String)(jsonTargetChecker.get("type"))){
                 case "visible":
                     this.targetChecker = new VisibleDecorator(targetChecker);
+                    break;
+                case "blindness":
+                    this.targetChecker = new BlindnessDecorator(targetChecker);
+                    break;
+                case "minDistanceDecorator":
+                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker);
+                    break;
+                case "maxDistanceDecorator":
+                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsonTargetChecker);
+                    break;
+                case "straightLine":
+                    this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
+                    break;
+                case "sameRoom":
+                    this.targetChecker = new SameRoomDecorator(targetChecker);
+                    break;
+                case "differentRoom":
+                    this.targetChecker = new DifferentRoomDecorator(targetChecker);
+                    break;
+                default:
                     break;
             }
         }

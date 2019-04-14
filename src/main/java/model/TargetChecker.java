@@ -1,6 +1,16 @@
 package model;
 
 public abstract class TargetChecker {
-    public Game game;
-    abstract boolean isValid(Pc decorated);
+
+    //TODO togliere attributo game e metterlo nel costruttore
+    Game game;
+
+    abstract boolean isValid(Tile t);
+}
+
+class EmptyChecker extends TargetChecker {
+
+    public boolean isValid(Tile t){
+        return true;
+    }
 }

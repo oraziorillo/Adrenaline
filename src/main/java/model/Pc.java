@@ -108,7 +108,7 @@ public class Pc {
         }
         AmmoTile workingTile = (AmmoTile) currTile;
 
-        AmmoCard card = workingTile.drawCard();
+        AmmoCard card = workingTile.pickAmmo();
         for (int i = 0; i < card.getAmmos().length; i++) {
             this.ammos[i] += ammos[i];
             if (ammos[i] > 3)
