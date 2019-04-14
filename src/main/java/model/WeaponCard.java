@@ -1,37 +1,40 @@
 package model;
 
-import model.weapon_effect.WeaponEffect;
+import model.Enumerations.AmmoEnum;
 import org.json.simple.JSONObject;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
-public abstract class WeaponCard {
+public class WeaponCard {
     private Deck<WeaponCard> weaponCardDeck;
-    private boolean loaded;
     private String name;
+    private boolean loaded;
     private short[] ammos;
     private short[] currentCost = new short[3];
-    private WeaponEffect[] fireModes;
-    private WeaponEffect[] upgrades;
+    private ArrayList<WeaponEffect> fireModes = new ArrayList<>();
+    private ArrayList<WeaponEffect> upgrades = new ArrayList<>();
     private LinkedList<WeaponEffect> currEffect;
 
 
     /**
      * constructor for WeaponCard
-     * @param jsonName name of the json file on which cards are described
+     * @param jsonWeaponCard JsonObject representing a WeaponCard
      * @param deck deck in which this card is put
      */
-    WeaponCard(String jsonName, Deck deck) {
-        try {
-            weaponCardDeck = deck;
-            JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
-            this.name = (String) jsonObject.get("name");
-            this.ammos = (short[]) jsonObject.get("ammos");
-            //this.fireModes =
-            //this.upgrades =
-            this.currEffect = new LinkedList<>();
-        } catch (Exception e) {
-            e.printStackTrace();
+    WeaponCard(JSONObject jsonWeaponCard, Deck<WeaponCard> deck) {
+        this.weaponCardDeck = deck;
+        this.name = (String) jsonWeaponCard.get("name");
+        this.loaded = true;
+        this.ammos = (short[]) jsonWeaponCard.get("ammos");
+        for (int i = 1; jsonWeaponCard.get("fireMode" + i) != null; i++) {
+            WeaponEffect weaponEffect = new WeaponEffect((JSONObject) jsonWeaponCard.get("fireMode" + i), this);
+            fireModes.add(weaponEffect);
         }
+        for (int i = 1; jsonWeaponCard.get("upgrade" + i) != null; i++) {
+            WeaponEffect weaponEffect = new WeaponEffect((JSONObject) jsonWeaponCard.get("upgrade" + i), this);
+            upgrades.add(weaponEffect);
+        }
+        this.currEffect = new LinkedList<>();
     }
 
     public Deck getDeck(){
@@ -52,14 +55,6 @@ public abstract class WeaponCard {
 
     public short[] getCurrentCost(){
         return currentCost;
-    }
-
-    public WeaponEffect[] getFireModes() {
-        return fireModes.clone();
-    }
-
-    public WeaponEffect[] getUpgrades() {
-        return upgrades;
     }
 
     public void addEffect(WeaponEffect eff) {

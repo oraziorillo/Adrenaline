@@ -1,4 +1,4 @@
-package model;
+package model.Enumerations;
 
 public enum CardinalDirectionEnum {
     NORTH,

@@ -1,5 +1,7 @@
 package model;
 
+import model.Enumerations.TileColourEnum;
+
 import java.util.*;
 
 public class Game {

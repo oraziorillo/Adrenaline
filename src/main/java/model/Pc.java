@@ -1,5 +1,8 @@
 package model;
 
+import model.Enumerations.AmmoEnum;
+import model.Enumerations.PcColourEnum;
+import model.Enumerations.TileColourEnum;
 import model.Exceptions.NotEnoughAmmosException;
 
 import java.util.HashSet;
@@ -7,28 +10,30 @@ import java.util.HashSet;
 public class Pc {
 
     private final Game currGame;
-    private PcColourEnum[] damageTrack;
+    private final String name;
+    private final PcColourEnum colour;
     private short points;
-    private short[] marks;
     private short numOfDeath;
-    private HashSet<PowerUpCard> powerUps;
+    private short[] marks;
+    private short[] ammos;
+    private PcColourEnum[] damageTrack;
     private WeaponCard[] weapons;
-    private short ammos[];
-    private Tile currentTile;
-    private PcColourEnum colour;
+    private HashSet<PowerUpCard> powerUps;
+    private Tile currTile;
 
 
-    public Pc(PcColourEnum colour, Game game) {
+    public Pc(String name, PcColourEnum colour, Game game) {
         this.currGame = game;
+        this.name = name;
+        this.colour = colour;
+        this.points = 0;
+        this.numOfDeath = 0;
+        this.marks = new short[5];
+        this.ammos = new short[3];
         this.damageTrack = new PcColourEnum[12];
         this.weapons = new WeaponCard[3];
         this.powerUps = new HashSet<>();
-        this.marks = new short[5];
-        this.points = 0;
-        this.numOfDeath = 0;
-        this.ammos = new short[3];
-        this.currentTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
-        this.colour = colour;
+        this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
     }
 
     public boolean isFullyArmed() {
@@ -48,8 +53,12 @@ public class Pc {
         return currGame;
     }
 
-    public Tile getCurrentTile() {
-        return this.currentTile;
+    public String getName() {
+        return name;
+    }
+
+    public Tile getCurrTile() {
+        return this.currTile;
     }
 
     private WeaponCard weaponIndex(int index) {
@@ -63,20 +72,21 @@ public class Pc {
 
     //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di game)
     public void move(int x,int y,int maxDist) {
-        Tile targetTile=currGame.getMap()[x][y];
-        if(!currentTile.atDistance(maxDist).contains(targetTile)){
+        Tile targetTile=currGame.map[x][y];
+        if(!currTile.atDistance(maxDist).contains(targetTile)){
             throw new IllegalArgumentException("Too far away");
         }
-        currentTile.removeCharacter(this);
-        targetTile.addCharacter(this);
-        this.currentTile=targetTile;
+        currTile.removePc(this);
+        targetTile.addPc(this);
+        this.currTile =targetTile;
     }
 
+
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
-        if (!(currentTile instanceof SpawnTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+        if (!(currTile instanceof SpawnTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in a SpawnTile");
         }
-        SpawnTile workingTile = (SpawnTile) currentTile;
+        SpawnTile workingTile = (SpawnTile) currTile;
         int index = 0;
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
@@ -85,18 +95,18 @@ public class Pc {
     }
 
     public void collectWeapon(int desiredWeaponIndex, int toDropWeaponIndex) {
-        if (!(currentTile instanceof SpawnTile)) {
+        if (!(currTile instanceof SpawnTile)) {
             throw new IllegalStateException("You are not in a SpawnTile");
         }
-        SpawnTile workingTile = (SpawnTile) currentTile;
+        SpawnTile workingTile = (SpawnTile) currTile;
         weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponIndex(toDropWeaponIndex));
     }
 
     public void collectAmmos() {
-        if (!(currentTile instanceof AmmoTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+        if (!(currTile instanceof AmmoTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in an AmmoTile");
         }
-        AmmoTile workingTile = (AmmoTile) currentTile;
+        AmmoTile workingTile = (AmmoTile) currTile;
 
         AmmoCard card = workingTile.drawCard();
         for (int i = 0; i < card.getAmmos().length; i++) {
@@ -153,7 +163,7 @@ public class Pc {
         this.damageTrack = new PcColourEnum[12];
         numOfDeath = (short) (numOfDeath + 1);
         //TODO: è dato dal colour che viene passato come parametro
-        //this.currentTile = getGenerationTile(colour);
+        //this.currTile = getGenerationTile(colour);
     }
 
     public void payAmmos(short[] ammos) throws NotEnoughAmmosException {
@@ -169,10 +179,3 @@ public class Pc {
 }
 
 
-enum PcColourEnum {
-    GREY,
-    GREEN,
-    YELLOW,
-    PURPLE,
-    BLUE;
-}

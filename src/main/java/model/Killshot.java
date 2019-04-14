@@ -1,5 +1,7 @@
 package model;
 
+import model.Enumerations.PcColourEnum;
+
 public class Killshot {
     private PcColourEnum colour;
     private boolean skulled = true;

@@ -34,7 +34,7 @@ public class fakeController {
                     String[] xy=cmd[1].split(",",2);
                     int x=Integer.parseInt(xy[0]);
                     int y=Integer.parseInt(xy[1]);
-                    currentTile=currrentPc.getCurrentTile();
+                    currentTile=currrentPc.getCurrTile();
                     Tile targetTile=currentGame.getMap()[x][y];
                     try{
                         currrentPc.move(x,y,3);
@@ -58,7 +58,7 @@ public class fakeController {
                             e.printStackTrace();
                         }
                     }
-                    currrentPc.getCurrentTile().collect();
+                    currrentPc.getCurrTile().collect();
                     break;
                 case "shoot":
                     cmdArgs=cmd[1].split(",",2);

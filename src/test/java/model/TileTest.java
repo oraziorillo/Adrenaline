@@ -1,5 +1,6 @@
 package model;
 
+import model.Enumerations.TileColourEnum;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -51,11 +52,11 @@ public class TileTest {
         Pc c1 = Mockito.mock(Pc.class);
         Pc c2 = Mockito.mock(Pc.class);
         Tile tester = new ConcreteTile(0, 0);
-        tester.addCharacter(c1);
-        tester.addCharacter(c2);
+        tester.addPc(c1);
+        tester.addPc(c2);
         assertTrue(tester.getPcs().contains(c1));
         assertTrue(tester.getPcs().contains(c2));
-        tester.removeCharacter(c1);
+        tester.removePc(c1);
         assertFalse(tester.getPcs().contains(c1));
         assertTrue(tester.getPcs().contains(c2));
     }
