@@ -9,8 +9,8 @@ public abstract class Tile {
     private final int x;
     private final int y;
     private final TileColourEnum roomColour;
-    private HashSet<Pc> pcs = new HashSet<>();
-    private HashSet<TileColourEnum> visibles = new HashSet<>();
+    private HashSet<Pc> pcs;
+    private HashSet<TileColourEnum> visibles;
 
     public Tile(int x, int y, TileColourEnum colour, Game currGame) {
         this.currGame = currGame;

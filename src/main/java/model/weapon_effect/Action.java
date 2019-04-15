@@ -3,7 +3,7 @@ package model.weapon_effect;
 import model.MapIterator;
 import model.Pc;
 import model.Tile;
-import model.target_checker.TargetChecker;
+import model.TargetChecker;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;

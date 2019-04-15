@@ -1,5 +1,6 @@
 package model;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Game {
@@ -31,8 +32,9 @@ public class Game {
      */ //bisogna aggiungere o un altro parametro in ingresso che specifichi il tipo di tile o rendiamo tile una classe concreta
     public void initMap(TileColourEnum[] colourOfMapTile, int row, int coloumn, int[] doorsInMap){
         int k;
-        List<TileColourEnum> tempList = new LinkedList<>();
-        if(colourOfMapTile.length != row*coloumn){
+        List<TileColourEnum> colourOfMapTileList = Arrays.asList(colourOfMapTile);
+        List<Integer> doorsInMapList = (List<Integer>) Arrays.asList(doorsInMap);
+        if(colourOfMapTileList.size() != row*coloumn){
             throw new IllegalArgumentException("This list doesn't have the right dimension");
         }
         spawnTiles = new /*tipo che hai scelto*/;
