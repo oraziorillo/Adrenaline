@@ -1,9 +1,6 @@
-package model.weapon_effect;
+package model;
 
-import model.MapIterator;
-import model.Pc;
-import model.Tile;
-import model.TargetChecker;
+import org.json.simple.JSONObject;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,13 +12,19 @@ public abstract class Action {
     TargetChecker targetChecker;
     LinkedList<Pc> targets;
 
+    Action (WeaponEffect effect){
+        this.effect = effect;
+        targetChecker = new EmptyChecker();
+        targets = new LinkedList<>();
+    }
+
     /**
      * executes the action
      */
     abstract void apply();
 
     /**
-     * selects the targets which are valid for the current action
+     * selects the targets that are valid for the current action
      *
      * @return a Set of all possible target Tiles
      */
@@ -47,13 +50,38 @@ class DamageMarksAction extends Action {
     private short damage;
     private short marks;
 
-    DamageMarksAction(short damage, short marks, TargetChecker targetChecker, WeaponEffect effect){
-        super();
-        this.effect = effect;
-        this.targetChecker = targetChecker;
-        this.targets = new LinkedList<Pc>();
-        this.damage = damage;
-        this.marks = marks;
+    DamageMarksAction(JSONObject jsonAction, WeaponEffect effect){
+        super(effect);
+        this.damage = (short) jsonAction.get("damage");
+        this.marks = (short) jsonAction.get("marks");
+        for (int i = 1; jsonAction.get("targetChecker" + i) != null; i++) {
+            JSONObject jsonTargetChecker = (JSONObject) jsonAction.get("targetChecker" + i);;
+            switch ((String)(jsonTargetChecker.get("type"))){
+                case "visible":
+                    this.targetChecker = new VisibleDecorator(targetChecker);
+                    break;
+                case "blindness":
+                    this.targetChecker = new BlindnessDecorator(targetChecker);
+                    break;
+                case "minDistanceDecorator":
+                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker);
+                    break;
+                case "maxDistanceDecorator":
+                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsonTargetChecker);
+                    break;
+                case "straightLine":
+                    this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
+                    break;
+                case "sameRoom":
+                    this.targetChecker = new SameRoomDecorator(targetChecker);
+                    break;
+                case "differentRoom":
+                    this.targetChecker = new DifferentRoomDecorator(targetChecker);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public Set<Pc> validTargets(){
@@ -91,12 +119,9 @@ class MovementAction extends Action {
     private int maxDist;
     private Tile destination;
 
-    MovementAction(int maxDist, TargetChecker targetChecker, WeaponEffect effect) {
-        super();
-        this.effect = effect;
-        this.targetChecker = targetChecker;
-        this.targets = new LinkedList<>();
-        this.maxDist = maxDist;
+    MovementAction(JSONObject jsonAction, WeaponEffect effect) {
+        super(effect);
+        this.maxDist = (int)jsonAction.get("maxDist");
         this.destination = null;
     }
 

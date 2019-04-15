@@ -2,12 +2,28 @@ package model;
 
 
 public class AmmoCard {
-    /**
-     * Index this array with AmmoEnum
-     */
+    private final String name;
     private final short[] ammos;
     private final boolean hasPowerup;
-    public static final short AMMOSFORCARD = 3;
+
+    /**
+     * Constructor
+     *
+     * @param ammos every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
+     * @param hasPowerup for 2ammos-1powerup cards
+     */
+    public AmmoCard(String name, short[] ammos, boolean hasPowerup) {
+        this.name = name;
+        if (!validParameters(ammos, hasPowerup)) {
+            throw new IllegalArgumentException("illegal AmmoCard");
+        }
+        this.ammos = ammos;
+        this.hasPowerup = hasPowerup;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
     public short[] getAmmos() {
         return ammos;
@@ -18,25 +34,11 @@ public class AmmoCard {
     }
 
     /**
-     * Constructor
-     *
-     * @param ammos      every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
-     * @param hasPowerup for 2ammos-1powerup cards
-     */
-    public AmmoCard(short[] ammos, boolean hasPowerup) {
-        if (!validParameters(ammos, hasPowerup)) {
-            throw new IllegalArgumentException("illegal AmmoCard");
-        }
-        this.ammos = ammos;
-        this.hasPowerup = hasPowerup;
-    }
-
-    /**
      * Checks if a card of given parameters could exist
      *
-     * @param ammos      an array of ammonitions
+     * @param ammos an array of ammonitions
      * @param hasPowerup true iif the card has a powerup inside
-     * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMOSFORCARD. true otherwise.
+     * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMOS_PER_CARD. true otherwise.
      */
 
     public static boolean validParameters(short[] ammos, boolean hasPowerup) {
@@ -53,15 +55,8 @@ public class AmmoCard {
         if (hasPowerup) {
             t++;
         }
-        return t == AMMOSFORCARD;
+        return t == Constants.AMMOS_PER_CARD;
     }
-}
-
-
-enum AmmoEnum {
-    BLUE,
-    RED,
-    YELLOW;
 }
 
 

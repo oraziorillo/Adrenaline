@@ -1,4 +1,9 @@
 package model;
+package model;
+
+import model.Enumerations.CardinalDirectionEnum;
+import model.Enumerations.TileColourEnum;
+import org.json.simple.JSONObject;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,12 +58,12 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         super(decorated);
         this.direction = selectedDirection;
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         Tile attackerTile, possibleTargetTile;
         Optional<Tile> temp;
-        attackerTile = game.getCurrentPc().getCurrentTile();
-        possibleTargetTile = possibleTarget.getCurrentTile();
+        attackerTile = game.getCurrentPc().getCurrTile();
+        possibleTargetTile = possibleTarget.getCurrTile();
         if(attackerTile.equals(possibleTargetTile)){
             valid = true;
         }
@@ -81,9 +86,32 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
         Tile attackerTile, possibleTargetTile;
+        attackerTile = game.getCurrentPc().getCurrTile();
+        possibleTargetTile = possibleTarget.getCurrTile();
+        switch (direction) {
+            case NORTH:
+                if (attackerTile.getX() == possibleTargetTile.getX() && minDistance <= (possibleTargetTile.getY() - attackerTile.getY()) && (possibleTargetTile.getY() - attackerTile.getY()) <= maxDistance) {
+                    valid = true;
+                }
+                break;
+            case EAST:
+                if (attackerTile.getY() == possibleTargetTile.getY() && minDistance <= (possibleTargetTile.getX() - attackerTile.getX()) && (possibleTargetTile.getX() - attackerTile.getX()) <= maxDistance) {
+                    valid = true;
+                }
+                break;
+            case SOUTH:
+                if (attackerTile.getX() == possibleTargetTile.getX() && minDistance <= (attackerTile.getY() - possibleTargetTile.getY()) && (attackerTile.getY() - possibleTargetTile.getY()) <= maxDistance) {
+                    valid = true;
+                }
+                break;
+            case WEST:
+                if (attackerTile.getY() == possibleTargetTile.getY() && minDistance <= (attackerTile.getX() - possibleTargetTile.getX()) && (attackerTile.getX() - possibleTargetTile.getX()) <= maxDistance) {
+                    valid = true;
+                }
+                break;
         attackerTile = game.getCurrentPc().getCurrentTile();
         possibleTargetTile = possibleTarget.getCurrentTile();
         if(direction == null){
@@ -124,9 +152,9 @@ class SameRoomDecorator extends TargetCheckerDecorator {
     public SameRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
-        if (possibleTarget.getCurrentTile().getTileColour()==game.getCurrentPc().getCurrentTile().getTileColour()){
+        if (possibleTarget.getCurrTile().getTileColour()==game.getCurrentPc().getCurrTile().getTileColour()){
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;
@@ -138,9 +166,9 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
     public DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = false;
-        if (possibleTarget.getCurrentTile().getTileColour() != game.getCurrentPc().getCurrentTile().getTileColour()){
+        if (possibleTarget.getCurrTile().getTileColour() != game.getCurrentPc().getCurrTile().getTileColour()){
             valid = true;
         }
         return base.isValid(possibleTarget) && valid;
@@ -150,16 +178,16 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
 
 class MinDistanceDecorator extends TargetCheckerDecorator {
     private int minDistance;
-    public MinDistanceDecorator(TargetChecker decorated, int minDistanceAllowed){
+    public MinDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
         super(decorated);
-        this.minDistance = minDistanceAllowed;
+        this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
-    public boolean isValid(Pc possibleTarget) {
+    public boolean isValid(Tile t) {
         boolean valid = true;
         HashSet<Tile> temp;
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
-            temp = game.getCurrentPc().getCurrentTile().atDistance(tempMinDistance);
-            if (temp.contains(possibleTarget.getCurrentTile())) {
+            temp = game.getCurrentPc().getCurrTile().atDistance(tempMinDistance);
+            if (temp.contains(possibleTarget.getCurrTile())) {
                 valid = false;
                 break;
             }
@@ -171,16 +199,17 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
 
 class MaxDistanceDecorator extends TargetCheckerDecorator {
     private int maxDistance;
-    public MaxDistanceDecorator(TargetChecker decorated, int maxDistanceAllowed) {
+    public MaxDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
         super(decorated);
-        this.maxDistance = maxDistanceAllowed;
+        this.maxDistance = (int)jsonTargetChecker.get("maxDistance");
     }
-    public boolean isValid(Pc possibleTarget) {
+    }
+    public boolean isValid(Tile t) {
         boolean valid = false;
         HashSet<Tile> temp;
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
-            temp = game.getCurrentPc().getCurrentTile().atDistance(tempMaxDistance);
-            if (temp.contains(possibleTarget.getCurrentTile())) {
+            temp = game.getCurrentPc().getCurrTile().atDistance(tempMaxDistance);
+            if (temp.contains(possibleTarget.getCurrTile())) {
                 valid = true;
                 break;
             }
@@ -199,7 +228,7 @@ class ChainDecorator extends TargetCheckerDecorator {
         this.chainPc = selectedChainPc;
     }
 //    public boolean isValid(Pc possibleTarget) {
-//        chainTile = chainPc.getCurrentTile();
+//        chainTile = chainPc.getCurrTile();
 //    }
 */
 

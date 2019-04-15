@@ -31,8 +31,8 @@ public class StandardCheckerTest {
         Mockito.when(aDeck.draw()).thenReturn(new AmmoCard(new short[]{1, 2, 0}, false));
         t1 = new AmmoTile(0, 1, RoomColourEnum.BLUE, aDeck);
         t2 = new GenerationTile(2, 3, RoomColourEnum.RED, wDeck);
-        Mockito.when(pc1.getCurrentTile()).thenReturn(t1);//pc1 è su t1
-        Mockito.when(pc2.getCurrentTile()).thenReturn(t2);//pc2 è su t2
+        Mockito.when(pc1.getCurrTile()).thenReturn(t1);//pc1 è su t1
+        Mockito.when(pc2.getCurrTile()).thenReturn(t2);//pc2 è su t2
         //t1 vede t2
         t1.addVisible(t2);
 

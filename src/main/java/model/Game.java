@@ -1,6 +1,8 @@
 package model;
 
-import java.lang.reflect.Array;
+import model.Enumerations.TileColourEnum;
+import org.json.simple.JSONObject;
+
 import java.util.*;
 
 public class Game {
@@ -8,19 +10,27 @@ public class Game {
     private int currentPcIndex;
     private ArrayList<Pc> pcs;
     private Killshot[] killShotTrack;
-    Deck<AmmoCard> ammosDeck;
-    Deck<WeaponCard> weaponsDeck;
-    Deck<PowerUpCard> powerUpsDeck;
+    Deck<AmmoCard> ammosDeck = new Deck<AmmoCard>(this);
+    Deck<WeaponCard> weaponsDeck = new Deck<WeaponCard>(this);
+    Deck<PowerUpCard> powerUpsDeck = new Deck<PowerUpCard>(this);
     private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;
     public final Tile[][] map;
 
     public Game(String jsonName) {
         remainigActions = 2;
         currentPcIndex = 0;
-        pcs = new ArrayList<>(1);
+        pcs = new ArrayList<>(0);
         killShotTrack = new Killshot[8];
-        initDecks();
-        initMap();
+        try {
+            WeaponCard weaponCard;
+            JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
+            for (int i = 1; jsonObject.get("weapon" + i) != null; i++) {
+                weaponCard = new WeaponCard((JSONObject) jsonObject.get("fireMode" + i), weaponsDeck);
+                weaponsDeck.add(weaponCard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -32,9 +42,8 @@ public class Game {
      */ //bisogna aggiungere o un altro parametro in ingresso che specifichi il tipo di tile o rendiamo tile una classe concreta
     public void initMap(TileColourEnum[] colourOfMapTile, int row, int coloumn, int[] doorsInMap){
         int k;
-        List<TileColourEnum> colourOfMapTileList = Arrays.asList(colourOfMapTile);
-        List<Integer> doorsInMapList = (List<Integer>) Arrays.asList(doorsInMap);
-        if(colourOfMapTileList.size() != row*coloumn){
+        List<TileColourEnum> tempList = new LinkedList<>();
+        if(colourOfMapTile.length != row*coloumn){
             throw new IllegalArgumentException("This list doesn't have the right dimension");
         }
         spawnTiles = new /*tipo che hai scelto*/;

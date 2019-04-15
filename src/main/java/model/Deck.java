@@ -23,6 +23,17 @@ public class Deck<E> {
     }
 
     /**
+     * draw a card
+     *
+     * @return the first card of the deck
+     */
+    public E draw() {
+        E card = cards.get(0);
+        cards.remove(0);
+        return card;
+    }
+
+    /**
      * Adds the given card to a random position
      *
      * @param e a generic card
@@ -35,17 +46,6 @@ public class Deck<E> {
             index = random.nextInt(size());
         }
         cards.add(index, e);
-    }
-
-    /**
-     * draw a card
-     *
-     * @return the first card of the deck
-     */
-    public E draw() {
-        E card = cards.get(0);
-        cards.remove(0);
-        return card;
     }
 
     /**
@@ -67,12 +67,6 @@ public class Deck<E> {
         return cards.contains(o);
     }
 
-    /**
-     * usual equals method
-     *
-     * @param obj an object
-     * @return false if obj is not a deck or if the decks differs for some cards. true otherwise
-     */
     @Override
     public boolean equals(Object obj) {
         boolean equals = true;

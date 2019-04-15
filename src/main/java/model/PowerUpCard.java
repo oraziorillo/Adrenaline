@@ -1,5 +1,7 @@
 package model;
 
+import model.Enumerations.AmmoEnum;
+
 public abstract class PowerUpCard {
     private AmmoEnum colour;
 

@@ -1,5 +1,7 @@
 package model;
 
+import model.Enumerations.CardinalDirectionEnum;
+import model.Enumerations.TileColourEnum;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Optional;
@@ -8,7 +10,7 @@ public abstract class Tile {
     private Game currGame;
     private final int x;
     private final int y;
-    private final TileColourEnum roomColour;
+    private final TileColourEnum tileColour;
     private HashSet<Pc> pcs;
     private HashSet<TileColourEnum> visibles;
 
@@ -16,7 +18,7 @@ public abstract class Tile {
         this.currGame = currGame;
         this.x = x;
         this.y = y;
-        this.roomColour = colour;
+        this.tileColour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
     }
@@ -34,7 +36,7 @@ public abstract class Tile {
     }
 
     /**
-     * @param dist distance of Tiles returned
+     * @param dist distance of returned tiles
      * @return HashSet of Tiles at distance dist
      */
     public HashSet<Tile> atDistance(int dist){
@@ -57,9 +59,8 @@ public abstract class Tile {
         return temp;
     }
 
-
     public TileColourEnum getTileColour() {
-        return roomColour;
+        return tileColour;
     }
 
     public Optional<Tile> onDirection(CardinalDirectionEnum direction){
@@ -89,11 +90,11 @@ public abstract class Tile {
         return (HashSet<TileColourEnum>) visibles.clone();
     }
 
-    public void addCharacter(Pc pc) {
+    public void addPc(Pc pc) {
         pcs.add(pc);
     }
 
-    public void removeCharacter(Pc c) {
+    public void removePc(Pc c) {
         pcs.remove(c);
     }
 
@@ -101,25 +102,26 @@ public abstract class Tile {
         visibles.add(t);
     }
 
+    /* davvero utile???? non dovrebbe essere un '=='?? Noi restituiamo sempre i riferimenti ai tile, mai cloni
+
     public boolean equals(Tile t){
         return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
     }
+
+     */
 
 }
 
 
 class SpawnTile extends Tile {
-    //TODO da rivedere se abbiamo un'istanza di currGame dappertutto
 
     private WeaponCard[] weapons;
-    private Deck<WeaponCard> weaponDeck;
 
-    SpawnTile(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck, Game game) {
+    SpawnTile(int x, int y, TileColourEnum colour, Game game) {
         super(x, y, colour, game);
         weapons = new WeaponCard[3];
-        weaponDeck = deck;
         for (int i = 0; i < 3; i++)
-            weapons[i] = weaponDeck.draw();
+            weapons[i] = getCurrGame().weaponsDeck.draw();
     }
 
     public WeaponCard[] getWeapons() {
@@ -141,22 +143,19 @@ class SpawnTile extends Tile {
 
 
 class AmmoTile extends Tile {
-    //TODO da rivedere se abbiamo un'istanza di currGame dappertutto
-    private AmmoCard card;
-    private Deck<AmmoCard> ammoCardDeck;
+    private AmmoCard ammoCard;
 
-    AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck, Game game) {
+    AmmoTile(int x, int y, TileColourEnum colour, Game game) {
         super(x, y, colour, game);
-        ammoCardDeck = deck;
-        card = ammoCardDeck.draw();
+        ammoCard = getCurrGame().ammosDeck.draw();
     }
 
-    public AmmoCard drawCard() {
-        //TODO: qui dovrà essere inserito un observer che notifica che la carta è stata pescata e deve essere sostituita
-        AmmoCard oldCard = card;
-        card = null;
+    public AmmoCard pickAmmo() {
+        AmmoCard oldCard = ammoCard;
+        ammoCard = getCurrGame().ammosDeck.draw();
         return oldCard;
     }
+
 }
 
 
