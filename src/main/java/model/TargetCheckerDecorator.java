@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public abstract class TargetCheckerDecorator extends TargetChecker {
     TargetChecker base;
@@ -24,30 +25,27 @@ class VisibleDecorator extends TargetCheckerDecorator {
         this.referencePc = selectedReferencePc;
     }
     public HashSet<Tile> validTiles() {
-        HashSet<Tile> temp;
-        temp = referencePc.getCurrentTile().getVisibles();
-        return retainAll()
-        actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (actionTile.contains(possibleTarget.getCurrentTile().getTileColour())) {
-            valid = true;
-        }
-        return base.isValid(possibleTarget) && valid;
+        HashSet<Tile> visibleTiles, resultTiles;
+        visibleTiles = referencePc.getCurrTile().getVisibles();
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(visibleTiles);
+        return resultTiles;
     }
 }
 
 
 class BlindnessDecorator extends TargetCheckerDecorator {
-    public BlindnessDecorator(TargetChecker decorated){
+    private Pc referencePc;
+    public BlindnessDecorator(TargetChecker decorated, Pc selectedReferencePc){
         super(decorated);
+        this.referencePc = selectedReferencePc;
     }
-    public boolean isValid(Pc possibleTarget) {
-        boolean valid = true;
-        HashSet<TileColourEnum> actionTile;
-        actionTile = (HashSet<TileColourEnum>) game.getCurrentPc().getCurrentTile().getVisibles();
-        if (actionTile.contains(possibleTarget.getCurrentTile())) {
-            valid = false;
-        }
-        return base.isValid(possibleTarget) && valid;
+    public HashSet<Tile> validTiles() {
+        HashSet<Tile> visibleTiles, resultTiles;
+        visibleTiles = referencePc.getCurrTile().getVisibles();
+        resultTiles = base.validTiles();
+        resultTiles.removeAll(visibleTiles);
+        return resultTiles;
     }
 }
 
@@ -58,23 +56,36 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         super(decorated);
         this.direction = selectedDirection;
     }
-    public boolean isValid(Tile t) {
-        boolean valid = false;
-        Tile attackerTile, possibleTargetTile;
+    public HashSet<Tile> validTiles() {
+        Tile attackerTile, referenceTile;
         Optional<Tile> temp;
+        HashSet<Tile> tilesInDirections = new HashSet<>();
+        HashSet<Tile> resultTiles;
         attackerTile = game.getCurrentPc().getCurrTile();
-        possibleTargetTile = possibleTarget.getCurrTile();
-        if(attackerTile.equals(possibleTargetTile)){
-            valid = true;
-        }
-        else {
+        if (direction == null) {
+            for (CardinalDirectionEnum d : CardinalDirectionEnum.values()) {
+                referenceTile = attackerTile;
+                do {
+                    temp = referenceTile.onDirection(d);
+                    if (temp.isPresent()) {
+                        tilesInDirections.add(temp.get());
+                        referenceTile = temp.get();
+                    }
+                } while (temp.isPresent());
+            }
+        } else {
+            referenceTile = attackerTile;
             do {
-                temp = attackerTile.onDirection(direction);
-                if (temp.isEmpty()) break;
-                valid = temp.equals(possibleTargetTile);
-            } while (temp.isPresent() && !valid);
+                temp = referenceTile.onDirection(direction);
+                if (temp.isPresent()) {
+                    tilesInDirections.add(temp.get());
+                    referenceTile = temp.get();
+                }
+            } while (temp.isPresent());
         }
-        return base.isValid(possibleTarget) && valid;
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(tilesInDirections);
+        return resultTiles;
     }
 }
 
@@ -86,64 +97,58 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
-    public boolean isValid(Tile t) {
-        boolean valid = false;
-        Tile attackerTile, possibleTargetTile;
+    public HashSet<Tile> validTiles() {
+        Tile attackerTile;
+        HashSet<Tile> selectedTiles = new HashSet<>();
+        HashSet<Tile> resultTiles;
         attackerTile = game.getCurrentPc().getCurrTile();
-        possibleTargetTile = possibleTarget.getCurrTile();
-        switch (direction) {
-            case NORTH:
-                if (attackerTile.getX() == possibleTargetTile.getX() && minDistance <= (possibleTargetTile.getY() - attackerTile.getY()) && (possibleTargetTile.getY() - attackerTile.getY()) <= maxDistance) {
-                    valid = true;
+        if (direction == null) {
+            for (int i = 0; i < game.map.length; i++) {
+                if (game.map[attackerTile.getX()][i] != null) {
+                    selectedTiles.add(game.map[attackerTile.getX()][i]);
                 }
-                break;
-            case EAST:
-                if (attackerTile.getY() == possibleTargetTile.getY() && minDistance <= (possibleTargetTile.getX() - attackerTile.getX()) && (possibleTargetTile.getX() - attackerTile.getX()) <= maxDistance) {
-                    valid = true;
+            }
+            for (int i = 0; i < game.map[0].length; i++) {
+                if (game.map[i][attackerTile.getY()] != null) {
+                    selectedTiles.add(game.map[i][attackerTile.getY()]);
                 }
-                break;
-            case SOUTH:
-                if (attackerTile.getX() == possibleTargetTile.getX() && minDistance <= (attackerTile.getY() - possibleTargetTile.getY()) && (attackerTile.getY() - possibleTargetTile.getY()) <= maxDistance) {
-                    valid = true;
-                }
-                break;
-            case WEST:
-                if (attackerTile.getY() == possibleTargetTile.getY() && minDistance <= (attackerTile.getX() - possibleTargetTile.getX()) && (attackerTile.getX() - possibleTargetTile.getX()) <= maxDistance) {
-                    valid = true;
-                }
-                break;
-        attackerTile = game.getCurrentPc().getCurrentTile();
-        possibleTargetTile = possibleTarget.getCurrentTile();
-        if(direction == null){
-            if(attackerTile.getX() == possibleTargetTile.getX() || attackerTile.getY() == possibleTargetTile.getY()){
-                valid = true;
             }
         }
         else {
             switch (direction) {
                 case NORTH:
-                    if (attackerTile.getX() == possibleTargetTile.getX() && (possibleTargetTile.getY() - attackerTile.getY()) >= 0) {
-                        valid = true;
+                    for (int i = attackerTile.getY(); i >= 0; i--) {
+                        if (game.map[attackerTile.getX()][i] != null) {
+                            selectedTiles.add(game.map[attackerTile.getX()][i]);
+                        }
                     }
                     break;
                 case EAST:
-                    if (attackerTile.getY() == possibleTargetTile.getY() && (possibleTargetTile.getX() - attackerTile.getX()) >= 0) {
-                        valid = true;
+                    for (int i = attackerTile.getX(); i < game.map[0].length; i++) {
+                        if (game.map[i][attackerTile.getY()] != null) {
+                            selectedTiles.add(game.map[i][attackerTile.getY()]);
+                        }
                     }
                     break;
                 case SOUTH:
-                    if (attackerTile.getX() == possibleTargetTile.getX() && (attackerTile.getY() - possibleTargetTile.getY()) >= 0) {
-                        valid = true;
+                    for (int i = attackerTile.getY(); i < game.map.length; i++) {
+                        if (game.map[attackerTile.getX()][i] != null) {
+                            selectedTiles.add(game.map[attackerTile.getX()][i]);
+                        }
                     }
                     break;
                 case WEST:
-                    if (attackerTile.getY() == possibleTargetTile.getY() && (attackerTile.getX() - possibleTargetTile.getX()) >= 0) {
-                        valid = true;
+                    for (int i = attackerTile.getX(); i >= 0; i--) {
+                        if (game.map[i][attackerTile.getY()] != null) {
+                            selectedTiles.add(game.map[i][attackerTile.getY()]);
+                        }
                     }
                     break;
             }
         }
-        return base.isValid(possibleTarget) && valid;
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(selectedTiles);
+        return resultTiles;
     }
 }
 
@@ -152,12 +157,19 @@ class SameRoomDecorator extends TargetCheckerDecorator {
     public SameRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Tile t) {
-        boolean valid = false;
-        if (possibleTarget.getCurrTile().getTileColour()==game.getCurrentPc().getCurrTile().getTileColour()){
-            valid = true;
+    public HashSet<Tile> validTiles() {
+        Tile attackingTile;
+        HashSet<Tile> selectedTiles = new HashSet<>();
+        HashSet<Tile> resultTiles;
+        attackingTile = game.getCurrentPc().getCurrTile();
+        for(Tile t : attackingTile.getVisibles()){
+            if(t.getTileColour() == attackingTile.getTileColour()){
+                selectedTiles.add(t);
+            }
         }
-        return base.isValid(possibleTarget) && valid;
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(selectedTiles);
+        return resultTiles;
     }
 }
 
@@ -166,12 +178,20 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
     public DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public boolean isValid(Tile t) {
-        boolean valid = false;
-        if (possibleTarget.getCurrTile().getTileColour() != game.getCurrentPc().getCurrTile().getTileColour()){
-            valid = true;
+    public HashSet<Tile> validTiles() {
+        Tile attackingTile;
+        EmptyChecker checker = new EmptyChecker();
+        HashSet<Tile> resultTiles, allTiles;
+        attackingTile = game.getCurrentPc().getCurrTile();
+        allTiles = checker.validTiles();
+        for(Tile t : allTiles){
+            if(t.getTileColour() == attackingTile.getTileColour()){
+                allTiles.remove(t);
+            }
         }
-        return base.isValid(possibleTarget) && valid;
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(allTiles);
+        return resultTiles;
     }
 }
 
@@ -182,55 +202,42 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
         super(decorated);
         this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
-    public boolean isValid(Tile t) {
-        boolean valid = true;
-        HashSet<Tile> temp;
+    public HashSet<Tile> validTiles() {
+        EmptyChecker checker = new EmptyChecker();
+        HashSet<Tile> resultTiles;
+        HashSet<Tile> selectedTiles = new HashSet<>();
+        HashSet<Tile> allTiles = checker.validTiles();
+        Tile referenceTile = game.getCurrentPc().getCurrTile();
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
-            temp = game.getCurrentPc().getCurrTile().atDistance(tempMinDistance);
-            if (temp.contains(possibleTarget.getCurrTile())) {
-                valid = false;
-                break;
-            }
+            allTiles.removeAll(referenceTile.atDistance(tempMinDistance));
         }
-        return base.isValid(possibleTarget) && valid;
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(allTiles);
+        return resultTiles;
     }
 }
 
 
 class MaxDistanceDecorator extends TargetCheckerDecorator {
     private int maxDistance;
-    public MaxDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
+
+    public MaxDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker) {
         super(decorated);
-        this.maxDistance = (int)jsonTargetChecker.get("maxDistance");
+        this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
     }
-    }
-    public boolean isValid(Tile t) {
-        boolean valid = false;
-        HashSet<Tile> temp;
+
+    public HashSet<Tile> validTiles() {
+        HashSet<Tile> resultTiles;
+        HashSet<Tile> selectedTiles = new HashSet<>();
+        Tile referenceTile = game.getCurrentPc().getCurrTile();
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
-            temp = game.getCurrentPc().getCurrTile().atDistance(tempMaxDistance);
-            if (temp.contains(possibleTarget.getCurrTile())) {
-                valid = true;
-                break;
-            }
+            selectedTiles.addAll(referenceTile.atDistance(tempMaxDistance));
         }
-        return base.isValid(possibleTarget) && valid;
+        resultTiles = base.validTiles();
+        resultTiles.retainAll(selectedTiles);
+        return resultTiles;
     }
 }
-
-/*
-class ChainDecorator extends TargetCheckerDecorator {
-    //TODO da rivedere l'utilità di questo decorator a seconda di come utilizziamo VisibleDecorator
-    private Pc chainPc;
-
-    public ChainDecorator(TargetChecker decorated, Pc selectedChainPc) {
-        super(decorated);
-        this.chainPc = selectedChainPc;
-    }
-//    public boolean isValid(Pc possibleTarget) {
-//        chainTile = chainPc.getCurrTile();
-//    }
-*/
 
 
 

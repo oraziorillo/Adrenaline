@@ -12,7 +12,7 @@ public abstract class Tile {
     private final int y;
     private final TileColourEnum tileColour;
     private HashSet<Pc> pcs;
-    private HashSet<TileColourEnum> visibles;
+    private HashSet<Tile> visibles;
 
     public Tile(int x, int y, TileColourEnum colour, Game currGame) {
         this.currGame = currGame;
@@ -86,8 +86,8 @@ public abstract class Tile {
         return (HashSet<Pc>) pcs.clone();
     }
 
-    public Set<TileColourEnum> getVisibles() {
-        return (HashSet<TileColourEnum>) visibles.clone();
+    public HashSet<Tile> getVisibles() {
+        return (HashSet<Tile>) visibles.clone();
     }
 
     public void addPc(Pc pc) {
