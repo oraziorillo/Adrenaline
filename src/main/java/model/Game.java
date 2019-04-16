@@ -3,7 +3,9 @@ package model;
 import model.Enumerations.TileColourEnum;
 import org.json.simple.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
     private short remainigActions;
@@ -13,7 +15,7 @@ public class Game {
     Deck<AmmoCard> ammosDeck = new Deck<AmmoCard>(this);
     Deck<WeaponCard> weaponsDeck = new Deck<WeaponCard>(this);
     Deck<PowerUpCard> powerUpsDeck = new Deck<PowerUpCard>(this);
-    private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;
+    private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;        //a che serve questo spawnTiles??
     public final Tile[][] map;
 
     public Game(String jsonName) {
@@ -39,37 +41,50 @@ public class Game {
      * @param row
      * @param coloumn
      * @param doorsInMap
-     */ //bisogna aggiungere o un altro parametro in ingresso che specifichi il tipo di tile o rendiamo tile una classe concreta
-    public void initMap(TileColourEnum[] colourOfMapTile, int row, int coloumn, int[] doorsInMap){
+     */
+    // I paramteri che il metodo riceve sono così strutturati:
+    // numero di righe, numero di colonne
+    // array di TileColourEnum che definisce il colore di ogni Tile della mappa. Se un dato Tile è null, lo sarà anche nell'array
+    // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 0 ad uno spawnTile
+    // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
+    public void initMap(int row, int coloumn, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
+        ArrayList<TileColourEnum> tileColourList;
+        ArrayList<TileColourEnum> tempList = new ArrayList<>();
+        ArrayList<Integer> doorsList, typeOfTileList;
+        tileColourList = (ArrayList<TileColourEnum>) Arrays.asList(colourOfMapTile);
+        doorsList = (ArrayList<Integer>) Arrays.stream(doorsInMap).boxed().collect(Collectors.toList());
+        typeOfTileList = (ArrayList<Integer>) Arrays.stream(typeOfTile).boxed().collect(Collectors.toList());
         int k;
-        List<TileColourEnum> tempList = new LinkedList<>();
-        if(colourOfMapTile.length != row*coloumn){
+        if(tileColourList.size() != row*coloumn || typeOfTileList.size() != row*coloumn){
             throw new IllegalArgumentException("This list doesn't have the right dimension");
         }
-        spawnTiles = new /*tipo che hai scelto*/;
-        //TODO inizializzazione di spawnTiles tramite file json
         for(int i = 0; i < row; i++){
             for(int j = 0; j < coloumn; j++){
-                if (/* qui va inserita la condizione per cui il punto (i,j) sia nell'array spawnTiles*/)) {
-                    map[i][j] = new SpawnTile(i, j, colourOfMapTile[i*row + j], weaponsDeck, this);
-                } else {
-                    map[i][j] = new AmmoTile(i, j, colourOfMapTile[i*row + j], ammosDeck, this);
+                if (typeOfTileList.get(i*row+j) == 1) {
+                    map[i][j] = new SpawnTile(i, j, tileColourList.get(i*row+j), weaponsDeck);
+                }
+                else if(typeOfTileList.get(i*row+j) == 2){
+                    map[i][j] = new AmmoTile(i, j, tileColourList.get(i*row+j), ammosDeck);
+                }
+                else {
+                    map[i][j] = null;   //istruzione inserita per chiarezza, ma omissibile
                 }
             }
         }
-        /*vanno definiti i metodi in rosso se vuoi continuare ad usarli*/
         for(int i = 0; i < row; i++){
             for( int j = 0; j < coloumn; j++){
-                tempList.add(map[i][j].getTileColour());
-                while(doorsInMap.contains(i*row+j) && doorsInMap.indexOf(i*row+j)%2==0){
-                    k = doorsInMap[i*row+j+1];
-                    tempList.add(map[k%row][k/coloumn].getTileColour());
-                    doorsInMap.remove(i*row+j);
-                    doorsInMap.remove(i*row+j+1);
+                if(map[i][j] != null) {
+                    tempList.add(map[i][j].getTileColour());
+                    while (doorsList.contains(i * row + j) && doorsList.indexOf(i * row + j) % 2 == 0) {
+                        k = doorsList.get(i * row + j + 1);
+                        tempList.add(map[k / row][k % coloumn].getTileColour());
+                        doorsList.remove(i * row + j);
+                        doorsList.remove(i * row + j);
+                    }
                 }
                 for(int m = 0; m < row; m++){
                     for(int n = 0; n < coloumn; n++){
-                        if(tempList.contains(map[m][n].getTileColour())){
+                        if(map[m][n] != null && tempList.contains(map[m][n].getTileColour())){
                             map[i][j].addVisible(map[m][n]);
                         }
                     }

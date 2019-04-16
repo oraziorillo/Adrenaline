@@ -7,24 +7,19 @@ import java.util.Set;
 import java.util.Optional;
 
 public abstract class Tile {
-    private Game currGame;
     private final int x;
     private final int y;
     private final TileColourEnum tileColour;
     private HashSet<Pc> pcs;
     private HashSet<Tile> visibles;
 
-    public Tile(int x, int y, TileColourEnum colour, Game currGame) {
-        this.currGame = currGame;
+    //se Tile è astratta non ha senso inserire un costruttore
+    public Tile(int x, int y, TileColourEnum colour) {
         this.x = x;
         this.y = y;
         this.tileColour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
-    }
-
-    public Game getCurrGame(){
-        return currGame;
     }
 
     public int getX() {
@@ -98,7 +93,7 @@ public abstract class Tile {
         pcs.remove(c);
     }
 
-    public void addVisible(TileColourEnum t) {
+    public void addVisible(Tile t) {
         visibles.add(t);
     }
 
@@ -116,12 +111,14 @@ public abstract class Tile {
 class SpawnTile extends Tile {
 
     private WeaponCard[] weapons;
+    private Deck<WeaponCard> weaponDeck;
 
-    SpawnTile(int x, int y, TileColourEnum colour, Game game) {
-        super(x, y, colour, game);
+    SpawnTile(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck) {
+        super(x, y, colour);
+        this.weaponDeck = deck;
         weapons = new WeaponCard[3];
         for (int i = 0; i < 3; i++)
-            weapons[i] = getCurrGame().weaponsDeck.draw();
+            weapons[i] = weaponDeck.draw();
     }
 
     public WeaponCard[] getWeapons() {
@@ -144,26 +141,19 @@ class SpawnTile extends Tile {
 
 class AmmoTile extends Tile {
     private AmmoCard ammoCard;
+    private Deck<AmmoCard> ammoDeck
 
-    AmmoTile(int x, int y, TileColourEnum colour, Game game) {
-        super(x, y, colour, game);
-        ammoCard = getCurrGame().ammosDeck.draw();
+    AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck) {
+        super(x, y, colour);
+        ammoDeck = deck;
+        ammoCard = ammoDeck.draw();
     }
 
     public AmmoCard pickAmmo() {
         AmmoCard oldCard = ammoCard;
-        ammoCard = getCurrGame().ammosDeck.draw();
+        ammoCard = ammoDeck.draw();
         return oldCard;
     }
 
 }
 
-
-enum TileColourEnum {
-    RED,
-    YELLOW,
-    GREEN,
-    WHITE,
-    VIOLET,
-    BLUE;
-}
