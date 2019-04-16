@@ -2,6 +2,10 @@ package model;
 
 
 public class AmmoCard {
+    /**
+     * @author matteo
+     * @implSpec le ammoCard non hanno un nome...
+     */
     private final String name;
     private final short[] ammos;
     private final boolean hasPowerup;

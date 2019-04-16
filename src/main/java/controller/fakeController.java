@@ -1,9 +1,6 @@
 package controller;
 
-import model.Game;
-import model.Pc;
-import model.Tile;
-import model.WeaponCard;
+import model.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,87 +10,102 @@ public class fakeController {
 
     public static void main(String[] args){
         BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
-        Game currentGame= new Game();
-        Pc currrentPc=currentGame.getCurrentPc();
-        Tile currentTile;
-        String cmd[]=new String[2];
+        Game currentGame= new Game("jSonName");
+        Pc currentPc=currentGame.getCurrentPc();
+        String[] cmd=new String[2];
+        String[] arguments;
         while (!cmd[0].equals("quit")){
             if(currentGame.getRemainigActions()==0){
                 currentGame.nextTurn();
-                currrentPc=currentGame.getCurrentPc();
+                currentPc=currentGame.getCurrentPc();
             }
             try {
                 cmd=in.readLine().trim().split(" ",2);
-
+                arguments=cmd[1].split(",");
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
             }
             switch (cmd[0]){
                 case "move":
-                    String[] xy=cmd[1].split(",",2);
-                    int x=Integer.parseInt(xy[0]);
-                    int y=Integer.parseInt(xy[1]);
-                    currentTile=currrentPc.getCurrTile();
-                    Tile targetTile=currentGame.getMap()[x][y];
-                    try{
-                        currrentPc.move(x,y,3);
-                    }catch (IllegalArgumentException e){
-                        e.printStackTrace();
-                    }
-
+                        move(arguments,currentPc);
                     break;
                 case "collect":
-                    String[] cmdArgs=cmd[1].split(",");
-                    if(cmdArgs.length==3){  //mi muovo prima
-                        try{
-                            int moveDist;
-                            if(currrentPc.adrenalineLevel()>=1){
-                                moveDist=2;
-                            }else {
-                                moveDist=1;
-                            }
-                            currrentPc.move(x,y,moveDist);
-                        }catch (IllegalArgumentException e){
-                            e.printStackTrace();
-                        }
-                    }
-                    currrentPc.getCurrTile().collect();
+                        collect(arguments,currentPc);
                     break;
                 case "shoot":
-                    cmdArgs=cmd[1].split(",",2);
-                    WeaponCard weaponCard=currrentPc.getWeapons[cmd[1]];
-                    do{
-                        try {
-                            cmd=in.readLine().split(" ");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            continue;
-                        }
-                        switch (cmd[0]){
-                            case "select":
-                                weaponCard.addEffect(Integer.parseInt(cmd[1]));
-                                break;
-                            case "attach":
-                                for(int i=1; i<cmd.length-1;i++) {
-                                    weaponCard.addEffect(i);
-                                }
-                                break;
-                            case "shoot":
-                                weaponCard.use();
-                                break;
-                                default:
-                                    System.out.println("Comando non riconosciuto");
-                                    break;
-
-
-                        }
-                    }while (!cmd[0].equals("shoot"));
+                    shoot(arguments,currentPc);
+                    break;
+                case "powerup":
+                    powerup(arguments,currentPc);
                     break;
                     default:
                         System.out.println("Comando non riconosciuto");
-                        continue;
             }
         }
     }
+
+    private static void move(String[] args, Pc currentPc){
+        if(args.length<2){
+            throw new IllegalArgumentException("Comando non valido");
+        }
+        int x=Integer.parseInt(args[0]);
+        int y=Integer.parseInt(args[1]);
+        try{
+            currentPc.move(x,y,3);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void collect(String[] args,Pc currentPc){
+        int code=0;
+        int x=0;
+        int y=0;
+        switch (args.length){
+            case 1:
+                code=Integer.parseInt(args[0]);
+                break;
+            case 2:
+                x=Integer.parseInt(args[0]);
+                y=Integer.parseInt(args[1]);
+                break;
+            case 3:
+                code=Integer.parseInt(args[0]);
+                x=Integer.parseInt(args[1]);
+                y=Integer.parseInt(args[2]);
+                break;
+                default:
+                    throw new IllegalArgumentException("Comando non valido");
+        }
+        if(x<0||y<0){
+            throw new IllegalArgumentException("Comando non valido");
+        }
+        if(x>0||y>0){
+            try{
+                int moveDist;
+                if(currentPc.adrenalineLevel()>=1){
+                    moveDist=2;
+                }else {
+                    moveDist=1;
+                }
+                currentPc.move(x,y,moveDist);
+            }catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
+        }
+        currentPc.getCurrTile().collect(currentPc,code);
+    }
+
+    private static void shoot(String[] args, Pc currentPc){
+        //TODO
+    }
+
+    private static void powerup(String[] args,Pc currentPc){
+        int powerupIndex=Integer.parseInt(args[0]);
+        PowerUpCard powerup=currentPc.getPowerUps().get(powerupIndex);
+        powerup.useEffect();
+    }
+
 }

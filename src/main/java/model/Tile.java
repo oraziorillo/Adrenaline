@@ -13,7 +13,12 @@ public abstract class Tile {
     private HashSet<Pc> pcs;
     private HashSet<Tile> visibles;
 
-    //se Tile è astratta non ha senso inserire un costruttore
+    /**
+     * Builder for a generic tile
+     * @param x first index in map
+     * @param y second index in map
+     * @param colour the room colour
+     */
     public Tile(int x, int y, TileColourEnum colour) {
         this.x = x;
         this.y = y;
@@ -22,15 +27,26 @@ public abstract class Tile {
         this.visibles = new HashSet<>();
     }
 
+    /**
+     * Getter for x coordinate in the map
+     * @return the x coordinate of this tile
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * Getter for y coordinate in the map
+     * @return the y coordinate of this tile
+     */
     public int getY() {
         return y;
     }
 
     /**
+     * @author matteo
+     * @implNote usare x e y non sarebbe più pulito?
+     * Returns an HashSet containing all the Tiles at a given distance
      * @param dist distance of returned tiles
      * @return HashSet of Tiles at distance dist
      */
@@ -54,12 +70,25 @@ public abstract class Tile {
         return temp;
     }
 
+    /**
+     * Getter for room colour
+     * @return The colour of this room
+     */
     public TileColourEnum getTileColour() {
         return tileColour;
     }
 
+    //La tile alla card. dir. specificata si ottiene più facilmente con semplice algebra sulla mappa
+
+    /**
+     * @author matteo
+     * @implNote usando gli indici non risulta più pulito?
+     * Given a cardinal direction, returns the first tile in that direction if no wall is encountered
+     * @param direction the cardinal direction
+     * @return The first tile in the given direction if there is no wall between, Optional.empty else
+     */
     public Optional<Tile> onDirection(CardinalDirectionEnum direction){
-        Optional<Tile> temp = null;
+        Optional<Tile> temp = Optional.empty();
         switch(direction) {
             case NORTH:
                 temp = visibles.stream().filter(elem -> elem.getY() == this.getY() + 1 && elem.getX() == this.getX()).findFirst();
@@ -77,28 +106,57 @@ public abstract class Tile {
         return temp;
     }
 
+    /**
+     * Returns the Pcs on this tile
+     * @return the Pcs on this tile
+     */
     public HashSet<Pc> getPcs() {
-        return (HashSet<Pc>) pcs.clone();
+        return pcs;
     }
 
+    /**
+     * returns the tiles that a Pc on this tile could see
+     * @return the tile visibles from this
+     */
     public HashSet<Tile> getVisibles() {
-        return (HashSet<Tile>) visibles.clone();
+        return (HashSet<Tile>)visibles.clone();
     }
 
+    /**
+     * adds a pc to this tile
+     * @param pc the pc to put on this tile
+     */
     public void addPc(Pc pc) {
         pcs.add(pc);
     }
 
+    /**
+     * removes a pc from this tile
+     * @param c the pc to remove
+     */
     public void removePc(Pc c) {
         pcs.remove(c);
     }
 
+    /**
+     *after this method the given tile will be visible from this tile (and then contained into the getVisibles collection)
+     * @param t the tile to make visible
+     */
     public void addVisible(Tile t) {
         visibles.add(t);
     }
 
-    /* davvero utile???? non dovrebbe essere un '=='?? Noi restituiamo sempre i riferimenti ai tile, mai cloni
+    /**
+     * @author matteo
+     * @apiNote Fare qui il metodo che fa raccogliere cose mi sembra la soluzione più semplice
+     * Abstract method. Used for subclasses for giving objects to a player.
+     * @param player the player wich is collecting something
+     * @param objectIndex the index of the object to collect (weapon). In some subclasses could be irrelevant (one object only)
+     */
+    public abstract void collect(Pc player, int objectIndex);
 
+    /* davvero utile???? non dovrebbe essere un '=='?? Noi restituiamo sempre i riferimenti ai tile, mai cloni
+    MATTEO: in effetti non serve a molto
     public boolean equals(Tile t){
         return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
     }
@@ -136,6 +194,11 @@ class SpawnTile extends Tile {
         weapons[index] = w;
         return temp;
     }
+
+    @Override
+    public void collect(Pc player, int objectIndex) {
+        //TODO
+    }
 }
 
 
@@ -155,5 +218,10 @@ class AmmoTile extends Tile {
         return oldCard;
     }
 
+    @Override
+    public void collect(Pc player, int objectIndex) {
+        //TODO
+    }
 }
+
 

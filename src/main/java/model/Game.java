@@ -15,7 +15,11 @@ public class Game {
     Deck<AmmoCard> ammosDeck = new Deck<AmmoCard>(this);
     Deck<WeaponCard> weaponsDeck = new Deck<WeaponCard>(this);
     Deck<PowerUpCard> powerUpsDeck = new Deck<PowerUpCard>(this);
-    private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;        //a che serve questo spawnTiles??
+    private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;        //a che serve questo spawnTiles?? MATTEO: condivido il dubbio
+    /**
+     * @author matteo
+     * @implNote Forse fare davvero una classe Map potrebbe snellire molto il codice generale, togliendo ad esempio molti compiti a Tile
+     */
     public final Tile[][] map;
 
     public Game(String jsonName) {
@@ -38,8 +42,8 @@ public class Game {
     /**
      *
      * @param colourOfMapTile
-     * @param row
-     * @param coloumn
+     * @param row number of rows of the map to create
+     * @param coloumn number of rows of the map to create
      * @param doorsInMap
      */
     // I paramteri che il metodo riceve sono così strutturati:
@@ -95,6 +99,10 @@ public class Game {
 
     }
 
+    /**
+     * @author matteo
+     * @implNote orazio, il mazzo armi lo carichiamo da Json?
+     */
     private void initDecks() {
         //TODO
     }
@@ -123,6 +131,9 @@ public class Game {
         return killShotTrack;
     }
 
+    /**
+     *
+     */
     public void nextTurn() {
         if (currentPcIndex == pcs.size() - 1)
             currentPcIndex = 0;
@@ -133,6 +144,7 @@ public class Game {
 
     /* public SpawnTile respawnpoint(TileColourEnum colour) {
         //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
+        //MATTEO: A cosa ci serve? non ci basta fare respawn su map[x][y]?
         return new GenerationTile(0,0,null);
     }
 

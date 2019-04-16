@@ -57,14 +57,16 @@ public class WeaponCard {
         return currentCost;
     }
 
-    public void addEffect(WeaponEffect eff) {
+    public void addEffect(int index) {
+        WeaponEffect eff=fireModes.get(index);
         currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
         currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
         currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
         currEffect.add(eff);
     }
 
-    public void removeEffect(WeaponEffect eff) {
+    public void removeEffect(int index) {
+        WeaponEffect eff=fireModes.get(index);
         currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
         currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
         currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];

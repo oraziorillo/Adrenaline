@@ -5,8 +5,14 @@ import model.Enumerations.PcColourEnum;
 import model.Enumerations.TileColourEnum;
 import model.Exceptions.NotEnoughAmmosException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * @author matteo
+ * @implSpec A tutti i tutorati ci hanno detto di snellire questa classe, che è troppo GodClass
+ */
 public class Pc {
 
     private final Game currGame;
@@ -18,7 +24,7 @@ public class Pc {
     private short[] ammos;
     private PcColourEnum[] damageTrack;
     private WeaponCard[] weapons;
-    private HashSet<PowerUpCard> powerUps;
+    private ArrayList<PowerUpCard> powerUps;
     private Tile currTile;
 
 
@@ -34,6 +40,10 @@ public class Pc {
         this.weapons = new WeaponCard[3];
         this.powerUps = new HashSet<>();
         this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
+    }
+
+    public WeaponCard[] getWeapons(){
+        return this.weapons;
     }
 
     public boolean isFullyArmed() {
@@ -166,6 +176,12 @@ public class Pc {
         //this.currTile = getGenerationTile(colour);
     }
 
+    /**
+     * @autor matteo
+     * @implNote NotEnoughAmmosException è una IllegalStateException
+     * @param ammos
+     * @throws NotEnoughAmmosException
+     */
     public void payAmmos(short[] ammos) throws NotEnoughAmmosException {
         if (this.ammos[AmmoEnum.BLUE.ordinal()] < ammos[AmmoEnum.BLUE.ordinal()] ||
                 this.ammos[AmmoEnum.RED.ordinal()] < ammos[AmmoEnum.RED.ordinal()] ||
@@ -175,6 +191,15 @@ public class Pc {
         this.ammos[AmmoEnum.BLUE.ordinal()] -= ammos[AmmoEnum.BLUE.ordinal()];
         this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
         this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
+    }
+
+    public int adrenalineLevel(){
+        //TODO
+        return 0;
+    }
+
+    public ArrayList<PowerUpCard> getPowerUps() {
+        return powerUps;
     }
 }
 
