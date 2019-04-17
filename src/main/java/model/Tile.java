@@ -3,7 +3,6 @@ package model;
 import model.Enumerations.CardinalDirectionEnum;
 import model.Enumerations.TileColourEnum;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Optional;
 
 public abstract class Tile {
@@ -204,7 +203,7 @@ class SpawnTile extends Tile {
 
 class AmmoTile extends Tile {
     private AmmoCard ammoCard;
-    private Deck<AmmoCard> ammoDeck
+    private Deck<AmmoCard> ammoDeck;
 
     AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck) {
         super(x, y, colour);

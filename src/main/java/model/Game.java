@@ -131,9 +131,6 @@ public class Game {
         return killShotTrack;
     }
 
-    /**
-     *
-     */
     public void nextTurn() {
         if (currentPcIndex == pcs.size() - 1)
             currentPcIndex = 0;

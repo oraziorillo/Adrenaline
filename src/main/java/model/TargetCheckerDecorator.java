@@ -1,12 +1,8 @@
 package model;
-package model;
 
 import model.Enumerations.CardinalDirectionEnum;
-import model.Enumerations.TileColourEnum;
 import org.json.simple.JSONObject;
-
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 

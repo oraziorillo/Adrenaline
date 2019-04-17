@@ -1,10 +1,6 @@
 package model;
 
-import model.Pc;
-import model.Game;
-
 import java.util.HashSet;
-import java.util.List;
 
 public abstract class TargetChecker {
     //TODO togliere attributo game e metterlo nel costruttore

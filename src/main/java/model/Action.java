@@ -29,17 +29,7 @@ public abstract class Action {
      * @return a Set of all possible target Tiles
      */
     public Set<Tile> validTargetTiles() {
-        HashSet<Tile> validTargetTiles = new HashSet<>();
-        Tile currTile = this.effect.getCard().getDeck().getCurrGame().map[0][0];
-        for (MapIterator itr = new MapIterator(currTile); itr.hasNext(); )
-            if (targetChecker.isValid(currTile)) {
-                validTargetTiles.add(currTile);
-                currTile = itr.next();
-            }
-        if (targetChecker.isValid(currTile)) {
-            validTargetTiles.add(currTile);
-        }
-        return validTargetTiles;
+        return targetChecker.validTiles();
     }
 }
 
@@ -58,10 +48,10 @@ class DamageMarksAction extends Action {
             JSONObject jsonTargetChecker = (JSONObject) jsonAction.get("targetChecker" + i);;
             switch ((String)(jsonTargetChecker.get("type"))){
                 case "visible":
-                    this.targetChecker = new VisibleDecorator(targetChecker);
+                    this.targetChecker = new VisibleDecorator(targetChecker, this.effect.getCard().getDeck().getCurrGame().getCurrentPc());
                     break;
                 case "blindness":
-                    this.targetChecker = new BlindnessDecorator(targetChecker);
+                    this.targetChecker = new BlindnessDecorator(targetChecker, this.effect.getCard().getDeck().getCurrGame().getCurrentPc());
                     break;
                 case "minDistanceDecorator":
                     this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker);
@@ -71,6 +61,9 @@ class DamageMarksAction extends Action {
                     break;
                 case "straightLine":
                     this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
+                    break;
+                case "beyondWallsStraightLine":
+                    this.targetChecker = new BeyondWallsStraightLineDecorator(targetChecker, null);
                     break;
                 case "sameRoom":
                     this.targetChecker = new SameRoomDecorator(targetChecker);

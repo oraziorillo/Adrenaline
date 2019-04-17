@@ -6,8 +6,8 @@ import model.Enumerations.TileColourEnum;
 import model.Exceptions.NotEnoughAmmosException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+
+import static model.Constants.LIFEPOINTS;
 
 /**
  * @author matteo
@@ -36,9 +36,9 @@ public class Pc {
         this.numOfDeath = 0;
         this.marks = new short[5];
         this.ammos = new short[3];
-        this.damageTrack = new PcColourEnum[12];
+        this.damageTrack = new PcColourEnum[LIFEPOINTS];
         this.weapons = new WeaponCard[3];
-        this.powerUps = new HashSet<>();
+        this.powerUps = new ArrayList<>();
         this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
     }
 
