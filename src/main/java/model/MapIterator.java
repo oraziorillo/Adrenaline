@@ -2,7 +2,7 @@ package model;
 
 public class MapIterator {
 
-    private Tile currTile;
+    /*private Tile currTile;
 
     public MapIterator(Tile firstTile){
         currTile = firstTile;
@@ -23,4 +23,6 @@ public class MapIterator {
             return currTile.getCurrGame().getTile(0, currTile.getY() + 1);
         }
     }
+
+     */
 }
