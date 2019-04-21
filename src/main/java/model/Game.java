@@ -15,7 +15,7 @@ public class Game {
     Deck<AmmoCard> ammosDeck = new Deck<AmmoCard>(this);
     Deck<WeaponCard> weaponsDeck = new Deck<WeaponCard>(this);
     Deck<PowerUpCard> powerUpsDeck = new Deck<PowerUpCard>(this);
-    private final /*scegli tu il tipo che ti fa comodo*/ spawnTiles;        //a che serve questo spawnTiles?? MATTEO: condivido il dubbio
+    private /*scegli tu il tipo che ti fa comodo*/ArrayList<SpawnTile> spawnTiles;
     /**
      * @author matteo
      * @implNote Forse fare davvero una classe Map potrebbe snellire molto il codice generale, togliendo ad esempio molti compiti a Tile
@@ -26,6 +26,7 @@ public class Game {
         remainigActions = 2;
         currentPcIndex = 0;
         pcs = new ArrayList<>(0);
+        spawnTiles = new ArrayList<>();
         killShotTrack = new Killshot[8];
         try {
             WeaponCard weaponCard;
@@ -49,7 +50,7 @@ public class Game {
     // I paramteri che il metodo riceve sono così strutturati:
     // numero di righe, numero di colonne
     // array di TileColourEnum che definisce il colore di ogni Tile della mappa. Se un dato Tile è null, lo sarà anche nell'array
-    // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 0 ad uno spawnTile
+    // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
     public void initMap(int row, int coloumn, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<TileColourEnum> tileColourList;
@@ -65,10 +66,11 @@ public class Game {
         for(int i = 0; i < row; i++){
             for(int j = 0; j < coloumn; j++){
                 if (typeOfTileList.get(i*row+j) == 1) {
-                    map[i][j] = new SpawnTile(i, j, tileColourList.get(i*row+j), weaponsDeck);
+                    map[i][j] = new AmmoTile(i, j, tileColourList.get(i*row+j), ammosDeck);
                 }
                 else if(typeOfTileList.get(i*row+j) == 2){
-                    map[i][j] = new AmmoTile(i, j, tileColourList.get(i*row+j), ammosDeck);
+                    map[i][j] = new SpawnTile(i, j, tileColourList.get(i*row+j), weaponsDeck);
+                    spawnTiles.add(map[i][j]);
                 }
                 else {
                     map[i][j] = null;   //istruzione inserita per chiarezza, ma omissibile
@@ -139,11 +141,14 @@ public class Game {
     }
 
 
-    /* public SpawnTile respawnpoint(TileColourEnum colour) {
-        //TODO: IMPLEMENTA LA RICERCA DEL GENERATION TILE DI QUEL COLORE
-        //MATTEO: A cosa ci serve? non ci basta fare respawn su map[x][y]?
-        return new GenerationTile(0,0,null);
+     public void respawnCurrentPc(TileColourEnum colour) {
+        Optional<SpawnTile> t;
+        Pc currentPc;
+        t = spawnTiles.stream().filter(elem -> elem.getTileColour() == colour).findFirst();
+        currentPc = pcs.get(currentPcIndex);
+        t.get().addPc(currentPc);
+        currentPc.respawn(t.get());
     }
 
-     */
+
 }

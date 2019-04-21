@@ -82,13 +82,13 @@ public class Pc {
 
     //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di game)
     public void move(int x,int y,int maxDist) {
-        Tile targetTile=currGame.map[x][y];
+        Tile targetTile = currGame.map[x][y];
         if(!currTile.atDistance(maxDist).contains(targetTile)){
             throw new IllegalArgumentException("Too far away");
         }
         currTile.removePc(this);
         targetTile.addPc(this);
-        this.currTile =targetTile;
+        this.currTile = targetTile;
     }
 
 
@@ -169,11 +169,10 @@ public class Pc {
         this.points += n;
     }
 
-    public void respawn(TileColourEnum colour) {
+    public void respawn(SpawnTile tile) {
         this.damageTrack = new PcColourEnum[12];
         numOfDeath = (short) (numOfDeath + 1);
-        //TODO: è dato dal colour che viene passato come parametro
-        //this.currTile = getGenerationTile(colour);
+        this.currTile = tile;
     }
 
     /**
