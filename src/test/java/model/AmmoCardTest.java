@@ -30,7 +30,9 @@ public class AmmoCardTest {
     @Theory
     public void throwsExceptionOnInvalidParameters(short[] ammos, boolean hasPowerup) {
         assumeFalse("Valid parameters", AmmoCard.validParameters(ammos, hasPowerup));
-        assertThrows("Exception not thrown", IllegalArgumentException.class, () -> {new AmmoCard("prova2", ammos, hasPowerup);});
+        assertThrows("Exception not thrown", IllegalArgumentException.class, () -> {
+            new AmmoCard("prova2", ammos, hasPowerup);
+        });
     }
 
     @Theory

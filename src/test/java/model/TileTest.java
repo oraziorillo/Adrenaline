@@ -4,16 +4,10 @@ import model.Enumerations.TileColourEnum;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TileTest {
-
-    class ConcreteTile extends Tile {
-
-        ConcreteTile(int x, int y) {
-            super(x, y, TileColourEnum.GREEN);
-        }
-    }
 
     @Test
     public void ordinaryDistanceTest() {
@@ -59,6 +53,13 @@ public class TileTest {
         tester.removePc(c1);
         assertFalse(tester.getPcs().contains(c1));
         assertTrue(tester.getPcs().contains(c2));
+    }
+
+    class ConcreteTile extends Tile {
+
+        ConcreteTile(int x, int y) {
+            super(x, y, TileColourEnum.GREEN);
+        }
     }
 
 

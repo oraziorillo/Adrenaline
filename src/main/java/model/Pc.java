@@ -169,7 +169,7 @@ public class Pc {
         this.points += n;
     }
 
-    public void respawn(SpawnTile tile) {
+    public void respawn(Tile tile) {
         this.damageTrack = new PcColourEnum[12];
         numOfDeath = (short) (numOfDeath + 1);
         this.currTile = tile;

@@ -1,9 +1,8 @@
 package model;
 
 import model.Enumerations.TileColourEnum;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,15 +11,15 @@ public class Game {
     private int currentPcIndex;
     private ArrayList<Pc> pcs;
     private Killshot[] killShotTrack;
-    Deck<AmmoCard> ammosDeck = new Deck<AmmoCard>(this);
-    Deck<WeaponCard> weaponsDeck = new Deck<WeaponCard>(this);
-    Deck<PowerUpCard> powerUpsDeck = new Deck<PowerUpCard>(this);
-    private /*scegli tu il tipo che ti fa comodo*/ArrayList<SpawnTile> spawnTiles;
+    Deck<AmmoCard> ammosDeck = new Deck<>(this);
+    Deck<WeaponCard> weaponsDeck = new Deck<>(this);
+    Deck<PowerUpCard> powerUpsDeck = new Deck<>(this);
+    private ArrayList<Tile> spawnTiles;
     /**
      * @author matteo
      * @implNote Forse fare davvero una classe Map potrebbe snellire molto il codice generale, togliendo ad esempio molti compiti a Tile
      */
-    public final Tile[][] map;
+    public Tile[][] map;
 
     public Game(String jsonName) {
         remainigActions = 2;
@@ -31,8 +30,9 @@ public class Game {
         try {
             WeaponCard weaponCard;
             JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
-            for (int i = 1; jsonObject.get("weapon" + i) != null; i++) {
-                weaponCard = new WeaponCard((JSONObject) jsonObject.get("fireMode" + i), weaponsDeck);
+            JSONObject[] jsonWeapons = (JSONObject[]) jsonObject.get("weapons");
+            for (JSONObject jsonWeapon : jsonWeapons) {
+                weaponCard = new WeaponCard(jsonWeapon, weaponsDeck);
                 weaponsDeck.add(weaponCard);
             }
         } catch (Exception e) {
@@ -43,8 +43,8 @@ public class Game {
     /**
      *
      * @param colourOfMapTile
-     * @param row number of rows of the map to create
-     * @param coloumn number of rows of the map to create
+     * @param rows number of rows of the map to create
+     * @param coloumns number of rows of the map to create
      * @param doorsInMap
      */
     // I paramteri che il metodo riceve sono così strutturati:
@@ -52,24 +52,24 @@ public class Game {
     // array di TileColourEnum che definisce il colore di ogni Tile della mappa. Se un dato Tile è null, lo sarà anche nell'array
     // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
-    public void initMap(int row, int coloumn, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
+    public void initMap(int rows, int coloumns, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<TileColourEnum> tileColourList;
         ArrayList<TileColourEnum> tempList = new ArrayList<>();
         ArrayList<Integer> doorsList, typeOfTileList;
         tileColourList = (ArrayList<TileColourEnum>) Arrays.asList(colourOfMapTile);
         doorsList = (ArrayList<Integer>) Arrays.stream(doorsInMap).boxed().collect(Collectors.toList());
         typeOfTileList = (ArrayList<Integer>) Arrays.stream(typeOfTile).boxed().collect(Collectors.toList());
-        int k;
-        if(tileColourList.size() != row*coloumn || typeOfTileList.size() != row*coloumn){
+        if(tileColourList.size() != rows*coloumns || typeOfTileList.size() != rows*coloumns){
             throw new IllegalArgumentException("This list doesn't have the right dimension");
         }
-        for(int i = 0; i < row; i++){
-            for(int j = 0; j < coloumn; j++){
-                if (typeOfTileList.get(i*row+j) == 1) {
-                    map[i][j] = new AmmoTile(i, j, tileColourList.get(i*row+j), ammosDeck);
+        map = new Tile[rows][coloumns];
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < coloumns; j++){
+                if (typeOfTileList.get(i*rows+j) == 1) {
+                    map[i][j] = new AmmoTile(i, j, tileColourList.get(i*rows+j), ammosDeck);
                 }
-                else if(typeOfTileList.get(i*row+j) == 2){
-                    map[i][j] = new SpawnTile(i, j, tileColourList.get(i*row+j), weaponsDeck);
+                else if(typeOfTileList.get(i*rows+j) == 2){
+                    map[i][j] = new SpawnTile(i, j, tileColourList.get(i*rows+j), weaponsDeck);
                     spawnTiles.add(map[i][j]);
                 }
                 else {
@@ -77,19 +77,19 @@ public class Game {
                 }
             }
         }
-        for(int i = 0; i < row; i++){
-            for( int j = 0; j < coloumn; j++){
+        for(int i = 0; i < rows; i++){
+            for( int j = 0; j < coloumns; j++){
                 if(map[i][j] != null) {
                     tempList.add(map[i][j].getTileColour());
-                    while (doorsList.contains(i * row + j) && doorsList.indexOf(i * row + j) % 2 == 0) {
-                        k = doorsList.get(i * row + j + 1);
-                        tempList.add(map[k / row][k % coloumn].getTileColour());
-                        doorsList.remove(i * row + j);
-                        doorsList.remove(i * row + j);
+                    while (doorsList.contains(i * rows + j) && doorsList.indexOf(i * rows + j) % 2 == 0) {
+                        int k = doorsList.get(i * rows + j + 1);
+                        tempList.add(map[k / rows][k % coloumns].getTileColour());
+                        doorsList.remove(i * rows + j);
+                        doorsList.remove(i * rows + j);
                     }
                 }
-                for(int m = 0; m < row; m++){
-                    for(int n = 0; n < coloumn; n++){
+                for(int m = 0; m < rows; m++){
+                    for(int n = 0; n < coloumns; n++){
                         if(map[m][n] != null && tempList.contains(map[m][n].getTileColour())){
                             map[i][j].addVisible(map[m][n]);
                         }
@@ -142,7 +142,7 @@ public class Game {
 
 
      public void respawnCurrentPc(TileColourEnum colour) {
-        Optional<SpawnTile> t;
+        Optional<Tile> t;
         Pc currentPc;
         t = spawnTiles.stream().filter(elem -> elem.getTileColour() == colour).findFirst();
         currentPc = pcs.get(currentPcIndex);

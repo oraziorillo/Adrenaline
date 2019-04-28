@@ -9,14 +9,7 @@ public abstract class PowerUpCard {
 
     public abstract void useEffect();
 
-    public abstract void useAsAmmo(){
-
-    };
+    public abstract void useAsAmmo();
 
     public abstract void useToRespawn();
-}
-
-
-public class TargetingScope extends  PowerUpCard{
-
 }

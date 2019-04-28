@@ -14,16 +14,17 @@ import static org.junit.Assert.assertSame;
 @RunWith(MockitoJUnitRunner.class)
 public class AmmoTileTest {
 
-    final int x=3;
-    final int y=5;
-    final TileColourEnum colour=TileColourEnum.BLUE;
-    @Mock Deck<AmmoCard> deck;
-    AmmoCard card1,card2;
+    final int x = 3;
+    final int y = 5;
+    final TileColourEnum colour = TileColourEnum.BLUE;
+    @Mock
+    Deck<AmmoCard> deck;
+    AmmoCard card1, card2;
     AmmoTile tested;
 
 
     @Before
-    public void setup(){
+    public void setup() {
         card1 = new AmmoCard(new short[]{2, 0, 0}, true);
         card2 = new AmmoCard(new short[]{0, 2, 1}, false);
         Mockito.when(deck.draw()).thenReturn(card1).thenReturn(card2);
@@ -54,8 +55,8 @@ public class AmmoTileTest {
     }
 
     @Test
-    public void roomColourSettedFine(){
-        assertEquals(tested.getTileColour(),colour);
+    public void roomColourSettedFine() {
+        assertEquals(tested.getTileColour(), colour);
     }
 
 }

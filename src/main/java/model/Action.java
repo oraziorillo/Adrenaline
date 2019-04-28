@@ -44,9 +44,9 @@ class DamageMarksAction extends Action {
         super(effect);
         this.damage = (short) jsonAction.get("damage");
         this.marks = (short) jsonAction.get("marks");
-        for (int i = 1; jsonAction.get("targetChecker" + i) != null; i++) {
-            JSONObject jsonTargetChecker = (JSONObject) jsonAction.get("targetChecker" + i);;
-            switch ((String)(jsonTargetChecker.get("type"))){
+        JSONObject[] jsonTargetCheckers = (JSONObject[]) jsonAction.get("targetCheckers");
+        for (JSONObject jsonTargetChecker : jsonTargetCheckers) {
+            switch ((String)jsonTargetChecker.get("type")){
                 case "visible":
                     this.targetChecker = new VisibleDecorator(targetChecker, this.effect.getCard().getDeck().getCurrGame().getCurrentPc());
                     break;

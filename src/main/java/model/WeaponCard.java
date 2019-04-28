@@ -26,13 +26,15 @@ public class WeaponCard {
         this.name = (String) jsonWeaponCard.get("name");
         this.loaded = true;
         this.ammos = (short[]) jsonWeaponCard.get("ammos");
-        for (int i = 1; jsonWeaponCard.get("fireMode" + i) != null; i++) {
-            WeaponEffect weaponEffect = new WeaponEffect((JSONObject) jsonWeaponCard.get("fireMode" + i), this);
-            fireModes.add(weaponEffect);
+        JSONObject[] jsonFireModes = (JSONObject[]) jsonWeaponCard.get("firemodes");
+        for (JSONObject jsonFireMode : jsonFireModes) {
+            WeaponEffect weaponEffect = new WeaponEffect(jsonFireMode, this);
+            this.fireModes.add(weaponEffect);
         }
-        for (int i = 1; jsonWeaponCard.get("upgrade" + i) != null; i++) {
-            WeaponEffect weaponEffect = new WeaponEffect((JSONObject) jsonWeaponCard.get("upgrade" + i), this);
-            upgrades.add(weaponEffect);
+        JSONObject[] jsonUpgrades = (JSONObject[]) jsonWeaponCard.get("upgrades");
+        for (JSONObject jsonUpgrade : jsonUpgrades) {
+            WeaponEffect weaponEffect = new WeaponEffect(jsonUpgrade, this);
+            this.upgrades.add(weaponEffect);
         }
         this.currEffect = new LinkedList<>();
     }

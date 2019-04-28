@@ -18,17 +18,15 @@ public class WeaponEffect {
     public WeaponEffect(JSONObject jsonWeaponEffect, WeaponCard card) {
         this.card = card;
         this.cost = (short[]) jsonWeaponEffect.get("cost");
-        int i = 1; Action action; JSONObject tempAction;
-        while (jsonWeaponEffect.get("action" + i) != null) {
-            tempAction = (JSONObject) jsonWeaponEffect.get("action" + i);
-            if ((boolean)tempAction.get("isDamageMarksAction")) {
-                action = new DamageMarksAction(tempAction, this);
-                actions.add(action);
+        JSONObject[] jsonActions = (JSONObject[]) jsonWeaponEffect.get("actions");
+        for (JSONObject jsonAction : jsonActions) {
+            Action action;
+            if ((boolean)jsonAction.get("isMovement")) {
+                action = new MovementAction(jsonAction, this);
             } else {
-                action = new MovementAction(tempAction, this);
-                actions.add(action);
+                action = new DamageMarksAction(jsonAction, this);
             }
-            i++;
+            actions.add(action);
         }
     }
 
