@@ -34,8 +34,6 @@ public class AmmoTileTest {
 
     @Test
     public void xySettedFine() {
-        int x = 3;
-        int y = 5;
         Deck<AmmoCard> deck = Mockito.mock(Deck.class);
         AmmoCard card = new AmmoCard(new short[]{2, 0, 0}, true);
         Mockito.when(deck.draw()).thenReturn(card);
