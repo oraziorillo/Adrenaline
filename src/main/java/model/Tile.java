@@ -131,10 +131,10 @@ public abstract class Tile {
 
     /**
      * removes a pc from this tile
-     * @param pc the pc to remove
+     * @param c the pc to remove
      */
-    public void removePc(Pc pc) {
-        pcs.remove(pc);
+    public void removePc(Pc c) {
+        pcs.remove(c);
     }
 
     /**
@@ -154,6 +154,13 @@ public abstract class Tile {
      */
     public abstract void collect(Pc player, int objectIndex);
 
+    /* davvero utile???? non dovrebbe essere un '=='?? Noi restituiamo sempre i riferimenti ai tile, mai cloni
+    MATTEO: in effetti non serve a molto
+    public boolean equals(Tile t){
+        return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
+    }
+
+     */
 
 }
 
