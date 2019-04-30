@@ -8,7 +8,6 @@ import static model.Constants.LIFEPOINTS;
 
 public class PcBoard {
 
-    private Pc pc;
     private short points;
     private short numOfDeath;
     private short damageTrackIndex;     //è l'indice dell'ultimo elemento inserito
@@ -16,8 +15,7 @@ public class PcBoard {
     private short[] ammos;
     private PcColourEnum[] damageTrack;
 
-    public PcBoard(Pc pc){
-        this.pc = pc;
+    public PcBoard(){
         this.points = 0;
         this.numOfDeath = 0;
         this.damageTrackIndex = 0;
@@ -38,8 +36,8 @@ public class PcBoard {
         this.points += earnedPoints;
     }
 
-    public void addMarks(short numOfMarks) {
-        marks[this.pc] = numOfMarks;
+    public void addMarks(PcColourEnum selectedColour, short numOfMarks) {
+        marks[selectedColour.ordinal()] = numOfMarks;
     }
 
     public short getMarks(PcColourEnum selectedColour) {

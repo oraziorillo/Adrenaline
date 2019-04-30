@@ -15,7 +15,6 @@ import static model.Constants.MAX_WEAPONS_IN_HAND;
  * @implSpec A tutti i tutorati ci hanno detto di snellire questa classe, che è troppo GodClass
  */
 public class Pc {
-
     private final Game currGame;
     private final String name;
     private final PcColourEnum colour;
@@ -28,8 +27,8 @@ public class Pc {
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
-        this.colour = colour;
         this.name = colour.getName();
+        this.colour = colour;
         this.adrenaline = 0;
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
@@ -49,8 +48,11 @@ public class Pc {
         return true;
     }
 
-    public ArrayList<PowerUpCard> getPowerUps() {
-        return powerUps;
+    public PowerUpCard getPowerUpCard(int index) throws IllegalArgumentException{
+        if(index < 0 || index > 3){
+            throw new IllegalArgumentException("This index is not valid");
+        }
+        return powerUps.get(index);
     }
 
     public boolean isFullyPoweredUp(){
@@ -129,9 +131,14 @@ public class Pc {
         powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
     }
 
+    public void takeMarks(short marks){
+        PcColourEnum colour = currGame.getCurrentPc().getColour();
+        pcBoard.addMarks(colour, marks);
+    }
+
     public void takeDamage(short damage) {
-        int index = 0;
-        short totalDamage = (short) (pcBoard.getMarks(currGame.getCurrentPc().getColour())] + damage);
+        short totalDamage;
+        totalDamage = (short) (pcBoard.getMarks(currGame.getCurrentPc().getColour()) + damage);
         pcBoard.addDamage(currGame.getCurrentPc().getColour(), totalDamage);
         int damageIndex = pcBoard.getDamageTrackIndex();
         if(damageIndex >= LIFEPOINTS-2){
@@ -159,7 +166,7 @@ public class Pc {
             pcBoard.payAmmos(ammos);
         }
         catch (Exception NotEnoughAmmosException){
-            System.out.println();
+            System.out.println("It is not valid");
         }
     }
 }

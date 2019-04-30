@@ -9,7 +9,7 @@ public abstract class Tile {
     private final int x;
     private final int y;
     private final TileColourEnum tileColour;
-    private HashSet<Pc> pcs;
+    private HashSet<Pc> pcs;            //ricordarsi di aggiugnere degli observer che ad ogni spostamento del pc modifichi questo insieme
     private HashSet<Tile> visibles;
 
     /**

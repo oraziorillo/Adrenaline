@@ -9,7 +9,6 @@ public class WeaponEffect {
     private LinkedList<Action> actions = new LinkedList<>();
 
 
-
     /**
      * constructor for WeaponEffect
      * @param jsonWeaponEffect JsonObject representing a weapon effect

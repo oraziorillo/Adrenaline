@@ -11,6 +11,9 @@ public class WeaponCard {
     private boolean loaded;
     private short[] ammos;
     private short[] currentCost = new short[3];
+    //possiamo aggiungere qui un arraylist di powerUp usati con questo attacco in modo tale che quando
+    //viene chiamato il metodo use questi powerup vengono effettivamente scartati (comprende soprattutto powerup
+    //usati come ammo
     private ArrayList<WeaponEffect> fireModes = new ArrayList<>();
     private ArrayList<WeaponEffect> upgrades = new ArrayList<>();
     private LinkedList<WeaponEffect> currEffect;
@@ -88,5 +91,6 @@ public class WeaponCard {
             effect.execute();
         }
         currEffect.clear();
+        //qui dovrebbero essere scalati gli ammo al giocatore??
     }
 }
