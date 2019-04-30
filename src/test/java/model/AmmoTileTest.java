@@ -45,13 +45,13 @@ public class AmmoTileTest {
     }
 
     @Test
-    public void drawsOnGenerationTheFirstCardOfDeck() {
+    public void drawsOnSpawnTheFirstCardOfDeck() {
         Deck<AmmoCard> deck = Mockito.mock(Deck.class);
         AmmoCard card = new AmmoCard(new short[]{2, 0, 0}, true);
         AmmoCard card2 = new AmmoCard(new short[]{0, 2, 1}, false);
         Mockito.when(deck.draw()).thenReturn(card2).thenReturn(card);
         AmmoTile tile = new AmmoTile(1, 2, TileColourEnum.GREEN, deck);
-        assertSame(tile.drawCard(), card2);
+        assertSame(tile.pickAmmo(), card2);
     }
 
     @Test

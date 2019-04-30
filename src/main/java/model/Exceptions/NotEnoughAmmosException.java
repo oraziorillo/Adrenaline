@@ -1,5 +1,5 @@
 package model.Exceptions;
 
-public class NotEnoughAmmosException extends Exception {
+public class NotEnoughAmmosException extends UnsupportedOperationException {
     public void printError(){}
 }

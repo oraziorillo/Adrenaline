@@ -36,7 +36,6 @@ public class WeaponCard {
             WeaponEffect weaponEffect = new WeaponEffect(jsonUpgrade, this);
             this.upgrades.add(weaponEffect);
         }
-        this.currEffect = new LinkedList<>();
     }
 
     public Deck getDeck(){
@@ -59,16 +58,25 @@ public class WeaponCard {
         return currentCost;
     }
 
-    public void addEffect(int index) {
-        WeaponEffect eff=fireModes.get(index);
+    public void selectFireMode(int index){
+        WeaponEffect eff = fireModes.get(index);
+        this.currEffect = new LinkedList<>();
+        currentCost[AmmoEnum.BLUE.ordinal()] = eff.getCost()[AmmoEnum.BLUE.ordinal()];
+        currentCost[AmmoEnum.RED.ordinal()] = eff.getCost()[AmmoEnum.RED.ordinal()];
+        currentCost[AmmoEnum.YELLOW.ordinal()] = eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+        this.currEffect.add(eff);
+    }
+
+    public void addUpgrade(int index) {
+        WeaponEffect eff = upgrades.get(index);
         currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
         currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
         currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-        currEffect.add(eff);
+        this.currEffect.add(eff);
     }
 
-    public void removeEffect(int index) {
-        WeaponEffect eff=fireModes.get(index);
+    public void removeUpgrade(int index) {
+        WeaponEffect eff = upgrades.get(index);
         currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
         currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
         currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];

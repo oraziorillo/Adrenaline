@@ -10,30 +10,6 @@ import static org.junit.Assert.assertTrue;
 public class TileTest {
 
     @Test
-    public void ordinaryDistanceTest() {
-        int x1 = 0;
-        int y1 = 3;
-        int x2 = 7;
-        int y2 = 6;
-        int expected = 10;
-        Tile t1 = new ConcreteTile(x1, y1);
-        Tile t2 = new ConcreteTile(x2, y2);
-        assertEquals("Unexpected result", expected, Tile.distance(t1, t2));
-    }
-
-    @Test
-    public void distanceZeroTest() {
-        int x1 = 0;
-        int y1 = 3;
-        int x2 = 0;
-        int y2 = 3;
-        int expected = 0;
-        Tile t1 = new ConcreteTile(x1, y1);
-        Tile t2 = new ConcreteTile(x2, y2);
-        assertEquals("Unexpected result", expected, Tile.distance(t1, t2));
-    }
-
-    @Test
     public void addVisiblesWorksFine() {
         Tile t1 = new ConcreteTile(1, 2);
         Tile t2 = new ConcreteTile(0, 0);
@@ -60,6 +36,9 @@ public class TileTest {
         ConcreteTile(int x, int y) {
             super(x, y, TileColourEnum.GREEN);
         }
+
+        @Override
+        public void collect(Pc player, int objectIndex) {}
     }
 
 

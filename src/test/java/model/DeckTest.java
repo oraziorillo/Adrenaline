@@ -1,6 +1,7 @@
 package model;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 
@@ -8,10 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class DeckTest {
+    @Mock Game g;
 
     @Test
     public void containsAddedObjects() {
-        Deck<Integer> tested = new Deck<>();
+        Deck<Integer> tested = new Deck<>(g);
         tested.add(1);
         tested.add(2);
         tested.add(3);
@@ -23,7 +25,7 @@ public class DeckTest {
 
     @Test
     public void doesNotCantainDrawnCard() {
-        Deck<Integer> tested = new Deck<>();
+        Deck<Integer> tested = new Deck<>(g);
         ArrayList<Integer> support = new ArrayList<>();
         tested.add(1);
         tested.add(2);
@@ -43,8 +45,8 @@ public class DeckTest {
 
     @Test
     public void equalsIfSameCardsInside() {
-        Deck<String> d1 = new Deck<>();
-        Deck<String> d2 = new Deck<>();
+        Deck<String> d1 = new Deck<>(g);
+        Deck<String> d2 = new Deck<>(g);
         ArrayList<String> al = new ArrayList<>();
         d1.add("ciao");
         d2.add("ciao");
@@ -63,8 +65,8 @@ public class DeckTest {
 
     @Test
     public void sameHashcodeWithSameCards() {
-        Deck<String> d1 = new Deck<>();
-        Deck<String> d2 = new Deck<>();
+        Deck<String> d1 = new Deck<>(g);
+        Deck<String> d2 = new Deck<>(g);
         ArrayList<String> al = new ArrayList<>();
         d1.add("ciao");
         d2.add("ciao");

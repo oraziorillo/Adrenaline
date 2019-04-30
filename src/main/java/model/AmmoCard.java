@@ -2,11 +2,7 @@ package model;
 
 
 public class AmmoCard {
-    /**
-     * @author matteo
-     * @implSpec le ammoCard non hanno un nome...
-     */
-    private final String name;
+
     private final short[] ammos;
     private final boolean hasPowerup;
 
@@ -16,17 +12,12 @@ public class AmmoCard {
      * @param ammos every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
      * @param hasPowerup for 2ammos-1powerup cards
      */
-    public AmmoCard(String name, short[] ammos, boolean hasPowerup) {
-        this.name = name;
+    public AmmoCard(short[] ammos, boolean hasPowerup) {
         if (!validParameters(ammos, hasPowerup)) {
             throw new IllegalArgumentException("illegal AmmoCard");
         }
         this.ammos = ammos;
         this.hasPowerup = hasPowerup;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public short[] getAmmos() {

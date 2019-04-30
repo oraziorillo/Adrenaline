@@ -1,7 +1,7 @@
 package model;
 
+import model.Enumerations.PcColourEnum;
 import model.Enumerations.TileColourEnum;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,10 +101,6 @@ public class Game {
 
     }
 
-    /**
-     * @author matteo
-     * @implNote orazio, il mazzo armi lo carichiamo da Json?
-     */
     private void initDecks() {
         //TODO
     }
@@ -113,11 +109,11 @@ public class Game {
         return map[x][y];
     }
 
-    public short getRemainigActions() {
+    public short getRemainingActions() {
         return remainigActions;
     }
 
-    public void decreaseRemainigActions() {
+    public void decreaseRemainingActions() {
         remainigActions--;
     }
 
@@ -133,6 +129,10 @@ public class Game {
         return killShotTrack;
     }
 
+    public ArrayList getSpawnTiles(){
+        return spawnTiles;
+    }
+
     public void nextTurn() {
         if (currentPcIndex == pcs.size() - 1)
             currentPcIndex = 0;
@@ -140,8 +140,12 @@ public class Game {
         remainigActions=2;
     }
 
+    public void addPc(PcColourEnum colour){
+        Pc pc = new Pc(colour, this);
+        pcs.add(pc);
+    }
 
-     public void respawnCurrentPc(TileColourEnum colour) {
+    public void respawnCurrentPc(TileColourEnum colour) {
         Optional<Tile> t;
         Pc currentPc;
         t = spawnTiles.stream().filter(elem -> elem.getTileColour() == colour).findFirst();

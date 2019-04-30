@@ -1,10 +1,11 @@
-package model;
+/*
 
 import model.Enumerations.TileColourEnum;
 import org.junit.Before;
 import org.junit.Test;
 
 public class MapIteratorTest {
+/*
     private Tile[][] map;
     private Game game;
     private Deck<WeaponCard> deck;
@@ -26,3 +27,4 @@ public class MapIteratorTest {
         System.out.println("(" + currTile.getX() + "," + currTile.getY() + ")");
     }
 }
+ */

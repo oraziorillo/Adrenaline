@@ -2,12 +2,10 @@ package model;
 
 import model.Enumerations.AmmoEnum;
 import model.Enumerations.PcColourEnum;
-import model.Enumerations.TileColourEnum;
 import model.Exceptions.NotEnoughAmmosException;
-
 import java.util.ArrayList;
-
 import static model.Constants.LIFEPOINTS;
+import static model.Constants.MAX_WEAPONS_IN_HAND;
 
 /**
  * @author matteo
@@ -20,6 +18,7 @@ public class Pc {
     private final PcColourEnum colour;
     private short points;
     private short numOfDeath;
+    private short adrenaline;
     private short[] marks;
     private short[] ammos;
     private PcColourEnum[] damageTrack;
@@ -28,16 +27,17 @@ public class Pc {
     private Tile currTile;
 
 
-    public Pc(String name, PcColourEnum colour, Game game) {
+    public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
-        this.name = name;
         this.colour = colour;
+        this.name = colour.getName();
         this.points = 0;
         this.numOfDeath = 0;
-        this.marks = new short[5];
+        this.adrenaline = 0;
+        this.marks = new short[game.getPcs().size()];
         this.ammos = new short[3];
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
-        this.weapons = new WeaponCard[3];
+        this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
         this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
     }
@@ -59,12 +59,16 @@ public class Pc {
         return powerUps.size() == 3;
     }
 
-    public Game getCurrGame(){
-        return currGame;
+    public PcColourEnum getColour(){
+        return colour;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getAdrenaline(){
+        return adrenaline;
     }
 
     public Tile getCurrTile() {
@@ -79,16 +83,15 @@ public class Pc {
         temp = weapons[index];
         return temp;
     }
-
     //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di game)
-    public void move(int x,int y,int maxDist) {
-        Tile targetTile = currGame.map[x][y];
-        if(!currTile.atDistance(maxDist).contains(targetTile)){
+
+    public void move(Tile dest, int maxDist) {
+        if(!currTile.atDistance(maxDist).contains(dest)){
             throw new IllegalArgumentException("Too far away");
         }
         currTile.removePc(this);
-        targetTile.addPc(this);
-        this.currTile = targetTile;
+        dest.addPc(this);
+        this.currTile = dest;
     }
 
 
@@ -128,11 +131,11 @@ public class Pc {
             drawPowerUp();
         }
     }
-
     public void drawPowerUp(){
         powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
 
     }
+
     /* METODO STUPIDO A MIO AVVISO
     public void collectPowerUp(PowerUpCard p) {
         int index = 0;
@@ -147,18 +150,21 @@ public class Pc {
 
     public void takeDamage(short damage) {
         int index = 0;
-        short totaldamage = (short) (marks[colour.ordinal()] + damage);
+        short totalDamage = (short) (marks[currGame.getCurrentPc().getColour().ordinal()] + damage);
         while (damageTrack[index] != null) {
             index = index + 1;
         }
-        while (totaldamage != 0) {       //il controller dovrà controllare ogni volta se il giocatore è morto, verificando che all'indice 10 il valore sia != null
-            damageTrack[index] = colour;
-            if (index > 10) {
-                totaldamage = 0;
-            } else {
-                index += 1;
-            }
+        while (totalDamage != 0) {
+            if (index == LIFEPOINTS)
+                break;
+            damageTrack[index] = currGame.getCurrentPc().getColour();
+            index += 1;
         }
+        //TODO notify controller e view
+        if (index > 4)
+            adrenaline = 2;
+        else if (index > 1)
+            adrenaline = 1;
     }
 
     public void takeMarks(short marks) {
@@ -169,15 +175,16 @@ public class Pc {
         this.points += n;
     }
 
-    public void respawn(Tile tile) {
-        this.damageTrack = new PcColourEnum[12];
-        numOfDeath = (short) (numOfDeath + 1);
-        this.currTile = tile;
+    public void respawn(Tile t) throws IllegalArgumentException{
+        if(!currGame.getSpawnTiles().contains(t))
+            throw new IllegalArgumentException("Not a spawn Tile");
+        this.damageTrack = new PcColourEnum[LIFEPOINTS];
+        this.numOfDeath = (short) (numOfDeath + 1);
+        this.adrenaline = 0;
+        this.currTile = t;
     }
 
     /**
-     * @autor matteo
-     * @implNote NotEnoughAmmosException è una IllegalStateException
      * @param ammos
      * @throws NotEnoughAmmosException
      */
@@ -190,11 +197,6 @@ public class Pc {
         this.ammos[AmmoEnum.BLUE.ordinal()] -= ammos[AmmoEnum.BLUE.ordinal()];
         this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
         this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
-    }
-
-    public int adrenalineLevel(){
-        //TODO
-        return 0;
     }
 
     public ArrayList<PowerUpCard> getPowerUps() {

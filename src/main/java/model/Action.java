@@ -129,7 +129,7 @@ class MovementAction extends Action {
     @Override
     public void apply() {
         for (Pc pc : targets) {
-            pc.move(destination.getX(), destination.getY(), maxDist);
+            pc.move(destination, maxDist);
         }
         targets.clear();
     }
