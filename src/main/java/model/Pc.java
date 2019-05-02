@@ -30,6 +30,7 @@ public class Pc {
         this.name = colour.getName();
         this.colour = colour;
         this.adrenaline = 0;
+        this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
         this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa

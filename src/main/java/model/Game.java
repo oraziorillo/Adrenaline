@@ -24,7 +24,7 @@ public class Game {
     public Game(String jsonName) {
         remainigActions = 2;
         currentPcIndex = 0;
-        pcs = new ArrayList<>(0);
+        pcs = new ArrayList<>();
         spawnTiles = new ArrayList<>();
         killShotTrack = new Killshot[8];
         try {
@@ -142,8 +142,7 @@ public class Game {
         remainigActions=2;
     }
 
-    public void addPc(PcColourEnum colour){
-        Pc pc = new Pc(colour, this);
+    public void addPc(Pc pc){
         pcs.add(pc);
     }
 
