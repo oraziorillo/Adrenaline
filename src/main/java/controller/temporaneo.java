@@ -6,9 +6,11 @@ public interface temporaneo {
 
     public void printOnView(String s);
 
-    public int receiveIndex();
+    public int receiveNumber();
 
     public PcColourEnum receivePcColourEnum();
+
+    public
 
 
 }

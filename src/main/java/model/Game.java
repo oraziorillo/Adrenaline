@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public class Game {
     private short remainigActions;
     private int currentPcIndex;
+    private int currentKillShotTrackIndex;
     private ArrayList<Pc> pcs;
     private Killshot[] killShotTrack;
     Deck<AmmoCard> ammosDeck = new Deck<>(this);
@@ -100,15 +101,16 @@ public class Game {
                 tempList.clear();
             }
         }
-
+        initDecks();
+        prepareMapForGame();
     }
 
     private void initDecks() {
         //TODO
     }
 
-    public Tile getTile (int x, int y){
-        return map[x][y];
+    private void prepareMapForGame(){
+        //TODO
     }
 
     public short getRemainingActions() {
@@ -127,8 +129,29 @@ public class Game {
         return pcs;
     }
 
+    public void setKillShotTrack(int numberOfSkulls){
+        //il controllo sulla validità del parametro è già effettuato dal controller
+        for(int i = 0; i < numberOfSkulls; i++){
+            killShotTrack[i] = new Killshot();
+        }
+        currentKillShotTrackIndex = numberOfSkulls - 1;
+    }
+
     public Killshot[] getKillShotTrack() {
         return killShotTrack;
+    }
+
+
+    public void KillHappened(PcColourEnum colourEnum, Boolean overkilled){
+        killShotTrack[currentKillShotTrackIndex].kill(colourEnum, overkilled);
+        currentKillShotTrackIndex--;
+        if(currentKillShotTrackIndex < 0){
+            //call observer to notify state change in finalFrenzy;
+        }
+    }
+
+    public Tile getTile (int x, int y){
+        return map[x][y];
     }
 
     public ArrayList getSpawnTiles(){

@@ -8,7 +8,7 @@ public class MainController {
     Game currGame;
     view currView;          //è necessario creare una view per ogni player..??
     private ArrayList<Player> playersInTheGame;
-    private State initialization;
+    private State setupSteps;
     private State firstTurn;
     private State turns;
     private State finalFrenzy;
@@ -19,7 +19,7 @@ public class MainController {
         this.currGame = new Game(String jSonName);
         this.playersInTheGame = new ArrayList<>();
         playersInTheGame.addAll(players);
-        initialization = new Initializer(this.currGame, this.playersInTheGame);
+        initialization = new SetupSteps(this.currGame, this.playersInTheGame);
         firstTurn = new FirstTurn(this.currGame, this.playersInTheGame);
         turns = new Turns(this.currGame, this.playersInTheGame);
         finalFrenzy = new FinalFrenzy(this.currGame, this.playersInTheGame);

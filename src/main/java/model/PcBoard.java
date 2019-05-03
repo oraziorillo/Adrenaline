@@ -19,9 +19,12 @@ public class PcBoard {
         this.points = 0;
         this.numOfDeath = 0;
         this.damageTrackIndex = 0;
-        this.marks = new marks[5];
-        this.ammos = new ammos[3];
+        this.marks = new short[5];
+        this.ammos = new short[3];
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
+        for(int i = 0; i < 3; i++){
+            ammos[i] = 1;       //ogni giocatore appena creato possiede una munizione per ogni colore
+        }
     }
 
     public short getNumOfDeath() {
