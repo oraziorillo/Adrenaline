@@ -1,5 +1,6 @@
 package model;
 
+import model.Enumerations.AmmoEnum;
 import model.Enumerations.PcColourEnum;
 import model.Enumerations.TileColourEnum;
 import org.json.simple.JSONObject;
@@ -28,17 +29,6 @@ public class Game {
         pcs = new ArrayList<>();
         spawnTiles = new ArrayList<>();
         killShotTrack = new Killshot[8];
-        try {
-            WeaponCard weaponCard;
-            JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
-            JSONObject[] jsonWeapons = (JSONObject[]) jsonObject.get("weapons");
-            for (JSONObject jsonWeapon : jsonWeapons) {
-                weaponCard = new WeaponCard(jsonWeapon, weaponsDeck);
-                weaponsDeck.add(weaponCard);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -101,15 +91,41 @@ public class Game {
                 tempList.clear();
             }
         }
-        initDecks();
-        prepareMapForGame();
     }
 
-    private void initDecks() {
-        //TODO
+    public void initDecks(String jSonName) {
+        initWeaponsDeck(String jSonName);
+        initPowerUpDeck();
+        initAmmosDeck();
     }
 
-    private void prepareMapForGame(){
+    private void initWeaponsDeck(String jSonName){
+        try {
+            WeaponCard weaponCard;
+            JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
+            JSONObject[] jsonWeapons = (JSONObject[]) jsonObject.get("weapons");
+            for (JSONObject jsonWeapon : jsonWeapons) {
+                weaponCard = new WeaponCard(jsonWeapon, weaponsDeck);
+                weaponsDeck.add(weaponCard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initPowerUpDeck(){
+        for(int i = 0; i < 3; i++){
+            AmmoEnum ammoColour = AmmoEnum.values()[i];
+            for(int j = 0; j < 2; j++){
+                powerUpsDeck.add(new Newton(ammoColour));
+                powerUpsDeck.add(new TargetingScope(ammoColour));
+                powerUpsDeck.add(new TagbackGrenade(ammoColour));
+                powerUpsDeck.add(new Teleporter(ammoColour));
+            }
+        }
+    }
+
+    private void initAmmosDeck(){
         //TODO
     }
 
@@ -154,15 +170,18 @@ public class Game {
         return map[x][y];
     }
 
-    public ArrayList getSpawnTiles(){
+    public ArrayList<Tile> getSpawnTiles(){
         return spawnTiles;
     }
 
     public void nextTurn() {
-        if (currentPcIndex == pcs.size() - 1)
-            currentPcIndex = 0;
-        currentPcIndex++;
         remainigActions=2;
+        if (currentPcIndex == pcs.size() - 1) {
+            currentPcIndex = 0;
+        }
+        else{
+            currentPcIndex++;
+        }
     }
 
     public void addPc(Pc pc){

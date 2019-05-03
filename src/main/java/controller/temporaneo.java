@@ -1,16 +1,22 @@
 package controller;
 
 import model.Enumerations.PcColourEnum;
+import model.PowerUpCard;
+import model.Tile;
+
+import java.util.HashSet;
 
 public interface temporaneo {
 
-    public void printOnView(String s);
+    void printOnView(String s);
 
-    public int receiveNumber();
+    int receiveNumber();
 
-    public PcColourEnum receivePcColourEnum();
+    PcColourEnum receivePcColourEnum();
 
-    public
+    PowerUpCard receivePowerUpCard();
 
+    void showPossibleTiles(HashSet<Tile> tiles);
 
+    Tile receiveTile();
 }

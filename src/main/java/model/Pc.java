@@ -72,6 +72,17 @@ public class Pc {
         return adrenaline;
     }
 
+    public void moveToTile(Tile t){
+        if(t == null){
+            throw new IllegalArgumentException("Invalid tile");
+        }
+        else {
+            this.currTile.removePc(this);
+            this.currTile = t;
+            this.currTile.addPc(this);
+        }
+    }
+
     public Tile getCurrTile() {
         return this.currTile;
     }
@@ -84,17 +95,6 @@ public class Pc {
         temp = weapons[index];
         return temp;
     }
-
-
-    public void setCurrTile(Tile t){
-        if(t == null){
-            throw new IllegalArgumentException("Invalid tile");
-        }
-        else {
-            this.currTile = t;
-        }
-    }
-
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
         if (!(currTile instanceof SpawnTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
@@ -130,6 +130,15 @@ public class Pc {
 
     public void drawPowerUp(){
         powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
+    }
+
+    public void discardPowerUp(PowerUpCard p) throws IllegalArgumentException{
+        if(powerUps.contains(p)){
+            powerUps.remove(p);
+        }
+        else{
+            throw new IllegalArgumentException("You don't have this powerUp");
+        }
     }
 
     public void takeMarks(short marks){

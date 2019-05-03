@@ -1,11 +1,12 @@
 package controller;
 
 import model.Pc;
+import model.PowerUpCard;
 import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 
-public abstract class Player {
+public abstract class Player implements temporaneo{
 
     private String username;
     private final UUID uuid;
