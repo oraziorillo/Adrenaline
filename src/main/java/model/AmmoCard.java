@@ -14,7 +14,7 @@ public class AmmoCard {
      */
     public AmmoCard(short[] ammos, boolean hasPowerup) {
         if (!validParameters(ammos, hasPowerup)) {
-            throw new IllegalArgumentException("illegal AmmoCard");
+            throw new IllegalArgumentException("Illegal AmmoCard");
         }
         this.ammos = ammos;
         this.hasPowerup = hasPowerup;

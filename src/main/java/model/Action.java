@@ -111,7 +111,7 @@ class DamageMarksAction extends Action {
 
 
 
-class MovementAction extends Action {
+class MovementAction extends Action {       //metodo da modificare poichè è stato tolto il metodo move
     private int maxDist;
     private Tile destination;
 

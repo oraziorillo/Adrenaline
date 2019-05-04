@@ -1,5 +1,6 @@
 package model;
 
+import model.Enumerations.AmmoEnum;
 import model.Enumerations.PcColourEnum;
 import model.Enumerations.TileColourEnum;
 import org.json.simple.JSONArray;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 public class Game {
     private short remainigActions;
     private int currentPcIndex;
+    private int currentKillShotTrackIndex;
     private ArrayList<Pc> pcs;
     private Killshot[] killShotTrack;
     Deck<AmmoCard> ammosDeck = new Deck<>(this);
@@ -25,19 +27,10 @@ public class Game {
     public Game() {
         remainigActions = 2;
         currentPcIndex = 0;
-        pcs = new ArrayList<>(0);
+        pcs = new ArrayList<>();
         spawnTiles = new ArrayList<>();
         killShotTrack = new Killshot[8];
-        try {
-            WeaponCard weaponCard;
-            JSONArray jsonWeapons = (JSONArray) Server.readJson("weapons");
-            for (Object jsonWeapon : jsonWeapons) {
-                weaponCard = new WeaponCard((JSONObject)jsonWeapon, this);
-                weaponsDeck.add(weaponCard);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
@@ -47,11 +40,13 @@ public class Game {
      * @param coloumns number of rows of the map to create
      * @param doorsInMap
      */
+    /**
     // I paramteri che il metodo riceve sono così strutturati:
     // numero di righe, numero di colonne
     // array di TileColourEnum che definisce il colore di ogni Tile della mappa. Se un dato Tile è null, lo sarà anche nell'array
     // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
+    */
     public void initMap(int rows, int coloumns, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<TileColourEnum> tileColourList;
         ArrayList<TileColourEnum> tempList = new ArrayList<>();
@@ -98,15 +93,41 @@ public class Game {
                 tempList.clear();
             }
         }
-
     }
 
-    private void initDecks() {
+    public void initDecks() {
+        initWeaponsDeck();
+        initPowerUpDeck();
+        initAmmosDeck();
+    }
+
+    private void initWeaponsDeck(){
+        try {
+            WeaponCard weaponCard;
+            JSONArray jsonWeapons = (JSONArray) Server.readJson("weapons");
+            for (Object jsonWeapon : jsonWeapons) {
+                weaponCard = new WeaponCard((JSONObject)jsonWeapon, this);
+                weaponsDeck.add(weaponCard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initPowerUpDeck(){
+        for(int i = 0; i < 3; i++){
+            AmmoEnum ammoColour = AmmoEnum.values()[i];
+            for(int j = 0; j < 2; j++){
+                powerUpsDeck.add(new Newton(ammoColour));
+                powerUpsDeck.add(new TargetingScope(ammoColour));
+                powerUpsDeck.add(new TagbackGrenade(ammoColour));
+                powerUpsDeck.add(new Teleporter(ammoColour));
+            }
+        }
+    }
+
+    private void initAmmosDeck(){
         //TODO
-    }
-
-    public Tile getTile (int x, int y){
-        return map[x][y];
     }
 
     public short getRemainingActions() {
@@ -125,23 +146,46 @@ public class Game {
         return pcs;
     }
 
+    public void setKillShotTrack(int numberOfSkulls){
+        //il controllo sulla validità del parametro è già effettuato dal controller
+        for(int i = 0; i < numberOfSkulls; i++){
+            killShotTrack[i] = new Killshot();
+        }
+        currentKillShotTrackIndex = numberOfSkulls - 1;
+    }
+
     public Killshot[] getKillShotTrack() {
         return killShotTrack;
     }
 
-    public ArrayList getSpawnTiles(){
+
+    public void KillHappened(PcColourEnum colourEnum, Boolean overkilled){
+        killShotTrack[currentKillShotTrackIndex].kill(colourEnum, overkilled);
+        currentKillShotTrackIndex--;
+        if(currentKillShotTrackIndex < 0){
+            //call observer to notify state change in finalFrenzy;
+        }
+    }
+
+    public Tile getTile (int x, int y){
+        return map[x][y];
+    }
+
+    public ArrayList<Tile> getSpawnTiles(){
         return spawnTiles;
     }
 
     public void nextTurn() {
-        if (currentPcIndex == pcs.size() - 1)
-            currentPcIndex = 0;
-        currentPcIndex++;
         remainigActions=2;
+        if (currentPcIndex == pcs.size() - 1) {
+            currentPcIndex = 0;
+        }
+        else{
+            currentPcIndex++;
+        }
     }
 
-    public void addPc(PcColourEnum colour){
-        Pc pc = new Pc(colour, this);
+    public void addPc(Pc pc){
         pcs.add(pc);
     }
 

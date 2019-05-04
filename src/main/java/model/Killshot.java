@@ -4,8 +4,14 @@ import model.Enumerations.PcColourEnum;
 
 public class Killshot {
     private PcColourEnum colour;
-    private boolean skulled = true;
+    private boolean skulled;
     private boolean overkilled;
+
+    public Killshot(){
+        colour = null;
+        skulled = true;
+        overkilled = false;
+    }
 
     public void kill(PcColourEnum killer, boolean overkill) {
         if (skulled) {

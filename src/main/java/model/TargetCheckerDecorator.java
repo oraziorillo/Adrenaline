@@ -200,15 +200,12 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
         this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
     public HashSet<Tile> validTiles() {
-        EmptyChecker checker = new EmptyChecker();
         HashSet<Tile> resultTiles;
-        HashSet<Tile> allTiles = checker.validTiles();
+        resultTiles = base.validTiles();
         Tile referenceTile = game.getCurrentPc().getCurrTile();
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
-            allTiles.removeAll(referenceTile.atDistance(tempMinDistance));
+            resultTiles.removeAll(referenceTile.atDistance(tempMinDistance));
         }
-        resultTiles = base.validTiles();
-        resultTiles.retainAll(allTiles);
         return resultTiles;
     }
 }

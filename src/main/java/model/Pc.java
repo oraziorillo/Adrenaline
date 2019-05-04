@@ -1,6 +1,5 @@
 package model;
 
-import model.Enumerations.AmmoEnum;
 import model.Enumerations.PcColourEnum;
 import model.Exceptions.NotEnoughAmmosException;
 import java.util.ArrayList;
@@ -12,16 +11,11 @@ import static model.Constants.MAX_WEAPONS_IN_HAND;
  * @implSpec A tutti i tutorati ci hanno detto di snellire questa classe, che è troppo GodClass
  */
 public class Pc {
-
     private final Game currGame;
     private final String name;
     private final PcColourEnum colour;
-    private short points;
-    private short numOfDeath;
+    private PcBoard pcBoard;
     private short adrenaline;
-    private short[] marks;
-    private short[] ammos;
-    private PcColourEnum[] damageTrack;
     private WeaponCard[] weapons;
     private ArrayList<PowerUpCard> powerUps;
     private Tile currTile;
@@ -29,14 +23,10 @@ public class Pc {
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
-        this.colour = colour;
         this.name = colour.getName();
-        this.points = 0;
-        this.numOfDeath = 0;
+        this.colour = colour;
         this.adrenaline = 0;
-        this.marks = new short[currGame.getPcs().size()];
-        this.ammos = new short[3];
-        this.damageTrack = new PcColourEnum[LIFEPOINTS];
+        this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
         this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
@@ -55,6 +45,13 @@ public class Pc {
         return true;
     }
 
+    public PowerUpCard getPowerUpCard(int index) throws IllegalArgumentException{
+        if(index < 0 || index > 3){
+            throw new IllegalArgumentException("This index is not valid");
+        }
+        return powerUps.get(index);
+    }
+
     public boolean isFullyPoweredUp(){
         return powerUps.size() == 3;
     }
@@ -71,6 +68,17 @@ public class Pc {
         return adrenaline;
     }
 
+    public void moveToTile(Tile t){
+        if(t == null){
+            throw new IllegalArgumentException("Invalid tile");
+        }
+        else {
+            this.currTile.removePc(this);
+            this.currTile = t;
+            this.currTile.addPc(this);
+        }
+    }
+
     public Tile getCurrTile() {
         return this.currTile;
     }
@@ -83,17 +91,6 @@ public class Pc {
         temp = weapons[index];
         return temp;
     }
-    //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di currGame)
-
-    public void move(Tile dest, int maxDist) {
-        if(!currTile.atDistance(maxDist).contains(dest)){
-            throw new IllegalArgumentException("Too far away");
-        }
-        currTile.removePc(this);
-        dest.addPc(this);
-        this.currTile = dest;
-    }
-
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
         if (!(currTile instanceof SpawnTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
@@ -120,87 +117,63 @@ public class Pc {
             throw new IllegalStateException("You are not in an AmmoTile");
         }
         AmmoTile workingTile = (AmmoTile) currTile;
-
         AmmoCard card = workingTile.pickAmmo();
-        for (int i = 0; i < card.getAmmos().length; i++) {
-            this.ammos[i] += ammos[i];
-            if (ammos[i] > 3)
-                ammos[i] = 3;
-        }
+        pcBoard.addAmmos(card);
         if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoCard??
             drawPowerUp();
         }
     }
+
     public void drawPowerUp(){
         powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
-
     }
 
-    /* METODO STUPIDO A MIO AVVISO
-    public void collectPowerUp(PowerUpCard p) {
-        int index = 0;
-        while (index < powerUps.length && powerUps[index] != null) {
-            index += 1;
+    public void discardPowerUp(PowerUpCard p) throws IllegalArgumentException{
+        if(powerUps.contains(p)){
+            powerUps.remove(p);
         }
-        if (index < powerUps.length) {      //lo facciamo gestire dal controller?
-            powerUps[index] = p;
+        else{
+            throw new IllegalArgumentException("You don't have this powerUp");
         }
     }
-     */
+
+    public void takeMarks(short marks){
+        PcColourEnum colour = currGame.getCurrentPc().getColour();
+        pcBoard.addMarks(colour, marks);
+    }
 
     public void takeDamage(short damage) {
-        int index = 0;
-        short totalDamage = (short) (marks[currGame.getCurrentPc().getColour().ordinal()] + damage);
-        while (damageTrack[index] != null) {
-            index = index + 1;
+        short totalDamage;
+        totalDamage = (short) (pcBoard.getMarks(currGame.getCurrentPc().getColour()) + damage);
+        pcBoard.addDamage(currGame.getCurrentPc().getColour(), totalDamage);
+        int damageIndex = pcBoard.getDamageTrackIndex();
+        if(damageIndex >= LIFEPOINTS-2){
+            //TODO notify controller e view
+            //gestire qui la morte con eventuali observer
         }
-        while (totalDamage != 0) {
-            if (index == LIFEPOINTS)
-                break;
-            damageTrack[index] = currGame.getCurrentPc().getColour();
-            index += 1;
-        }
-        //TODO notify controller e view
-        if (index > 4)
+        if (damageIndex > 4)
             adrenaline = 2;
-        else if (index > 1)
+        else if (damageIndex > 1)
             adrenaline = 1;
     }
 
-    public void takeMarks(short marks) {
-        this.marks[colour.ordinal()] = marks;
-    }
-
-    public void increasePoints(int n) {
-        this.points += n;
-    }
 
     public void respawn(Tile t) throws IllegalArgumentException{
-        if(!currGame.getSpawnTiles().contains(t))
+        if(!currGame.getSpawnTiles().contains(t)){
             throw new IllegalArgumentException("Not a spawn Tile");
-        this.damageTrack = new PcColourEnum[LIFEPOINTS];
-        this.numOfDeath = (short) (numOfDeath + 1);
+        }
+        pcBoard.respawn();
         this.adrenaline = 0;
         this.currTile = t;
     }
 
-    /**
-     * @param ammos
-     * @throws NotEnoughAmmosException
-     */
-    public void payAmmos(short[] ammos) throws NotEnoughAmmosException {
-        if (this.ammos[AmmoEnum.BLUE.ordinal()] < ammos[AmmoEnum.BLUE.ordinal()] ||
-                this.ammos[AmmoEnum.RED.ordinal()] < ammos[AmmoEnum.RED.ordinal()] ||
-                this.ammos[AmmoEnum.YELLOW.ordinal()] < ammos[AmmoEnum.YELLOW.ordinal()]) {
-            throw new NotEnoughAmmosException();
+    public void payAmmos(short[] ammos) throws NotEnoughAmmosException{
+        try{
+            pcBoard.payAmmos(ammos);
         }
-        this.ammos[AmmoEnum.BLUE.ordinal()] -= ammos[AmmoEnum.BLUE.ordinal()];
-        this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
-        this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
-    }
-
-    public ArrayList<PowerUpCard> getPowerUps() {
-        return powerUps;
+        catch (Exception NotEnoughAmmosException){
+            System.out.println("It is not valid");
+        }
     }
 }
 
