@@ -27,11 +27,11 @@ public class WeaponCardTest {
     public void attributesFine(){
         assertTrue(weaponCard.isLoaded());
         assertEquals("Lock Rifle", weaponCard.getName());
-        short[] ammos = new short[3];
-        ammos[0] = 2;
-        assertEquals(ammos[0], weaponCard.getAmmos()[0]);
-        assertEquals(ammos[1], weaponCard.getAmmos()[1]);
-        assertEquals(ammos[2], weaponCard.getAmmos()[2]);
+        short[] expectedAmmo = new short[3];
+        expectedAmmo[0] = 2;
+        assertEquals(expectedAmmo[0], weaponCard.getAmmos()[0]);
+        assertEquals(expectedAmmo[1], weaponCard.getAmmos()[1]);
+        assertEquals(expectedAmmo[2], weaponCard.getAmmos()[2]);
     }
 
     @Test
@@ -42,5 +42,27 @@ public class WeaponCardTest {
         weaponCard.removeUpgrade(0);
         assertEquals(1, weaponCard.getCurrentEffect().size());
         weaponCard.addUpgrade(0);
+    }
+
+    @Test
+    public void currCostFine(){
+        short[] expectedCost = new short[3];
+        assertEquals(expectedCost[0], weaponCard.getCurrentCost()[0]);
+        assertEquals(expectedCost[1], weaponCard.getCurrentCost()[1]);
+        assertEquals(expectedCost[2], weaponCard.getCurrentCost()[2]);
+        weaponCard.selectFireMode(0);
+        assertEquals(expectedCost[0], weaponCard.getCurrentCost()[0]);
+        assertEquals(expectedCost[1], weaponCard.getCurrentCost()[1]);
+        assertEquals(expectedCost[2], weaponCard.getCurrentCost()[2]);
+        weaponCard.addUpgrade(0);
+        expectedCost[1] = 1;
+        assertEquals(expectedCost[0], weaponCard.getCurrentCost()[0]);
+        assertEquals(expectedCost[1], weaponCard.getCurrentCost()[1]);
+        assertEquals(expectedCost[2], weaponCard.getCurrentCost()[2]);
+        weaponCard.removeUpgrade(0);
+        expectedCost[1] = 0;
+        assertEquals(expectedCost[0], weaponCard.getCurrentCost()[0]);
+        assertEquals(expectedCost[1], weaponCard.getCurrentCost()[1]);
+        assertEquals(expectedCost[2], weaponCard.getCurrentCost()[2]);
     }
 }

@@ -11,7 +11,7 @@ public class WeaponCard {
     private String name;
     private boolean loaded;
     private short[] ammos;
-    private short[] currentCost = new short[3];
+    private short[] currentCost;
     private ArrayList<WeaponEffect> fireModes = new ArrayList<>();
     private ArrayList<WeaponEffect> upgrades = new ArrayList<>();
     private LinkedList<WeaponEffect> currEffect;
@@ -27,6 +27,7 @@ public class WeaponCard {
         this.name = (String) jsonWeaponCard.get("name");
         this.loaded = true;
         this.ammos = new short[3];
+        this.currentCost = new short[3];
         JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammos");
         for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++) {
             ammos[i] = ((Long) jsonAmmos.get(i)).shortValue();
