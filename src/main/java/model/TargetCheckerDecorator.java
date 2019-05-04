@@ -4,11 +4,10 @@ import model.Enumerations.CardinalDirectionEnum;
 import org.json.simple.JSONObject;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
-public abstract class TargetCheckerDecorator extends TargetChecker {
+abstract class TargetCheckerDecorator extends TargetChecker {
     TargetChecker base;
-    public TargetCheckerDecorator(TargetChecker decorated){
+    TargetCheckerDecorator(TargetChecker decorated){
         this.base = decorated;
     }
     abstract HashSet<Tile> validTiles();
@@ -16,12 +15,14 @@ public abstract class TargetCheckerDecorator extends TargetChecker {
 
 class VisibleDecorator extends TargetCheckerDecorator {
     private Pc referencePc;
-    public VisibleDecorator(TargetChecker decorated, Pc selectedReferencePc){
+    VisibleDecorator(TargetChecker decorated, Pc selectedReferencePc){
         super(decorated);
         this.referencePc = selectedReferencePc;
     }
     public HashSet<Tile> validTiles() {
         HashSet<Tile> visibleTiles, resultTiles;
+        if(referencePc == null)
+            referencePc = game.getCurrentPc();
         visibleTiles = referencePc.getCurrTile().getVisibles();
         resultTiles = base.validTiles();
         resultTiles.retainAll(visibleTiles);
@@ -32,7 +33,7 @@ class VisibleDecorator extends TargetCheckerDecorator {
 
 class BlindnessDecorator extends TargetCheckerDecorator {
     private Pc referencePc;
-    public BlindnessDecorator(TargetChecker decorated, Pc selectedReferencePc){
+    BlindnessDecorator(TargetChecker decorated, Pc selectedReferencePc){
         super(decorated);
         this.referencePc = selectedReferencePc;
     }
@@ -48,7 +49,7 @@ class BlindnessDecorator extends TargetCheckerDecorator {
 
 class SimpleStraightLineDecorator extends TargetCheckerDecorator{
     private CardinalDirectionEnum direction;
-    public SimpleStraightLineDecorator(TargetChecker decorated, CardinalDirectionEnum selectedDirection){
+    SimpleStraightLineDecorator(TargetChecker decorated, CardinalDirectionEnum selectedDirection){
         super(decorated);
         this.direction = selectedDirection;
     }
@@ -88,7 +89,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
 
 class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
     private CardinalDirectionEnum direction;
-    public BeyondWallsStraightLineDecorator(TargetChecker decorated, CardinalDirectionEnum selectedDirection){
+    BeyondWallsStraightLineDecorator(TargetChecker decorated, CardinalDirectionEnum selectedDirection){
         super(decorated);
         this.direction = selectedDirection;
     }
@@ -150,7 +151,7 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
 
 
 class SameRoomDecorator extends TargetCheckerDecorator {
-    public SameRoomDecorator(TargetChecker decorated){
+    SameRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
     public HashSet<Tile> validTiles() {
@@ -171,7 +172,7 @@ class SameRoomDecorator extends TargetCheckerDecorator {
 
 
 class DifferentRoomDecorator extends TargetCheckerDecorator {
-    public DifferentRoomDecorator(TargetChecker decorated){
+    DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
     public HashSet<Tile> validTiles() {
@@ -194,14 +195,13 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
 
 class MinDistanceDecorator extends TargetCheckerDecorator {
     private int minDistance;
-    public MinDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
+    MinDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
         super(decorated);
         this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
     public HashSet<Tile> validTiles() {
         EmptyChecker checker = new EmptyChecker();
         HashSet<Tile> resultTiles;
-        HashSet<Tile> selectedTiles = new HashSet<>();
         HashSet<Tile> allTiles = checker.validTiles();
         Tile referenceTile = game.getCurrentPc().getCurrTile();
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
@@ -217,7 +217,7 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
 class MaxDistanceDecorator extends TargetCheckerDecorator {
     private int maxDistance;
 
-    public MaxDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker) {
+    MaxDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker) {
         super(decorated);
         this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
     }

@@ -1,12 +1,13 @@
 package model;
 
 import model.Enumerations.AmmoEnum;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class WeaponCard {
-    private Deck<WeaponCard> weaponCardDeck;
+    protected Game currGame;
     private String name;
     private boolean loaded;
     private short[] ammos;
@@ -19,27 +20,27 @@ public class WeaponCard {
     /**
      * constructor for WeaponCard
      * @param jsonWeaponCard JsonObject representing a WeaponCard
-     * @param deck deck in which this card is put
+     * @param game instance of currGame
      */
-    WeaponCard(JSONObject jsonWeaponCard, Deck<WeaponCard> deck) {
-        this.weaponCardDeck = deck;
+    WeaponCard(JSONObject jsonWeaponCard, Game game) {
+        this.currGame = game;
         this.name = (String) jsonWeaponCard.get("name");
         this.loaded = true;
-        this.ammos = (short[]) jsonWeaponCard.get("ammos");
-        JSONObject[] jsonFireModes = (JSONObject[]) jsonWeaponCard.get("firemodes");
-        for (JSONObject jsonFireMode : jsonFireModes) {
-            WeaponEffect weaponEffect = new WeaponEffect(jsonFireMode, this);
+        this.ammos = new short[3];
+        JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammos");
+        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++) {
+            ammos[i] = ((Long) jsonAmmos.get(i)).shortValue();
+        }
+        JSONArray jsonFireModes = (JSONArray) jsonWeaponCard.get("firemodes");
+        for (Object jsonFireMode : jsonFireModes) {
+            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonFireMode, game);
             this.fireModes.add(weaponEffect);
         }
-        JSONObject[] jsonUpgrades = (JSONObject[]) jsonWeaponCard.get("upgrades");
-        for (JSONObject jsonUpgrade : jsonUpgrades) {
-            WeaponEffect weaponEffect = new WeaponEffect(jsonUpgrade, this);
+        JSONArray jsonUpgrades = (JSONArray) jsonWeaponCard.get("upgrades");
+        for (Object jsonUpgrade : jsonUpgrades) {
+            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonUpgrade, game);
             this.upgrades.add(weaponEffect);
         }
-    }
-
-    public Deck getDeck(){
-        return weaponCardDeck;
     }
 
     public boolean isLoaded(){
@@ -54,33 +55,52 @@ public class WeaponCard {
         return ammos;
     }
 
+    public LinkedList getCurrentEffect(){
+        return (LinkedList) currEffect.clone();
+    }
+
     public short[] getCurrentCost(){
         return currentCost;
     }
 
     public void selectFireMode(int index){
-        WeaponEffect eff = fireModes.get(index);
-        this.currEffect = new LinkedList<>();
-        currentCost[AmmoEnum.BLUE.ordinal()] = eff.getCost()[AmmoEnum.BLUE.ordinal()];
-        currentCost[AmmoEnum.RED.ordinal()] = eff.getCost()[AmmoEnum.RED.ordinal()];
-        currentCost[AmmoEnum.YELLOW.ordinal()] = eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-        this.currEffect.add(eff);
+        WeaponEffect eff;
+        if(fireModes.size() > index) {
+            eff = fireModes.get(index);
+            this.currEffect = new LinkedList<>();
+            currentCost[AmmoEnum.BLUE.ordinal()] = eff.getCost()[AmmoEnum.BLUE.ordinal()];
+            currentCost[AmmoEnum.RED.ordinal()] = eff.getCost()[AmmoEnum.RED.ordinal()];
+            currentCost[AmmoEnum.YELLOW.ordinal()] = eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+            this.currEffect.add(eff);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void addUpgrade(int index) {
-        WeaponEffect eff = upgrades.get(index);
-        currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
-        currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
-        currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-        this.currEffect.add(eff);
+        WeaponEffect eff;
+        if(upgrades.size() > index) {
+            eff = upgrades.get(index);
+            currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
+            currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
+            currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+            this.currEffect.add(eff);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void removeUpgrade(int index) {
-        WeaponEffect eff = upgrades.get(index);
-        currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
-        currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
-        currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-        currEffect.remove(eff);
+        WeaponEffect eff;
+        if(upgrades.size() > index) {
+            eff = upgrades.get(index);
+            currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
+            currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
+            currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+            currEffect.remove(eff);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void use() {

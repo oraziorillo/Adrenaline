@@ -17,9 +17,10 @@ public class JsonWriter {
      * @param array array to be translated
      * @return JSONArray translation of array
      */
-    private static JSONArray addAllToJsonArray(ArrayList<JSONObject> array) {
+    static JSONArray addAllToJsonArray(ArrayList<JSONObject> array) {
         JSONArray jsonArray = new JSONArray();
-        jsonArray.addAll(array);
+        for(JSONObject jsonObject : array)
+            jsonArray.add(jsonObject);
         return jsonArray;
     }
 
@@ -29,7 +30,7 @@ public class JsonWriter {
      * @param bound in case of max/min distance
      * @return a JSONObject representing a target checker
      */
-    private static JSONObject buildTargetChecker(String type, Integer bound) {
+    static JSONObject buildTargetChecker(String type, Integer bound) {
         JSONObject targetChecker = new JSONObject();
         targetChecker.put("type", type);
         if (bound != null)
@@ -44,7 +45,7 @@ public class JsonWriter {
      * @param targetChecker type of target checker to adopt
      * @return a JSONObject representing an action
      */
-    private static JSONObject buildJsonAction(boolean isMovement, int damage, int marks, JSONArray targetChecker){
+    static JSONObject buildJsonAction(boolean isMovement, int damage, int marks, JSONArray targetChecker){
         JSONObject action = new JSONObject();
         action.put("isMovement", isMovement);
         action.put("damage", damage);
@@ -59,7 +60,7 @@ public class JsonWriter {
      * @param actions actions composing the effect
      * @return a JSONObject representing a weapon effect
      */
-    private static JSONObject buildJsonEffect(JSONArray cost, JSONArray actions){
+    static JSONObject buildJsonEffect(JSONArray cost, JSONArray actions){
         JSONObject effect = new JSONObject();
         effect.put("cost", cost);
         effect.put("actions", actions);
@@ -74,7 +75,7 @@ public class JsonWriter {
      * @param upgrades possible upgrades to apply on the weapon
      * @throws Exception exception thrown by write method
      */
-    private static JSONObject buildJsonWeapon(String name, JSONArray ammos, JSONArray firemodes, JSONArray upgrades){
+    static JSONObject buildJsonWeapon(String name, JSONArray ammos, JSONArray firemodes, JSONArray upgrades){
         JSONObject weapon = new JSONObject();
         weapon.put("name", name);
         weapon.put("ammos", ammos);
@@ -86,7 +87,7 @@ public class JsonWriter {
     private static void writeJsonWeapons() throws Exception{
         JSONArray weapons = new JSONArray();
         JSONArray ammos, cost;
-        ArrayList<JSONObject> firemodes, upgrades, actions, targetCheckers;
+        ArrayList<JSONObject> fireModes, upgrades, actions, targetCheckers;
 
         //build Lock Rifle and add it to weapons array
         ammos = new JSONArray();
@@ -98,8 +99,8 @@ public class JsonWriter {
         targetCheckers.add(buildTargetChecker("visible", null));
         actions = new ArrayList<>();
         actions.add(buildJsonAction(false, 2, 1, addAllToJsonArray(targetCheckers)));
-        firemodes = new ArrayList<>();
-        firemodes.add(buildJsonEffect(cost, addAllToJsonArray(actions)));
+        fireModes = new ArrayList<>();
+        fireModes.add(buildJsonEffect(cost, addAllToJsonArray(actions)));
 
         cost = new JSONArray();
         cost.add(0); cost.add(1); cost.add(0);
@@ -108,7 +109,7 @@ public class JsonWriter {
         upgrades = new ArrayList<>();
         upgrades.add(buildJsonEffect(cost, addAllToJsonArray(actions)));
 
-        weapons.add(buildJsonWeapon("Lock Rifle", ammos, addAllToJsonArray(firemodes), addAllToJsonArray(upgrades)));
+        weapons.add(buildJsonWeapon("Lock Rifle", ammos, addAllToJsonArray(fireModes), addAllToJsonArray(upgrades)));
 
         //write json
         Files.write(Paths.get("weapons"), weapons.toJSONString().getBytes());

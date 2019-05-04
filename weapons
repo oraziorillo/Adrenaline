@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Lock Rifle",
+    "ammos": [
+      2,
+      0,
+      0
+    ],
+    "firemodes": [
+      {
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "isMovement": false,
+            "damage": 2,
+            "marks": 1,
+            "targetCheckers": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "cost": [
+          0,
+          1,
+          0
+        ],
+        "actions": [
+          {
+            "isMovement": false,
+            "damage": 0,
+            "marks": 1,
+            "targetCheckers": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

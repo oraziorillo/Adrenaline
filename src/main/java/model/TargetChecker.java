@@ -3,7 +3,7 @@ package model;
 import java.util.HashSet;
 
 public abstract class TargetChecker {
-    //TODO togliere attributo game e metterlo nel costruttore
+    //TODO togliere attributo currGame e metterlo nel costruttore
     public Game game;
 
     public void setGame(Game game) {

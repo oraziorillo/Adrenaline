@@ -34,7 +34,7 @@ public class Pc {
         this.points = 0;
         this.numOfDeath = 0;
         this.adrenaline = 0;
-        this.marks = new short[game.getPcs().size()];
+        this.marks = new short[currGame.getPcs().size()];
         this.ammos = new short[3];
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
@@ -83,7 +83,7 @@ public class Pc {
         temp = weapons[index];
         return temp;
     }
-    //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di game)
+    //cambiare questo metodo in modo che riceva x,y della tile di destinazione è molto più comodo (fermo restando che si abbia l'istanza di currGame)
 
     public void move(Tile dest, int maxDist) {
         if(!currTile.atDistance(maxDist).contains(dest)){

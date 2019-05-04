@@ -2,6 +2,7 @@ package model;
 
 import model.Enumerations.PcColourEnum;
 import model.Enumerations.TileColourEnum;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class Game {
      */
     public Tile[][] map;
 
-    public Game(String jsonName) {
+    public Game() {
         remainigActions = 2;
         currentPcIndex = 0;
         pcs = new ArrayList<>(0);
@@ -29,10 +30,9 @@ public class Game {
         killShotTrack = new Killshot[8];
         try {
             WeaponCard weaponCard;
-            JSONObject jsonObject = (JSONObject) Server.readJson(jsonName);
-            JSONObject[] jsonWeapons = (JSONObject[]) jsonObject.get("weapons");
-            for (JSONObject jsonWeapon : jsonWeapons) {
-                weaponCard = new WeaponCard(jsonWeapon, weaponsDeck);
+            JSONArray jsonWeapons = (JSONArray) Server.readJson("weapons");
+            for (Object jsonWeapon : jsonWeapons) {
+                weaponCard = new WeaponCard((JSONObject)jsonWeapon, this);
                 weaponsDeck.add(weaponCard);
             }
         } catch (Exception e) {
