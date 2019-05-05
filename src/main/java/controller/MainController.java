@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class MainController {
     Game currGame;
-    view currView;          //è necessario creare una view per ogni player..??
+    View currView;          //è necessario creare una view per ogni player..??
     private ArrayList<Player> playersInTheGame;
     private State setupSteps;
     private State firstTurn;

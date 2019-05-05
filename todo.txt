@@ -3,3 +3,5 @@
 - i return di oggetti devono restituire cloni
 
 - aggiungere collect su Pc o tile che non distingue tra spawntile e ammotile
+
+-aggiornare UML

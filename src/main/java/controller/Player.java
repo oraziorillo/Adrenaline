@@ -1,9 +1,12 @@
 package controller;
 
+import model.Enumerations.PcColourEnum;
 import model.Pc;
 import model.PowerUpCard;
+import model.Tile;
 import org.jetbrains.annotations.Contract;
 
+import java.util.HashSet;
 import java.util.UUID;
 
 public abstract class Player implements temporaneo{
@@ -44,11 +47,71 @@ class RmiPlayer extends Player{
     RmiPlayer(String username, UUID uuid) {
         super(username, uuid);
     }
+
+    @Override
+    public void printOnView(String s) {
+
+    }
+
+    @Override
+    public int receiveNumber() {
+        return 0;
+    }
+
+    @Override
+    public PcColourEnum receivePcColourEnum() {
+        return null;
+    }
+
+    @Override
+    public PowerUpCard receivePowerUpCard() {
+        return null;
+    }
+
+    @Override
+    public void showPossibleTiles(HashSet<Tile> tiles) {
+
+    }
+
+    @Override
+    public Tile receiveTile() {
+        return null;
+    }
 }
 
 class SocketPlayer extends Player{
 
     SocketPlayer(String username, UUID uuid) {
         super(username, uuid);
+    }
+
+    @Override
+    public void printOnView(String s) {
+        
+    }
+
+    @Override
+    public int receiveNumber() {
+        return 0;
+    }
+
+    @Override
+    public PcColourEnum receivePcColourEnum() {
+        return null;
+    }
+
+    @Override
+    public PowerUpCard receivePowerUpCard() {
+        return null;
+    }
+
+    @Override
+    public void showPossibleTiles(HashSet<Tile> tiles) {
+
+    }
+
+    @Override
+    public Tile receiveTile() {
+        return null;
     }
 }

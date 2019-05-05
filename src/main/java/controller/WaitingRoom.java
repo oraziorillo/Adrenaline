@@ -8,7 +8,7 @@ public class WaitingRoom {
 
     public WaitingRoom() {
         waitingPlayers = new ArrayList<>();
-        view = new view();          //da definire
+        view = new View();          //da definire
     }
 
     public void addPlayer(Player p){        //questo metodo può prendere come parametro anche il tipo di connessione del player
