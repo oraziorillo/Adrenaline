@@ -32,8 +32,8 @@ public class Turns implements State {
         Player currPlayer = playersInTheGame.get(currPlayerIndex);
         executeAction(currPlayer);
         executeAction(currPlayer);
-        RefillTiles();
-        Reload(currPlayer);
+        //RefillTiles();
+        //Reload(currPlayer);
         currGame.nextTurn();        //bisogna cambiare ogni volta il current character
     }
 
@@ -51,7 +51,7 @@ public class Turns implements State {
                 grabStuff(p);
                 break;
             case 3:
-                shootPeople(p);
+                //shootPeople(p);
         }
         currGame.decreaseRemainingActions();
     }
@@ -89,7 +89,7 @@ public class Turns implements State {
      */
     private void collect(Player p, Tile collectTile){
         if(collectTile instanceof AmmoTile){
-            pickAmmo()
+            //pickAmmo()
         }
     }
 }
