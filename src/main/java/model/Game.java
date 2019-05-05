@@ -129,10 +129,8 @@ public class Game {
     }
 
     private void initAmmosDeck(String jSonName){
-
+        //TODO
     }
-
-    private
 
     public short getRemainingActions() {
         return remainigActions;
