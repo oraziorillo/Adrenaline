@@ -145,6 +145,8 @@ public abstract class Tile {
         visibles.add(t);
     }
 
+    public abstract void refill();
+
     /**
      * @author matteo
      * @apiNote Fare qui il metodo che fa raccogliere cose mi sembra la soluzione più semplice
@@ -165,7 +167,7 @@ public abstract class Tile {
 }
 
 
-class SpawnTile extends Tile {
+public class SpawnTile extends Tile {
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
@@ -179,7 +181,7 @@ class SpawnTile extends Tile {
     }
 
     public WeaponCard[] getWeapons() {
-        return weapons;
+        return weapons.clone();
     }
 
     WeaponCard pickWeapon(int index) {
@@ -188,10 +190,14 @@ class SpawnTile extends Tile {
         return temp;
     }
 
-    WeaponCard switchWeapon(int index, WeaponCard w) {
+    public WeaponCard switchWeapon(int index, WeaponCard w) {
         WeaponCard temp = weapons[index];
         weapons[index] = w;
         return temp;
+    }
+
+    public void refill(){
+        //TODO
     }
 
     @Override
@@ -201,7 +207,7 @@ class SpawnTile extends Tile {
 }
 
 
-class AmmoTile extends Tile {
+public class AmmoTile extends Tile {
     private AmmoCard ammoCard;
     private Deck<AmmoCard> ammoDeck;
 
@@ -213,8 +219,14 @@ class AmmoTile extends Tile {
 
     public AmmoCard pickAmmo() {
         AmmoCard oldCard = ammoCard;
-        ammoCard = ammoDeck.draw();
+        ammoCard = null;
         return oldCard;
+    }
+
+    public void refill(){
+        if(ammoCard == null) {
+            ammoCard = ammoDeck.draw();
+        }
     }
 
     @Override

@@ -64,6 +64,10 @@ public class Pc {
         return name;
     }
 
+    public PcBoard getPcBoard() {
+        return pcBoard;
+    }
+
     public int getAdrenaline(){
         return adrenaline;
     }
@@ -83,7 +87,7 @@ public class Pc {
         return this.currTile;
     }
 
-    private WeaponCard weaponIndex(int index) {
+    private WeaponCard weaponAtIndex(int index) {
         WeaponCard temp;
         if (index < 0 || index > 3) {
             throw new IllegalArgumentException("This index is not valid");
@@ -109,7 +113,7 @@ public class Pc {
             throw new IllegalStateException("You are not in a SpawnTile");
         }
         SpawnTile workingTile = (SpawnTile) currTile;
-        weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponIndex(toDropWeaponIndex));
+        weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponAtIndex(toDropWeaponIndex));
     }
 
     public void collectAmmos() {

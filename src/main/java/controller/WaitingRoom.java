@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class WaitingRoom {
     private ArrayList<Player> waitingPlayers;
-    private View view;
+    //private View view;
 
     public WaitingRoom() {
         waitingPlayers = new ArrayList<>();
-        view = new View();          //da definire
+        //view = new view();          //da definire
     }
 
     public void addPlayer(Player p){        //questo metodo può prendere come parametro anche il tipo di connessione del player

@@ -36,7 +36,7 @@ public class SetupSteps implements State{
         p.receiveNumber();
         p.printOnView("Good choice. This map is craaaazy!!");
         //una volta ricevuta la risposta, dedurre gli altri parametri (numRighe, numColonne...) dal file jSon
-        currGame.initMap(dati provenienti dal jSon);
+        //currGame.initMap(dati provenienti dal jSon);
     }
 
     private void chooseNumberOfSkull(){

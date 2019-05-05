@@ -1,11 +1,10 @@
 package controller;
 
-import model.Game;
-import model.Pc;
-import model.Tile;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 
 public class Turns implements State {
     Game currGame;
@@ -28,15 +27,18 @@ public class Turns implements State {
     }
 
     public void execute(){
+        Optional<Tile> tile1, tile2;
         Player currPlayer = playersInTheGame.get(currPlayerIndex);
-        executeAction(currPlayer);
-        executeAction(currPlayer);
-        Reload(currPlayer);
+        tile1 = executeAction(currPlayer);
+        tile2 = executeAction(currPlayer);
+        //Reload(currPlayer);
+        //RefillTiles(tile1, tile2);
         currGame.nextTurn();        //bisogna cambiare ogni volta il current character
     }
 
-    private void executeAction(Player p){
+    private Optional<Tile> executeAction(Player p){
         int action;
+        Optional<Tile> tileToRefill = Optional.empty();
         p.printOnView("Which action do you want to perform?");
         //mostra a schermo le tre opzioni: muovi, raccogli, spara
         //possiamo mostrare a schermo le tre opzioni sotto forma di array e in base all'elemento selezionato riceviamo un indice
@@ -46,11 +48,13 @@ public class Turns implements State {
                 runAround(p, 3);
                 break;
             case 2:
-                grabStuff(p);
+                tileToRefill = Optional.ofNullable(grabStuff(p));
                 break;
             case 3:
-                shootPeople(p);
+                //shootPeople(p);
         }
+        currGame.decreaseRemainingActions();
+        return tileToRefill;
     }
 
     private void runAround(Player p, int distance){
@@ -61,11 +65,9 @@ public class Turns implements State {
         p.getPc().moveToTile(destination);
     }
 
-    private void grabStuff(Player p){
-        Tile destination;
+    private Tile grabStuff(Player p){
         Pc currPc = p.getPc();
         int adrenalineLevel = currPc.getAdrenaline();
-        HashSet<Tile> possibleTiles;
         if(adrenalineLevel > 0){
             runAround(p, 2);
         }
@@ -73,7 +75,54 @@ public class Turns implements State {
             runAround(p, 1);
         }
         //usare un metodo ausiliario per le istruzioni fino a qui?
-        collect();
+        collect(p, currPc.getCurrTile());
+        return currPc.getCurrTile();
+    }
 
+    /**
+     * per questa azione consideriamo tre possibili modi di esecuzione:
+     * 1) usiamo instance of in questo metodo e due metodi diversi in ammotile e spawntile
+     * 2) usiamo un metodo nel model che alza un eccezione e a seconda dell'eccezione alzata chiamiamo il metodo giusto nel controller
+     * 3) chiamiamo un metodo a vuoto la prima volta che prende in ingresso dei parametri nulli e a seconda dei casi chiamiamo poi quello giusto
+     * @param p
+     * @param collectTile
+     */
+    private void collect(Player p, Tile collectTile){
+        if(collectTile instanceof AmmoTile){
+            AmmoCard ammo;
+            ammo = ((AmmoTile) collectTile).pickAmmo();
+            p.getPc().getPcBoard().addAmmos(ammo);
+        }
+        else{
+            int grabIndex;
+            int dropIndex;
+            SpawnTile tile = (SpawnTile) collectTile;
+            p.printOnView("Which weapon do you want to choose?");
+            //mostra a schermo o evidenzia le armi nel tile
+            grabIndex = p.receiveNumber();
+            while(tile.getWeapons()[grabIndex] == null){
+                p.printOnView("You didn't make a possible choice!");
+                p.printOnView("Which weapon do you want to choose?");
+                //mostra a schermo o evidenzia le armi nel tile
+                grabIndex = p.receiveNumber();
+            }
+            if(p.getPc().isFullyArmed()){
+                p.printOnView("Which weapon do you want to drop?");
+                 dropIndex = p.receiveNumber();
+                 while(dropIndex < 0 || dropIndex > 2){
+                     p.printOnView("You didn't choose a proper weapon!");
+                     p.printOnView("Which weapon do you want to drop?");
+                     dropIndex = p.receiveNumber();
+                 }
+                 p.getPc().collectWeapon(grabIndex, dropIndex);     //fa lo switch e prende la nuova arma
+            }
+            else{
+                p.getPc().collectWeapon(grabIndex);
+            }
+        }
+    }
+
+    private  void shootPeople(Player p){
+        p.printOnView("Which weapon do you want to use?");
     }
 }

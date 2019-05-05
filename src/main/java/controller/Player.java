@@ -15,7 +15,7 @@ public abstract class Player implements temporaneo{
     private final UUID uuid;
     private Pc pc;
 
-    @Contract(pure = true)
+    //@Contract(pure = true)
     Player(String username, UUID uuid){
         this.username=username;
         this.uuid=uuid;
@@ -86,9 +86,7 @@ class SocketPlayer extends Player{
     }
 
     @Override
-    public void printOnView(String s) {
-        
-    }
+    public void printOnView(String s) {}
 
     @Override
     public int receiveNumber() {
