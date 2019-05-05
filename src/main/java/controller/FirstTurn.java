@@ -36,7 +36,7 @@ public class FirstTurn implements State {
         pc.drawPowerUp();
         selectedColour = chooseCardToDiscard(p);
         t = currGame.getSpawnTiles().stream().filter(elem -> elem.getTileColour().ordinal() == selectedColour.ordinal()).findFirst();
-        pc.setCurrTile(t.get());
+        pc.moveToTile(t.get());
         t.get().addPc(pc);
         //qui possiamo inserire la frase che ogni giocatore pronuncia a inizio gioco
     }

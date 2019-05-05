@@ -1,5 +1,6 @@
 package controller;
 
+import model.AmmoTile;
 import model.Game;
 import model.Pc;
 import model.Tile;
@@ -31,6 +32,7 @@ public class Turns implements State {
         Player currPlayer = playersInTheGame.get(currPlayerIndex);
         executeAction(currPlayer);
         executeAction(currPlayer);
+        RefillTiles();
         Reload(currPlayer);
         currGame.nextTurn();        //bisogna cambiare ogni volta il current character
     }
@@ -51,6 +53,7 @@ public class Turns implements State {
             case 3:
                 shootPeople(p);
         }
+        currGame.decreaseRemainingActions();
     }
 
     private void runAround(Player p, int distance){
@@ -62,7 +65,6 @@ public class Turns implements State {
     }
 
     private void grabStuff(Player p){
-        Tile destination;
         Pc currPc = p.getPc();
         int adrenalineLevel = currPc.getAdrenaline();
         HashSet<Tile> possibleTiles;
@@ -73,7 +75,21 @@ public class Turns implements State {
             runAround(p, 1);
         }
         //usare un metodo ausiliario per le istruzioni fino a qui?
-        collect();
+        collect(p, currPc.getCurrTile());
 
+    }
+
+    /**
+     * per questa azione consideriamo tre possibili modi di esecuzione:
+     * 1) usiamo instance of in questo metodo e due metodi diversi in ammotile e spawntile
+     * 2) usiamo un metodo nel model che alza un eccezione e a seconda dell'eccezione alzata chiamiamo il metodo giusto nel controller
+     * 3) chiamiamo un metodo a vuoto la prima volta che prende in ingresso dei parametri nulli e a seconda dei casi chiamiamo poi quello giusto
+     * @param p
+     * @param collectTile
+     */
+    private void collect(Player p, Tile collectTile){
+        if(collectTile instanceof AmmoTile){
+            pickAmmo()
+        }
     }
 }

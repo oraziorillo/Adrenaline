@@ -165,7 +165,7 @@ public abstract class Tile {
 }
 
 
-class SpawnTile extends Tile {
+public class SpawnTile extends Tile {
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
@@ -201,7 +201,7 @@ class SpawnTile extends Tile {
 }
 
 
-class AmmoTile extends Tile {
+public class AmmoTile extends Tile {
     private AmmoCard ammoCard;
     private Deck<AmmoCard> ammoDeck;
 

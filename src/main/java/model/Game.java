@@ -14,9 +14,9 @@ public class Game {
     private int currentKillShotTrackIndex;
     private ArrayList<Pc> pcs;
     private Killshot[] killShotTrack;
-    Deck<AmmoCard> ammosDeck = new Deck<>(this);
-    Deck<WeaponCard> weaponsDeck = new Deck<>(this);
-    Deck<PowerUpCard> powerUpsDeck = new Deck<>(this);
+    Deck<AmmoCard> ammosDeck;
+    Deck<WeaponCard> weaponsDeck;
+    Deck<PowerUpCard> powerUpsDeck;
     private ArrayList<Tile> spawnTiles;
     /**
      * @author matteo
@@ -30,7 +30,9 @@ public class Game {
         pcs = new ArrayList<>();
         spawnTiles = new ArrayList<>();
         killShotTrack = new Killshot[8];
-
+        ammosDeck = new Deck<>(this);
+        weaponsDeck = new Deck<>(this);
+        powerUpsDeck = new Deck<>(this);
     }
 
     /**
@@ -95,13 +97,13 @@ public class Game {
         }
     }
 
-    public void initDecks() {
-        initWeaponsDeck();
+    public void initDecks(String jSonName) {
+        initWeaponsDeck(jSonName);
         initPowerUpDeck();
-        initAmmosDeck();
+        initAmmosDeck(jSonName);
     }
 
-    private void initWeaponsDeck(){
+    private void initWeaponsDeck(String jSonName){
         try {
             WeaponCard weaponCard;
             JSONArray jsonWeapons = (JSONArray) Server.readJson("weapons");
@@ -126,9 +128,11 @@ public class Game {
         }
     }
 
-    private void initAmmosDeck(){
-        //TODO
+    private void initAmmosDeck(String jSonName){
+
     }
+
+    private
 
     public short getRemainingActions() {
         return remainigActions;
