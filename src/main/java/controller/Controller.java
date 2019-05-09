@@ -34,9 +34,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         Collections.addAll(availablePcColours, PcColourEnum.values());
         this.players.addAll(players);
         this.currPlayerIndex = 0;
-        this.setupSteps = new SetupStepsState(this.game, this.players);
-        this.firstTurn = new FirstTurnState(this.game, this.players);
-        this.firstTurn = new StartTurnState(this.game, this.players);
+        this.setupSteps = new SetupStepsState(game);
+        this.firstTurn = new FirstTurnState(game);
+        this.firstTurn = new StartTurnState(game);
     }
 
     public void validateCurrPlayer() throws NotCurrPlayerException {
