@@ -1,13 +1,13 @@
 package model;
 
-import model.Enumerations.PcColourEnum;
+import model.enumerations.PcColourEnum;
 
-public class Killshot {
+public class KillShot {
     private PcColourEnum colour;
     private boolean skulled;
     private boolean overkilled;
 
-    public Killshot(){
+    public KillShot(){
         colour = null;
         skulled = true;
         overkilled = false;

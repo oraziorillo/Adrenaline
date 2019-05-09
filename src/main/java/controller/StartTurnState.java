@@ -6,12 +6,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
-public class Turns implements State {
+public class StartTurnState extends State {
+    StartTurnState(Game game) {
+        super(game);
+    }
+
+
+    /*
+
     Game currGame;
     private ArrayList<Player> playersInTheGame;
     private int currPlayerIndex;
 
-    public Turns(Game thisGame, ArrayList<Player> players){
+    public StartTurnState(Game thisGame, ArrayList<Player> players){
         this.currGame = thisGame;
         this.playersInTheGame = players;
         currPlayerIndex = 0;
@@ -62,7 +69,7 @@ public class Turns implements State {
         HashSet<Tile> possibleDestinations = p.getPc().getCurrTile().atDistance(distance);
         p.showPossibleTiles(possibleDestinations);      //mostra a schermo
         destination = p.receiveTile();
-        p.getPc().moveToTile(destination);
+        p.getPc().moveTo(destination);
     }
 
     private Tile grabStuff(Player p){
@@ -79,15 +86,15 @@ public class Turns implements State {
         return currPc.getCurrTile();
     }
 
-    /**
+
      * per questa azione consideriamo tre possibili modi di esecuzione:
      * 1) usiamo instance of in questo metodo e due metodi diversi in ammotile e spawntile
      * 2) usiamo un metodo nel model che alza un eccezione e a seconda dell'eccezione alzata chiamiamo il metodo giusto nel controller
      * 3) chiamiamo un metodo a vuoto la prima volta che prende in ingresso dei parametri nulli e a seconda dei casi chiamiamo poi quello giusto
      * @param p
      * @param collectTile
-     */
-    private void collect(Player p, Tile collectTile){
+
+    private void collect(Player p, Tile collectTile) {
         if(collectTile instanceof AmmoTile){
             AmmoCard ammo;
             ammo = ((AmmoTile) collectTile).pickAmmo();
@@ -124,5 +131,8 @@ public class Turns implements State {
 
     private  void shootPeople(Player p){
         p.printOnView("Which weapon do you want to use?");
+
     }
+
+    */
 }

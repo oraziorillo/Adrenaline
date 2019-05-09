@@ -1,6 +1,6 @@
 package model;
 
-import model.Enumerations.CardinalDirectionEnum;
+import model.enumerations.CardinalDirectionEnum;
 import org.json.simple.JSONObject;
 import java.util.HashSet;
 import java.util.Optional;

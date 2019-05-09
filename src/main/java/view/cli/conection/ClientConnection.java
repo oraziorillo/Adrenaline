@@ -8,6 +8,6 @@ public abstract class ClientConnection {
 
     public abstract boolean login(UUID token);
 
-    public abstract UUID register(String username);
+    public abstract UUID signin(String username);
 }
 

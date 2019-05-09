@@ -1,7 +1,6 @@
 package controller;
 
-import model.Enumerations.AmmoEnum;
-import model.Enumerations.TileColourEnum;
+import model.enumerations.AmmoEnum;
 import model.Game;
 import model.Pc;
 import model.PowerUpCard;
@@ -11,11 +10,18 @@ import model.Tile;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class FirstTurn implements State {
+public class FirstTurnState extends State{
+
+    FirstTurnState(Game game) {
+        super(game);
+    }
+
+    /*
+
     Game currGame;
     private ArrayList<Player> playersInTheGame;
 
-    public FirstTurn(Game thisGame, ArrayList<Player> players){
+    public FirstTurnState(Game thisGame, ArrayList<Player> players){
         this.currGame = thisGame;
         this.playersInTheGame = players;
     }
@@ -36,7 +42,7 @@ public class FirstTurn implements State {
         pc.drawPowerUp();
         selectedColour = chooseCardToDiscard(p);
         t = currGame.getSpawnTiles().stream().filter(elem -> elem.getTileColour().ordinal() == selectedColour.ordinal()).findFirst();
-        pc.moveToTile(t.get());
+        pc.moveTo(t.get());
         t.get().addPc(pc);
         //qui possiamo inserire la frase che ogni giocatore pronuncia a inizio gioco
     }
@@ -49,4 +55,6 @@ public class FirstTurn implements State {
         p.getPc().discardPowerUp(powerUp);      //metodo lancia eccezione..da gestire
         return powerUp.getColour();
     }
+
+     */
 }

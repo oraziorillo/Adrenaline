@@ -1,6 +1,6 @@
 package model;
 
-import model.Enumerations.AmmoEnum;
+import model.enumerations.AmmoEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.ArrayList;

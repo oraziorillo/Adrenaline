@@ -1,10 +1,10 @@
 package model;
 
-import model.Enumerations.AmmoEnum;
-import model.Enumerations.PcColourEnum;
-import model.Exceptions.NotEnoughAmmosException;
+import model.enumerations.AmmoEnum;
+import model.enumerations.PcColourEnum;
+import exceptions.NotEnoughAmmosException;
 
-import static model.Constants.LIFEPOINTS;
+import static Constants.LIFEPOINTS;
 
 public class PcBoard {
 

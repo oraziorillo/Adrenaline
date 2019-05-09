@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.UUID;
 
-public class CliClient {
+public class CliClient implements RemoteView{
 
     public static final String NOPE="Invalid Command";
 
@@ -44,8 +44,8 @@ public class CliClient {
                     }
                     break;
                 case "s":
-                    System.out.println("Choose a username");
-                    token = connection.register(in.readLine());
+                    System.out.println(">>> Please provide username: ");
+                    token = connection.signin(in.readLine());
                     System.out.println("This is your token. Use it to access again in the future.");
                     System.out.println(token);
                     break;

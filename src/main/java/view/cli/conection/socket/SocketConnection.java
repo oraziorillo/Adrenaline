@@ -47,8 +47,8 @@ public class SocketConnection extends ClientConnection {
     }
 
     @Override
-    public UUID register(String username) {
-        out.println("register\t"+username);
+    public UUID signin(String username) {
+        out.println("signin\t"+username);
         try {
             return UUID.fromString(in.readLine());
         } catch (IOException e) {

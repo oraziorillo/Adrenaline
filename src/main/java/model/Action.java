@@ -132,7 +132,7 @@ class MovementAction extends Action {       //metodo da modificare poichè è st
     @Override
     public void apply() {
         for (Pc pc : targets) {
-            pc.move(destination, maxDist);
+            pc.moveTo(destination);
         }
         targets.clear();
     }

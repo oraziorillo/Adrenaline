@@ -1,10 +1,10 @@
 package model;
 
-import model.Enumerations.PcColourEnum;
-import model.Exceptions.NotEnoughAmmosException;
+import model.enumerations.PcColourEnum;
+import exceptions.NotEnoughAmmosException;
 import java.util.ArrayList;
-import static model.Constants.LIFEPOINTS;
-import static model.Constants.MAX_WEAPONS_IN_HAND;
+import static Constants.LIFEPOINTS;
+import static Constants.MAX_WEAPONS_IN_HAND;
 
 /**
  * @author matteo
@@ -72,7 +72,7 @@ public class Pc {
         return adrenaline;
     }
 
-    public void moveToTile(Tile t){
+    public void moveTo(Tile t){
         if(t == null){
             throw new IllegalArgumentException("Invalid tile");
         }

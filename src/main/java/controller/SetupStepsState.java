@@ -1,19 +1,25 @@
 package controller;
 
-import model.Enumerations.PcColourEnum;
+import model.enumerations.PcColourEnum;
 import model.Game;
 import model.Pc;
 
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Scanner;
 
-public class SetupSteps implements State{
+public class SetupStepsState extends State {
+
+    SetupStepsState(Game game) {
+        super(game);
+    }
+
+    /*
+
     Game currGame;
     private ArrayList<Player> playersInTheGame;
 
-    public SetupSteps(Game thisGame, ArrayList<Player> players){
+    public SetupStepsState(Game thisGame, ArrayList<Player> players){
         this.currGame = thisGame;
         playersInTheGame = players;
         for (Player p: playersInTheGame) {          //forse da fare dopo
@@ -73,4 +79,6 @@ public class SetupSteps implements State{
         currGame.addPc(character);
         return selectedColour;
     }
+
+     */
 }

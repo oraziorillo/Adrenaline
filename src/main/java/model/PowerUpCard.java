@@ -1,6 +1,6 @@
 package model;
 
-import model.Enumerations.AmmoEnum;
+import model.enumerations.AmmoEnum;
 
 import java.util.HashSet;
 
@@ -35,7 +35,7 @@ class Newton extends PowerUpCard{
         possibleTiles.addAll(targetPc.getCurrTile().atDistance(2));
         if(possibleTiles.contains(destinationTile)){
             valid = true;
-            targetPc.setCurrTile(destinationTile);
+            targetPc.moveTo(destinationTile);
             //qua bisogna modificare le liste di pc dei tiles precedente e attuale
         }
         else{

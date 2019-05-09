@@ -1,6 +1,6 @@
 package model;
 
-import model.Enumerations.TileColourEnum;
+import model.enumerations.TileColourEnum;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -36,6 +36,9 @@ public class TileTest {
         ConcreteTile(int x, int y) {
             super(x, y, TileColourEnum.GREEN);
         }
+
+        @Override
+        public void refill() {}
 
         @Override
         public void collect(Pc player, int objectIndex) {}

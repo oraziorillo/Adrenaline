@@ -1,5 +1,6 @@
 package model;
 
+import controller.Server;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Before;

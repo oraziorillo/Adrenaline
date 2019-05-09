@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFpuoozFSwkyQk="
 					},
-					"name": "model.Server",
+					"name": "controller.Server",
 					"ownedElements": [
 						{
 							"_type": "UMLPackage",
@@ -338,7 +338,7 @@
 															"top": 165,
 															"width": 284,
 															"height": 13,
-															"text": "(from model.Server)"
+															"text": "(from controller.Server)"
 														},
 														{
 															"_type": "LabelView",

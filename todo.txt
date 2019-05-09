@@ -5,3 +5,25 @@
 - aggiungere collect su Pc o tile che non distingue tra spawntile e ammotile
 
 -aggiornare UML
+
+-cambiare tile
+
+-visitor per refillare gli square
+
+-potremmo catchare le eccezioni del controller dalla view e agire di conseguenza mostrando messaggi  a schermo oppure modificare una stringa nel model che verrà sempre mostrata a schermo
+
+Rules to implement:
+
+-"Choose starting player" 
+
+-Action-hero comment
+
+Domande:
+- se constants è public è un problema? l'utente malevolo può modificarla?
+
+
+
+
+
+
+

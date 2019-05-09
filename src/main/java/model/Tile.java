@@ -1,7 +1,7 @@
 package model;
 
-import model.Enumerations.CardinalDirectionEnum;
-import model.Enumerations.TileColourEnum;
+import model.enumerations.CardinalDirectionEnum;
+import model.enumerations.TileColourEnum;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -167,7 +167,7 @@ public abstract class Tile {
 }
 
 
-public class SpawnTile extends Tile {
+class SpawnTile extends Tile {
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
@@ -207,7 +207,7 @@ public class SpawnTile extends Tile {
 }
 
 
-public class AmmoTile extends Tile {
+class AmmoTile extends Tile {
     private AmmoCard ammoCard;
     private Deck<AmmoCard> ammoDeck;
 
