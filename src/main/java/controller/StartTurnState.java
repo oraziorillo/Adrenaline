@@ -9,10 +9,21 @@ import java.util.Optional;
 public class StartTurnState extends State {
 
     @Override
-    public void nextState() {
-
+    public void changeState(int requestedAction) {
+        switch (requestedAction){
+            case RUN:
+                controller.setCurrState(controller.run);
+                break;
+            case GRAB:
+                controller.setCurrState(controller.grab);
+                break;
+            case SHOOT:
+                controller.setCurrState(controller.shoot);
+                break;
+        }
     }
 
+    public void nextState(){}
 
     /*
 

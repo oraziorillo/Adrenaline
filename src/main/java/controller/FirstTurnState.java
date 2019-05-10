@@ -5,6 +5,7 @@ import model.Game;
 import model.Pc;
 import model.PowerUpCard;
 import model.Tile;
+import model.enumerations.PcColourEnum;
 
 
 import java.util.ArrayList;
@@ -12,10 +13,29 @@ import java.util.Optional;
 
 public class FirstTurnState extends State{
 
+
+    @Override
+    public boolean spawnPc(Pc pc, int n){
+        PowerUpCard powerUp = pc.getPowerUpCard(n);
+        AmmoEnum colour = powerUp.getColour();
+        Optional<Tile> t = controller.getGame().
+                                      getSpawnTiles().
+                                      stream().
+                                      filter(elem -> elem.getTileColour().ordinal() == colour.ordinal()).
+                                      findFirst();
+        pc.respawn(t.get());
+        pc.moveTo(t.get());
+        pc.discardPowerUp(powerUp);
+        t.get().addPc(pc);
+    }
+
     @Override
     public void nextState() {
-
+        controller.setNextState(controller.startTurn);
     }
+
+
+
 
     /*
 

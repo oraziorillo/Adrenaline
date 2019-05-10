@@ -1,5 +1,6 @@
 package controller;
 
+import model.Game;
 import model.Pc;
 import model.enumerations.PcColourEnum;
 

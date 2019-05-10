@@ -9,6 +9,7 @@ import java.util.LinkedList;
 public class WeaponCard {
     protected Game currGame;
     private String name;
+    private AmmoEnum firstAmmo;
     private boolean loaded;
     private short[] ammos;
     private short[] currentCost;
