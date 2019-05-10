@@ -16,10 +16,10 @@ public class FirstTurnState extends State{
         PowerUpCard powerUp = pc.getPowerUpCard(n);
         AmmoEnum colour = powerUp.getColour();
         Optional<Tile> t = controller.getGame().
-                                      getSpawnTiles().
-                                      stream().
-                                      filter(elem -> elem.getTileColour().ordinal() == colour.ordinal()).
-                                      findFirst();
+                getSpawnTiles().
+                stream().
+                filter(elem -> elem.getTileColour().ordinal() == colour.ordinal()).
+                findFirst();
         pc.respawn(t.get());
         pc.moveTo(t.get());
         pc.discardPowerUp(powerUp);

@@ -49,7 +49,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return firstTurn;
     }
 
-    public boolean isFinalFrenzy() {
+    public boolean isFinalFrenzy() { 
         return finalFrenzy;
     }
 
