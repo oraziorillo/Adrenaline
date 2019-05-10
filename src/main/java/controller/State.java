@@ -37,5 +37,7 @@ abstract class State {
         return false;
     }
 
+    public boolean move(Pc pc, Tile tile){ return false;}
+
     public abstract void nextState();
 }
