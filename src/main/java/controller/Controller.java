@@ -11,25 +11,23 @@ import java.util.Collections;
 
 public class Controller extends UnicastRemoteObject implements RemoteController {
 
-    private static final int FIRST_MAP = 1;
-    private static final int LAST_MAP = 4;
-    private static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
-    private static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
+    static final int FIRST_MAP = 1;
+    static final int LAST_MAP = 4;
+    static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
+    static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
 
     static final int RUN = 1;
     static final int GRAB = 2;
     static final int SHOOT = 3;
 
-    static int requestedAction;
-
+    private boolean finalFrenzy = false;
+    private boolean firstTurn = false;
     private Game game;
     private ArrayList<PcColourEnum> availablePcColours;
     private int currPlayerIndex;
     private State currState;
-    private boolean isFirstTurn = false;
-    private boolean finalFrenzy = false;
     ArrayList<Player> players;
-    State setupMap, setupKillShotTrack, pcChoice, firstTurn, startTurn, run, grab, shoot;
+    State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState, startTurnState, runState, grabState, shootState;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
@@ -40,11 +38,19 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         State.setController(this);
         this.players.addAll(players);
         this.currPlayerIndex = 0;
-        this.setupMap = new SetupMapState();
-        this.setupKillShotTrack = new SetupKillShotTrackState();
-        this.pcChoice = new PcChoiceState();
-        this.firstTurn = new FirstTurnState();
-        this.startTurn = new StartTurnState();
+        this.setupMapState = new SetupMapState();
+        this.setupKillShotTrackState = new SetupKillShotTrackState();
+        this.pcChoiceState = new PcChoiceState();
+        this.firstTurnState = new FirstTurnState();
+        this.startTurnState = new StartTurnState();
+    }
+
+    public boolean isFirstTurn() {
+        return firstTurn;
+    }
+
+    public boolean isFinalFrenzy() {
+        return finalFrenzy;
     }
 
     public Game getGame(){
@@ -57,6 +63,14 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     public int getCurrPlayerIndex() {
         return currPlayerIndex;
+    }
+
+    public void setFirstTurn(boolean booleanValue){
+        firstTurn = booleanValue;
+    }
+
+    public void setFinalFrenzy(boolean booleanValue){
+        finalFrenzy =  booleanValue;
     }
 
     public void setCurrState(State nextState){
@@ -122,7 +136,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
     @Override
-    public void shoot() {
+    public void shootPeople() {
         currState.changeState(SHOOT);
     }
 
@@ -142,7 +156,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             currState.nextState();
         } else
             currPlayerIndex++;
-        if (isFirstTurn){
+        if (firstTurn){
             Pc currPc = players.get(currPlayerIndex).getPc();
             currPc.drawPowerUp();
             currPc.drawPowerUp();

@@ -16,7 +16,8 @@ public class PcChoiceState extends State {
 
     @Override
     public void nextState() {
-        controller.setCurrState(controller.firstTurn);
+        controller.setCurrState(controller.firstTurnState);
+        controller.setFirstTurn(true);
     }
 
 

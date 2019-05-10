@@ -1,14 +1,11 @@
 package controller;
 
 import model.enumerations.AmmoEnum;
-import model.Game;
 import model.Pc;
 import model.PowerUpCard;
 import model.Tile;
-import model.enumerations.PcColourEnum;
 
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class FirstTurnState extends State{
@@ -27,11 +24,13 @@ public class FirstTurnState extends State{
         pc.moveTo(t.get());
         pc.discardPowerUp(powerUp);
         t.get().addPc(pc);
+        return true;
     }
 
     @Override
     public void nextState() {
-        controller.setNextState(controller.startTurn);
+        controller.setCurrState(controller.startTurnState);
+        controller.setFirstTurn(false);
     }
 
 

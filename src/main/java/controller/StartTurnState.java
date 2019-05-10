@@ -1,26 +1,25 @@
 package controller;
 
-import model.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
+import static controller.Controller.*;
 
 public class StartTurnState extends State {
 
     @Override
-    public void changeState(int requestedAction) {
+    public boolean changeState(int requestedAction) {
         switch (requestedAction){
             case RUN:
-                controller.setCurrState(controller.run);
+                controller.setCurrState(controller.runState);
                 break;
             case GRAB:
-                controller.setCurrState(controller.grab);
+                controller.setCurrState(controller.grabState);
                 break;
             case SHOOT:
-                controller.setCurrState(controller.shoot);
+                controller.setCurrState(controller.shootState);
                 break;
+            default:
+                    break;
         }
+        return true;
     }
 
     public void nextState(){}

@@ -28,7 +28,8 @@ abstract class State {
         return false;
     }
 
-    public void changeState(int requestedAction) {
+    public boolean changeState(int requestedAction) {
+        return false;
     }
 
     public abstract void nextState();

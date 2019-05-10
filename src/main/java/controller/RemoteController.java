@@ -18,7 +18,7 @@ public interface RemoteController extends Remote {
 
     public void grabStuff();
 
-    public void shoot();
+    public void shootPeople();
 
     public void quit();
 

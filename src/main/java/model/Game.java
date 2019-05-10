@@ -69,7 +69,8 @@ public class Game {
     // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
     */
-    public void initMap(int rows, int columns, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
+    public void initMap(int n){
+    /*(int rows, int columns, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<TileColourEnum> tileColourList;
         ArrayList<TileColourEnum> tempList = new ArrayList<>();
         ArrayList<Integer> doorsList, typeOfTileList;
@@ -115,6 +116,7 @@ public class Game {
                 tempList.clear();
             }
         }
+        */
     }
 
     public void initDecks() {
