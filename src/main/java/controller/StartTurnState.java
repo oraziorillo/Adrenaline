@@ -5,8 +5,13 @@ import static controller.Controller.*;
 public class StartTurnState extends State {
 
     @Override
-    public boolean changeState(int requestedAction) {
-        switch (requestedAction){
+    public boolean changeState() {
+        nextState();
+        return true;
+    }
+
+    public void nextState(){
+        switch (controller.getRequestedAction()){
             case RUN:
                 controller.setCurrState(controller.runState);
                 break;
@@ -17,12 +22,9 @@ public class StartTurnState extends State {
                 controller.setCurrState(controller.shootState);
                 break;
             default:
-                    break;
+                break;
         }
-        return true;
     }
-
-    public void nextState(){}
 
     /*
 

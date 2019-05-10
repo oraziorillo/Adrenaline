@@ -25,7 +25,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private Game game;
     private ArrayList<PcColourEnum> availablePcColours;
     private int currPlayerIndex;
+    private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
+    private int requestedAction;
     ArrayList<Player> players;
     State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState, startTurnState, runState, grabState, shootState;
 
@@ -49,7 +51,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return firstTurn;
     }
 
-    public boolean isFinalFrenzy() { 
+    public boolean isFinalFrenzy() {
         return finalFrenzy;
     }
 
@@ -65,6 +67,10 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return currPlayerIndex;
     }
 
+    public int getRequestedAction(){
+        return requestedAction;
+    }
+
     public void setFirstTurn(boolean booleanValue){
         firstTurn = booleanValue;
     }
@@ -75,6 +81,14 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     public void setCurrState(State nextState){
         currState = nextState;
+    }
+
+    public void setRequestedAction(int action){
+        requestedAction = action;
+    }
+
+    public void setLastPlayerIndex(int index){
+        lastPlayerIndex = index;
     }
 
     /**
@@ -127,17 +141,37 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public void runAround() {
-        currState.changeState(RUN);
+        currState.nextState();
     }
 
     @Override
     public void grabStuff() {
-        currState.changeState(GRAB);
+        currState.nextState();
     }
 
     @Override
     public void shootPeople() {
-        currState.changeState(SHOOT);
+        currState.nextState();
+    }
+
+    @Override
+    public void move(int x, int y) {
+        int maxDistance;
+        if (!isFinalFrenzy()){
+            switch(requestedAction){
+
+            }
+        } else if (isFinalFrenzy() && beforeFirstPlayer(currPlayerIndex)) {
+
+        } else {
+
+        }
+        try {
+            if(currState.move(players.get(currPlayerIndex), game.getTile(x, y)))
+                currState.nextState();
+        } catch (IndexOutOfBoundsException | HoleInMapException e) {
+            //TODO mandare messaggio all'utente
+        }
     }
 
     @Override
@@ -163,5 +197,10 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         }
 
     }
+
+    private boolean beforeFirstPlayer(int playerIndex){
+        return playerIndex > lastPlayerIndex;
+    }
+
 
 }
