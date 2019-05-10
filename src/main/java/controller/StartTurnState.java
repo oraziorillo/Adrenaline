@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class StartTurnState extends State {
-    StartTurnState(Game game) {
-        super(game);
+
+    @Override
+    public void nextState() {
+
     }
 
 

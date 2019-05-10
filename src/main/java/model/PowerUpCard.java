@@ -19,7 +19,7 @@ public abstract class PowerUpCard {
     //  questo metodo sembra inutile: basta inserire le carte powerup da usare come ammo in WeaponCard
     //}
 
-    //public abstract void useToRespawn();    anche questo inutile: il controller gestisce il respawn
+    //public abstract void useToRespawn();    anche questo inutile: il controller gestisce il resetDamageTrack
 }
 
 class Newton extends PowerUpCard{

@@ -3,21 +3,20 @@ package model;
 import model.enumerations.AmmoEnum;
 import model.enumerations.PcColourEnum;
 import exceptions.NotEnoughAmmosException;
-
-import static Constants.LIFEPOINTS;
+import static model.Constants.LIFEPOINTS;
 
 public class PcBoard {
 
     private short points;
-    private short numOfDeath;
-    private short damageTrackIndex;     //è l'indice dell'ultimo elemento inserito
+    private short numOfDeaths;
+    private short damageTrackIndex;     //is the index of the last inserted element
     private short[] marks;
     private short[] ammos;
     private PcColourEnum[] damageTrack;
 
     public PcBoard(){
         this.points = 0;
-        this.numOfDeath = 0;
+        this.numOfDeaths = 0;
         this.damageTrackIndex = 0;
         this.marks = new short[5];
         this.ammos = new short[3];
@@ -27,8 +26,8 @@ public class PcBoard {
         }
     }
 
-    public short getNumOfDeath() {
-        return numOfDeath;
+    public short getNumOfDeaths() {
+        return numOfDeaths;
     }
 
     public short getPoints() {
@@ -37,6 +36,10 @@ public class PcBoard {
 
     public void increasePoints(int earnedPoints){
         this.points += earnedPoints;
+    }
+
+    public void increaseNumberOfDeaths(){
+        numOfDeaths++;
     }
 
     public void addMarks(PcColourEnum selectedColour, short numOfMarks) {
@@ -59,10 +62,6 @@ public class PcBoard {
         }
     }
 
-    /**
-     * @param ammos
-     * @throws NotEnoughAmmosException
-     */
     public void payAmmos(short[] ammos) throws NotEnoughAmmosException {
         if (this.ammos[AmmoEnum.BLUE.ordinal()] < ammos[AmmoEnum.BLUE.ordinal()] ||
                 this.ammos[AmmoEnum.RED.ordinal()] < ammos[AmmoEnum.RED.ordinal()] ||
@@ -83,8 +82,7 @@ public class PcBoard {
         }
     }
 
-    public void respawn(){
-        numOfDeath++;
+    public void resetDamageTrack(){
         damageTrackIndex = 0;
         damageTrack = new PcColourEnum[LIFEPOINTS];
     }

@@ -12,8 +12,9 @@ import java.util.Optional;
 
 public class FirstTurnState extends State{
 
-    FirstTurnState(Game game) {
-        super(game);
+    @Override
+    public void nextState() {
+
     }
 
     /*

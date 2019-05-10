@@ -1,33 +1,34 @@
 package controller;
 
-import model.Game;
 import model.Pc;
 import model.enumerations.PcColourEnum;
 
 abstract class State {
 
-    Game game;
+    static Controller controller;
 
-    State(Game game) {
-        this.game = game;
+    public static void setController(Controller c){
+        controller = c;
     }
 
-    boolean initializeMap(int n) {
+    public boolean initializeMap(int n) {
         return false;
     }
 
-    boolean setNumberOfSkulls(int n) {
+    public boolean setNumberOfSkulls(int n) {
         return false;
     }
 
-    boolean assignPcToPlayer(PcColourEnum colour, Player player){
+    public boolean assignPcToPlayer(PcColourEnum colour, Player player){
         return false;
     }
 
-    boolean spawnPc(int n) {
+    public boolean spawnPc(Pc pc, int n) {
         return false;
     }
 
-    void drawTwoPowerUps(Pc pc) {
+    public void changeState(int requestedAction) {
     }
+
+    public abstract void nextState();
 }

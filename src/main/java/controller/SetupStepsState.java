@@ -8,11 +8,7 @@ import model.Pc;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class SetupStepsState extends State {
-
-    SetupStepsState(Game game) {
-        super(game);
-    }
+public class SetupStepsState {
 
     /*
 

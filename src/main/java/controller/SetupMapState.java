@@ -1,4 +1,8 @@
 package controller;
 
-public class SetupMapState {
+public class SetupMapState extends State {
+    @Override
+    public void nextState() {
+
+    }
 }

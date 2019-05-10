@@ -3,13 +3,10 @@ package model;
 import model.enumerations.PcColourEnum;
 import exceptions.NotEnoughAmmosException;
 import java.util.ArrayList;
-import static Constants.LIFEPOINTS;
-import static Constants.MAX_WEAPONS_IN_HAND;
 
-/**
- * @author matteo
- * @implSpec A tutti i tutorati ci hanno detto di snellire questa classe, che è troppo GodClass
- */
+import static model.Constants.LIFEPOINTS;
+import static model.Constants.MAX_WEAPONS_IN_HAND;
+
 public class Pc {
     private final Game currGame;
     private final String name;
@@ -45,8 +42,8 @@ public class Pc {
         return true;
     }
 
-    public PowerUpCard getPowerUpCard(int index) throws IllegalArgumentException{
-        if(index < 0 || index > 3){
+    public PowerUpCard getPowerUpCard(int index){
+        if(index < 0 || index > powerUps.size() - 1){
             throw new IllegalArgumentException("This index is not valid");
         }
         return powerUps.get(index);
@@ -132,7 +129,7 @@ public class Pc {
         powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
     }
 
-    public void discardPowerUp(PowerUpCard p) throws IllegalArgumentException{
+    public void discardPowerUp(PowerUpCard p){
         if(powerUps.contains(p)){
             powerUps.remove(p);
         }
@@ -141,17 +138,16 @@ public class Pc {
         }
     }
 
-    public void takeMarks(short marks){
-        PcColourEnum colour = currGame.getCurrentPc().getColour();
+    public void takeMarks(PcColourEnum colour, short marks){
         pcBoard.addMarks(colour, marks);
     }
 
-    public void takeDamage(short damage) {
+    public void takeDamage(PcColourEnum colour, short damages) {
         short totalDamage;
-        totalDamage = (short) (pcBoard.getMarks(currGame.getCurrentPc().getColour()) + damage);
-        pcBoard.addDamage(currGame.getCurrentPc().getColour(), totalDamage);
+        totalDamage = (short) (pcBoard.getMarks(colour) + damages);
+        pcBoard.addDamage(colour, totalDamage);
         int damageIndex = pcBoard.getDamageTrackIndex();
-        if(damageIndex >= LIFEPOINTS-2){
+        if(damageIndex >= LIFEPOINTS - 2){
             //TODO notify controller e view
             //gestire qui la morte con eventuali observer
         }
@@ -162,22 +158,18 @@ public class Pc {
     }
 
 
-    public void respawn(Tile t) throws IllegalArgumentException{
+    public void respawn(Tile t){
         if(!currGame.getSpawnTiles().contains(t)){
             throw new IllegalArgumentException("Not a spawn Tile");
         }
-        pcBoard.respawn();
+        pcBoard.increaseNumberOfDeaths();
+        pcBoard.resetDamageTrack();
         this.adrenaline = 0;
         this.currTile = t;
     }
 
     public void payAmmos(short[] ammos) throws NotEnoughAmmosException{
-        try{
-            pcBoard.payAmmos(ammos);
-        }
-        catch (Exception NotEnoughAmmosException){
-            System.out.println("It is not valid");
-        }
+        pcBoard.payAmmos(ammos);
     }
 }
 
