@@ -1,6 +1,7 @@
 package model;
 
 import controller.Server;
+import exceptions.HoleInMapException;
 import model.enumerations.AmmoEnum;
 import model.enumerations.PcColourEnum;
 import model.enumerations.TileColourEnum;
@@ -166,7 +167,7 @@ public class Game {
         }
     }
 
-    public Tile getTile (int x, int y) throws IndexOutOfBoundsException, HoleInMapException {
+    public Tile getTile (int x, int y) throws HoleInMapException {
         if (x > (map.length - 1) || y > (map[0].length - 1))
             throw new IndexOutOfBoundsException();
         Optional<Tile> t = Optional.of(map[x][y]);

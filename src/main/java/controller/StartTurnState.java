@@ -1,5 +1,6 @@
 package controller;
 
+import model.Pc;
 import static controller.Controller.*;
 
 public class StartTurnState extends State {
@@ -13,13 +14,13 @@ public class StartTurnState extends State {
     public void nextState(){
         switch (controller.getRequestedAction()){
             case RUN:
-                controller.setCurrState(controller.runState);
-                break;
             case GRAB:
                 controller.setCurrState(controller.grabState);
                 break;
             case SHOOT:
-                controller.setCurrState(controller.shootState);
+                Pc currPc = controller.players.get(controller.getCurrPlayerIndex()).getPc();
+                if (currPc.getAdrenaline() == 2 || controller.isFinalFrenzy())
+                    controller.setCurrState(controller.shootState);
                 break;
             default:
                 break;

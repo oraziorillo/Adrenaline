@@ -1,8 +1,10 @@
 package controller;
 
+import exceptions.HoleInMapException;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
+import model.Tile;
 import model.enumerations.PcColourEnum;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -55,41 +57,51 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return finalFrenzy;
     }
 
+
     public Game getGame(){
         return game;
     }
+
 
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+
     public int getCurrPlayerIndex() {
         return currPlayerIndex;
     }
+
 
     public int getRequestedAction(){
         return requestedAction;
     }
 
+
     public void setFirstTurn(boolean booleanValue){
         firstTurn = booleanValue;
     }
+
 
     public void setFinalFrenzy(boolean booleanValue){
         finalFrenzy =  booleanValue;
     }
 
+
     public void setCurrState(State nextState){
         currState = nextState;
     }
+
 
     public void setRequestedAction(int action){
         requestedAction = action;
     }
 
+
     public void setLastPlayerIndex(int index){
         lastPlayerIndex = index;
     }
+
 
     /**
      * checks if the player who is trying to do something is the able to do it in this moment
@@ -106,6 +118,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         game.setMessage(comment);
     }
 
+
     @Override
     public synchronized void chooseMap(int n) {
         if (n >= FIRST_MAP && n <= LAST_MAP) {
@@ -114,6 +127,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         }
     }
 
+
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
         if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE) {
@@ -121,6 +135,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
                 currState.nextState();
         }
     }
+
 
     @Override
     public synchronized void choosePcColour(PcColourEnum colour) {
@@ -131,6 +146,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             }
     }
 
+
     @Override
     public synchronized void discardAndSpawn(int n) {
         Pc currPc = players.get(currPlayerIndex).getPc();
@@ -139,40 +155,52 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
                 nextTurn();
     }
 
+
     @Override
     public void runAround() {
-        currState.nextState();
+        currState.changeState();
     }
+
 
     @Override
     public void grabStuff() {
-        currState.nextState();
+        currState.changeState();
     }
+
 
     @Override
     public void shootPeople() {
-        currState.nextState();
+        currState.changeState();
     }
+
 
     @Override
     public void move(int x, int y) {
-        int maxDistance;
-        if (!isFinalFrenzy()){
-            switch(requestedAction){
+        int maxDistance = 1;
 
-            }
-        } else if (isFinalFrenzy() && beforeFirstPlayer(currPlayerIndex)) {
-
-        } else {
-
+        switch (requestedAction){
+            case RUN:
+                maxDistance = isFinalFrenzy() ? 4 : 3;
+                break;
+            case GRAB:
+                maxDistance = (isFinalFrenzy() || (players.get(currPlayerIndex).getPc().getAdrenaline() >= 1)) ? 2 : 1;
+                break;
+            default:
+                break;
         }
+
         try {
-            if(currState.move(players.get(currPlayerIndex), game.getTile(x, y)))
-                currState.nextState();
+            Tile destination = game.getTile(x, y);
+            Tile currSquare = players.get(currPlayerIndex).getPc().getCurrTile();
+            //if destination is contained by the collection of squares at distance <= maxDistance move the Pc and go to the next state
+            if (currSquare.atDistance(maxDistance).contains(destination))
+                if(currState.move(players.get(currPlayerIndex), destination))
+                    currState.nextState();
         } catch (IndexOutOfBoundsException | HoleInMapException e) {
             //TODO mandare messaggio all'utente
         }
     }
+
 
     @Override
     public void quit() {
