@@ -1,4 +1,6 @@
 package controller;
 
-public class GrabStuffState {
+public class GrabStuffState extends State{
+
+
 }

@@ -2,6 +2,7 @@ package controller;
 
 import model.Game;
 import model.Pc;
+import model.Tile;
 import model.enumerations.PcColourEnum;
 
 abstract class State {
@@ -31,6 +32,8 @@ abstract class State {
     public boolean changeState(int requestedAction) {
         return false;
     }
+
+    public boolean move(Pc pc, Tile tile){ return false;}
 
     public abstract void nextState();
 }

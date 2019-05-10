@@ -166,8 +166,13 @@ public class Game {
         }
     }
 
-    public Tile getTile (int x, int y){
-        return map[x][y];
+    public Tile getTile (int x, int y) throws IndexOutOfBoundsException, HoleInMapException {
+        if (x > (map.length - 1) || y > (map[0].length - 1))
+            throw new IndexOutOfBoundsException();
+        Optional<Tile> t = Optional.of(map[x][y]);
+        if (t.isEmpty())
+            throw new HoleInMapException();
+        return t.get();
     }
 
     public ArrayList<Tile> getSpawnTiles(){
