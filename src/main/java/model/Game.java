@@ -4,35 +4,30 @@ import controller.Server;
 import exceptions.HoleInMapException;
 import model.enumerations.AmmoEnum;
 import model.enumerations.PcColourEnum;
-import model.enumerations.TileColourEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static model.Constants.WEAPONS_JSON_NAME;
 
 public class Game {
+    public Tile[][] map;
     private int currentKillShotTrackIndex;
     private ArrayList<Pc> pcs;
     private KillShot[] killShotTrack;
     private String message;
+    private ArrayList<Tile> spawnTiles;
     Deck<AmmoCard> ammosDeck;
     Deck<WeaponCard> weaponsDeck;
     Deck<PowerUpCard> powerUpsDeck;
-    private ArrayList<Tile> spawnTiles;
-    public Tile[][] map;
 
     public Game() {
+        this.message = "";
         pcs = new ArrayList<>();
-        spawnTiles = new ArrayList<>();
-        killShotTrack = new KillShot[8];
-        ammosDeck = new Deck<>(this);
-        weaponsDeck = new Deck<>(this);
-        powerUpsDeck = new Deck<>(this);
+        initDecks();
+
     }
 
     public  String getMessage(){
@@ -43,25 +38,37 @@ public class Game {
         return pcs;
     }
 
-    public void setKillShotTrack(int numberOfSkulls){
-        //il controllo sulla validità del parametro è già effettuato dal controller
-        for(int i = 0; i < numberOfSkulls; i++){
+    public Tile getTile (int x, int y) throws HoleInMapException {
+        if (x > (map.length - 1) || y > (map[0].length - 1))
+            throw new IndexOutOfBoundsException();
+        Optional<Tile> t = Optional.of(map[x][y]);
+        if (t.isEmpty())
+            throw new HoleInMapException();
+        return t.get();
+    }
+
+    public ArrayList<Tile> getSpawnTiles(){
+        return spawnTiles;
+    }
+
+    public KillShot[] getKillShotTrack() {
+        return killShotTrack;
+    }
+
+    public void initKillShotTrack(int numberOfSkulls){
+        this.killShotTrack = new KillShot[numberOfSkulls];
+        this.currentKillShotTrackIndex = numberOfSkulls - 1;
+        for(int i = 0; i < numberOfSkulls; i++)
             killShotTrack[i] = new KillShot();
-        }
-        currentKillShotTrackIndex = numberOfSkulls - 1;
     }
 
     public void setMessage(String s){
-        message = s;
+        this.message = s;
     }
 
-    /**
-     *
-     * @param colourOfMapTile
-     * @param rows number of rows of the map to create
-     * @param columns number of rows of the map to create
-     * @param doorsInMap
-     */
+    public void addPc(Pc pc){
+        pcs.add(pc);
+    }
 
     /**
     // I paramteri che il metodo riceve sono così strutturati:
@@ -127,11 +134,12 @@ public class Game {
     }
 
     private void initWeaponsDeck(){
+        this.weaponsDeck = new Deck<>(this);
         try {
             WeaponCard weaponCard;
             JSONArray jsonWeapons = (JSONArray) Server.readJson(WEAPONS_JSON_NAME);
             for (Object jsonWeapon : jsonWeapons) {
-                weaponCard = new WeaponCard((JSONObject)jsonWeapon, this);
+                weaponCard = new WeaponCard((JSONObject)jsonWeapon);
                 weaponsDeck.add(weaponCard);
             }
         } catch (IOException | ParseException e) {
@@ -140,6 +148,7 @@ public class Game {
     }
 
     private void initPowerUpDeck(){
+        this.powerUpsDeck = new Deck<>(this);
         for(int i = 0; i < 3; i++){
             AmmoEnum ammoColour = AmmoEnum.values()[i];
             for(int j = 0; j < 2; j++){
@@ -152,11 +161,8 @@ public class Game {
     }
 
     private void initAmmosDeck(){
+        this.ammosDeck = new Deck<>(this);
         //TODO
-    }
-
-    public KillShot[] getKillShotTrack() {
-        return killShotTrack;
     }
 
     public void killHappened(PcColourEnum colourEnum, Boolean overkilled){
@@ -166,23 +172,5 @@ public class Game {
             //call observer to notify state change in finalFrenzy;
         }
     }
-
-    public Tile getTile (int x, int y) throws HoleInMapException {
-        if (x > (map.length - 1) || y > (map[0].length - 1))
-            throw new IndexOutOfBoundsException();
-        Optional<Tile> t = Optional.of(map[x][y]);
-        if (t.isEmpty())
-            throw new HoleInMapException();
-        return t.get();
-    }
-
-    public ArrayList<Tile> getSpawnTiles(){
-        return spawnTiles;
-    }
-
-    public void addPc(Pc pc){
-        pcs.add(pc);
-    }
-
 
 }

@@ -157,25 +157,28 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
 
     @Override
-    public void runAround() {
+    public synchronized void runAround() {
+        setRequestedAction(RUN);
         currState.changeState();
     }
 
 
     @Override
-    public void grabStuff() {
+    public synchronized void grabStuff() {
+        setRequestedAction(GRAB);
         currState.changeState();
     }
 
 
     @Override
-    public void shootPeople() {
+    public synchronized void shootPeople() {
+        setRequestedAction(SHOOT);
         currState.changeState();
     }
 
 
     @Override
-    public void move(int x, int y) {
+    public synchronized void move(int x, int y) {
         int maxDistance = 1;
 
         switch (requestedAction){
@@ -203,22 +206,22 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
 
     @Override
-    public void quit() {
+    public synchronized void quit() {
 
     }
 
     @Override
-    public void selectSquare(int x, int y) {
+    public synchronized void selectSquare(int x, int y) {
 
     }
 
-    private void nextTurn() {
+    private synchronized void nextTurn() {
         if (currPlayerIndex == players.size() - 1){
             currPlayerIndex = 0;
             currState.nextState();
         } else
             currPlayerIndex++;
-        if (firstTurn){
+        if (isFirstTurn()){
             Pc currPc = players.get(currPlayerIndex).getPc();
             currPc.drawPowerUp();
             currPc.drawPowerUp();
@@ -226,7 +229,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     }
 
-    private boolean beforeFirstPlayer(int playerIndex){
+    private synchronized boolean beforeFirstPlayer(int playerIndex){
         return playerIndex > lastPlayerIndex;
     }
 

@@ -3,7 +3,7 @@ package controller;
 import model.Pc;
 import model.Tile;
 
-public class RunAroundState extends State{
+public class RunState extends State{
 
     public boolean move(Pc pc, Tile tile){
         pc.getCurrTile().removePc(pc);

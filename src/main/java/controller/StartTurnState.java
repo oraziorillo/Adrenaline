@@ -15,11 +15,14 @@ public class StartTurnState extends State {
         switch (controller.getRequestedAction()){
             case RUN:
             case GRAB:
-                controller.setCurrState(controller.grabState);
+                controller.setCurrState(controller.runState);
                 break;
             case SHOOT:
+                controller.setRequestedAction(SHOOT);
                 Pc currPc = controller.players.get(controller.getCurrPlayerIndex()).getPc();
                 if (currPc.getAdrenaline() == 2 || controller.isFinalFrenzy())
+                    controller.setCurrState(controller.runState);
+                else
                     controller.setCurrState(controller.shootState);
                 break;
             default:

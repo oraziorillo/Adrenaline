@@ -26,12 +26,20 @@ public class PcBoard {
         }
     }
 
+    public short getPoints() {
+        return points;
+    }
+
     public short getNumOfDeaths() {
         return numOfDeaths;
     }
 
-    public short getPoints() {
-        return points;
+    public short getDamageTrackIndex() {
+        return damageTrackIndex;
+    }
+
+    public short getMarks(PcColourEnum selectedColour) {
+        return marks[selectedColour.ordinal()];
     }
 
     public void increasePoints(int earnedPoints){
@@ -44,14 +52,6 @@ public class PcBoard {
 
     public void addMarks(PcColourEnum selectedColour, short numOfMarks) {
         marks[selectedColour.ordinal()] = numOfMarks;
-    }
-
-    public short getMarks(PcColourEnum selectedColour) {
-        return marks[selectedColour.ordinal()];
-    }
-
-    public short getDamageTrackIndex() {
-        return damageTrackIndex;
     }
 
     public void addAmmos(AmmoCard card) {

@@ -34,6 +34,20 @@ public class Deck<E> {
     }
 
     /**
+     * shuffles the deck
+     */
+    public void shuffle(){
+        for (int i = size() - 1; i > 0; i--){
+            int index = random.nextInt(i + 1);
+            //Simple swap
+            E card = cards.get(index);
+            cards.set(index, cards.get(i));
+            cards.set(i, card);
+        }
+
+    }
+
+    /**
      * Adds the given card to a random position
      *
      * @param e a generic card

@@ -29,10 +29,6 @@ public class Pc {
         this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
     }
 
-    public WeaponCard[] getWeapons(){
-        return this.weapons;
-    }
-
     public boolean isFullyArmed() {
         for (WeaponCard weapon : weapons) {
             if (weapon == null) {
@@ -42,6 +38,30 @@ public class Pc {
         return true;
     }
 
+    public boolean isFullyPoweredUp(){
+        return powerUps.size() == 3;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PcColourEnum getColour(){
+        return colour;
+    }
+
+    public int getAdrenaline(){
+        return adrenaline;
+    }
+
+    public Tile getCurrTile() {
+        return this.currTile;
+    }
+
+    public WeaponCard[] getWeapons(){
+        return this.weapons;
+    }
+
     public PowerUpCard getPowerUpCard(int index){
         if(index < 0 || index > powerUps.size() - 1){
             throw new IllegalArgumentException("This index is not valid");
@@ -49,24 +69,13 @@ public class Pc {
         return powerUps.get(index);
     }
 
-    public boolean isFullyPoweredUp(){
-        return powerUps.size() == 3;
-    }
-
-    public PcColourEnum getColour(){
-        return colour;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public PcBoard getPcBoard() {
-        return pcBoard;
-    }
-
-    public int getAdrenaline(){
-        return adrenaline;
+    private WeaponCard weaponAtIndex(int index) {
+        WeaponCard temp;
+        if (index < 0 || index > 3) {
+            throw new IllegalArgumentException("This index is not valid");
+        }
+        temp = weapons[index];
+        return temp;
     }
 
     public void moveTo(Tile t){
@@ -80,17 +89,17 @@ public class Pc {
         }
     }
 
-    public Tile getCurrTile() {
-        return this.currTile;
+    public void drawPowerUp(){
+        powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
     }
 
-    private WeaponCard weaponAtIndex(int index) {
-        WeaponCard temp;
-        if (index < 0 || index > 3) {
-            throw new IllegalArgumentException("This index is not valid");
+    public void discardPowerUp(PowerUpCard p){
+        if(powerUps.contains(p)){
+            powerUps.remove(p);
         }
-        temp = weapons[index];
-        return temp;
+        else{
+            throw new IllegalArgumentException("You don't have this powerUp");
+        }
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
@@ -125,19 +134,6 @@ public class Pc {
         }
     }
 
-    public void drawPowerUp(){
-        powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
-    }
-
-    public void discardPowerUp(PowerUpCard p){
-        if(powerUps.contains(p)){
-            powerUps.remove(p);
-        }
-        else{
-            throw new IllegalArgumentException("You don't have this powerUp");
-        }
-    }
-
     public void takeMarks(PcColourEnum colour, short marks){
         pcBoard.addMarks(colour, marks);
     }
@@ -156,7 +152,6 @@ public class Pc {
         else if (damageIndex > 1)
             adrenaline = 1;
     }
-
 
     public void respawn(Tile t){
         if(!currGame.getSpawnTiles().contains(t)){

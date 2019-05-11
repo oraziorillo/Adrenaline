@@ -9,12 +9,10 @@ import java.util.Set;
 
 
 public abstract class Action {
-    Game currGame;
     TargetChecker targetChecker;
     LinkedList<Pc> targets;
 
-    Action (Game currGame){
-        this.currGame = currGame;
+    Action (){
         targetChecker = new EmptyChecker();
         targets = new LinkedList<>();
     }
@@ -22,7 +20,7 @@ public abstract class Action {
     /**
      * executes the action
      */
-    abstract void apply();
+    abstract void apply(Pc shooter);
 
     /**
      * selects the targets that are valid for the current action
@@ -41,15 +39,14 @@ class DamageMarksAction extends Action {
     private short damage;
     private short marks;
 
-    DamageMarksAction(JSONObject jsonAction, Game game){
-        super(game);
+    DamageMarksAction(JSONObject jsonAction){
         this.damage = ((Long) jsonAction.get("damage")).shortValue();
         this.marks = ((Long) jsonAction.get("marks")).shortValue();
         JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("targetCheckers");
         JSONObject jsonTargetChecker;
-        for(int i = 0; i < jsonTargetCheckers.size(); i++) {
-            jsonTargetChecker = (JSONObject) jsonTargetCheckers.get(i);
-            switch ((String)jsonTargetChecker.get("type")){
+        for (Object checker : jsonTargetCheckers) {
+            jsonTargetChecker = (JSONObject) checker;
+            switch ((String) jsonTargetChecker.get("type")) {
                 case "visible":
                     this.targetChecker = new VisibleDecorator(targetChecker, null);
                     break;
@@ -57,10 +54,10 @@ class DamageMarksAction extends Action {
                     this.targetChecker = new BlindnessDecorator(targetChecker, null);
                     break;
                 case "minDistance":
-                    this.targetChecker = new MinDistanceDecorator(targetChecker, (JSONObject)jsonTargetChecker);
+                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker);
                     break;
                 case "maxDistance":
-                    this.targetChecker = new MaxDistanceDecorator(targetChecker, (JSONObject)jsonTargetChecker);
+                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsonTargetChecker);
                     break;
                 case "straightLine":
                     this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
@@ -90,12 +87,12 @@ class DamageMarksAction extends Action {
 
 
     @Override
-    public void apply() {
+    public void apply(Pc shooter) {
         for (Pc pc: targets) {
             if (damage != 0)
-                pc.takeDamage(damage);
+                pc.takeDamage(shooter.getColour(), damage);
             if (marks != 0)
-                pc.takeMarks(marks);
+                pc.takeMarks(shooter.getColour(), marks);
         }
         targets.clear();
     }
@@ -111,12 +108,11 @@ class DamageMarksAction extends Action {
 
 
 
-class MovementAction extends Action {       //metodo da modificare poichè è stato tolto il metodo move
+class MovementAction extends Action {
     private int maxDist;
     private Tile destination;
 
-    MovementAction(JSONObject jsonAction, Game game) {
-        super(game);
+    MovementAction(JSONObject jsonAction) {
         this.maxDist = (int)jsonAction.get("maxDist");
         this.destination = null;
     }
@@ -130,7 +126,7 @@ class MovementAction extends Action {       //metodo da modificare poichè è st
     }
 
     @Override
-    public void apply() {
+    public void apply(Pc shooter) {
         for (Pc pc : targets) {
             pc.moveTo(destination);
         }

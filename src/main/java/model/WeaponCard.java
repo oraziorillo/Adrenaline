@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class WeaponCard {
-    protected Game currGame;
     private String name;
-    private AmmoEnum firstAmmo;
     private boolean loaded;
+    private AmmoEnum defaultAmmo;
     private short[] ammos;
     private short[] currentCost;
     //possiamo aggiungere qui un arraylist di powerUp usati con questo attacco in modo tale che quando
@@ -24,12 +23,11 @@ public class WeaponCard {
     /**
      * constructor for WeaponCard
      * @param jsonWeaponCard JsonObject representing a WeaponCard
-     * @param game instance of currGame
      */
-    WeaponCard(JSONObject jsonWeaponCard, Game game) {
-        this.currGame = game;
+    WeaponCard(JSONObject jsonWeaponCard) {
         this.name = (String) jsonWeaponCard.get("name");
         this.loaded = true;
+        this.defaultAmmo = AmmoEnum.valueOf((String) jsonWeaponCard.get("firstAmmo"));
         this.ammos = new short[3];
         this.currentCost = new short[3];
         JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammos");
@@ -38,12 +36,12 @@ public class WeaponCard {
         }
         JSONArray jsonFireModes = (JSONArray) jsonWeaponCard.get("firemodes");
         for (Object jsonFireMode : jsonFireModes) {
-            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonFireMode, game);
+            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonFireMode);
             this.fireModes.add(weaponEffect);
         }
         JSONArray jsonUpgrades = (JSONArray) jsonWeaponCard.get("upgrades");
         for (Object jsonUpgrade : jsonUpgrades) {
-            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonUpgrade, game);
+            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonUpgrade);
             this.upgrades.add(weaponEffect);
         }
     }
@@ -108,11 +106,10 @@ public class WeaponCard {
         }
     }
 
-    public void use() {
+    public void use(Pc shooter) {
         for (WeaponEffect effect : currEffect) {
-            effect.execute();
+            effect.execute(shooter);
         }
         currEffect.clear();
-        //qui dovrebbero essere scalati gli ammo al giocatore??
     }
 }

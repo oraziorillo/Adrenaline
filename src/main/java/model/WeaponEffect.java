@@ -5,17 +5,14 @@ import org.json.simple.JSONObject;
 import java.util.LinkedList;
 
 public class WeaponEffect {
-    protected Game game;
     private short[] cost;
     private LinkedList<Action> actions = new LinkedList<>();
 
     /**
      * constructor for WeaponEffect
      * @param jsonWeaponEffect JsonObject representing a weapon effect
-     * @param game instance of currGame
      */
-    public WeaponEffect(JSONObject jsonWeaponEffect, Game game) {
-        this.game = game;
+    public WeaponEffect(JSONObject jsonWeaponEffect) {
         this.cost = new short[3];
         JSONArray jsonCost = (JSONArray) jsonWeaponEffect.get("cost");
         JSONArray jsonActions = (JSONArray) jsonWeaponEffect.get("actions");
@@ -25,9 +22,9 @@ public class WeaponEffect {
         for (Object jsonAction : jsonActions) {
             Action action;
             if ((boolean)(((JSONObject)jsonAction).get("isMovement"))) {
-                action = new MovementAction((JSONObject)jsonAction, game);
+                action = new MovementAction((JSONObject)jsonAction);
             } else {
-                action = new DamageMarksAction((JSONObject)jsonAction, game);
+                action = new DamageMarksAction((JSONObject)jsonAction);
             }
             actions.add(action);
         }
@@ -37,9 +34,9 @@ public class WeaponEffect {
         return cost.clone();
     }
 
-    public void execute() {
+    public void execute(Pc shooter) {
         for (Action currAction : actions) {
-                currAction.apply();
+                currAction.apply(shooter);
             }
     }
 }

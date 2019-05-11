@@ -4,7 +4,7 @@ public class SetupKillShotTrackState extends State{
 
     @Override
     public boolean setNumberOfSkulls(int n) {
-        controller.getGame().setKillShotTrack(n);
+        controller.getGame().initKillShotTrack(n);
         return true;
     }
 
