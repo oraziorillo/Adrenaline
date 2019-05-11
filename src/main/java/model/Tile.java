@@ -170,7 +170,7 @@ public abstract class Tile {
 }
 
 
-class SpawnTile extends Tile {
+public class SpawnTile extends Tile {
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
@@ -187,13 +187,15 @@ class SpawnTile extends Tile {
         return weapons.clone();
     }
 
-    WeaponCard pickWeapon(int index) {
+    WeaponCard pickWeapon(int index) throws NullPointerException{
+        if(weapons[index] == null) throw new NullPointerException();
         WeaponCard temp = weapons[index];
         weapons[index] = null;
         return temp;
     }
 
     public WeaponCard switchWeapon(int index, WeaponCard w) {
+        if(weapons[index] == null) throw new NullPointerException();
         WeaponCard temp = weapons[index];
         weapons[index] = w;
         return temp;

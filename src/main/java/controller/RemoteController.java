@@ -23,6 +23,8 @@ public interface RemoteController extends Remote {
 
     public void selectSquare(int x, int y);
 
+    public void selectWeapon(int n);
+
     public void quit();
 
 }

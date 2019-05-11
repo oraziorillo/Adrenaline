@@ -3,6 +3,7 @@ package controller;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
+import model.Tile;
 import model.enumerations.PcColourEnum;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -25,13 +26,15 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
     ArrayList<Player> players;
+    ArrayList<Tile> toRefillTiles;
     State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState,
-          startTurnState, runAroundState, grabStuffState, collectWeaponState, shootState, endTurn;
+          startTurnState, runAroundState, grabStuffState, collectWeaponState, shootPeopleState, endTurn;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
         this.game = new Game();
         this.players = new ArrayList<>();
+        this.toRefillTiles = new ArrayList<>();
         this.availablePcColours = new ArrayList<>();
         Collections.addAll(availablePcColours, PcColourEnum.values());
         this.players.addAll(players);
@@ -43,6 +46,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         this.startTurnState = new StartTurnState(this);
         this.runAroundState = new RunAroundState(this);
         this.grabStuffState = new GrabStuffState(this);
+        this.collectWeaponState = new CollectWeaponState(this);
     }
 
     public boolean isFirstTurn() {
@@ -57,7 +61,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public Game getGame(){
         return game;
     }
-
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -164,17 +167,21 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void selectSquare(int x, int y) {
-        if(currState.execute(players.get(currPlayerIndex).getPc(), game.map[x][y]))
+        if(currState.executeOnTile(players.get(currPlayerIndex).getPc(), game.map[x][y]))
             currState.nextState();
     }
 
+    public synchronized void selectWeapon(int n){
+        if((n >= 0 && n <= 2) && currState.executeOnWeapon(players.get(currPlayerIndex).getPc(), n))
+            currState.nextState();
+    }
 
     @Override
     public synchronized void quit() {
 
     }
 
-    private synchronized void nextTurn() {
+    private synchronized void nextTurn() {          //da rivedere
         if (currPlayerIndex == players.size() - 1){
             currPlayerIndex = 0;
             currState.nextState();
