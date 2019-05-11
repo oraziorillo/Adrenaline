@@ -1,33 +1,30 @@
 package controller;
 
-import model.Pc;
-import static controller.Controller.*;
-
 public class StartTurnState extends State {
 
-    @Override
-    public boolean changeState() {
-        nextState();
+
+    StartTurnState(Controller controller) {
+        super(controller);
+    }
+
+    public boolean runAround(){
+        controller.setCurrState(controller.runAroundState);
         return true;
     }
 
-    public void nextState(){
-        switch (controller.getRequestedAction()){
-            case RUN:
-            case GRAB:
-                controller.setCurrState(controller.runState);
-                break;
-            case SHOOT:
-                controller.setRequestedAction(SHOOT);
-                Pc currPc = controller.players.get(controller.getCurrPlayerIndex()).getPc();
-                if (currPc.getAdrenaline() == 2 || controller.isFinalFrenzy())
-                    controller.setCurrState(controller.runState);
-                else
-                    controller.setCurrState(controller.shootState);
-                break;
-            default:
-                break;
-        }
+    public boolean grabStuff(){
+        controller.setCurrState(controller.grabStuffState);
+        return true;
+    }
+
+    public boolean shootPeople(){
+        controller.setCurrState(controller.shootState);
+        return true;
+    }
+
+    @Override
+    public void nextState() {
+
     }
 
     /*

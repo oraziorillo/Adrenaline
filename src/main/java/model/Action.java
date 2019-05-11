@@ -27,8 +27,8 @@ public abstract class Action {
      *
      * @return a Set of all possible target Tiles
      */
-    public Set<Tile> validTargetTiles() {
-        return targetChecker.validTiles();
+    public Set<Tile> validTargetTiles(Pc shooter) {
+        return targetChecker.validTiles(shooter);
     }
 }
 
@@ -77,9 +77,9 @@ class DamageMarksAction extends Action {
         }
     }
 
-    public Set<Pc> validTargets(){
+    public Set<Pc> validTargets(Pc shooter){
         HashSet<Pc> validTargets = new HashSet<>();
-        for (Tile t : validTargetTiles()) {
+        for (Tile t : validTargetTiles(shooter)) {
             validTargets.addAll(t.getPcs());
         }
         return validTargets;

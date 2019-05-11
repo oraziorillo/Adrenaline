@@ -4,6 +4,7 @@ import model.enumerations.PcColourEnum;
 import java.rmi.Remote;
 
 public interface RemoteController extends Remote {
+
     public void chooseMap(int n);
 
     public void chooseNumberOfSkulls(int n);
@@ -20,10 +21,8 @@ public interface RemoteController extends Remote {
 
     public void shootPeople();
 
-    public void move(int x, int y);
+    public void selectSquare(int x, int y);
 
     public void quit();
-
-    public void selectSquare(int x, int y);
 
 }

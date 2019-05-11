@@ -1,16 +1,42 @@
 package controller;
 
-import model.Game;
 import model.Pc;
 import model.Tile;
 import model.enumerations.PcColourEnum;
 
 abstract class State {
 
-    static Controller controller;
+    private static final int ACTIONS_PER_TURN = 2;
+    private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
 
-    public static void setController(Controller c){
-        controller = c;
+    Controller controller;
+    private int remainingActions;
+
+
+    State(Controller controller){
+        this.controller = controller;
+        remainingActions = ACTIONS_PER_TURN;
+    }
+
+    int getRemainingActions(){
+        return remainingActions;
+    }
+
+    void decreaseRemainingActions(){
+        this.remainingActions--;
+    }
+
+    void resetRemainingActions(){
+        if(!controller.isFinalFrenzy() || controller.beforeFirstPlayer(controller.getCurrPlayerIndex()))
+            this.remainingActions = ACTIONS_PER_TURN;
+        else
+            this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
+    }
+
+    void move(Pc pc, Tile tile){
+        pc.getCurrTile().removePc(pc);
+        pc.moveTo(tile);
+        tile.addPc(pc);
     }
 
     public boolean initializeMap(int n) {
@@ -29,15 +55,23 @@ abstract class State {
         return false;
     }
 
-    public boolean changeState() {
+    public boolean runAround(){
         return false;
     }
 
-    public boolean move(Player player, Tile tile) {
+    public boolean grabStuff(){
         return false;
     }
 
-    public boolean move(Pc pc, Tile tile){ return false;}
+    public boolean shootPeople(){
+        return false;
+    }
+
+    public void setTargetables(Pc referencePc){}
+
+    public boolean execute(Pc currPc, Tile targetSquare) {
+        return false;
+    }
 
     public abstract void nextState();
 }

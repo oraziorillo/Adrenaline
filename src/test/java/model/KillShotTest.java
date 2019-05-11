@@ -23,7 +23,7 @@ public class KillShotTest {
     @Theory
     public void killMethodWorksFine(PcColourEnum charColours, boolean aBoolean) {
         KillShot tested = new KillShot();
-        tested.kill(charColours, aBoolean);
+        tested.killOccured(charColours, aBoolean);
         assertEquals(tested.isOverkilled(), aBoolean);
         assertEquals(tested.getColour(), charColours);
         assertFalse(tested.isSkulled());
@@ -32,9 +32,9 @@ public class KillShotTest {
     @Theory
     public void throwsExceptionIfKilled2Times(PcColourEnum charColours, boolean aBoolean) {
         KillShot tested = new KillShot();
-        tested.kill(charColours, aBoolean);
+        tested.killOccured(charColours, aBoolean);
         assertThrows("Exception not thrown", IllegalStateException.class, () -> {
-            tested.kill(charColours, aBoolean);
+            tested.killOccured(charColours, aBoolean);
         });
     }
 }

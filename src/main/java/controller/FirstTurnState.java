@@ -11,6 +11,10 @@ import java.util.Optional;
 public class FirstTurnState extends State{
 
 
+    FirstTurnState(Controller controller) {
+        super(controller);
+    }
+
     @Override
     public boolean spawnPc(Pc pc, int n){
         PowerUpCard powerUp = pc.getPowerUpCard(n);

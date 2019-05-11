@@ -145,7 +145,7 @@ public class Pc {
         int damageIndex = pcBoard.getDamageTrackIndex();
         if(damageIndex >= LIFEPOINTS - 2){
             //TODO notify controller e view
-            //gestire qui la morte con eventuali observer
+            currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
         }
         if (damageIndex > 4)
             adrenaline = 2;

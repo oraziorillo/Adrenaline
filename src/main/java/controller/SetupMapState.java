@@ -2,6 +2,10 @@ package controller;
 
 public class SetupMapState extends State{
 
+    SetupMapState(Controller controller) {
+        super(controller);
+    }
+
     @Override
     public boolean initializeMap(int n) {
         controller.getGame().initMap(n);
@@ -10,7 +14,7 @@ public class SetupMapState extends State{
 
     @Override
     public void nextState() {
-        controller.setCurrState(controller.setupKillShotTrack);
+        controller.setCurrState(controller.setupKillShotTrackState);
     }
 
 

@@ -14,8 +14,6 @@
 
 - invece di controllare gli indici nel controller lanciamo eccezioni nel model che catchiamo nel controller
 
-- CAMBIARE kill in killshot e killHappened in Game
-
 Rules to implement:
 
 -"Choose starting player" 

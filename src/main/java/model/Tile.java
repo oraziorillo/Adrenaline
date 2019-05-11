@@ -8,6 +8,7 @@ import java.util.Optional;
 public abstract class Tile {
     private final int x;
     private final int y;
+    private boolean targetable;
     private final TileColourEnum tileColour;
     private HashSet<Pc> pcs;            //ricordarsi di aggiugnere degli observer che ad ogni spostamento del pc modifichi questo insieme
     private HashSet<Tile> visibles;
@@ -21,6 +22,7 @@ public abstract class Tile {
     public Tile(int x, int y, TileColourEnum colour) {
         this.x = x;
         this.y = y;
+        this.targetable = false;
         this.tileColour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
@@ -34,6 +36,7 @@ public abstract class Tile {
         return x;
     }
 
+
     /**
      * Getter for y coordinate in the map
      * @return the y coordinate of this tile
@@ -42,6 +45,39 @@ public abstract class Tile {
         return y;
     }
 
+
+    public boolean isTargetable(){
+        return targetable;
+    }
+
+    /**
+     * Getter for room colour
+     * @return The colour of this room
+     */
+    public TileColourEnum getTileColour() {
+        return tileColour;
+    }
+
+    /**
+     * Returns the Pcs on this tile
+     * @return the Pcs on this tile
+     */
+    public HashSet<Pc> getPcs() {
+        return pcs;
+    }
+
+    /**
+     * returns the tiles that a Pc on this tile could see
+     * @return the tile visibles from this
+     */
+    public HashSet<Tile> getVisibles() {
+        return (HashSet<Tile>)visibles.clone();
+    }
+
+
+    public void setTargetable(boolean targetable){
+        this.targetable = targetable;
+    }
     /**
      * @author matteo
      * @implNote usare x e y non sarebbe più pulito?
@@ -67,14 +103,6 @@ public abstract class Tile {
             }
         }
         return temp;
-    }
-
-    /**
-     * Getter for room colour
-     * @return The colour of this room
-     */
-    public TileColourEnum getTileColour() {
-        return tileColour;
     }
 
     //La tile alla card. dir. specificata si ottiene più facilmente con semplice algebra sulla mappa
@@ -103,22 +131,6 @@ public abstract class Tile {
                 break;
         }
         return temp;
-    }
-
-    /**
-     * Returns the Pcs on this tile
-     * @return the Pcs on this tile
-     */
-    public HashSet<Pc> getPcs() {
-        return pcs;
-    }
-
-    /**
-     * returns the tiles that a Pc on this tile could see
-     * @return the tile visibles from this
-     */
-    public HashSet<Tile> getVisibles() {
-        return (HashSet<Tile>)visibles.clone();
     }
 
     /**
@@ -155,15 +167,6 @@ public abstract class Tile {
      * @param objectIndex the index of the object to collect (weapon). In some subclasses could be irrelevant (one object only)
      */
     public abstract void collect(Pc player, int objectIndex);
-
-    /* davvero utile???? non dovrebbe essere un '=='?? Noi restituiamo sempre i riferimenti ai tile, mai cloni
-    MATTEO: in effetti non serve a molto
-    public boolean equals(Tile t){
-        return ((this.getX() == t.getX()) && (this.getY() == t.getY()));
-    }
-
-     */
-
 }
 
 

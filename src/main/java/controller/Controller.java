@@ -1,10 +1,8 @@
 package controller;
 
-import exceptions.HoleInMapException;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
-import model.Tile;
 import model.enumerations.PcColourEnum;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -18,9 +16,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
     static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
 
-    static final int RUN = 1;
-    static final int GRAB = 2;
-    static final int SHOOT = 3;
 
     private boolean finalFrenzy = false;
     private boolean firstTurn = false;
@@ -29,9 +24,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private int currPlayerIndex;
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
-    private int requestedAction;
     ArrayList<Player> players;
-    State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState, startTurnState, runState, grabState, shootState;
+    State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState,
+          startTurnState, runAroundState, grabStuffState, collectWeaponState, shootState, endTurn;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
@@ -39,14 +34,15 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         this.players = new ArrayList<>();
         this.availablePcColours = new ArrayList<>();
         Collections.addAll(availablePcColours, PcColourEnum.values());
-        State.setController(this);
         this.players.addAll(players);
         this.currPlayerIndex = 0;
-        this.setupMapState = new SetupMapState();
-        this.setupKillShotTrackState = new SetupKillShotTrackState();
-        this.pcChoiceState = new PcChoiceState();
-        this.firstTurnState = new FirstTurnState();
-        this.startTurnState = new StartTurnState();
+        this.setupMapState = new SetupMapState(this);
+        this.setupKillShotTrackState = new SetupKillShotTrackState(this);
+        this.pcChoiceState = new PcChoiceState(this);
+        this.firstTurnState = new FirstTurnState(this);
+        this.startTurnState = new StartTurnState(this);
+        this.runAroundState = new RunAroundState(this);
+        this.grabStuffState = new GrabStuffState(this);
     }
 
     public boolean isFirstTurn() {
@@ -73,11 +69,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
 
-    public int getRequestedAction(){
-        return requestedAction;
-    }
-
-
     public void setFirstTurn(boolean booleanValue){
         firstTurn = booleanValue;
     }
@@ -91,12 +82,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public void setCurrState(State nextState){
         currState = nextState;
     }
-
-
-    public void setRequestedAction(int action){
-        requestedAction = action;
-    }
-
 
     public void setLastPlayerIndex(int index){
         lastPlayerIndex = index;
@@ -158,60 +143,34 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void runAround() {
-        setRequestedAction(RUN);
-        currState.changeState();
+        if(currState.runAround())
+            currState.setTargetables(players.get(currPlayerIndex).getPc());
     }
 
 
     @Override
     public synchronized void grabStuff() {
-        setRequestedAction(GRAB);
-        currState.changeState();
+        if(currState.grabStuff())
+            currState.setTargetables(players.get(currPlayerIndex).getPc());
     }
 
 
     @Override
     public synchronized void shootPeople() {
-        setRequestedAction(SHOOT);
-        currState.changeState();
+        if(currState.shootPeople())
+            currState.setTargetables(players.get(currPlayerIndex).getPc());
     }
 
 
     @Override
-    public synchronized void move(int x, int y) {
-        int maxDistance = 1;
-
-        switch (requestedAction){
-            case RUN:
-                maxDistance = isFinalFrenzy() ? 4 : 3;
-                break;
-            case GRAB:
-                maxDistance = (isFinalFrenzy() || (players.get(currPlayerIndex).getPc().getAdrenaline() >= 1)) ? 2 : 1;
-                break;
-            default:
-                break;
-        }
-
-        try {
-            Tile destination = game.getTile(x, y);
-            Tile currSquare = players.get(currPlayerIndex).getPc().getCurrTile();
-            //if destination is contained by the collection of squares at distance <= maxDistance move the Pc and go to the next state
-            if (currSquare.atDistance(maxDistance).contains(destination))
-                if(currState.move(players.get(currPlayerIndex), destination))
-                    currState.nextState();
-        } catch (IndexOutOfBoundsException | HoleInMapException e) {
-            //TODO mandare messaggio all'utente
-        }
+    public synchronized void selectSquare(int x, int y) {
+        if(currState.execute(players.get(currPlayerIndex).getPc(), game.map[x][y]))
+            currState.nextState();
     }
 
 
     @Override
     public synchronized void quit() {
-
-    }
-
-    @Override
-    public synchronized void selectSquare(int x, int y) {
 
     }
 
@@ -229,9 +188,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     }
 
-    private synchronized boolean beforeFirstPlayer(int playerIndex){
+    synchronized boolean beforeFirstPlayer(int playerIndex){
         return playerIndex > lastPlayerIndex;
     }
-
 
 }

@@ -25,9 +25,9 @@ public class KillShot {
         return colour;
     }
 
-    public void kill(PcColourEnum killer, boolean overkill) {
+    public void killOccured(PcColourEnum killerColour, boolean overkill) {
         if (skulled) {
-            this.colour = killer;
+            this.colour = killerColour;
             this.overkilled = overkill;
             this.skulled = false;
         } else {

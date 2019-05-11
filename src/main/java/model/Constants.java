@@ -2,7 +2,7 @@ package model;
 
 class Constants {
 
-    static final int LIFEPOINTS = 12;
+    static final int LIFEPOINTS = 11;
     static final int MAX_WEAPONS_IN_HAND = 3;
     static final int MAX_POWERUPS_IN_HAND = 3;
     static final int MAX_PLAYER_NUMBER = 5;

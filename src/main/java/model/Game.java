@@ -55,15 +55,13 @@ public class Game {
         return killShotTrack;
     }
 
-    public void initKillShotTrack(int numberOfSkulls){
-        this.killShotTrack = new KillShot[numberOfSkulls];
-        this.currentKillShotTrackIndex = numberOfSkulls - 1;
-        for(int i = 0; i < numberOfSkulls; i++)
-            killShotTrack[i] = new KillShot();
-    }
-
     public void setMessage(String s){
         this.message = s;
+    }
+
+    public void setTargetables(int maxDistance, Tile referenceSquare){
+        for (Tile s : referenceSquare.atDistance(maxDistance))
+            s.setTargetable(true);
     }
 
     public void addPc(Pc pc){
@@ -127,6 +125,13 @@ public class Game {
         */
     }
 
+    public void initKillShotTrack(int numberOfSkulls){
+        this.killShotTrack = new KillShot[numberOfSkulls];
+        this.currentKillShotTrackIndex = numberOfSkulls - 1;
+        for(int i = 0; i < numberOfSkulls; i++)
+            killShotTrack[i] = new KillShot();
+    }
+
     public void initDecks() {
         initWeaponsDeck();
         initPowerUpDeck();
@@ -165,8 +170,8 @@ public class Game {
         //TODO
     }
 
-    public void killHappened(PcColourEnum colourEnum, Boolean overkilled){
-        killShotTrack[currentKillShotTrackIndex].kill(colourEnum, overkilled);
+    public void killOccured(PcColourEnum colourEnum, Boolean overkilled){
+        killShotTrack[currentKillShotTrackIndex].killOccured(colourEnum, overkilled);
         currentKillShotTrackIndex--;
         if(currentKillShotTrackIndex < 0){
             //call observer to notify state change in finalFrenzy;

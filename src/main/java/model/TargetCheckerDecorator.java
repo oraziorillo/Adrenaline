@@ -10,21 +10,18 @@ abstract class TargetCheckerDecorator extends TargetChecker {
     TargetCheckerDecorator(TargetChecker decorated){
         this.base = decorated;
     }
-    abstract HashSet<Tile> validTiles();
+    abstract HashSet<Tile> validTiles(Pc shooter);
 }
 
 class VisibleDecorator extends TargetCheckerDecorator {
-    private Pc referencePc;
+
     VisibleDecorator(TargetChecker decorated, Pc selectedReferencePc){
         super(decorated);
-        this.referencePc = selectedReferencePc;
     }
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         HashSet<Tile> visibleTiles, resultTiles;
-        if(referencePc == null)
-            referencePc = game.getCurrentPc();
-        visibleTiles = referencePc.getCurrTile().getVisibles();
-        resultTiles = base.validTiles();
+        visibleTiles = shooter.getCurrTile().getVisibles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.retainAll(visibleTiles);
         return resultTiles;
     }
@@ -37,10 +34,10 @@ class BlindnessDecorator extends TargetCheckerDecorator {
         super(decorated);
         this.referencePc = selectedReferencePc;
     }
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         HashSet<Tile> visibleTiles, resultTiles;
         visibleTiles = referencePc.getCurrTile().getVisibles();
-        resultTiles = base.validTiles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.removeAll(visibleTiles);
         return resultTiles;
     }
@@ -53,12 +50,12 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         super(decorated);
         this.direction = selectedDirection;
     }
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         Tile attackerTile, referenceTile;
         Optional<Tile> temp;
         HashSet<Tile> tilesInDirections = new HashSet<>();
         HashSet<Tile> resultTiles;
-        attackerTile = game.getCurrentPc().getCurrTile();
+        attackerTile = shooter.getCurrTile();
         if (direction == null) {
             for (CardinalDirectionEnum d : CardinalDirectionEnum.values()) {
                 referenceTile = attackerTile;
@@ -80,7 +77,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
                 }
             } while (temp.isPresent());
         }
-        resultTiles = base.validTiles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.retainAll(tilesInDirections);
         return resultTiles;
     }
@@ -94,11 +91,11 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         Tile attackerTile;
         HashSet<Tile> selectedTiles = new HashSet<>();
         HashSet<Tile> resultTiles;
-        attackerTile = game.getCurrentPc().getCurrTile();
+        attackerTile = shooter.getCurrTile();
         if (direction == null) {
             for (int i = 0; i < game.map.length; i++) {
                 if (game.map[attackerTile.getX()][i] != null) {
@@ -143,7 +140,7 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
                     break;
             }
         }
-        resultTiles = base.validTiles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.retainAll(selectedTiles);
         return resultTiles;
     }
@@ -154,17 +151,17 @@ class SameRoomDecorator extends TargetCheckerDecorator {
     SameRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         Tile attackingTile;
         HashSet<Tile> selectedTiles = new HashSet<>();
         HashSet<Tile> resultTiles;
-        attackingTile = game.getCurrentPc().getCurrTile();
+        attackingTile = shooter.getCurrTile();
         for(Tile t : attackingTile.getVisibles()){
             if(t.getTileColour() == attackingTile.getTileColour()){
                 selectedTiles.add(t);
             }
         }
-        resultTiles = base.validTiles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.retainAll(selectedTiles);
         return resultTiles;
     }
@@ -175,18 +172,18 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
     DifferentRoomDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         Tile attackingTile;
         EmptyChecker checker = new EmptyChecker();
         HashSet<Tile> resultTiles, allTiles;
-        attackingTile = game.getCurrentPc().getCurrTile();
-        allTiles = checker.validTiles();
+        attackingTile = shooter.getCurrTile();
+        allTiles = checker.validTiles(shooter);
         for(Tile t : allTiles){
             if(t.getTileColour() == attackingTile.getTileColour()){
                 allTiles.remove(t);
             }
         }
-        resultTiles = base.validTiles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.retainAll(allTiles);
         return resultTiles;
     }
@@ -199,10 +196,10 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
         super(decorated);
         this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         HashSet<Tile> resultTiles;
-        resultTiles = base.validTiles();
-        Tile referenceTile = game.getCurrentPc().getCurrTile();
+        resultTiles = base.validTiles(shooter);
+        Tile referenceTile = shooter.getCurrTile();
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
             resultTiles.removeAll(referenceTile.atDistance(tempMinDistance));
         }
@@ -219,14 +216,14 @@ class MaxDistanceDecorator extends TargetCheckerDecorator {
         this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
     }
 
-    public HashSet<Tile> validTiles() {
+    public HashSet<Tile> validTiles(Pc shooter) {
         HashSet<Tile> resultTiles;
         HashSet<Tile> selectedTiles = new HashSet<>();
-        Tile referenceTile = game.getCurrentPc().getCurrTile();
+        Tile referenceTile = shooter.getCurrTile();
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
             selectedTiles.addAll(referenceTile.atDistance(tempMaxDistance));
         }
-        resultTiles = base.validTiles();
+        resultTiles = base.validTiles(shooter);
         resultTiles.retainAll(selectedTiles);
         return resultTiles;
     }

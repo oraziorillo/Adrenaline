@@ -5,6 +5,10 @@ import model.enumerations.PcColourEnum;
 
 public class PcChoiceState extends State {
 
+    PcChoiceState(Controller controller) {
+        super(controller);
+    }
+
     @Override
     public boolean assignPcToPlayer(PcColourEnum colour, Player player) {
         Pc pc;
