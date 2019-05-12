@@ -18,7 +18,7 @@ public class StartTurnState extends State {
     }
 
     public boolean shootPeople(){
-        controller.setCurrState(controller.shootState);
+        controller.setCurrState(controller.shootPeopleState);
         return true;
     }
 

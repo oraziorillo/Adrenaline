@@ -103,7 +103,7 @@ public class Pc {
     }
 
     public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
-        if (!(currTile instanceof SpawnTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+        if (!currGame.getSpawnTiles().contains(currTile)) {
             throw new IllegalStateException("You are not in a SpawnTile");
         }
         SpawnTile workingTile = (SpawnTile) currTile;
@@ -111,19 +111,29 @@ public class Pc {
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
         }
-        weapons[index] = workingTile.pickWeapon(weaponIndex);
+        try {
+            weapons[index] = workingTile.pickWeapon(weaponIndex);
+        }
+        catch (NullPointerException exception){
+            throw new NullPointerException();
+        }
     }
 
     public void collectWeapon(int desiredWeaponIndex, int toDropWeaponIndex) {
-        if (!(currTile instanceof SpawnTile)) {
+        if (!currGame.getSpawnTiles().contains(currTile)) {
             throw new IllegalStateException("You are not in a SpawnTile");
         }
         SpawnTile workingTile = (SpawnTile) currTile;
-        weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponAtIndex(toDropWeaponIndex));
+        try{
+            weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponAtIndex(toDropWeaponIndex));
+        }
+        catch (NullPointerException exception){
+            throw new NullPointerException();
+        }
     }
 
     public void collectAmmos() {
-        if (!(currTile instanceof AmmoTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+        if (currGame.getSpawnTiles().contains(currTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in an AmmoTile");
         }
         AmmoTile workingTile = (AmmoTile) currTile;

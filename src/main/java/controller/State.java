@@ -48,9 +48,11 @@ abstract class State {
 
     public void setTargetables(Pc referencePc){}
 
-    public boolean execute(Pc currPc, Tile targetSquare) {
+    public boolean executeOnTile(Pc currPc, Tile targetSquare) {
         return false;
     }
+
+    public boolean executeOnWeapon(Pc currPc, int n){ return false; }
 
     public abstract void nextState();
 }
