@@ -10,7 +10,7 @@ public class RunAroundState extends State{
     }
 
     @Override
-    public boolean executeOnTile(Pc currPc, Tile targetSquare){
+    public boolean execute(Pc currPc, Tile targetSquare){
         move(currPc, targetSquare);
         return true;
     }

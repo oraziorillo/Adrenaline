@@ -29,16 +29,17 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private int currPlayerIndex;
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
-    ArrayList<Player> players;
-    ArrayList<Tile> toRefillTiles;
+    private ArrayList<Player> players;
+    private ArrayList<Tile> squaresToRefill;
     State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState,
-          startTurnState, runAroundState, grabStuffState, collectWeaponState, shootPeopleState, endTurn;
+          startTurnState, runAroundState, grabStuffState, grabWeaponState, switchWeaponState,
+          shootPeopleState, endTurn;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
         this.game = new Game();
         this.players = new ArrayList<>();
-        this.toRefillTiles = new ArrayList<>();
+        this.squaresToRefill = new ArrayList<>();
         this.availablePcColours = new ArrayList<>();
         Collections.addAll(availablePcColours, PcColourEnum.values());
         this.players.addAll(players);
@@ -50,70 +51,74 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         this.startTurnState = new StartTurnState(this);
         this.runAroundState = new RunAroundState(this);
         this.grabStuffState = new GrabStuffState(this);
-        this.collectWeaponState = new CollectWeaponState(this);
+        this.grabWeaponState = new GrabWeaponState(this);
     }
 
-    public boolean isFirstTurn() {
+    public synchronized boolean isFirstTurn() {
         return firstTurn;
     }
 
-    public boolean isFinalFrenzy() {
+    public synchronized boolean isFinalFrenzy() {
         return finalFrenzy;
     }
 
 
-    public Game getGame(){
+    public synchronized Game getGame(){
         return game;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public synchronized ArrayList<Player> getPlayers() {
         return players;
     }
 
 
-    public int getCurrPlayerIndex() {
+    public synchronized int getCurrPlayerIndex() {
         return currPlayerIndex;
     }
 
 
-    public void setFirstTurn(boolean booleanValue){
+    public synchronized void setFirstTurn(boolean booleanValue){
         firstTurn = booleanValue;
     }
 
 
-    public void setFinalFrenzy(boolean booleanValue){
+    public synchronized void setFinalFrenzy(boolean booleanValue){
         finalFrenzy =  booleanValue;
     }
 
 
-    public void setCurrState(State nextState){
+    public synchronized void setCurrState(State nextState){
         currState = nextState;
     }
 
-    public void setLastPlayerIndex(int index){
+    public synchronized void setLastPlayerIndex(int index){
         lastPlayerIndex = index;
     }
 
-    int getRemainingActions(){
+    synchronized int getRemainingActions(){
         return remainingActions;
     }
 
-    void decreaseRemainingActions(){
+    synchronized void decreaseRemainingActions(){
         this.remainingActions--;
     }
 
-    void resetRemainingActions(){
+    synchronized void resetRemainingActions(){
         if(!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
             this.remainingActions = ACTIONS_PER_TURN;
         else
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
+    synchronized void addSquareToRefill(Tile s){
+        squaresToRefill.add(s);
+    }
+
     /**
      * checks if the player who is trying to do something is the able to do it in this moment
      * @throws NotCurrPlayerException iff the player who called a method is not able to do it in this moment
      */
-    public void validateCurrPlayer() throws NotCurrPlayerException {
+    public synchronized void validateCurrPlayer() throws NotCurrPlayerException {
         //TODO: deve prendere come arg un token
         //      deve sollevare un eccezione NotCurrPlayerException
         //      aggiungere try catch a tutti i metodi
@@ -127,26 +132,21 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseMap(int n) {
-        if (n >= FIRST_MAP && n <= LAST_MAP) {
-            if (currState.initializeMap(n))
+        if (n >= FIRST_MAP && n <= LAST_MAP && currState.initializeMap(n))
                 currState.nextState();
-        }
     }
 
 
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
-        if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE) {
-            if (currState.setNumberOfSkulls(n))
+        if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE && (currState.setNumberOfSkulls(n)))
                 currState.nextState();
-        }
     }
 
 
     @Override
     public synchronized void choosePcColour(PcColourEnum colour) {
-        if (availablePcColours.contains(colour))
-            if (currState.assignPcToPlayer(colour, players.get(currPlayerIndex))) {
+        if (availablePcColours.contains(colour) && currState.assignPcToPlayer(colour, players.get(currPlayerIndex))) {
                 availablePcColours.remove(colour);
                 nextTurn();
             }
@@ -156,8 +156,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void discardAndSpawn(int n) {
         Pc currPc = players.get(currPlayerIndex).getPc();
-        if (n == 0 || n == 1)
-            if (currState.spawnPc(currPc, n))
+        if (n == 0 || n == 1 && currState.spawnPc(currPc, n))
                 nextTurn();
     }
 
@@ -185,12 +184,20 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void selectSquare(int x, int y) {
-        if(currState.executeOnTile(players.get(currPlayerIndex).getPc(), game.map[x][y]))
+        if(currState.execute(players.get(currPlayerIndex).getPc(), game.map[x][y]))
             currState.nextState();
     }
 
-    public synchronized void selectWeapon(int n){
-        if((n >= 0 && n <= 2) && currState.executeOnWeapon(players.get(currPlayerIndex).getPc(), n))
+
+    @Override
+    public synchronized void grabWeapon(int index){
+        if((index >= 0 && index <= 2) && currState.grabWeapon(players.get(currPlayerIndex).getPc(), index))
+            currState.nextState();
+    }
+
+    @Override
+    public synchronized void chooseWeapon(int index){
+        if((index >= 0 && index <= 2) && currState.selectWeapon(players.get(currPlayerIndex).getPc(), index))
             currState.nextState();
     }
 

@@ -13,14 +13,13 @@ public class GrabStuffState extends State{
     }
 
     @Override
-    public boolean executeOnTile(Pc currPc, Tile targetSquare){
-        //qui dobbiamo fare un controllo sul tile di destinazione, se è un spawnTile vuoto la mossa non può essere eseguita
-        //se è un AmmoTile che ancora non è stato refillato, la mossa non può essere eseguita
+    public boolean execute(Pc currPc, Tile targetSquare){
+        if (targetSquare.isEmpty())
+            return false;
         move(currPc, targetSquare);
         if (!controller.getGame().getSpawnTiles().contains(targetSquare)) {
             currPc.collectAmmos();
             executed = true;
-            //sarebbe opportuno tener traccia di questo tile così che possa essere refillato a fine turno. Aggiungiamo array di tile nel controller?
         }
         return true;
     }
@@ -40,6 +39,7 @@ public class GrabStuffState extends State{
     @Override
     public void nextState() {
         if(executed) {
+            executed = false;
             controller.decreaseRemainingActions();
             if (controller.getRemainingActions() == 0) {
                 controller.resetRemainingActions();
@@ -47,7 +47,7 @@ public class GrabStuffState extends State{
             } else
                 controller.setCurrState(controller.startTurnState);
         } else {
-            controller.setCurrState(controller.collectWeaponState);
+            controller.setCurrState(controller.grabWeaponState);
         }
     }
 }

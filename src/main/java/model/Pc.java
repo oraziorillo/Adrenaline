@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.FullyArmedException;
 import model.enumerations.PcColourEnum;
 import exceptions.NotEnoughAmmosException;
 import java.util.ArrayList;
@@ -102,34 +103,27 @@ public class Pc {
         }
     }
 
-    public void collectWeapon(int weaponIndex) {        //l'arma deve poi essere rimossa dal punto di generazione
+    public void collectWeapon(int weaponIndex) throws FullyArmedException {        //l'arma deve poi essere rimossa dal punto di generazione
         if (!currGame.getSpawnTiles().contains(currTile)) {
             throw new IllegalStateException("You are not in a SpawnTile");
+        }
+        if (isFullyArmed()){
+            throw new FullyArmedException("You have to drop one card");
         }
         SpawnTile workingTile = (SpawnTile) currTile;
         int index = 0;
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
         }
-        try {
-            weapons[index] = workingTile.pickWeapon(weaponIndex);
-        }
-        catch (NullPointerException exception){
-            throw new NullPointerException();
-        }
+        weapons[index] = workingTile.pickWeapon(weaponIndex);
     }
 
-    public void collectWeapon(int desiredWeaponIndex, int toDropWeaponIndex) {
+    public void switchWeapons(int weaponToGrabIndex, int weaponToDropIndex) {
         if (!currGame.getSpawnTiles().contains(currTile)) {
             throw new IllegalStateException("You are not in a SpawnTile");
         }
         SpawnTile workingTile = (SpawnTile) currTile;
-        try{
-            weapons[toDropWeaponIndex] = workingTile.switchWeapon(desiredWeaponIndex, weaponAtIndex(toDropWeaponIndex));
-        }
-        catch (NullPointerException exception){
-            throw new NullPointerException();
-        }
+        weapons[weaponToDropIndex] = workingTile.switchWeapon(weaponToGrabIndex, weaponAtIndex(weaponToDropIndex));
     }
 
     public void collectAmmos() {

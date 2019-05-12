@@ -167,10 +167,12 @@ public abstract class Tile {
      * @param objectIndex the index of the object to collect (weapon). In some subclasses could be irrelevant (one object only)
      */
     public abstract void collect(Pc player, int objectIndex);
+
+    public abstract boolean isEmpty();
 }
 
 
-public class SpawnTile extends Tile {
+class SpawnTile extends Tile {
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
@@ -209,6 +211,14 @@ public class SpawnTile extends Tile {
     public void collect(Pc player, int objectIndex) {
         //TODO
     }
+
+    @Override
+    public boolean isEmpty() {
+        for (WeaponCard weapon : weapons)
+            if (weapon != null)
+                return false;
+        return true;
+    }
 }
 
 
@@ -237,6 +247,11 @@ class AmmoTile extends Tile {
     @Override
     public void collect(Pc player, int objectIndex) {
         //TODO
+    }
+
+    @Override
+    public boolean isEmpty(){
+        return ammoCard == null;
     }
 }
 
