@@ -1,6 +1,7 @@
 package controller;
 
 import model.enumerations.PcColourEnum;
+
 import java.rmi.Remote;
 
 public interface RemoteController extends Remote {

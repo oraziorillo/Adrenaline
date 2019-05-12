@@ -25,6 +25,9 @@ Domande:
 
 - può essere statico controller in state?
 
+- va bene che il primo di turno scelga mappa e numero di teschi?
+
+- "Choose a starting player. Give him or her the starting player marker". Nel nostro gioco ciò avviene in maniera automatica.
 
 
 

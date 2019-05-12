@@ -12,7 +12,7 @@ public abstract class TargetChecker {
         this.game = game;
     }
 
-    abstract HashSet<Tile> validTiles (Pc shooter);
+    abstract HashSet<Tile> validTiles (Tile referenceSquare);
 
 }
 
@@ -22,7 +22,7 @@ class EmptyChecker extends TargetChecker{
     //sto metodo era sbagliato, in teoria adesso dovrebbe essere giusto
     //funziona così: cicla la mappa e se getTile solleva l'eccezione la catcha
     //               e in teoria va avanti con la successiva iterazione del ciclo
-    public HashSet<Tile> validTiles (Pc shooter){
+    public HashSet<Tile> validTiles (Tile referenceSquare){
         HashSet<Tile> temp;
         temp = new HashSet<>();
         for(int i = 0; i < game.map.length; i++){

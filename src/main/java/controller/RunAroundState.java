@@ -25,9 +25,9 @@ public class RunAroundState extends State{
 
     @Override
     public void nextState() {
-        decreaseRemainingActions();
-        if(getRemainingActions() == 0){
-            resetRemainingActions();
+        controller.decreaseRemainingActions();
+        if(controller.getRemainingActions() == 0){
+            controller.resetRemainingActions();
             controller.setCurrState(controller.endTurn);
         }
         else

@@ -7,18 +7,18 @@ import java.net.Socket;
 import java.util.UUID;
 
 public class SocketConnection extends ClientConnection {
-    public static final String SERVER_IP="localhost";
-    public static final int SERVER_PORT=10000;
-    public static final String ERROR="Something went wrong with socket connection";
+    public static final String SERVER_IP = "localhost";
+    public static final int SERVER_PORT = 10000;
+    public static final String ERROR = "Something went wrong with socket connection";
     Socket socket;
     BufferedReader in;
     PrintWriter out;
     UUID token;
 
-    public SocketConnection(){
+    public SocketConnection() {
         try {
-            socket=new Socket(SERVER_IP,SERVER_PORT);
-            in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            socket = new Socket(SERVER_IP, SERVER_PORT);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
             throw new IllegalStateException(ERROR);
@@ -38,7 +38,7 @@ public class SocketConnection extends ClientConnection {
 
     @Override
     public boolean login(UUID token) {
-        out.println("login\t"+token);
+        out.println("login\t" + token);
         try {
             return Boolean.getBoolean(in.readLine());
         } catch (IOException e) {
@@ -47,8 +47,8 @@ public class SocketConnection extends ClientConnection {
     }
 
     @Override
-    public UUID signin(String username) {
-        out.println("signin\t"+username);
+    public UUID signIn(String username) {
+        out.println("Sign in\t" + username);
         try {
             return UUID.fromString(in.readLine());
         } catch (IOException e) {

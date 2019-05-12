@@ -37,9 +37,9 @@ public class GrabStuffState extends State{
     @Override
     public void nextState() {
         if(executed) {
-            decreaseRemainingActions();
-            if (getRemainingActions() == 0) {
-                resetRemainingActions();
+            controller.decreaseRemainingActions();
+            if (controller.getRemainingActions() == 0) {
+                controller.resetRemainingActions();
                 controller.setCurrState(controller.endTurn);
             } else
                 controller.setCurrState(controller.startTurnState);

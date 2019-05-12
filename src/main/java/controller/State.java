@@ -6,31 +6,10 @@ import model.enumerations.PcColourEnum;
 
 abstract class State {
 
-    private static final int ACTIONS_PER_TURN = 2;
-    private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
-
     Controller controller;
-    private int remainingActions;
-
 
     State(Controller controller){
         this.controller = controller;
-        remainingActions = ACTIONS_PER_TURN;
-    }
-
-    int getRemainingActions(){
-        return remainingActions;
-    }
-
-    void decreaseRemainingActions(){
-        this.remainingActions--;
-    }
-
-    void resetRemainingActions(){
-        if(!controller.isFinalFrenzy() || controller.beforeFirstPlayer(controller.getCurrPlayerIndex()))
-            this.remainingActions = ACTIONS_PER_TURN;
-        else
-            this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
     void move(Pc pc, Tile tile){

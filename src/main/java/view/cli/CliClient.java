@@ -2,6 +2,7 @@ package view.cli;
 
 import view.cli.conection.ClientConnection;
 import view.cli.conection.socket.SocketConnection;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,7 +46,7 @@ public class CliClient implements RemoteView{
                     break;
                 case "s":
                     System.out.println(">>> Please provide username: ");
-                    token = connection.signin(in.readLine());
+                    token = connection.signIn(in.readLine());
                     System.out.println("This is your token. Use it to access again in the future.");
                     System.out.println(token);
                     break;

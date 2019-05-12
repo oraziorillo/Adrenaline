@@ -1,11 +1,7 @@
 package controller;
 
-import model.enumerations.PcColourEnum;
 import model.Pc;
-import model.PowerUpCard;
-import model.Tile;
 
-import java.util.HashSet;
 import java.util.UUID;
 
 public abstract class Player{

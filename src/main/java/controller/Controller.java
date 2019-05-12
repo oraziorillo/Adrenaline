@@ -4,6 +4,7 @@ import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
 import model.enumerations.PcColourEnum;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -15,12 +16,15 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     static final int LAST_MAP = 4;
     static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
     static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
+    private static final int ACTIONS_PER_TURN = 2;
+    private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
 
 
     private boolean finalFrenzy = false;
     private boolean firstTurn = false;
     private Game game;
     private ArrayList<PcColourEnum> availablePcColours;
+    private int remainingActions;
     private int currPlayerIndex;
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
@@ -87,6 +91,20 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         lastPlayerIndex = index;
     }
 
+    int getRemainingActions(){
+        return remainingActions;
+    }
+
+    void decreaseRemainingActions(){
+        this.remainingActions--;
+    }
+
+    void resetRemainingActions(){
+        if(!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
+            this.remainingActions = ACTIONS_PER_TURN;
+        else
+            this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
+    }
 
     /**
      * checks if the player who is trying to do something is the able to do it in this moment

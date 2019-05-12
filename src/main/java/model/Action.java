@@ -27,8 +27,8 @@ public abstract class Action {
      *
      * @return a Set of all possible target Tiles
      */
-    public Set<Tile> validTargetTiles(Pc shooter) {
-        return targetChecker.validTiles(shooter);
+    public Set<Tile> validTargetSquares(Pc shooter) {
+        return targetChecker.validTiles(shooter.getCurrTile());
     }
 }
 
@@ -48,10 +48,10 @@ class DamageMarksAction extends Action {
             jsonTargetChecker = (JSONObject) checker;
             switch ((String) jsonTargetChecker.get("type")) {
                 case "visible":
-                    this.targetChecker = new VisibleDecorator(targetChecker, null);
+                    this.targetChecker = new VisibleDecorator(targetChecker);
                     break;
                 case "blindness":
-                    this.targetChecker = new BlindnessDecorator(targetChecker, null);
+                    this.targetChecker = new BlindnessDecorator(targetChecker);
                     break;
                 case "minDistance":
                     this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker);
@@ -79,7 +79,7 @@ class DamageMarksAction extends Action {
 
     public Set<Pc> validTargets(Pc shooter){
         HashSet<Pc> validTargets = new HashSet<>();
-        for (Tile t : validTargetTiles(shooter)) {
+        for (Tile t : validTargetSquares(shooter)) {
             validTargets.addAll(t.getPcs());
         }
         return validTargets;

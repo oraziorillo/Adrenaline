@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public class WeaponEffect {
     private short[] cost;
+    private boolean asynchronousMove;
     private LinkedList<Action> actions = new LinkedList<>();
 
     /**
@@ -28,6 +29,10 @@ public class WeaponEffect {
             }
             actions.add(action);
         }
+    }
+
+    public boolean isAsynchronousMove() {
+        return asynchronousMove;
     }
 
     public short[] getCost(){

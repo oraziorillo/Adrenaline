@@ -70,11 +70,12 @@ public class WeaponCard {
         WeaponEffect eff;
         if(fireModes.size() > index) {
             eff = fireModes.get(index);
-            this.currEffect = new LinkedList<>();
-            currentCost[AmmoEnum.BLUE.ordinal()] = eff.getCost()[AmmoEnum.BLUE.ordinal()];
-            currentCost[AmmoEnum.RED.ordinal()] = eff.getCost()[AmmoEnum.RED.ordinal()];
-            currentCost[AmmoEnum.YELLOW.ordinal()] = eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-            this.currEffect.add(eff);
+            //if currEffect is composed only by asynchronous moves, don't reset it
+            if (!currEffect.stream().map(WeaponEffect::isAsynchronousMove).reduce(true, (a, b) -> a && b)) {
+                this.currEffect = new LinkedList<>();
+                this.currentCost = new short[3];
+            }
+            addEffect(eff);
         } else {
             throw new IllegalArgumentException();
         }
@@ -84,26 +85,32 @@ public class WeaponCard {
         WeaponEffect eff;
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
-            currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
-            currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
-            currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-            this.currEffect.add(eff);
+            addEffect(eff);
         } else {
             throw new IllegalArgumentException();
         }
     }
 
     public void removeUpgrade(int index) {
-        WeaponEffect eff;
         if(upgrades.size() > index) {
-            eff = upgrades.get(index);
-            currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
-            currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
-            currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];
-            currEffect.remove(eff);
+            removeEffect(upgrades.get(index));
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    private void addEffect(WeaponEffect eff) {
+        currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
+        currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
+        currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+        this.currEffect.add(eff);
+    }
+
+    private void removeEffect(WeaponEffect eff){
+        currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
+        currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
+        currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+        currEffect.remove(eff);
     }
 
     public void use(Pc shooter) {
