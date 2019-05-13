@@ -2,32 +2,33 @@ package controller;
 
 import model.enumerations.PcColourEnum;
 
+import java.io.IOException;
 import java.rmi.Remote;
 
 public interface RemoteController extends Remote {
 
-    public void chooseMap(int n);
+    public void chooseMap(int n) throws IOException;
 
-    public void chooseNumberOfSkulls(int n);
+    public void chooseNumberOfSkulls(int n) throws IOException;
 
-    public void choosePcColour(PcColourEnum colour);
+    public void choosePcColour(PcColourEnum colour) throws IOException;
 
-    public void discardAndSpawn(int n);
+    public void discardAndSpawn(int n) throws IOException;
 
-    public void showComment(String comment);
+    public void showComment(String comment) throws IOException;
 
-    public void runAround();
+    public void runAround() throws IOException;
 
-    public void grabStuff();
+    public void grabStuff() throws IOException;
 
-    public void shootPeople();
+    public void shootPeople() throws IOException;
 
-    public void selectSquare(int x, int y);
+    public void selectSquare(int x, int y) throws IOException;
 
-    public void grabWeapon(int n);
+    public void grabWeapon(int n) throws IOException;
 
-    public void chooseWeapon(int n);
+    public void chooseWeapon(int n) throws IOException;
 
-    public void quit();
+    public void quit() throws IOException;
 
 }

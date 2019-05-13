@@ -1,8 +1,10 @@
 package view.cli.conection;
 
+import controller.RemoteController;
+
 import java.util.UUID;
 
-public abstract class ClientConnection {
+public abstract class ClientConnection implements RemoteController {
 
     public abstract String update();
 

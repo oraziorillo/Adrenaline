@@ -1,7 +1,7 @@
 package view.cli;
 
 import view.cli.conection.ClientConnection;
-import view.cli.conection.socket.SocketConnection;
+import view.cli.conection.socket.SocketProxy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class CliClient implements RemoteView{
             cmd = in.readLine();
             switch (cmd){
                 case "s":
-                    connection=new SocketConnection();
+                    connection=new SocketProxy();
                     break;
                 case "r":
                     //connection=new RmiConnection();
