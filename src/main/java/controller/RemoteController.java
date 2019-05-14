@@ -23,11 +23,13 @@ public interface RemoteController extends Remote {
 
     void shootPeople() throws IOException;
 
-    void selectSquare(int x, int y) throws IOException;
+    void chooseSquare(int x, int y) throws IOException;
 
     void grabWeapon(int n) throws IOException;
 
     void chooseWeapon(int n) throws IOException;
+
+    void chooseFireMode(int n);
 
     void quit() throws IOException;
 

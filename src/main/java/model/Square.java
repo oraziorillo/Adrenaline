@@ -5,13 +5,13 @@ import model.enumerations.TileColourEnum;
 import java.util.HashSet;
 import java.util.Optional;
 
-public abstract class Tile {
+public abstract class Square {
     private final int x;
     private final int y;
     private boolean targetable;
     private final TileColourEnum tileColour;
     private HashSet<Pc> pcs;            //ricordarsi di aggiugnere degli observer che ad ogni spostamento del pc modifichi questo insieme
-    private HashSet<Tile> visibles;
+    private HashSet<Square> visibles;
 
     /**
      * Builder for a generic tile
@@ -19,7 +19,7 @@ public abstract class Tile {
      * @param y second index in map
      * @param colour the room colour
      */
-    public Tile(int x, int y, TileColourEnum colour) {
+    public Square(int x, int y, TileColourEnum colour) {
         this.x = x;
         this.y = y;
         this.targetable = false;
@@ -70,8 +70,8 @@ public abstract class Tile {
      * returns the tiles that a Pc on this tile could see
      * @return the tile visibles from this
      */
-    public HashSet<Tile> getVisibles() {
-        return (HashSet<Tile>)visibles.clone();
+    public HashSet<Square> getVisibles() {
+        return (HashSet<Square>)visibles.clone();
     }
 
 
@@ -85,12 +85,12 @@ public abstract class Tile {
      * @param dist distance of returned tiles
      * @return HashSet of Tiles at distance dist
      */
-    public HashSet<Tile> atDistance(int dist){
+    public HashSet<Square> atDistance(int dist){
         if(dist < 0){
             throw new IllegalArgumentException("Distance has to be positive");
         }
-        Optional<Tile> tempTile;
-        HashSet<Tile> temp = new HashSet<>();
+        Optional<Square> tempTile;
+        HashSet<Square> temp = new HashSet<>();
         if(dist == 0){
             temp.add(this);
         }
@@ -114,8 +114,8 @@ public abstract class Tile {
      * @param direction the cardinal direction
      * @return The first tile in the given direction if there is no wall between, Optional.empty else
      */
-    public Optional<Tile> onDirection(CardinalDirectionEnum direction){
-        Optional<Tile> temp = Optional.empty();
+    public Optional<Square> onDirection(CardinalDirectionEnum direction){
+        Optional<Square> temp = Optional.empty();
         switch(direction) {
             case NORTH:
                 temp = visibles.stream().filter(elem -> elem.getY() == this.getY() + 1 && elem.getX() == this.getX()).findFirst();
@@ -153,7 +153,7 @@ public abstract class Tile {
      *after this method the given tile will be visible from this tile (and then contained into the getVisibles collection)
      * @param t the tile to make visible
      */
-    public void addVisible(Tile t) {
+    public void addVisible(Square t) {
         visibles.add(t);
     }
 
@@ -172,12 +172,12 @@ public abstract class Tile {
 }
 
 
-class SpawnTile extends Tile {
+class SpawnSquare extends Square {
 
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
 
-    SpawnTile(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck) {
+    SpawnSquare(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck) {
         super(x, y, colour);
         this.weaponDeck = deck;
         weapons = new WeaponCard[3];
@@ -222,25 +222,25 @@ class SpawnTile extends Tile {
 }
 
 
-class AmmoTile extends Tile {
-    private AmmoCard ammoCard;
-    private Deck<AmmoCard> ammoDeck;
+class AmmoSquare extends Square {
+    private AmmoTile ammoTile;
+    private Deck<AmmoTile> ammoDeck;
 
-    AmmoTile(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck) {
+    AmmoSquare(int x, int y, TileColourEnum colour, Deck<AmmoTile> deck) {
         super(x, y, colour);
         ammoDeck = deck;
-        ammoCard = ammoDeck.draw();
+        ammoTile = ammoDeck.draw();
     }
 
-    public AmmoCard pickAmmo() {
-        AmmoCard oldCard = ammoCard;
-        ammoCard = null;
+    public AmmoTile pickAmmo() {
+        AmmoTile oldCard = ammoTile;
+        ammoTile = null;
         return oldCard;
     }
 
     public void refill(){
-        if(ammoCard == null) {
-            ammoCard = ammoDeck.draw();
+        if(ammoTile == null) {
+            ammoTile = ammoDeck.draw();
         }
     }
 
@@ -251,7 +251,7 @@ class AmmoTile extends Tile {
 
     @Override
     public boolean isEmpty(){
-        return ammoCard == null;
+        return ammoTile == null;
     }
 }
 

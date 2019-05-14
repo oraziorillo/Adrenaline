@@ -21,16 +21,16 @@ public class AmmoCardTest {
 
     @Theory
     public void doesNotAlterCostructionParameters(short[] ammos, boolean hasPowerup) {
-        assumeTrue("Invalid parameters", AmmoCard.validParameters(ammos, hasPowerup));
-        AmmoCard tested = new AmmoCard(ammos, hasPowerup);
+        assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
+        AmmoTile tested = new AmmoTile(ammos, hasPowerup);
         assertEquals("Different ammos", ammos, tested.getAmmos());
         assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
     }
 
     @Theory
     public void throwsExceptionOnInvalidParameters(short[] ammos, boolean hasPowerup) {
-        assumeFalse("Valid parameters", AmmoCard.validParameters(ammos, hasPowerup));
-        assertThrows("Exception not thrown", IllegalArgumentException.class,()->new AmmoCard(ammos, hasPowerup));
+        assumeFalse("Valid parameters", AmmoTile.validParameters(ammos, hasPowerup));
+        assertThrows("Exception not thrown", IllegalArgumentException.class,()->new AmmoTile(ammos, hasPowerup));
     }
 
     @Theory
@@ -49,7 +49,7 @@ public class AmmoCardTest {
         if (t != Constants.AMMOS_PER_CARD) {
             correct = false;
         }
-        assertEquals(AmmoCard.validParameters(ammos, hasPowerup), correct);
+        assertEquals(AmmoTile.validParameters(ammos, hasPowerup), correct);
     }
 
 }

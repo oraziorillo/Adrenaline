@@ -4,7 +4,7 @@ import controller.states.*;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
-import model.Tile;
+import model.Square;
 import model.enumerations.PcColourEnum;
 
 import java.rmi.RemoteException;
@@ -31,7 +31,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
     private ArrayList<Player> players;
-    private ArrayList<Tile> squaresToRefill;
+    private ArrayList<Square> squaresToRefill;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
@@ -96,7 +96,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
-    public synchronized void addSquareToRefill(Tile s){
+    public synchronized void addSquareToRefill(Square s){
         squaresToRefill.add(s);
     }
 
@@ -169,7 +169,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
 
     @Override
-    public synchronized void selectSquare(int x, int y) {
+    public synchronized void chooseSquare(int x, int y) {
         if(currState.execute(players.get(currPlayerIndex).getPc(), game.map[x][y]))
             currState = currState.nextState();
     }
@@ -181,15 +181,25 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             currState = currState.nextState();
     }
 
+
     @Override
     public synchronized void chooseWeapon(int index){
         if((index >= 0 && index <= 2) && currState.selectWeapon(players.get(currPlayerIndex).getPc(), index))
             currState = currState.nextState();
     }
 
+
+    @Override
+    public synchronized void chooseFireMode(int fireModeIndex){
+        if(fireModeIndex == 0 || fireModeIndex == 1){
+            currState.selectFireMode(fireModeIndex);
+        }
+    }
+
+
     @Override
     public synchronized void quit() {
-
+        //gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
 
     private synchronized void nextTurn() {          //da rivedere

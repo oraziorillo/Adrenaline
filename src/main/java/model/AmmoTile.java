@@ -1,7 +1,7 @@
 package model;
 
 
-public class AmmoCard {
+public class AmmoTile {
 
     private final short[] ammos;
     private final boolean hasPowerup;
@@ -12,9 +12,9 @@ public class AmmoCard {
      * @param ammos every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
      * @param hasPowerup for 2ammos-1powerup cards
      */
-    public AmmoCard(short[] ammos, boolean hasPowerup) {
+    public AmmoTile(short[] ammos, boolean hasPowerup) {
         if (!validParameters(ammos, hasPowerup)) {
-            throw new IllegalArgumentException("Illegal AmmoCard");
+            throw new IllegalArgumentException("Illegal AmmoTile");
         }
         this.ammos = ammos;
         this.hasPowerup = hasPowerup;

@@ -80,7 +80,7 @@ public class SocketProxy implements RemoteController {
     }
 
     @Override
-    public void selectSquare(int x, int y) throws IOException {
+    public void chooseSquare(int x, int y) throws IOException {
         out.writeObject( SELECT_SQUARE );
         out.writeInt( x );
         out.writeInt( y );

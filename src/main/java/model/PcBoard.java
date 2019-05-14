@@ -54,7 +54,7 @@ public class PcBoard {
         marks[selectedColour.ordinal()] = numOfMarks;
     }
 
-    public void addAmmos(AmmoCard card) {
+    public void addAmmos(AmmoTile card) {
         for (int i = 0; i < card.getAmmos().length; i++) {
             this.ammos[i] += ammos[i];
             if (ammos[i] > 3)

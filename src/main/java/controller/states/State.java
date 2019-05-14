@@ -3,7 +3,7 @@ package controller.states;
 import controller.Controller;
 import controller.Player;
 import model.Pc;
-import model.Tile;
+import model.Square;
 import model.enumerations.PcColourEnum;
 
 public abstract class State {
@@ -14,10 +14,10 @@ public abstract class State {
         this.controller = controller;
     }
 
-    void move(Pc pc, Tile tile){
-        pc.getCurrTile().removePc(pc);
-        pc.moveTo(tile);
-        tile.addPc(pc);
+    void move(Pc pc, Square square){
+        pc.getCurrSquare().removePc(pc);
+        pc.moveTo(square);
+        square.addPc(pc);
     }
 
     public boolean initializeMap(int n) {
@@ -50,7 +50,7 @@ public abstract class State {
 
     public void setTargetables(Pc referencePc){}
 
-    public boolean execute(Pc currPc, Tile targetSquare) {
+    public boolean execute(Pc currPc, Square targetSquare) {
         return false;
     }
 
@@ -59,6 +59,8 @@ public abstract class State {
     public boolean selectWeapon(Pc currPc, int index){
         return false;
     }
+
+    public boolean selectFireMode(int fireModeIndex) { return false; }
 
     public abstract State nextState();
 }

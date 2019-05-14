@@ -66,7 +66,7 @@ public class SocketListener implements Runnable {
                     case SELECT_SQUARE:
                         argInt = in.readInt();
                         int argInt2 = in.readInt();
-                        controller.selectSquare( argInt, argInt2 );
+                        controller.chooseSquare( argInt, argInt2 );
                         break;
                     case GRAB_WEAPON:
                         argInt = in.readInt();

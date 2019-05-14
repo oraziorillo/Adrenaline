@@ -27,8 +27,8 @@ public abstract class Action {
      *
      * @return a Set of all possible target Tiles
      */
-    public Set<Tile> validTargetSquares(Pc shooter) {
-        return targetChecker.validTiles(shooter.getCurrTile());
+    public Set<Square> validTargetSquares(Pc shooter) {
+        return targetChecker.validTiles(shooter.getCurrSquare());
     }
 }
 
@@ -79,7 +79,7 @@ class DamageMarksAction extends Action {
 
     public Set<Pc> validTargets(Pc shooter){
         HashSet<Pc> validTargets = new HashSet<>();
-        for (Tile t : validTargetSquares(shooter)) {
+        for (Square t : validTargetSquares(shooter)) {
             validTargets.addAll(t.getPcs());
         }
         return validTargets;
@@ -110,7 +110,7 @@ class DamageMarksAction extends Action {
 
 class MovementAction extends Action {
     private int maxDist;
-    private Tile destination;
+    private Square destination;
 
     MovementAction(JSONObject jsonAction) {
         this.maxDist = (int)jsonAction.get("maxDist");
@@ -121,7 +121,7 @@ class MovementAction extends Action {
      * sets the destination of the move action
      * @param destination tile of destination
      */
-    public void setDestination(Tile destination){
+    public void setDestination(Square destination){
         this.destination = destination;
     }
 

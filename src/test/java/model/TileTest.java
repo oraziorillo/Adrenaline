@@ -11,8 +11,8 @@ public class TileTest {
 
     @Test
     public void addVisiblesWorksFine() {
-        Tile t1 = new ConcreteTile(1, 2);
-        Tile t2 = new ConcreteTile(0, 0);
+        Square t1 = new ConcreteSquare(1, 2);
+        Square t2 = new ConcreteSquare(0, 0);
         t1.addVisible(t2);
         assertTrue(t1.getVisibles().contains(t2));
     }
@@ -21,7 +21,7 @@ public class TileTest {
     public void addAndRemoveCharacterWorksFine() {
         Pc c1 = Mockito.mock(Pc.class);
         Pc c2 = Mockito.mock(Pc.class);
-        Tile tester = new ConcreteTile(0, 0);
+        Square tester = new ConcreteSquare(0, 0);
         tester.addPc(c1);
         tester.addPc(c2);
         assertTrue(tester.getPcs().contains(c1));
@@ -31,9 +31,9 @@ public class TileTest {
         assertTrue(tester.getPcs().contains(c2));
     }
 
-    class ConcreteTile extends Tile {
+    class ConcreteSquare extends Square {
 
-        ConcreteTile(int x, int y) {
+        ConcreteSquare(int x, int y) {
             super(x, y, TileColourEnum.GREEN);
         }
 
