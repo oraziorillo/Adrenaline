@@ -1,6 +1,7 @@
 package controller;
 
 import model.Pc;
+import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ public abstract class Player{
     private final UUID uuid;
     private Pc pc;
 
-    //@Contract(pure = true)
+    @Contract(pure = true)
     Player(String username, UUID uuid){
         this.username=username;
         this.uuid=uuid;
