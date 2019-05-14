@@ -26,6 +26,10 @@ public class SocketProxy implements RemoteController {
         in = new ObjectInputStream( socket.getInputStream() );
     }
 
+    public SocketProxy() throws IOException {
+        this("localhost",10000);
+    }
+
     @Override
     public void chooseMap(int n) throws IOException {
         out.writeObject( CHOOSE_MAP );

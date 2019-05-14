@@ -16,7 +16,7 @@ public abstract class State {
 
     void move(Pc pc, Square square){
         pc.getCurrSquare().removePc(pc);
-        pc.moveTo(square);
+        pc.moveTo( square );
         square.addPc(pc);
     }
 
@@ -59,8 +59,6 @@ public abstract class State {
     public boolean selectWeapon(Pc currPc, int index){
         return false;
     }
-
-    public boolean selectFireMode(int fireModeIndex) { return false; }
 
     public abstract State nextState();
 }

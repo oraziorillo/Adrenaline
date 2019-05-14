@@ -24,7 +24,6 @@ public abstract class Action {
 
     /**
      * selects the targets that are valid for the current action
-     *
      * @return a Set of all possible target Tiles
      */
     public Set<Square> validTargetSquares(Pc shooter) {

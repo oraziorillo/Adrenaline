@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class TileTest {
+public class SquareTest {
 
     @Test
     public void addVisiblesWorksFine() {
@@ -42,6 +42,11 @@ public class TileTest {
 
         @Override
         public void collect(Pc player, int objectIndex) {}
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
     }
 
 

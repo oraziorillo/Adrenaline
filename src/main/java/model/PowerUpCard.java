@@ -33,9 +33,9 @@ class Newton extends PowerUpCard{
         HashSet<Square> possibleSquares;
         possibleSquares = targetPc.getCurrSquare().atDistance(1);
         possibleSquares.addAll(targetPc.getCurrSquare().atDistance(2));
-        if(possibleSquares.contains(destinationSquare)){
+        if(possibleSquares.contains( destinationSquare )){
             valid = true;
-            targetPc.moveTo(destinationSquare);
+            targetPc.moveTo( destinationSquare );
             //qua bisogna modificare le liste di pc dei tiles precedente e attuale
         }
         else{

@@ -15,7 +15,7 @@ public class GrabStuffState extends State{
 
     @Override
     public boolean execute(Pc currPc, Square targetSquare){
-        if (targetSquare.isEmpty() || !targetSquare.isTargetable())
+        if (targetSquare.isEmpty())
             return false;
         move(currPc, targetSquare);
         if (!controller.getGame().getSpawnSquares().contains(targetSquare)) {

@@ -12,11 +12,8 @@ public class RunAroundState extends State{
 
     @Override
     public boolean execute(Pc currPc, Square targetSquare){
-        if(targetSquare.isTargetable()) {
-            move(currPc, targetSquare);
-            return true;
-        }
-        return false;
+        move(currPc, targetSquare);
+        return true;
     }
 
 

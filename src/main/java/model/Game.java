@@ -19,7 +19,7 @@ public class Game {
     private KillShot[] killShotTrack;
     private String message;
     private ArrayList<Square> spawnSquares;
-    Deck<AmmoTile> ammosDeck;
+    Deck<AmmoCard> ammosDeck;
     Deck<WeaponCard> weaponsDeck;
     Deck<PowerUpCard> powerUpsDeck;
 

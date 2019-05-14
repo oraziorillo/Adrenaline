@@ -104,13 +104,13 @@ public class Pc {
     }
 
     public void collectWeapon(int weaponIndex) throws FullyArmedException {        //l'arma deve poi essere rimossa dal punto di generazione
-        if (!currGame.getSpawnSquares().contains(currSquare)) {
+        if (!currGame.getSpawnSquares().contains( currSquare )) {
             throw new IllegalStateException("You are not in a SpawnSquare");
         }
         if (isFullyArmed()){
             throw new FullyArmedException("You have to drop one card");
         }
-        SpawnSquare workingTile = (SpawnSquare) currSquare;
+        SpawnSquare workingTile = ( SpawnSquare ) currSquare;
         int index = 0;
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
@@ -119,21 +119,21 @@ public class Pc {
     }
 
     public void switchWeapons(int weaponToGrabIndex, int weaponToDropIndex) {
-        if (!currGame.getSpawnSquares().contains(currSquare)) {
+        if (!currGame.getSpawnSquares().contains( currSquare )) {
             throw new IllegalStateException("You are not in a SpawnSquare");
         }
-        SpawnSquare workingTile = (SpawnSquare) currSquare;
+        SpawnSquare workingTile = ( SpawnSquare ) currSquare;
         weapons[weaponToDropIndex] = workingTile.switchWeapon(weaponToGrabIndex, weaponAtIndex(weaponToDropIndex));
     }
 
     public void collectAmmos() {
-        if (currGame.getSpawnSquares().contains(currSquare)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+        if (currGame.getSpawnSquares().contains( currSquare )) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
             throw new IllegalStateException("You are not in an AmmoSquare");
         }
-        AmmoSquare workingTile = (AmmoSquare) currSquare;
-        AmmoTile card = workingTile.pickAmmo();
+        AmmoSquare workingTile = ( AmmoSquare ) currSquare;
+        AmmoCard card = workingTile.pickAmmo();
         pcBoard.addAmmos(card);
-        if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoTile??
+        if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoCard??
             drawPowerUp();
         }
     }

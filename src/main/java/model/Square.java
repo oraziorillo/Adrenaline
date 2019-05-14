@@ -223,24 +223,24 @@ class SpawnSquare extends Square {
 
 
 class AmmoSquare extends Square {
-    private AmmoTile ammoTile;
-    private Deck<AmmoTile> ammoDeck;
+    private AmmoCard ammoCard;
+    private Deck<AmmoCard> ammoDeck;
 
-    AmmoSquare(int x, int y, TileColourEnum colour, Deck<AmmoTile> deck) {
+    AmmoSquare(int x, int y, TileColourEnum colour, Deck<AmmoCard> deck) {
         super(x, y, colour);
         ammoDeck = deck;
-        ammoTile = ammoDeck.draw();
+        ammoCard = ammoDeck.draw();
     }
 
-    public AmmoTile pickAmmo() {
-        AmmoTile oldCard = ammoTile;
-        ammoTile = null;
+    public AmmoCard pickAmmo() {
+        AmmoCard oldCard = ammoCard;
+        ammoCard = null;
         return oldCard;
     }
 
     public void refill(){
-        if(ammoTile == null) {
-            ammoTile = ammoDeck.draw();
+        if(ammoCard == null) {
+            ammoCard = ammoDeck.draw();
         }
     }
 
@@ -251,7 +251,7 @@ class AmmoSquare extends Square {
 
     @Override
     public boolean isEmpty(){
-        return ammoTile == null;
+        return ammoCard == null;
     }
 }
 

@@ -26,7 +26,7 @@ class VisibleDecorator extends TargetCheckerDecorator {
         HashSet<Square> visibleSquares, resultSquares;
         visibleSquares = referenceSquare.getVisibles();
         resultSquares = base.validTiles(referenceSquare);
-        resultSquares.retainAll(visibleSquares);
+        resultSquares.retainAll( visibleSquares );
         return resultSquares;
     }
 }
@@ -41,7 +41,7 @@ class BlindnessDecorator extends TargetCheckerDecorator {
         HashSet<Square> visibleSquares, resultSquares;
         visibleSquares = referenceSquare.getVisibles();
         resultSquares = base.validTiles(referenceSquare);
-        resultSquares.removeAll(visibleSquares);
+        resultSquares.removeAll( visibleSquares );
         return resultSquares;
     }
 }
@@ -145,7 +145,7 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
             }
         }
         resultSquares = base.validTiles(referenceSquare);
-        resultSquares.retainAll(selectedSquares);
+        resultSquares.retainAll( selectedSquares );
         return resultSquares;
     }
 }
@@ -166,7 +166,7 @@ class SameRoomDecorator extends TargetCheckerDecorator {
             }
         }
         resultSquares = base.validTiles(referenceSquare);
-        resultSquares.retainAll(selectedSquares);
+        resultSquares.retainAll( selectedSquares );
         return resultSquares;
     }
 }
@@ -188,7 +188,7 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
             }
         }
         resultSquares = base.validTiles(referenceSquare);
-        resultSquares.retainAll(allSquares);
+        resultSquares.retainAll( allSquares );
         return resultSquares;
     }
 }
@@ -230,7 +230,7 @@ class MaxDistanceDecorator extends TargetCheckerDecorator {
             selectedSquares.addAll(referenceSquare.atDistance(tempMaxDistance));
         }
         resultSquares = base.validTiles(referenceSquare);
-        resultSquares.retainAll(selectedSquares);
+        resultSquares.retainAll( selectedSquares );
         return resultSquares;
     }
 }

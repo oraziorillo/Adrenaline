@@ -1,5 +1,6 @@
 package view.cli;
 
+import controller.RemoteController;
 import view.cli.conection.ClientConnection;
 import view.cli.conection.socket.SocketProxy;
 
@@ -15,22 +16,26 @@ public class CliClient implements RemoteView{
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        ClientConnection connection = null;
+        RemoteController connection = null;
         System.out.println("(s)ocket \n (r)mi");
         String cmd;
         UUID token = null;
         do{
-            cmd = in.readLine();
-            switch (cmd){
-                case "s":
-                    connection=new SocketProxy();
-                    break;
-                case "r":
-                    //connection=new RmiConnection();
-                    break;
-                default:
-                    System.out.println(NOPE);
-                    break;
+            try {
+                cmd = in.readLine();
+                switch (cmd) {
+                    case "s":
+                        connection = new SocketProxy();
+                        break;
+                    case "r":
+                        //connection=new RmiConnection();
+                        break;
+                    default:
+                        System.out.println( NOPE );
+                        break;
+                }
+            }catch ( IOException e){
+                e.printStackTrace();
             }
         }while (connection == null);
         System.out.println("Connected to the server:\n (l)og in \n (s)ign in");
