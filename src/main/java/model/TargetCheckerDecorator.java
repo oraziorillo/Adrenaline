@@ -12,7 +12,7 @@ abstract class TargetCheckerDecorator extends TargetChecker {
     TargetCheckerDecorator(TargetChecker decorated){
         this.base = decorated;
     }
-    abstract HashSet<Tile> validTiles(Tile referenceSquare);
+    abstract HashSet<Square> validTiles(Square referenceSquare);
 }
 
 
@@ -22,12 +22,12 @@ class VisibleDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        HashSet<Tile> visibleTiles, resultTiles;
-        visibleTiles = referenceSquare.getVisibles();
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.retainAll(visibleTiles);
-        return resultTiles;
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        HashSet<Square> visibleSquares, resultSquares;
+        visibleSquares = referenceSquare.getVisibles();
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.retainAll( visibleSquares );
+        return resultSquares;
     }
 }
 
@@ -37,12 +37,12 @@ class BlindnessDecorator extends TargetCheckerDecorator {
     BlindnessDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        HashSet<Tile> visibleTiles, resultTiles;
-        visibleTiles = referenceSquare.getVisibles();
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.removeAll(visibleTiles);
-        return resultTiles;
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        HashSet<Square> visibleSquares, resultSquares;
+        visibleSquares = referenceSquare.getVisibles();
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.removeAll( visibleSquares );
+        return resultSquares;
     }
 }
 
@@ -56,11 +56,11 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         this.direction = selectedDirection;
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        Tile tempRefSquare;
-        Optional<Tile> temp;
-        HashSet<Tile> tilesInDirections = new HashSet<>();
-        HashSet<Tile> resultTiles;
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        Square tempRefSquare;
+        Optional<Square> temp;
+        HashSet<Square> tilesInDirections = new HashSet<>();
+        HashSet<Square> resultSquares;
         if (direction == null) {
             for (CardinalDirectionEnum d : CardinalDirectionEnum.values()) {
                 tempRefSquare = referenceSquare;
@@ -82,9 +82,9 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
                 }
             } while (temp.isPresent());
         }
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.retainAll(tilesInDirections);
-        return resultTiles;
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.retainAll(tilesInDirections);
+        return resultSquares;
     }
 }
 
@@ -97,18 +97,18 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        HashSet<Tile> selectedTiles = new HashSet<>();
-        HashSet<Tile> resultTiles;
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        HashSet<Square> selectedSquares = new HashSet<>();
+        HashSet<Square> resultSquares;
         if (direction == null) {
             for (int i = 0; i < game.map.length; i++) {
                 if (game.map[referenceSquare.getX()][i] != null) {
-                    selectedTiles.add(game.map[referenceSquare.getX()][i]);
+                    selectedSquares.add(game.map[referenceSquare.getX()][i]);
                 }
             }
             for (int i = 0; i < game.map[0].length; i++) {
                 if (game.map[i][referenceSquare.getY()] != null) {
-                    selectedTiles.add(game.map[i][referenceSquare.getY()]);
+                    selectedSquares.add(game.map[i][referenceSquare.getY()]);
                 }
             }
         }
@@ -117,36 +117,36 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
                 case NORTH:
                     for (int i = referenceSquare.getY(); i >= 0; i--) {
                         if (game.map[referenceSquare.getX()][i] != null) {
-                            selectedTiles.add(game.map[referenceSquare.getX()][i]);
+                            selectedSquares.add(game.map[referenceSquare.getX()][i]);
                         }
                     }
                     break;
                 case EAST:
                     for (int i = referenceSquare.getX(); i < game.map[0].length; i++) {
                         if (game.map[i][referenceSquare.getY()] != null) {
-                            selectedTiles.add(game.map[i][referenceSquare.getY()]);
+                            selectedSquares.add(game.map[i][referenceSquare.getY()]);
                         }
                     }
                     break;
                 case SOUTH:
                     for (int i = referenceSquare.getY(); i < game.map.length; i++) {
                         if (game.map[referenceSquare.getX()][i] != null) {
-                            selectedTiles.add(game.map[referenceSquare.getX()][i]);
+                            selectedSquares.add(game.map[referenceSquare.getX()][i]);
                         }
                     }
                     break;
                 case WEST:
                     for (int i = referenceSquare.getX(); i >= 0; i--) {
                         if (game.map[i][referenceSquare.getY()] != null) {
-                            selectedTiles.add(game.map[i][referenceSquare.getY()]);
+                            selectedSquares.add(game.map[i][referenceSquare.getY()]);
                         }
                     }
                     break;
             }
         }
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.retainAll(selectedTiles);
-        return resultTiles;
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.retainAll( selectedSquares );
+        return resultSquares;
     }
 }
 
@@ -157,17 +157,17 @@ class SameRoomDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        HashSet<Tile> selectedTiles = new HashSet<>();
-        HashSet<Tile> resultTiles;
-        for(Tile t : referenceSquare.getVisibles()){
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        HashSet<Square> selectedSquares = new HashSet<>();
+        HashSet<Square> resultSquares;
+        for(Square t : referenceSquare.getVisibles()){
             if(t.getTileColour() == referenceSquare.getTileColour()){
-                selectedTiles.add(t);
+                selectedSquares.add(t);
             }
         }
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.retainAll(selectedTiles);
-        return resultTiles;
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.retainAll( selectedSquares );
+        return resultSquares;
     }
 }
 
@@ -178,18 +178,18 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
+    public HashSet<Square> validTiles(Square referenceSquare) {
         EmptyChecker checker = new EmptyChecker();
-        HashSet<Tile> resultTiles, allTiles;
-        allTiles = checker.validTiles(referenceSquare);
-        for(Tile t : allTiles){
+        HashSet<Square> resultSquares, allSquares;
+        allSquares = checker.validTiles(referenceSquare);
+        for(Square t : allSquares){
             if(t.getTileColour() == referenceSquare.getTileColour()){
-                allTiles.remove(t);
+                allSquares.remove(t);
             }
         }
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.retainAll(allTiles);
-        return resultTiles;
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.retainAll( allSquares );
+        return resultSquares;
     }
 }
 
@@ -203,13 +203,13 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
         this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        HashSet<Tile> resultTiles;
-        resultTiles = base.validTiles(referenceSquare);
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        HashSet<Square> resultSquares;
+        resultSquares = base.validTiles(referenceSquare);
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
-            resultTiles.removeAll(referenceSquare.atDistance(tempMinDistance));
+            resultSquares.removeAll(referenceSquare.atDistance(tempMinDistance));
         }
-        return resultTiles;
+        return resultSquares;
     }
 }
 
@@ -223,15 +223,15 @@ class MaxDistanceDecorator extends TargetCheckerDecorator {
         this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
     }
 
-    public HashSet<Tile> validTiles(Tile referenceSquare) {
-        HashSet<Tile> resultTiles;
-        HashSet<Tile> selectedTiles = new HashSet<>();
+    public HashSet<Square> validTiles(Square referenceSquare) {
+        HashSet<Square> resultSquares;
+        HashSet<Square> selectedSquares = new HashSet<>();
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
-            selectedTiles.addAll(referenceSquare.atDistance(tempMaxDistance));
+            selectedSquares.addAll(referenceSquare.atDistance(tempMaxDistance));
         }
-        resultTiles = base.validTiles(referenceSquare);
-        resultTiles.retainAll(selectedTiles);
-        return resultTiles;
+        resultSquares = base.validTiles(referenceSquare);
+        resultSquares.retainAll( selectedSquares );
+        return resultSquares;
     }
 }
 

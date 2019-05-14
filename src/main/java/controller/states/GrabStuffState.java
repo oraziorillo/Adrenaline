@@ -2,7 +2,7 @@ package controller.states;
 
 import controller.Controller;
 import model.Pc;
-import model.Tile;
+import model.Square;
 
 public class GrabStuffState extends State{
 
@@ -14,11 +14,11 @@ public class GrabStuffState extends State{
     }
 
     @Override
-    public boolean execute(Pc currPc, Tile targetSquare){
+    public boolean execute(Pc currPc, Square targetSquare){
         if (targetSquare.isEmpty())
             return false;
         move(currPc, targetSquare);
-        if (!controller.getGame().getSpawnTiles().contains(targetSquare)) {
+        if (!controller.getGame().getSpawnSquares().contains(targetSquare)) {
             currPc.collectAmmos();
             executed = true;
         }
@@ -33,7 +33,7 @@ public class GrabStuffState extends State{
         else {
             maxDistance = (controller.beforeFirstPlayer(controller.getCurrPlayerIndex())) ? 2 : 3;
         }
-        controller.getGame().setTargetables(maxDistance, referencePc.getCurrTile());
+        controller.getGame().setTargetables(maxDistance, referencePc.getCurrSquare());
     }
 
 

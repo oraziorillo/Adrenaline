@@ -16,7 +16,7 @@ public class Pc {
     private short adrenaline;
     private WeaponCard[] weapons;
     private ArrayList<PowerUpCard> powerUps;
-    private Tile currTile;
+    private Square currSquare;
 
 
     public Pc(PcColourEnum colour, Game game) {
@@ -27,7 +27,7 @@ public class Pc {
         this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
-        this.currTile = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
+        this.currSquare = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
     }
 
     public boolean isFullyArmed() {
@@ -55,8 +55,8 @@ public class Pc {
         return adrenaline;
     }
 
-    public Tile getCurrTile() {
-        return this.currTile;
+    public Square getCurrSquare() {
+        return this.currSquare;
     }
 
     public WeaponCard[] getWeapons(){
@@ -79,14 +79,14 @@ public class Pc {
         return temp;
     }
 
-    public void moveTo(Tile t){
+    public void moveTo(Square t){
         if(t == null){
             throw new IllegalArgumentException("Invalid tile");
         }
         else {
-            this.currTile.removePc(this);
-            this.currTile = t;
-            this.currTile.addPc(this);
+            this.currSquare.removePc(this);
+            this.currSquare = t;
+            this.currSquare.addPc(this);
         }
     }
 
@@ -104,13 +104,13 @@ public class Pc {
     }
 
     public void collectWeapon(int weaponIndex) throws FullyArmedException {        //l'arma deve poi essere rimossa dal punto di generazione
-        if (!currGame.getSpawnTiles().contains(currTile)) {
-            throw new IllegalStateException("You are not in a SpawnTile");
+        if (!currGame.getSpawnSquares().contains( currSquare )) {
+            throw new IllegalStateException("You are not in a SpawnSquare");
         }
         if (isFullyArmed()){
             throw new FullyArmedException("You have to drop one card");
         }
-        SpawnTile workingTile = (SpawnTile) currTile;
+        SpawnSquare workingTile = ( SpawnSquare ) currSquare;
         int index = 0;
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
@@ -119,18 +119,18 @@ public class Pc {
     }
 
     public void switchWeapons(int weaponToGrabIndex, int weaponToDropIndex) {
-        if (!currGame.getSpawnTiles().contains(currTile)) {
-            throw new IllegalStateException("You are not in a SpawnTile");
+        if (!currGame.getSpawnSquares().contains( currSquare )) {
+            throw new IllegalStateException("You are not in a SpawnSquare");
         }
-        SpawnTile workingTile = (SpawnTile) currTile;
+        SpawnSquare workingTile = ( SpawnSquare ) currSquare;
         weapons[weaponToDropIndex] = workingTile.switchWeapon(weaponToGrabIndex, weaponAtIndex(weaponToDropIndex));
     }
 
     public void collectAmmos() {
-        if (currGame.getSpawnTiles().contains(currTile)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
-            throw new IllegalStateException("You are not in an AmmoTile");
+        if (currGame.getSpawnSquares().contains( currSquare )) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
+            throw new IllegalStateException("You are not in an AmmoSquare");
         }
-        AmmoTile workingTile = (AmmoTile) currTile;
+        AmmoSquare workingTile = ( AmmoSquare ) currSquare;
         AmmoCard card = workingTile.pickAmmo();
         pcBoard.addAmmos(card);
         if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoCard??
@@ -157,14 +157,14 @@ public class Pc {
             adrenaline = 1;
     }
 
-    public void respawn(Tile t){
-        if(!currGame.getSpawnTiles().contains(t)){
-            throw new IllegalArgumentException("Not a spawn Tile");
+    public void respawn(Square t){
+        if(!currGame.getSpawnSquares().contains(t)){
+            throw new IllegalArgumentException("Not a spawn Square");
         }
         pcBoard.increaseNumberOfDeaths();
         pcBoard.resetDamageTrack();
         this.adrenaline = 0;
-        this.currTile = t;
+        this.currSquare = t;
     }
 
     public void payAmmos(short[] ammos) throws NotEnoughAmmosException{

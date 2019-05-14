@@ -23,7 +23,7 @@ public class GrabWeaponState extends State {
             //else if currPc is fully armed set the value of weaponToGrabIndex to the right value
             try {
                 currPc.collectWeapon(index);
-                controller.addSquareToRefill(currPc.getCurrTile());
+                controller.addSquareToRefill(currPc.getCurrSquare());
                 return true;
             } catch (FullyArmedException e) {
                 this.weaponToGrabIndex = index;
@@ -35,7 +35,7 @@ public class GrabWeaponState extends State {
             //if a weapon was already selected to be dropped, try to switch weapons
             try {
                 currPc.switchWeapons(weaponToGrabIndex, weaponToDropIndex);
-                controller.addSquareToRefill(currPc.getCurrTile());
+                controller.addSquareToRefill(currPc.getCurrSquare());
                 return true;
             } catch (NullPointerException e) {
                 return false;
@@ -52,7 +52,7 @@ public class GrabWeaponState extends State {
                 //if a weapon was already selected to be grabbed, try to switch weapons
                 try {
                     currPc.switchWeapons(weaponToGrabIndex, weaponToDropIndex);
-                    controller.addSquareToRefill(currPc.getCurrTile());
+                    controller.addSquareToRefill(currPc.getCurrSquare());
                     return true;
                 } catch (NullPointerException e) {
                     return false;

@@ -4,7 +4,7 @@ import controller.states.*;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
-import model.Tile;
+import model.Square;
 import model.enumerations.PcColourEnum;
 
 import java.rmi.RemoteException;
@@ -31,7 +31,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
     private ArrayList<Player> players;
-    private ArrayList<Tile> squaresToRefill;
+    private ArrayList<Square> squaresToRefill;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
@@ -96,7 +96,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
-    public synchronized void addSquareToRefill(Tile s){
+    public synchronized void addSquareToRefill(Square s){
         squaresToRefill.add(s);
     }
 

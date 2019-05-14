@@ -2,7 +2,7 @@ package controller.states;
 
 import controller.Controller;
 import model.Pc;
-import model.Tile;
+import model.Square;
 
 public class RunAroundState extends State{
 
@@ -11,7 +11,7 @@ public class RunAroundState extends State{
     }
 
     @Override
-    public boolean execute(Pc currPc, Tile targetSquare){
+    public boolean execute(Pc currPc, Square targetSquare){
         move(currPc, targetSquare);
         return true;
     }
@@ -20,7 +20,7 @@ public class RunAroundState extends State{
     @Override
     public void setTargetables(Pc referencePc){
         int maxDistance = controller.isFinalFrenzy() ? 4 : 3;
-        controller.getGame().setTargetables(maxDistance, referencePc.getCurrTile());
+        controller.getGame().setTargetables(maxDistance, referencePc.getCurrSquare());
     }
 
 
