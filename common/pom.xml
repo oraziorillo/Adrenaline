@@ -11,9 +11,6 @@
 
     <artifactId>common</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>server</module>
-    </modules>
 
 
 </project>
