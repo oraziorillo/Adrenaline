@@ -1,10 +1,12 @@
-package controller;
+package controller.states;
 
+import controller.Controller;
+import controller.Player;
 import model.Pc;
 import model.Tile;
 import model.enumerations.PcColourEnum;
 
-abstract class State {
+public abstract class State {
 
     Controller controller;
 
@@ -58,5 +60,5 @@ abstract class State {
         return false;
     }
 
-    public abstract void nextState();
+    public abstract State nextState();
 }

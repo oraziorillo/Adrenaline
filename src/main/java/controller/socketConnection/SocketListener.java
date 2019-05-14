@@ -22,6 +22,7 @@ public class SocketListener implements Runnable {
         this.socket = socket;
         this.controller = controller;
         out = new ObjectOutputStream( socket.getOutputStream() );
+        out.flush();
         in = new ObjectInputStream( socket.getInputStream() );
     }
 

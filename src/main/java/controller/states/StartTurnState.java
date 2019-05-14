@@ -1,30 +1,33 @@
-package controller;
+package controller.states;
+
+import controller.Controller;
 
 public class StartTurnState extends State {
 
+    private State nextState;
 
     StartTurnState(Controller controller) {
         super(controller);
     }
 
     public boolean runAround(){
-        controller.setCurrState(controller.runAroundState);
+        nextState = new RunAroundState(controller);
         return true;
     }
 
     public boolean grabStuff(){
-        controller.setCurrState(controller.grabStuffState);
+        nextState = new GrabStuffState(controller);
         return true;
     }
 
     public boolean shootPeople(){
-        controller.setCurrState(controller.shootPeopleState);
+        //TODO nextState = new ShootPeopleState(controller);
         return true;
     }
 
     @Override
-    public void nextState() {
-
+    public State nextState() {
+        return nextState;
     }
 
     /*

@@ -1,4 +1,6 @@
-package controller;
+package controller.states;
+
+import controller.Controller;
 
 public class SetupKillShotTrackState extends State{
 
@@ -12,7 +14,7 @@ public class SetupKillShotTrackState extends State{
         return true;
     }
 
-    public void nextState(){
-        controller.setCurrState(controller.firstTurnState);
+    public State nextState(){
+        return new PcChoiceState(controller);
     }
 }

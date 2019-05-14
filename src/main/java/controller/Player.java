@@ -32,7 +32,7 @@ public abstract class Player{
         return pc;
     }
 
-    protected void setPc(Pc pc) {
+    public void setPc(Pc pc) {
         this.pc = pc;
     }
 }

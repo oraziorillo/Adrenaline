@@ -22,6 +22,7 @@ public class SocketProxy implements RemoteController {
     public SocketProxy(Socket socket) throws IOException {
         this.socket = socket;
         out = new ObjectOutputStream( socket.getOutputStream() );
+        out.flush();
         in = new ObjectInputStream( socket.getInputStream() );
     }
 

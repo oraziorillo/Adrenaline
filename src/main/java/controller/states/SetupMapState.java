@@ -1,4 +1,6 @@
-package controller;
+package controller.states;
+
+import controller.Controller;
 
 public class SetupMapState extends State{
 
@@ -13,8 +15,8 @@ public class SetupMapState extends State{
     }
 
     @Override
-    public void nextState() {
-        controller.setCurrState(controller.setupKillShotTrackState);
+    public State nextState() {
+        return new SetupKillShotTrackState(controller);
     }
 
 

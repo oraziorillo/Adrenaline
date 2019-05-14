@@ -1,4 +1,4 @@
-package controller;
+package controller.states;
 
 public class SetupWeaponState {
 }

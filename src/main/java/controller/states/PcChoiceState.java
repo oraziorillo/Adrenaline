@@ -1,5 +1,7 @@
-package controller;
+package controller.states;
 
+import controller.Controller;
+import controller.Player;
 import model.Pc;
 import model.enumerations.PcColourEnum;
 
@@ -19,9 +21,9 @@ public class PcChoiceState extends State {
     }
 
     @Override
-    public void nextState() {
-        controller.setCurrState(controller.firstTurnState);
+    public State nextState() {
         controller.setFirstTurn(true);
+        return new FirstTurnState(controller);
     }
 
 

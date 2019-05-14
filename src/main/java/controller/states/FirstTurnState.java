@@ -1,5 +1,6 @@
-package controller;
+package controller.states;
 
+import controller.Controller;
 import model.Pc;
 import model.PowerUpCard;
 import model.Tile;
@@ -28,8 +29,8 @@ public class FirstTurnState extends State{
     }
 
     @Override
-    public void nextState() {
-        controller.setCurrState(controller.startTurnState);
+    public State nextState() {
         controller.setFirstTurn(false);
+        return new StartTurnState(controller);
     }
 }

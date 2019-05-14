@@ -1,5 +1,6 @@
-package controller;
+package controller.states;
 
+import controller.Controller;
 import model.Pc;
 import model.Tile;
 
@@ -37,17 +38,17 @@ public class GrabStuffState extends State{
 
 
     @Override
-    public void nextState() {
+    public State nextState() {
         if(executed) {
             executed = false;
             controller.decreaseRemainingActions();
             if (controller.getRemainingActions() == 0) {
                 controller.resetRemainingActions();
-                controller.setCurrState(controller.endTurn);
+                return new EndTurnState(controller);
             } else
-                controller.setCurrState(controller.startTurnState);
+                return new StartTurnState(controller);
         } else {
-            controller.setCurrState(controller.grabWeaponState);
+            return new GrabWeaponState(controller);
         }
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.states.*;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
@@ -31,9 +32,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private State currState;
     private ArrayList<Player> players;
     private ArrayList<Tile> squaresToRefill;
-    State setupMapState, setupKillShotTrackState, pcChoiceState, firstTurnState,
-          startTurnState, runAroundState, grabStuffState, grabWeaponState, switchWeaponState,
-          shootPeopleState, endTurn;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
@@ -44,14 +42,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         Collections.addAll(availablePcColours, PcColourEnum.values());
         this.players.addAll(players);
         this.currPlayerIndex = 0;
-        this.setupMapState = new SetupMapState(this);
-        this.setupKillShotTrackState = new SetupKillShotTrackState(this);
-        this.pcChoiceState = new PcChoiceState(this);
-        this.firstTurnState = new FirstTurnState(this);
-        this.startTurnState = new StartTurnState(this);
-        this.runAroundState = new RunAroundState(this);
-        this.grabStuffState = new GrabStuffState(this);
-        this.grabWeaponState = new GrabWeaponState(this);
     }
 
     public synchronized boolean isFirstTurn() {
@@ -95,22 +85,22 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         lastPlayerIndex = index;
     }
 
-    synchronized int getRemainingActions(){
+    public synchronized int getRemainingActions(){
         return remainingActions;
     }
 
-    synchronized void decreaseRemainingActions(){
+    public synchronized void decreaseRemainingActions(){
         this.remainingActions--;
     }
 
-    synchronized void resetRemainingActions(){
+    public synchronized void resetRemainingActions(){
         if(!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
             this.remainingActions = ACTIONS_PER_TURN;
         else
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
-    synchronized void addSquareToRefill(Tile s){
+    public synchronized void addSquareToRefill(Tile s){
         squaresToRefill.add(s);
     }
 
@@ -220,7 +210,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     }
 
-    synchronized boolean beforeFirstPlayer(int playerIndex){
+    public synchronized boolean beforeFirstPlayer(int playerIndex){
         return playerIndex > lastPlayerIndex;
     }
 

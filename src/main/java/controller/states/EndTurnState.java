@@ -1,4 +1,6 @@
-package controller;
+package controller.states;
+
+import controller.Controller;
 
 public class EndTurnState extends State {
 
@@ -7,7 +9,7 @@ public class EndTurnState extends State {
     }
 
     @Override
-    public void nextState() {
+    public State nextState() {
 
     }
 }
