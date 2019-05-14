@@ -76,11 +76,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         finalFrenzy =  booleanValue;
     }
 
-
-    public synchronized void setCurrState(State nextState){
-        currState = nextState;
-    }
-
     public synchronized void setLastPlayerIndex(int index){
         lastPlayerIndex = index;
     }
@@ -123,14 +118,14 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void chooseMap(int n) {
         if (n >= FIRST_MAP && n <= LAST_MAP && currState.initializeMap(n))
-                currState.nextState();
+                currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
         if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE && (currState.setNumberOfSkulls(n)))
-                currState.nextState();
+            currState = currState.nextState();
     }
 
 
@@ -175,20 +170,20 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void selectSquare(int x, int y) {
         if(currState.execute(players.get(currPlayerIndex).getPc(), game.map[x][y]))
-            currState.nextState();
+            currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void grabWeapon(int index){
         if((index >= 0 && index <= 2) && currState.grabWeapon(players.get(currPlayerIndex).getPc(), index))
-            currState.nextState();
+            currState = currState.nextState();
     }
 
     @Override
     public synchronized void chooseWeapon(int index){
         if((index >= 0 && index <= 2) && currState.selectWeapon(players.get(currPlayerIndex).getPc(), index))
-            currState.nextState();
+            currState = currState.nextState();
     }
 
     @Override
@@ -199,7 +194,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private synchronized void nextTurn() {          //da rivedere
         if (currPlayerIndex == players.size() - 1){
             currPlayerIndex = 0;
-            currState.nextState();
+            currState = currState.nextState();
         } else
             currPlayerIndex++;
         if (isFirstTurn()){

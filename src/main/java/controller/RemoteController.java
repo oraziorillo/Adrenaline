@@ -7,28 +7,28 @@ import java.rmi.Remote;
 
 public interface RemoteController extends Remote {
 
-    public void chooseMap(int n) throws IOException;
+    void chooseMap(int n) throws IOException;
 
-    public void chooseNumberOfSkulls(int n) throws IOException;
+    void chooseNumberOfSkulls(int n) throws IOException;
 
-    public void choosePcColour(PcColourEnum colour) throws IOException;
+    void choosePcColour(PcColourEnum colour) throws IOException;
 
-    public void discardAndSpawn(int n) throws IOException;
+    void discardAndSpawn(int n) throws IOException;
 
-    public void showComment(String comment) throws IOException;
+    void showComment(String comment) throws IOException;
 
-    public void runAround() throws IOException;
+    void runAround() throws IOException;
 
-    public void grabStuff() throws IOException;
+    void grabStuff() throws IOException;
 
-    public void shootPeople() throws IOException;
+    void shootPeople() throws IOException;
 
-    public void selectSquare(int x, int y) throws IOException;
+    void selectSquare(int x, int y) throws IOException;
 
-    public void grabWeapon(int n) throws IOException;
+    void grabWeapon(int n) throws IOException;
 
-    public void chooseWeapon(int n) throws IOException;
+    void chooseWeapon(int n) throws IOException;
 
-    public void quit() throws IOException;
+    void quit() throws IOException;
 
 }
