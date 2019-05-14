@@ -4,7 +4,7 @@ import controller.Controller;
 
 public class SetupMapState extends State{
 
-    SetupMapState(Controller controller) {
+    public SetupMapState(Controller controller) {
         super(controller);
     }
 

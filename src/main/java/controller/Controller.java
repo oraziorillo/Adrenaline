@@ -42,6 +42,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         Collections.addAll(availablePcColours, PcColourEnum.values());
         this.players.addAll(players);
         this.currPlayerIndex = 0;
+        this.currState = new SetupMapState(this);
     }
 
     public synchronized boolean isFirstTurn() {
