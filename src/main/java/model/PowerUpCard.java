@@ -13,7 +13,7 @@ public abstract class PowerUpCard {
 
     public AmmoEnum getColour(){ return this.colour; }
 
-    public abstract boolean useEffect(Pc pc, Tile tile);
+    public abstract boolean useEffect(Pc pc, Square square);
 
     //public void useAsAmmo(){
     //  questo metodo sembra inutile: basta inserire le carte powerup da usare come ammo in WeaponCard
@@ -28,14 +28,14 @@ class Newton extends PowerUpCard{
     }
 
     @Override
-    public boolean useEffect(Pc targetPc, Tile destinationTile){
+    public boolean useEffect(Pc targetPc, Square destinationSquare){
         boolean valid;
-        HashSet<Tile> possibleTiles;
-        possibleTiles = targetPc.getCurrTile().atDistance(1);
-        possibleTiles.addAll(targetPc.getCurrTile().atDistance(2));
-        if(possibleTiles.contains(destinationTile)){
+        HashSet<Square> possibleSquares;
+        possibleSquares = targetPc.getCurrSquare().atDistance(1);
+        possibleSquares.addAll(targetPc.getCurrSquare().atDistance(2));
+        if(possibleSquares.contains(destinationSquare)){
             valid = true;
-            targetPc.moveTo(destinationTile);
+            targetPc.moveTo(destinationSquare);
             //qua bisogna modificare le liste di pc dei tiles precedente e attuale
         }
         else{
@@ -51,7 +51,7 @@ class TargetingScope extends PowerUpCard{
     }
 
     @Override
-    public boolean useEffect(Pc pc, Tile tile) {
+    public boolean useEffect(Pc pc, Square square) {
         return false;
     }
 
@@ -63,7 +63,7 @@ class TagbackGrenade extends PowerUpCard{
     }
 
     @Override
-    public boolean useEffect(Pc pc, Tile tile) {
+    public boolean useEffect(Pc pc, Square square) {
         return false;
     }
 }
@@ -74,7 +74,7 @@ class Teleporter extends PowerUpCard{
     }
 
     @Override
-    public boolean useEffect(Pc pc, Tile tile) {
+    public boolean useEffect(Pc pc, Square square) {
         return false;
     }
 }

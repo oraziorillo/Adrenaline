@@ -1,4 +1,15 @@
 package controller.states;
 
-public class TargetSelectionState {
+import controller.Controller;
+
+public class TargetSelectionState extends State{
+
+    TargetSelectionState(Controller controller) {
+        super(controller);
+    }
+
+    @Override
+    public State nextState() {
+        return null;
+    }
 }

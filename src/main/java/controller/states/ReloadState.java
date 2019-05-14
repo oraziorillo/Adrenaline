@@ -2,15 +2,13 @@ package controller.states;
 
 import controller.Controller;
 
-public class EndTurnState extends State {
-
-    EndTurnState(Controller controller) {
+public class ReloadState extends State {
+    ReloadState(Controller controller) {
         super(controller);
     }
 
     @Override
     public State nextState() {
         return null;
-
     }
 }

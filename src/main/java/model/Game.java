@@ -13,13 +13,13 @@ import java.util.*;
 import static model.Constants.WEAPONS_JSON_NAME;
 
 public class Game {
-    public Tile[][] map;
+    public Square[][] map;
     private int currentKillShotTrackIndex;
     private ArrayList<Pc> pcs;
     private KillShot[] killShotTrack;
     private String message;
-    private ArrayList<Tile> spawnTiles;
-    Deck<AmmoCard> ammosDeck;
+    private ArrayList<Square> spawnSquares;
+    Deck<AmmoTile> ammosDeck;
     Deck<WeaponCard> weaponsDeck;
     Deck<PowerUpCard> powerUpsDeck;
 
@@ -38,17 +38,17 @@ public class Game {
         return pcs;
     }
 
-    public Tile getTile (int x, int y) throws HoleInMapException {
+    public Square getTile (int x, int y) throws HoleInMapException {
         if (x > (map.length - 1) || y > (map[0].length - 1))
             throw new IndexOutOfBoundsException();
-        Optional<Tile> t = Optional.of(map[x][y]);
+        Optional<Square> t = Optional.of(map[x][y]);
         if (t.isEmpty())
             throw new HoleInMapException();
         return t.get();
     }
 
-    public ArrayList<Tile> getSpawnTiles(){
-        return spawnTiles;
+    public ArrayList<Square> getSpawnSquares(){
+        return spawnSquares;
     }
 
     public KillShot[] getKillShotTrack() {
@@ -59,8 +59,8 @@ public class Game {
         this.message = s;
     }
 
-    public void setTargetables(int maxDistance, Tile referenceSquare){
-        for (Tile s : referenceSquare.atDistance(maxDistance))
+    public void setTargetables(int maxDistance, Square referenceSquare){
+        for (Square s : referenceSquare.atDistance(maxDistance))
             s.setTargetable(true);
     }
 
@@ -71,8 +71,8 @@ public class Game {
     /**
     // I paramteri che il metodo riceve sono così strutturati:
     // numero di righe, numero di colonne
-    // array di TileColourEnum che definisce il colore di ogni Tile della mappa. Se un dato Tile è null, lo sarà anche nell'array
-    // array di int per ogni Tile della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
+    // array di TileColourEnum che definisce il colore di ogni Square della mappa. Se un dato Square è null, lo sarà anche nell'array
+    // array di int per ogni Square della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
     */
     public void initMap(int n){
@@ -86,15 +86,15 @@ public class Game {
         if(tileColourList.size() != rows*columns || typeOfTileList.size() != rows*columns){
             throw new IllegalArgumentException("This list doesn't have the right dimension");
         }
-        map = new Tile[rows][columns];
+        map = new Square[rows][columns];
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
                 if (typeOfTileList.get(i*rows+j) == 1) {
-                    map[i][j] = new AmmoTile(i, j, tileColourList.get(i*rows+j), ammosDeck);
+                    map[i][j] = new AmmoSquare(i, j, tileColourList.get(i*rows+j), ammosDeck);
                 }
                 else if(typeOfTileList.get(i*rows+j) == 2){
-                    map[i][j] = new SpawnTile(i, j, tileColourList.get(i*rows+j), weaponsDeck);
-                    spawnTiles.add(map[i][j]);
+                    map[i][j] = new SpawnPoint(i, j, tileColourList.get(i*rows+j), weaponsDeck);
+                    spawnSquares.add(map[i][j]);
                 }
                 else {
                     map[i][j] = null;   //istruzione inserita per chiarezza, ma omissibile

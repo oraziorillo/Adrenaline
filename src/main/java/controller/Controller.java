@@ -4,7 +4,8 @@ import controller.states.*;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
-import model.Tile;
+import model.Square;
+import model.WeaponCard;
 import model.enumerations.PcColourEnum;
 
 import java.rmi.RemoteException;
@@ -30,8 +31,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private int currPlayerIndex;
     private int lastPlayerIndex; //to set when final frenzy starts
     private State currState;
+    private WeaponCard currWeapon;
     private ArrayList<Player> players;
-    private ArrayList<Tile> squaresToRefill;
+    private ArrayList<Square> squaresToRefill;
 
     public Controller(ArrayList<Player> players) throws RemoteException {
         super();
@@ -67,6 +69,13 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return currPlayerIndex;
     }
 
+    public synchronized int getRemainingActions(){
+        return remainingActions;
+    }
+
+    public synchronized WeaponCard getCurrWeapon(){
+        return currWeapon;
+    }
 
     public synchronized void setFirstTurn(boolean booleanValue){
         firstTurn = booleanValue;
@@ -81,8 +90,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         lastPlayerIndex = index;
     }
 
-    public synchronized int getRemainingActions(){
-        return remainingActions;
+    public synchronized void setCurrWeapon(WeaponCard weapon){
+        this.currWeapon = weapon;
     }
 
     public synchronized void decreaseRemainingActions(){
@@ -96,7 +105,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
-    public synchronized void addSquareToRefill(Tile s){
+    public synchronized void addSquareToRefill(Square s){
         squaresToRefill.add(s);
     }
 
@@ -169,8 +178,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
 
     @Override
-    public synchronized void selectSquare(int x, int y) {
-        if(currState.execute(players.get(currPlayerIndex).getPc(), game.map[x][y]))
+    public synchronized void chooseSquare(int x, int y) {
+        if(currState.selectSquare(players.get(currPlayerIndex).getPc(), game.map[x][y]))
             currState = currState.nextState();
     }
 
@@ -209,5 +218,4 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public synchronized boolean beforeFirstPlayer(int playerIndex){
         return playerIndex > lastPlayerIndex;
     }
-
 }

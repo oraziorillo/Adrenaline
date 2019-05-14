@@ -2,11 +2,11 @@
 
 - i return di oggetti devono restituire cloni
 
-- aggiungere collect su Pc o tile che non distingue tra spawntile e ammotile
+- aggiungere collect su Pc o square che non distingue tra spawntile e ammotile
 
 -aggiornare UML
 
--cambiare tile
+-cambiare square
 
 -visitor per refillare gli square
 
@@ -18,16 +18,8 @@ Rules to implement:
 
 -"Choose starting player" 
 
--Action-hero comment
+- Action-hero comment
 
-Domande:
-- se constants è public è un problema? l'utente malevolo può modificarla?
-
-- può essere statico controller in state?
-
-- va bene che il primo di turno scelga mappa e numero di teschi?
-
-- "Choose a starting player. Give him or her the starting player marker". Nel nostro gioco ciò avviene in maniera automatica.
 
 
 

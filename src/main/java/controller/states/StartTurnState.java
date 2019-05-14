@@ -21,7 +21,7 @@ public class StartTurnState extends State {
     }
 
     public boolean shootPeople(){
-        //TODO nextState = new ShootPeopleState(controller);
+        nextState = new ShootPeopleState(controller);
         return true;
     }
 
@@ -51,8 +51,8 @@ public class StartTurnState extends State {
         }
     }
 
-    public void execute(){
-        Optional<Tile> tile1, tile2;
+    public void chooseSquare(){
+        Optional<Square> tile1, tile2;
         Player currPlayer = playersInTheGame.get(currPlayerIndex);
         tile1 = executeAction(currPlayer);
         tile2 = executeAction(currPlayer);
@@ -61,9 +61,9 @@ public class StartTurnState extends State {
         currGame.nextTurn();        //bisogna cambiare ogni volta il current character
     }
 
-    private Optional<Tile> executeAction(Player p){
+    private Optional<Square> executeAction(Player p){
         int action;
-        Optional<Tile> tileToRefill = Optional.empty();
+        Optional<Square> tileToRefill = Optional.empty();
         p.printOnView("Which action do you want to perform?");
         //mostra a schermo le tre opzioni: muovi, raccogli, spara
         //possiamo mostrare a schermo le tre opzioni sotto forma di array e in base all'elemento selezionato riceviamo un indice
@@ -83,14 +83,14 @@ public class StartTurnState extends State {
     }
 
     private void runAround(Player p, int distance){
-        Tile destination;
-        HashSet<Tile> possibleDestinations = p.getPc().getCurrTile().atDistance(distance);
+        Square destination;
+        HashSet<Square> possibleDestinations = p.getPc().getCurrSquare().atDistance(distance);
         p.showPossibleTiles(possibleDestinations);      //mostra a schermo
         destination = p.receiveTile();
         p.getPc().moveTo(destination);
     }
 
-    private Tile grabStuff(Player p){
+    private Square grabStuff(Player p){
         Pc currPc = p.getPc();
         int adrenalineLevel = currPc.getAdrenaline();
         if(adrenalineLevel > 0){
@@ -100,8 +100,8 @@ public class StartTurnState extends State {
             runAround(p, 1);
         }
         //usare un metodo ausiliario per le istruzioni fino a qui?
-        collect(p, currPc.getCurrTile());
-        return currPc.getCurrTile();
+        collect(p, currPc.getCurrSquare());
+        return currPc.getCurrSquare();
     }
 
 
@@ -112,9 +112,9 @@ public class StartTurnState extends State {
      * @param p
      * @param collectTile
 
-    private void collect(Player p, Tile collectTile) {
+    private void collect(Player p, Square collectTile) {
         if(collectTile instanceof AmmoTile){
-            AmmoCard ammo;
+            AmmoTile ammo;
             ammo = ((AmmoTile) collectTile).pickAmmo();
             p.getPc().getPcBoard().addAmmos(ammo);
         }
