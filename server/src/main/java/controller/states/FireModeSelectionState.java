@@ -9,10 +9,10 @@ public class FireModeSelectionState extends State {
         super(controller);
     }
 
-
     @Override
     public boolean selectFireMode(WeaponCard weapon, int index) {
         weapon.selectFireMode(index);
+        //TODO chiamare un metodo setTargettables
         return true;
     }
 

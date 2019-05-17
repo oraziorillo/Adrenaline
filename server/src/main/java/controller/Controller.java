@@ -202,7 +202,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void chooseFireMode(int fireModeIndex){
         if(fireModeIndex == 0 || fireModeIndex == 1){
-            currState.selectFireMode(fireModeIndex);
+            currState.selectFireMode(currWeapon, fireModeIndex);
         }
     }
 

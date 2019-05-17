@@ -61,9 +61,15 @@ public abstract class State {
         return false;
     }
 
+    public boolean reload() { return false; }
+
     public boolean selectFireMode(WeaponCard weaponCard, int index) {
         return false;
     }
+
+    public boolean selectUpgrade(WeaponCard weaponCard, int index) { return  false; }
+
+
 
     public abstract State nextState();
 }

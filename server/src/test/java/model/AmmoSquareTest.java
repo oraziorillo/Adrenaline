@@ -1,10 +1,13 @@
 package model;
 
 
+import enums.SquareColourEnum;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 <<<<<<< HEAD:src/test/java/model/AmmoTileTest.java
@@ -40,7 +43,7 @@ public class AmmoSquareTest {
 
     final int x = 3;
     final int y = 5;
-    final TileColourEnum colour = TileColourEnum.BLUE;
+    final SquareColourEnum colour = SquareColourEnum.BLUE;
     @Mock
     Deck<AmmoCard> deck;
     AmmoCard card1, card2;
@@ -61,7 +64,7 @@ public class AmmoSquareTest {
         Deck<AmmoCard> deck = Mockito.mock(Deck.class);
         AmmoCard card = new AmmoCard(new short[]{2, 0, 0}, true);
         Mockito.when(deck.draw()).thenReturn(card);
-        AmmoSquare tested = new AmmoSquare(3, 5, TileColourEnum.BLUE, deck);
+        AmmoSquare tested = new AmmoSquare(3, 5, SquareColourEnum.BLUE, deck);
         assertEquals("x is different", tested.getX(), 3);
         assertEquals("y is different", tested.getY(), 5);
     }
@@ -72,7 +75,7 @@ public class AmmoSquareTest {
         AmmoCard card = new AmmoCard(new short[]{2, 0, 0}, true);
         AmmoCard card2 = new AmmoCard(new short[]{0, 2, 1}, false);
         Mockito.when(deck.draw()).thenReturn(card2).thenReturn(card);
-        AmmoSquare tile = new AmmoSquare(1, 2, TileColourEnum.GREEN, deck);
+        AmmoSquare tile = new AmmoSquare(1, 2, SquareColourEnum.GREEN, deck);
         assertSame(tile.pickAmmo(), card2);
 >>>>>>> c6a63179590d6cf4134766d61136ab6cb031c3df:server/src/test/java/model/AmmoSquareTest.java
     }

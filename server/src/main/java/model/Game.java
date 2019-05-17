@@ -71,16 +71,16 @@ public class Game {
     /**
     // I paramteri che il metodo riceve sono così strutturati:
     // numero di righe, numero di colonne
-    // array di TileColourEnum che definisce il colore di ogni Square della mappa. Se un dato Square è null, lo sarà anche nell'array
+    // array di SquareColourEnum che definisce il colore di ogni Square della mappa. Se un dato Square è null, lo sarà anche nell'array
     // array di int per ogni Square della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
     */
     public void initMap(int n){
-    /*(int rows, int columns, TileColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
-        ArrayList<TileColourEnum> tileColourList;
-        ArrayList<TileColourEnum> tempList = new ArrayList<>();
+    /*(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
+        ArrayList<SquareColourEnum> tileColourList;
+        ArrayList<SquareColourEnum> tempList = new ArrayList<>();
         ArrayList<Integer> doorsList, typeOfTileList;
-        tileColourList = (ArrayList<TileColourEnum>) Arrays.asList(colourOfMapTile);
+        tileColourList = (ArrayList<SquareColourEnum>) Arrays.asList(colourOfMapTile);
         doorsList = (ArrayList<Integer>) Arrays.stream(doorsInMap).boxed().collect(Collectors.toList());
         typeOfTileList = (ArrayList<Integer>) Arrays.stream(typeOfTile).boxed().collect(Collectors.toList());
         if(tileColourList.size() != rows*columns || typeOfTileList.size() != rows*columns){
