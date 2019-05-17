@@ -28,6 +28,8 @@ domande:
 point. And you are awesome
 
 
+- Command pattern per parsare i comandi cli: la gui poi può "emulare" la cli? è una soluzione valida?
+
 
 
 
