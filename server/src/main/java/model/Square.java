@@ -2,7 +2,6 @@ package model;
 
 import enums.CardinalDirectionEnum;
 import enums.SquareColourEnum;
-
 import java.util.HashSet;
 import java.util.Optional;
 

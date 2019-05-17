@@ -9,8 +9,6 @@ import model.Pc;
 import model.Square;
 import model.WeaponCard;
 import enums.PcColourEnum;
-
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;

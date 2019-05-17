@@ -2,13 +2,19 @@ package model;
 
 
 import enums.SquareColourEnum;
+<<<<<<< HEAD
 import org.junit.Before;
 import org.junit.Test;
+=======
+>>>>>>> f0d1c6803bce9ea911c39fef3e60d3044b7bdbf0
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+<<<<<<< HEAD
 import org.mockito.Mockito;
+=======
+>>>>>>> f0d1c6803bce9ea911c39fef3e60d3044b7bdbf0
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
@@ -42,7 +48,24 @@ public class AmmoSquareTest {
     @Theory
     public void throwsExceptionOnInvalidParameters(short[] ammos, boolean hasPowerup) {
         assumeFalse("Valid parameters", AmmoTile.validParameters(ammos, hasPowerup));
+<<<<<<< HEAD
         assertThrows("Exception not thrown", IllegalArgumentException.class, () -> new AmmoTile(ammos, hasPowerup));
+=======
+        assertThrows("Exception not thrown", IllegalArgumentException.class,()->new AmmoTile(ammos, hasPowerup));
+=======
+import static org.junit.Assert.assertSame;
+
+@RunWith(MockitoJUnitRunner.class)
+public class AmmoSquareTest {
+
+    final int x = 3;
+    final int y = 5;
+    final SquareColourEnum colour = SquareColourEnum.BLUE;
+    @Mock
+    Deck<AmmoCard> deck;
+    AmmoCard card1, card2;
+    AmmoSquare tested;
+>>>>>>> f0d1c6803bce9ea911c39fef3e60d3044b7bdbf0
 
     }
 

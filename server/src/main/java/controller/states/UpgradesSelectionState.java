@@ -1,6 +1,7 @@
 package controller.states;
 
 import controller.Controller;
+import model.WeaponCard;
 
 public class UpgradesSelectionState extends State {
 
@@ -10,8 +11,15 @@ public class UpgradesSelectionState extends State {
 
     //TODO controllare costo
 
+
+    @Override
+    public boolean selectUpgrade(WeaponCard weaponCard, int index){
+        weaponCard.addUpgrade(index);
+        return true;
+    }
+
     @Override
     public State nextState() {
-        return null;
+        return new TargetSelectionState(controller);
     }
 }

@@ -8,11 +8,13 @@ public class ShootPeopleState extends State {
 
     private boolean moved;
     private boolean weaponSelected;
+    private boolean haveToReload;
 
     ShootPeopleState(Controller controller) {
         super(controller);
         this.moved = false;
         this.weaponSelected = false;
+        this.haveToReload = false;
     }
 
 
@@ -50,11 +52,17 @@ public class ShootPeopleState extends State {
         return true;
     }
 
+    public boolean reload(){
+        haveToReload = true;
+        return true;
+    }
+
     @Override
     public State nextState() {
         if (weaponSelected)
             return new FireModeSelectionState(controller);
-        //TODO go to reload if finalfrenzy
+        if (haveToReload)
+            return new ReloadState(controller);
         return this;
     }
 }
