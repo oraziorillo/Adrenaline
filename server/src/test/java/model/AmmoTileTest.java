@@ -13,7 +13,7 @@ import static org.junit.Assume.assumeTrue;
 
 
 @RunWith(Theories.class)
-public class AmmoCardTest {
+public class AmmoTileTest {
     @DataPoints
     public static final boolean[] hasPowerup = {true, false};
     @DataPoints

@@ -12,6 +12,7 @@ public class FireModeSelectionState extends State {
 
     @Override
     public boolean selectFireMode(WeaponCard weapon, int index) {
+        //TODO controllare costi
         weapon.selectFireMode(index);
         return true;
     }

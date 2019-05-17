@@ -98,10 +98,10 @@ class DamageMarksAction extends Action {
 
     /**
      * add a set of Pc to the list of the targets of the action
-     * @param pcs list containing Pcs on which damage/marks must be applied
+     * @param pc Pc on which damage/marks must be applied
      */
-    public void addTargets(List<Pc> pcs){
-        targets.addAll(pcs);
+    public void addTargets(Pc pc){
+        targets.add(pc);
     }
 }
 

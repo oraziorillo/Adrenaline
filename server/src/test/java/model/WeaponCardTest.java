@@ -18,7 +18,7 @@ public class WeaponCardTest {
     public void initialize(){
         try {
             JSONArray jsonWeapons = (JSONArray) Server.readJson("weapons");
-            weaponCard = new WeaponCard((JSONObject) jsonWeapons.get(0), g);
+            weaponCard = new WeaponCard((JSONObject) jsonWeapons.get(0));
         } catch (Exception e) {
             e.printStackTrace();
         }

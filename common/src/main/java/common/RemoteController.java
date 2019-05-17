@@ -30,7 +30,11 @@ public interface RemoteController extends Remote {
 
     void chooseWeapon(int n) throws IOException;
 
-    void chooseFireMode(int n);
+    void reload() throws IOException;
+
+    void chooseFireMode(int firemodeIndex);
+
+    void chooseUpgrade(int upgradeIndex);
 
     void quit() throws IOException;
 

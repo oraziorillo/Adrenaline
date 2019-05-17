@@ -1,6 +1,6 @@
 package enums;
 
-public enum TileColourEnum {
+public enum SquareColourEnum {
     BLUE,
     RED,
     YELLOW,

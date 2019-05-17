@@ -1,7 +1,8 @@
 package model;
 
 import enums.CardinalDirectionEnum;
-import enums.TileColourEnum;
+import enums.SquareColourEnum;
+
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ public abstract class Square {
     private final int x;
     private final int y;
     private boolean targetable;
-    private final TileColourEnum tileColour;
+    private final SquareColourEnum tileColour;
     private HashSet<Pc> pcs;            //ricordarsi di aggiugnere degli observer che ad ogni spostamento del pc modifichi questo insieme
     private HashSet<Square> visibles;
 
@@ -19,7 +20,7 @@ public abstract class Square {
      * @param y second index in map
      * @param colour the room colour
      */
-    public Square(int x, int y, TileColourEnum colour) {
+    public Square(int x, int y, SquareColourEnum colour) {
         this.x = x;
         this.y = y;
         this.targetable = false;
@@ -54,7 +55,7 @@ public abstract class Square {
      * Getter for room colour
      * @return The colour of this room
      */
-    public TileColourEnum getTileColour() {
+    public SquareColourEnum getTileColour() {
         return tileColour;
     }
 
@@ -177,7 +178,7 @@ class SpawnPoint extends Square {
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponDeck;
 
-    SpawnPoint(int x, int y, TileColourEnum colour, Deck<WeaponCard> deck) {
+    SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
         super(x, y, colour);
         this.weaponDeck = deck;
         weapons = new WeaponCard[3];
@@ -226,7 +227,7 @@ class AmmoSquare extends Square {
     private AmmoTile ammoTile;
     private Deck<AmmoTile> ammoDeck;
 
-    AmmoSquare(int x, int y, TileColourEnum colour, Deck<AmmoTile> deck) {
+    AmmoSquare(int x, int y, SquareColourEnum colour, Deck<AmmoTile> deck) {
         super(x, y, colour);
         ammoDeck = deck;
         ammoTile = ammoDeck.draw();

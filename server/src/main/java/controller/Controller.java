@@ -9,6 +9,8 @@ import model.Pc;
 import model.Square;
 import model.WeaponCard;
 import enums.PcColourEnum;
+
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -200,12 +202,23 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
 
     @Override
+    public void reload(){
+        if (currState.reload())
+            currState = currState.nextState();
+    }
+
+    @Override
     public synchronized void chooseFireMode(int fireModeIndex){
-        if(fireModeIndex == 0 || fireModeIndex == 1){
-            currState.selectFireMode(fireModeIndex);
+        if(fireModeIndex == 0 || fireModeIndex == 1 && currState.selectFireMode(currWeapon, fireModeIndex)){
+            currState = currState.nextState();
         }
     }
 
+    @Override
+    public void chooseUpgrade(int upgradeIndex) {
+        if(currState.selectUpgrade(currWeapon, upgradeIndex))
+            currState = currState.nextState();
+    }
 
     @Override
     public synchronized void quit() {
