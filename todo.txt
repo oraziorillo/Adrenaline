@@ -21,6 +21,13 @@ Rules to implement:
 - Action-hero comment
 
 
+domande:
+- il json va chiuso?
+
+- Double kill? If you deal multiple killshots on your turn, you get 1 extra
+point. And you are awesome
+
+
 
 
 
