@@ -11,11 +11,20 @@ public class FireModeSelectionState extends State {
 
     @Override
     public boolean selectFireMode(WeaponCard weapon, int index) {
-        //TODO controllare costi
-        weapon.selectFireMode(index);
-        //TODO chiamare un metodo setTargettables
-        return true;
+        if(controller.getCurrPc().hasEnoughAmmo(weapon.getCurrentCost())) {
+            weapon.selectFireMode(index);
+            //TODO chiamare un metodo setTargettables
+            return true;
+        }
+        return false;
     }
+
+
+    @Override
+    public boolean selectUpgrade(WeaponCard weapon, int index) {
+
+    }
+
 
     @Override
     public State nextState() {

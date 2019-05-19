@@ -2,7 +2,7 @@ package model;
 
 import enums.AmmoEnum;
 import enums.PcColourEnum;
-import exceptions.NotEnoughAmmosException;
+import exceptions.NotEnoughAmmoException;
 import static model.Constants.LIFEPOINTS;
 
 public class PcBoard {
@@ -11,7 +11,7 @@ public class PcBoard {
     private short numOfDeaths;
     private short damageTrackIndex;     //is the index of the last inserted element
     private short[] marks;
-    private short[] ammos;
+    private short[] ammo;
     private PcColourEnum[] damageTrack;
 
     public PcBoard(){
@@ -19,10 +19,10 @@ public class PcBoard {
         this.numOfDeaths = 0;
         this.damageTrackIndex = 0;
         this.marks = new short[5];
-        this.ammos = new short[3];
+        this.ammo = new short[3];
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
         for(int i = 0; i < 3; i++){
-            ammos[i] = 1;       //ogni giocatore appena creato possiede una munizione per ogni colore
+            ammo[i] = 1;       //ogni giocatore appena creato possiede una munizione per ogni colore
         }
     }
 
@@ -56,21 +56,27 @@ public class PcBoard {
 
     public void addAmmos(AmmoTile card) {
         for (int i = 0; i < card.getAmmos().length; i++) {
-            this.ammos[i] += ammos[i];
-            if (ammos[i] > 3)
-                ammos[i] = 3;
+            this.ammo[i] += ammo[i];
+            if (ammo[i] > 3)
+                ammo[i] = 3;
         }
     }
 
-    public void payAmmos(short[] ammos) throws NotEnoughAmmosException {
-        if (this.ammos[AmmoEnum.BLUE.ordinal()] < ammos[AmmoEnum.BLUE.ordinal()] ||
-                this.ammos[AmmoEnum.RED.ordinal()] < ammos[AmmoEnum.RED.ordinal()] ||
-                this.ammos[AmmoEnum.YELLOW.ordinal()] < ammos[AmmoEnum.YELLOW.ordinal()]) {
-            throw new NotEnoughAmmosException();
+    public boolean hasEnoughAmmo(short[] ammos){
+        for(short i : ammos){
+            if(this.ammo[i] < ammos[i])
+                return false;
         }
-        this.ammos[AmmoEnum.BLUE.ordinal()] -= ammos[AmmoEnum.BLUE.ordinal()];
-        this.ammos[AmmoEnum.RED.ordinal()] -= ammos[AmmoEnum.RED.ordinal()];
-        this.ammos[AmmoEnum.YELLOW.ordinal()] -= ammos[AmmoEnum.YELLOW.ordinal()];
+        return true;
+    }
+
+    public void payAmmo(short[] ammo) throws NotEnoughAmmoException {
+        if (!hasEnoughAmmo(ammo)) {
+            throw new NotEnoughAmmoException();
+        }
+        this.ammo[AmmoEnum.BLUE.ordinal()] -= ammo[AmmoEnum.BLUE.ordinal()];
+        this.ammo[AmmoEnum.RED.ordinal()] -= ammo[AmmoEnum.RED.ordinal()];
+        this.ammo[AmmoEnum.YELLOW.ordinal()] -= ammo[AmmoEnum.YELLOW.ordinal()];
     }
 
     public void addDamage(PcColourEnum selectedColour, short numOfDamage){

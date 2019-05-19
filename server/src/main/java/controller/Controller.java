@@ -151,7 +151,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void discardAndSpawn(int n) {
-        Pc currPc = players.get(currPlayerIndex).getPc();
+        Pc currPc = getCurrPc();
         if (n == 0 || n == 1 && currState.spawnPc(currPc, n))
                 nextTurn();
     }
@@ -160,41 +160,41 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void runAround() {
         if(currState.runAround())
-            currState.setTargetables(players.get(currPlayerIndex).getPc());
+            currState.setTargetables(getCurrPc());
     }
 
 
     @Override
     public synchronized void grabStuff() {
         if(currState.grabStuff())
-            currState.setTargetables(players.get(currPlayerIndex).getPc());
+            currState.setTargetables(getCurrPc());
     }
 
 
     @Override
     public synchronized void shootPeople() {
         if(currState.shootPeople())
-            currState.setTargetables(players.get(currPlayerIndex).getPc());
+            currState.setTargetables(getCurrPc());
     }
 
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
-        if(currState.selectSquare(players.get(currPlayerIndex).getPc(), game.map[x][y]))
+        if(currState.selectSquare(getCurrPc(), game.map[x][y]))
             currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void grabWeapon(int index){
-        if((index >= 0 && index <= 2) && currState.grabWeapon(players.get(currPlayerIndex).getPc(), index))
+        if((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
             currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void chooseWeapon(int index){
-        if((index >= 0 && index <= 2) && currState.selectWeapon(players.get(currPlayerIndex).getPc(), index))
+        if((index >= 0 && index <= 2) && currState.selectWeapon(getCurrPc(), index))
             currState = currState.nextState();
     }
 
@@ -213,7 +213,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
     @Override
-    public void chooseUpgrade(int upgradeIndex) {
+    public synchronized void chooseUpgrade(int upgradeIndex) {
         if(currState.selectUpgrade(currWeapon, upgradeIndex))
             currState = currState.nextState();
     }
@@ -230,12 +230,17 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         } else
             currPlayerIndex++;
         if (isFirstTurn()){
-            Pc currPc = players.get(currPlayerIndex).getPc();
+            Pc currPc = getCurrPc();
             currPc.drawPowerUp();
             currPc.drawPowerUp();
         }
 
     }
+
+    public Pc getCurrPc(){
+        return players.get(currPlayerIndex).getPc();
+    }
+
 
     public synchronized boolean beforeFirstPlayer(int playerIndex){
         return playerIndex > lastPlayerIndex;

@@ -12,7 +12,7 @@ abstract class TargetCheckerDecorator extends TargetChecker {
     TargetCheckerDecorator(TargetChecker decorated){
         this.base = decorated;
     }
-    abstract HashSet<Square> validTiles(Square referenceSquare);
+    abstract HashSet<Square> validSquares(Square referenceSquare);
 }
 
 
@@ -22,10 +22,10 @@ class VisibleDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         HashSet<Square> visibleSquares, resultSquares;
         visibleSquares = referenceSquare.getVisibles();
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(visibleSquares);
         return resultSquares;
     }
@@ -37,10 +37,10 @@ class BlindnessDecorator extends TargetCheckerDecorator {
     BlindnessDecorator(TargetChecker decorated){
         super(decorated);
     }
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         HashSet<Square> visibleSquares, resultSquares;
         visibleSquares = referenceSquare.getVisibles();
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.removeAll(visibleSquares);
         return resultSquares;
     }
@@ -56,7 +56,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
         this.direction = selectedDirection;
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         Square tempRefSquare;
         Optional<Square> temp;
         HashSet<Square> tilesInDirections = new HashSet<>();
@@ -82,7 +82,7 @@ class SimpleStraightLineDecorator extends TargetCheckerDecorator{
                 }
             } while (temp.isPresent());
         }
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(tilesInDirections);
         return resultSquares;
     }
@@ -97,7 +97,7 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         HashSet<Square> selectedSquares = new HashSet<>();
         HashSet<Square> resultSquares;
         if (direction == null) {
@@ -144,7 +144,7 @@ class BeyondWallsStraightLineDecorator extends TargetCheckerDecorator {
                     break;
             }
         }
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(selectedSquares);
         return resultSquares;
     }
@@ -157,7 +157,7 @@ class SameRoomDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         HashSet<Square> selectedSquares = new HashSet<>();
         HashSet<Square> resultSquares;
         for(Square t : referenceSquare.getVisibles()){
@@ -165,7 +165,7 @@ class SameRoomDecorator extends TargetCheckerDecorator {
                 selectedSquares.add(t);
             }
         }
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(selectedSquares);
         return resultSquares;
     }
@@ -178,16 +178,16 @@ class DifferentRoomDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         EmptyChecker checker = new EmptyChecker();
         HashSet<Square> resultSquares, allSquares;
-        allSquares = checker.validTiles(referenceSquare);
+        allSquares = checker.validSquares(referenceSquare);
         for(Square t : allSquares){
             if(t.getTileColour() == referenceSquare.getTileColour()){
                 allSquares.remove(t);
             }
         }
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(allSquares);
         return resultSquares;
     }
@@ -203,9 +203,9 @@ class MinDistanceDecorator extends TargetCheckerDecorator {
         this.minDistance = (int)jsonTargetChecker.get("minDistance");
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         HashSet<Square> resultSquares;
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
             resultSquares.removeAll(referenceSquare.atDistance(tempMinDistance));
         }
@@ -223,13 +223,13 @@ class MaxDistanceDecorator extends TargetCheckerDecorator {
         this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
     }
 
-    public HashSet<Square> validTiles(Square referenceSquare) {
+    public HashSet<Square> validSquares(Square referenceSquare) {
         HashSet<Square> resultSquares;
         HashSet<Square> selectedSquares = new HashSet<>();
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
             selectedSquares.addAll(referenceSquare.atDistance(tempMaxDistance));
         }
-        resultSquares = base.validTiles(referenceSquare);
+        resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(selectedSquares);
         return resultSquares;
     }

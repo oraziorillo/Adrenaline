@@ -30,9 +30,9 @@ public class WeaponCardTest {
         assertEquals("Lock Rifle", weaponCard.getName());
         short[] expectedAmmo = new short[3];
         expectedAmmo[0] = 2;
-        assertEquals(expectedAmmo[0], weaponCard.getAmmos()[0]);
-        assertEquals(expectedAmmo[1], weaponCard.getAmmos()[1]);
-        assertEquals(expectedAmmo[2], weaponCard.getAmmos()[2]);
+        assertEquals(expectedAmmo[0], weaponCard.getAmmo()[0]);
+        assertEquals(expectedAmmo[1], weaponCard.getAmmo()[1]);
+        assertEquals(expectedAmmo[2], weaponCard.getAmmo()[2]);
     }
 
     @Test

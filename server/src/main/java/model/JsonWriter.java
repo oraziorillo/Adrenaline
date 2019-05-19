@@ -50,7 +50,7 @@ public class JsonWriter {
         action.put("isMovement", isMovement);
         action.put("damage", damage);
         action.put("marks", marks);
-        action.put("targetChecker", targetChecker);
+        action.put("basicTargetChecker", targetChecker);
         return action;
     }
 

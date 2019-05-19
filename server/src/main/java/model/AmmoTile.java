@@ -33,7 +33,7 @@ public class AmmoTile {
      *
      * @param ammos an array of ammonitions
      * @param hasPowerup true iif the card has a powerup inside
-     * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMOS_PER_CARD. true otherwise.
+     * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMO_COLOURS_NUMBER. true otherwise.
      */
 
     public static boolean validParameters(short[] ammos, boolean hasPowerup) {
@@ -50,7 +50,7 @@ public class AmmoTile {
         if (hasPowerup) {
             t++;
         }
-        return t == Constants.AMMOS_PER_CARD;
+        return t == Constants.AMMO_COLOURS_NUMBER;
     }
 }
 

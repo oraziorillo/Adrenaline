@@ -10,7 +10,7 @@ public class WeaponCard {
     private String name;
     private boolean loaded;
     private AmmoEnum defaultAmmo;
-    private short[] ammos;
+    private short[] ammo;
     private short[] currentCost;
     //possiamo aggiungere qui un arraylist di powerUp usati con questo attacco in modo tale che quando
     //viene chiamato il metodo use questi powerup vengono effettivamente scartati (comprende soprattutto powerup
@@ -28,11 +28,11 @@ public class WeaponCard {
         this.name = (String) jsonWeaponCard.get("name");
         this.loaded = true;
         this.defaultAmmo = AmmoEnum.valueOf((String) jsonWeaponCard.get("firstAmmo"));
-        this.ammos = new short[3];
+        this.ammo = new short[3];
         this.currentCost = new short[3];
-        JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammos");
+        JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammo");
         for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++) {
-            ammos[i] = ((Long) jsonAmmos.get(i)).shortValue();
+            ammo[i] = ((Long) jsonAmmos.get(i)).shortValue();
         }
         JSONArray jsonFireModes = (JSONArray) jsonWeaponCard.get("firemodes");
         for (Object jsonFireMode : jsonFireModes) {
@@ -54,8 +54,8 @@ public class WeaponCard {
         return name;
     }
 
-    public short[] getAmmos() {
-        return ammos;
+    public short[] getAmmo() {
+        return ammo;
     }
 
     public LinkedList getCurrentEffect(){
@@ -70,8 +70,8 @@ public class WeaponCard {
         WeaponEffect eff;
         if(fireModes.size() > index) {
             eff = fireModes.get(index);
-            //if currEffect is composed only by asynchronous moves, don't reset it
-            if (!currEffect.stream().map(WeaponEffect::isAsynchronousMove).reduce(true, (a, b) -> a && b)) {
+            //if currEffect isn't composed only by asynchronous moves, reset it
+            if (!currEffect.stream().map(WeaponEffect::isAsynchronous).reduce(true, (a, b) -> a && b)) {
                 this.currEffect = new LinkedList<>();
                 this.currentCost = new short[3];
             }
@@ -100,18 +100,17 @@ public class WeaponCard {
     }
 
     private void addEffect(WeaponEffect eff) {
-        currentCost[AmmoEnum.BLUE.ordinal()] += eff.getCost()[AmmoEnum.BLUE.ordinal()];
-        currentCost[AmmoEnum.RED.ordinal()] += eff.getCost()[AmmoEnum.RED.ordinal()];
-        currentCost[AmmoEnum.YELLOW.ordinal()] += eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+            currentCost[i] += eff.getCost()[i];
         this.currEffect.add(eff);
     }
 
     private void removeEffect(WeaponEffect eff){
-        currentCost[AmmoEnum.BLUE.ordinal()] -= eff.getCost()[AmmoEnum.BLUE.ordinal()];
-        currentCost[AmmoEnum.RED.ordinal()] -= eff.getCost()[AmmoEnum.RED.ordinal()];
-        currentCost[AmmoEnum.YELLOW.ordinal()] -= eff.getCost()[AmmoEnum.YELLOW.ordinal()];
+        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+            currentCost[i] -= eff.getCost()[i];
         currEffect.remove(eff);
     }
+
 
     public void use(Pc shooter) {
         for (WeaponEffect effect : currEffect) {

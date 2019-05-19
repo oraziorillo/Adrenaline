@@ -2,7 +2,7 @@ package model;
 
 import exceptions.FullyArmedException;
 import enums.PcColourEnum;
-import exceptions.NotEnoughAmmosException;
+import exceptions.NotEnoughAmmoException;
 import java.util.ArrayList;
 
 import static model.Constants.LIFEPOINTS;
@@ -69,6 +69,7 @@ public class Pc {
         }
         return powerUps.get(index);
     }
+
 
     private WeaponCard weaponAtIndex(int index) {
         WeaponCard temp;
@@ -168,8 +169,14 @@ public class Pc {
         this.currSquare = t;
     }
 
-    public void payAmmos(short[] ammos) throws NotEnoughAmmosException{
-        pcBoard.payAmmos(ammos);
+
+    public boolean hasEnoughAmmo(short[] ammos){
+        return pcBoard.hasEnoughAmmo(ammos);
+    }
+
+
+    public void payAmmo(short[] ammos) throws NotEnoughAmmoException {
+        pcBoard.payAmmo(ammos);
     }
 }
 

@@ -46,7 +46,7 @@ public class AmmoTileTest {
             }
             t += s;
         }
-        if (t != Constants.AMMOS_PER_CARD) {
+        if (t != Constants.AMMO_COLOURS_NUMBER) {
             correct = false;
         }
         assertEquals(AmmoTile.validParameters(ammos, hasPowerup), correct);
