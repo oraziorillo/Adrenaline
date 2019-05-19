@@ -60,7 +60,7 @@ public class ShootPeopleState extends State {
     @Override
     public State nextState() {
         if (weaponSelected)
-            return new FireModeSelectionState(controller);
+            return new SetupWeaponState(controller);
         if (haveToReload)
             return new ReloadState(controller);
         return this;

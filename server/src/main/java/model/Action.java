@@ -10,7 +10,7 @@ import java.util.Set;
 public abstract class Action {
 
     int maxNumberOfTargets;
-    boolean additionalDamage, exclusiveForOldTargets, explosive;
+    boolean explosive, additionalDamage, exclusiveForOldTargets;
     TargetChecker basicTargetChecker, orientedTargetChecker;
     LinkedList<Pc> targets;
     Square targetSquare;
@@ -24,12 +24,20 @@ public abstract class Action {
     }
 
 
+    public boolean isExplosive(){
+        return explosive;
+    }
+
     public boolean isAdditionalDamage(){
         return additionalDamage;
     }
 
     public boolean isExclusiveForOldTargets(){
         return exclusiveForOldTargets;
+    }
+
+    public int getMaxNumberOfTargets() {
+        return maxNumberOfTargets;
     }
 
     public void setTargetSquare(Square s){
@@ -43,7 +51,7 @@ public abstract class Action {
     }
 
 
-    Set<Square> validSquares(Square shooterSquare) {
+    public Set<Square> validSquares(Square shooterSquare) {
         return (orientedTargetChecker == null) ? basicTargetChecker.validSquares(shooterSquare)
                                                : orientedTargetChecker.validSquares(shooterSquare);
     }
@@ -61,7 +69,6 @@ public abstract class Action {
 
     abstract void apply(Pc shooter);
 }
-
 
 
 
@@ -213,7 +220,7 @@ class MovementAction extends Action {
 
     @Override
     public void apply(Pc shooter) {
-        for (Pc pc : targets) {
+       for (Pc pc : targets) {
             pc.moveTo(destination);
         }
         targets.clear();

@@ -44,6 +44,8 @@ public class WeaponCard {
             WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonUpgrade);
             this.upgrades.add(weaponEffect);
         }
+        this.currEffect = new LinkedList<>();
+        currEffect.add(fireModes.get(0));
     }
 
     public boolean isLoaded(){
@@ -66,6 +68,14 @@ public class WeaponCard {
         return currentCost;
     }
 
+    public ArrayList<WeaponEffect> getFireModes(){
+        return fireModes;
+    }
+
+    public ArrayList<WeaponEffect> getUpgrades() {
+        return upgrades;
+    }
+
     public void selectFireMode(int index){
         WeaponEffect eff;
         if(fireModes.size() > index) {
@@ -75,7 +85,9 @@ public class WeaponCard {
                 this.currEffect = new LinkedList<>();
                 this.currentCost = new short[3];
             }
-            addEffect(eff);
+            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                currentCost[i] += eff.getCost()[i];
+            this.currEffect.add(eff);
         } else {
             throw new IllegalArgumentException();
         }
@@ -85,30 +97,37 @@ public class WeaponCard {
         WeaponEffect eff;
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
-            addEffect(eff);
+            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                currentCost[i] += eff.getCost()[i];
+            this.currEffect.add(eff);
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    public void addFirst(int index) {
+        WeaponEffect eff;
+        if(upgrades.size() > index) {
+            eff = upgrades.get(index);
+            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                currentCost[i] += eff.getCost()[i];
+            this.currEffect.addFirst(eff);
+        } else {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     public void removeUpgrade(int index) {
+        WeaponEffect eff;
         if(upgrades.size() > index) {
-            removeEffect(upgrades.get(index));
+            eff = upgrades.get(index);
+            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                currentCost[i] -= eff.getCost()[i];
+            currEffect.remove(eff);
         } else {
             throw new IllegalArgumentException();
         }
-    }
-
-    private void addEffect(WeaponEffect eff) {
-        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
-            currentCost[i] += eff.getCost()[i];
-        this.currEffect.add(eff);
-    }
-
-    private void removeEffect(WeaponEffect eff){
-        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
-            currentCost[i] -= eff.getCost()[i];
-        currEffect.remove(eff);
     }
 
 

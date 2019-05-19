@@ -3,12 +3,13 @@ package controller;
 import common.RemoteController;
 import controller.states.SetupMapState;
 import controller.states.State;
+import enums.PcColourEnum;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
 import model.Square;
 import model.WeaponCard;
-import enums.PcColourEnum;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
 
-    public synchronized Game getGame(){
+    public synchronized Game getGame() {
         return game;
     }
 
@@ -70,48 +71,57 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return currPlayerIndex;
     }
 
-    public synchronized int getRemainingActions(){
+    public synchronized int getRemainingActions() {
         return remainingActions;
     }
 
-    public synchronized WeaponCard getCurrWeapon(){
+    public synchronized WeaponCard getCurrWeapon() {
         return currWeapon;
     }
 
-    public synchronized void setFirstTurn(boolean booleanValue){
+    public synchronized ArrayList<Square> getSquaresToRefill(){
+        return squaresToRefill;
+    }
+
+    public synchronized void setFirstTurn(boolean booleanValue) {
         firstTurn = booleanValue;
     }
 
 
-    public synchronized void setFinalFrenzy(boolean booleanValue){
-        finalFrenzy =  booleanValue;
+    public synchronized void setFinalFrenzy(boolean booleanValue) {
+        finalFrenzy = booleanValue;
     }
 
-    public synchronized void setLastPlayerIndex(int index){
+    public synchronized void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
     }
 
-    public synchronized void setCurrWeapon(WeaponCard weapon){
+    public synchronized void setCurrWeapon(WeaponCard weapon) {
         this.currWeapon = weapon;
     }
 
-    public synchronized void decreaseRemainingActions(){
+    public synchronized void decreaseRemainingActions() {
         this.remainingActions--;
     }
 
-    public synchronized void resetRemainingActions(){
-        if(!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
+    public synchronized void resetRemainingActions() {
+        if (!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
             this.remainingActions = ACTIONS_PER_TURN;
         else
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
-    public synchronized void addSquareToRefill(Square s){
+    public synchronized void addSquareToRefill(Square s) {
         squaresToRefill.add(s);
+    }
+
+    public synchronized void resetSquaresToRefill() {
+        squaresToRefill.clear();
     }
 
     /**
      * checks if the player who is trying to do something is the able to do it in this moment
+     *
      * @throws NotCurrPlayerException iff the player who called a method is not able to do it in this moment
      */
     public synchronized void validateCurrPlayer() throws NotCurrPlayerException {
@@ -129,7 +139,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void chooseMap(int n) {
         if (n >= FIRST_MAP && n <= LAST_MAP && currState.initializeMap(n))
-                currState = currState.nextState();
+            currState = currState.nextState();
     }
 
 
@@ -145,6 +155,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         if (availablePcColours.contains(colour) && currState.assignPcToPlayer(colour, players.get(currPlayerIndex))) {
             availablePcColours.remove(colour);
             nextTurn();
+            if (currPlayerIndex == 0)
+                currState = currState.nextState();
         }
     }
 
@@ -152,70 +164,90 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void discardAndSpawn(int n) {
         Pc currPc = getCurrPc();
-        if (n == 0 || n == 1 && currState.spawnPc(currPc, n))
-                nextTurn();
+        if (n == 0 || n == 1 && currState.spawnPc(currPc, n)) {
+            nextTurn();
+            if (currPlayerIndex == 0)
+                currState = currState.nextState();
+        }
+
     }
 
 
     @Override
     public synchronized void runAround() {
-        if(currState.runAround())
+        if (currState.runAround())
             currState.setTargetables(getCurrPc());
     }
 
 
     @Override
     public synchronized void grabStuff() {
-        if(currState.grabStuff())
+        if (currState.grabStuff())
             currState.setTargetables(getCurrPc());
     }
 
 
     @Override
     public synchronized void shootPeople() {
-        if(currState.shootPeople())
+        if (currState.shootPeople())
             currState.setTargetables(getCurrPc());
     }
 
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
-        if(currState.selectSquare(getCurrPc(), game.map[x][y]))
+        if (currState.selectSquare(getCurrPc(), game.map[x][y]))
             currState = currState.nextState();
     }
 
 
     @Override
-    public synchronized void grabWeapon(int index){
-        if((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
+    public synchronized void grabWeapon(int index) {
+        if ((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
             currState = currState.nextState();
     }
 
 
     @Override
-    public synchronized void chooseWeapon(int index){
-        if((index >= 0 && index <= 2) && currState.selectWeapon(getCurrPc(), index))
+    public synchronized void chooseWeapon(int index) {
+        if ((index >= 0 && index <= 2) && currState.selectWeapon(getCurrPc(), index))
             currState = currState.nextState();
     }
 
 
     @Override
-    public void reload(){
+    public synchronized void switchFiremode() {
+        currState.switchFireMode(currWeapon);
+    }
+
+    @Override
+    public synchronized void upgrade() {
+        currState.upgrade(currWeapon);
+    }
+
+    @Override
+    public synchronized void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
+        currState.setAsynchronousEffectOrder(currWeapon, beforeBasicEffect);
+    }
+
+    @Override
+    public synchronized void ok() {
+        if (currState.ok())
+            currState = currState.nextState();
+    }
+
+    @Override
+    public void reload() {
         if (currState.reload())
             currState = currState.nextState();
     }
 
     @Override
-    public synchronized void chooseFireMode(int fireModeIndex){
-        if(fireModeIndex == 0 || fireModeIndex == 1 && currState.selectFireMode(currWeapon, fireModeIndex)){
+    public void pass() {
+        if (currState.ok()) {
+            nextTurn();
             currState = currState.nextState();
         }
-    }
-
-    @Override
-    public synchronized void chooseUpgrade(int upgradeIndex) {
-        if(currState.selectUpgrade(currWeapon, upgradeIndex))
-            currState = currState.nextState();
     }
 
     @Override
@@ -223,13 +255,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         //gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
 
-    private synchronized void nextTurn() {          //da rivedere
-        if (currPlayerIndex == players.size() - 1){
+    private synchronized void nextTurn() {
+        if (currPlayerIndex == players.size() - 1)
             currPlayerIndex = 0;
-            currState = currState.nextState();
-        } else
+        else
             currPlayerIndex++;
-        if (isFirstTurn()){
+        if (isFirstTurn()) {
             Pc currPc = getCurrPc();
             currPc.drawPowerUp();
             currPc.drawPowerUp();
@@ -237,12 +268,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     }
 
-    public Pc getCurrPc(){
+    public Pc getCurrPc() {
         return players.get(currPlayerIndex).getPc();
     }
 
 
-    public synchronized boolean beforeFirstPlayer(int playerIndex){
+    public synchronized boolean beforeFirstPlayer(int playerIndex) {
         return playerIndex > lastPlayerIndex;
     }
 }

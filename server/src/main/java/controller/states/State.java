@@ -61,11 +61,13 @@ public abstract class State {
         return false;
     }
 
-    public boolean selectFireMode(WeaponCard weapon, int fireModeIndex) {
-        return false;
-    }
+    public void switchFireMode(WeaponCard weapon) {}
 
-    public boolean selectUpgrade(WeaponCard weapon, int upgradeIndex) {
+    public void upgrade(WeaponCard weapon) {}
+
+    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
+
+    public boolean ok() {
         return false;
     }
 
@@ -73,7 +75,9 @@ public abstract class State {
         return false;
     }
 
-
+    public boolean pass() {
+        return false;
+    }
 
     public abstract State nextState();
 }
