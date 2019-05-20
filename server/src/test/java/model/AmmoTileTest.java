@@ -1,55 +1,89 @@
 package model;
 
 
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 
-
-@RunWith(Theories.class)
+@RunWith(MockitoJUnitRunner.class)
 public class AmmoTileTest {
-    @DataPoints
-    public static final boolean[] hasPowerup = {true, false};
-    @DataPoints
-    public static final short[][] ammos = {{1, 1, 1}, {3, 0, 0}, {2, 0, 0}, {0, -1, 4}, {4, 5, 6}};
-
-    @Theory
-    public void doesNotAlterCostructionParameters(short[] ammos, boolean hasPowerup) {
+    
+    @Test
+    public void doesNotAlterCostructionParametersWithHasPowerupFalse() {
+        short[] ammos = new short[]{1,1,1};
+        boolean hasPowerup = false;
+        assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
+        AmmoTile tested = new AmmoTile(ammos, hasPowerup);
+        assertEquals("Different ammos", ammos, tested.getAmmos());
+        assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
+    }
+    
+    @Test
+    public void doesNotAlterCostructionParametersWithHasPowerupTrue() {
+        short[] ammos = new short[]{1,1,0};
+        boolean hasPowerup = true;
         assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
         AmmoTile tested = new AmmoTile(ammos, hasPowerup);
         assertEquals("Different ammos", ammos, tested.getAmmos());
         assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
     }
 
-    @Theory
-    public void throwsExceptionOnInvalidParameters(short[] ammos, boolean hasPowerup) {
-        assumeFalse("Valid parameters", AmmoTile.validParameters(ammos, hasPowerup));
-        assertThrows("Exception not thrown", IllegalArgumentException.class,()->new AmmoTile(ammos, hasPowerup));
+    @Test
+    public void throwsExceptionOnInvalidParametersWithHasPowerupFalse() {
+        short[][] ammosArr = new short[][]{{1,1,0},{1,1,2},{1,0,0}};
+        boolean hasPowerup = false;
+        for(short[] ammos : ammosArr) {
+                assumeFalse( "Valid parameters", AmmoTile.validParameters( ammos, hasPowerup ) );
+                assertThrows( "Exception not thrown", IllegalArgumentException.class, () -> new AmmoTile( ammos, hasPowerup ) );
+        }
+    }
+    
+    @Test
+    public void throwsExceptionOnInvalidParametersWithHasPowerupTrue() {
+        short[][] ammosArr = new short[][]{{1,1,0},{1,1,2},{1,0,0}};
+        boolean hasPowerup = false;
+        for(short[] ammos : ammosArr) {
+            assumeFalse( "Valid parameters: "+ammos[0]+","+ammos[1]+","+ammos[2]+" "+hasPowerup, AmmoTile.validParameters( ammos, hasPowerup ) );
+            assertThrows( "Exception not thrown", IllegalArgumentException.class, () -> new AmmoTile( ammos, hasPowerup ) );
+        }
     }
 
-    @Theory
-    public void parameterValidatorWorksFine(short[] ammos, boolean hasPowerup) {
-        boolean correct = true;
-        short t = 0;
-        if (hasPowerup) {
-            t++;
+    @Test
+    public void parameterValidatorAcceptsWellWithHasPowerupFalse() {
+        short[] ammos = new short[]{0,3,0};
+        boolean hasPowerup = false;
+        assertTrue( "Valid arguments refused", AmmoTile.validParameters( ammos,hasPowerup ) );
+    }
+    
+    @Test
+    public void parameterValidatorAcceptsWellWithHasPowerupTrue() {
+        short[] ammos = new short[]{0,1,1};
+        boolean hasPowerup = true;
+        assertTrue( "Valid arguments refused", AmmoTile.validParameters( ammos,hasPowerup ) );
+    }
+    
+    @Test
+    public void parameterValidatorRefusesNegativeValues() {
+        short[] ammosTrue = new short[]{0,-1,3};
+        short[] ammosFalse = new short[]{0,-1,4};
+        assertFalse( "Valid arguments refused", AmmoTile.validParameters( ammosTrue,true ) );
+        assertFalse( "Valid arguments refused", AmmoTile.validParameters( ammosFalse,false ) );
+    }
+    
+    @Test
+    public void parameterValidatorRefusesNot3Sums() {
+        short[][] ammosTrue = new short[][]{{0,0,0},{1,1,1},{3,4,5}};
+        short[][] ammosFalse = new short[][]{{0,0,0},{1,0,0},{3,4,5}};
+        for(short[] ammos: ammosTrue) {
+            assertFalse( "Illegal arguments accepted", AmmoTile.validParameters( ammos, true ) );
         }
-        for (short s : ammos) {
-            if (s < 0) {
-                correct = false;
-            }
-            t += s;
+        for( short[] ammos: ammosFalse) {
+            assertFalse( "Illegal arguments accepted", AmmoTile.validParameters( ammos, false ) );
         }
-        if (t != Constants.AMMO_COLOURS_NUMBER) {
-            correct = false;
-        }
-        assertEquals(AmmoTile.validParameters(ammos, hasPowerup), correct);
     }
 
 }
