@@ -1,66 +1,87 @@
 package model;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class DeckTest {
-    @Mock Game g;
+    @Mock private Game g;
+    private Deck<Integer> tested;
+    private static final ArrayList<Integer> zeroTo99 = new ArrayList<>();
+    
+    @BeforeClass
+    public static void setUpClass(){
+        for (int i=0; i<100; i++){
+            zeroTo99.add( i );
+        }
+    }
+    
+    @Before
+    public void setup(){
+        tested = new Deck<>( g );
+        for(Integer i: zeroTo99){
+            tested.add( i );
+        }
+    }
 
+    @Test
+    public void constructedWell(){
+        assertSame( tested.getCurrGame(),g );
+    }
+    
     @Test
     public void containsAddedObjects() {
-        Deck<Integer> tested = new Deck<>(g);
-        tested.add(1);
-        tested.add(2);
-        tested.add(3);
-        assertTrue(tested.contains(1));
-        assertTrue(tested.contains(2));
-        assertTrue(tested.contains(3));
-        assertEquals(tested.size(), 3);
+        for(Integer i: zeroTo99){
+            assertTrue( tested.contains( i ) );
+        }
+        assertEquals(tested.size(), zeroTo99.size());
     }
 
     @Test
-    public void doesNotCantainDrawnCard() {
-        Deck<Integer> tested = new Deck<>(g);
-        ArrayList<Integer> support = new ArrayList<>();
-        tested.add(1);
-        tested.add(2);
-        tested.add(3);
-        support.add(1);
-        support.add(2);
-        support.add(3);
+    public void drawnCardsAreRemovedFromDeck() {
+        ArrayList<Integer> remaining = ( ArrayList<Integer> ) zeroTo99.clone();
         Integer drew = tested.draw();
-        support.remove(drew);
+        remaining.remove(drew);
         assertFalse(tested.contains(drew));
-        for (Integer i : support) {
+        for (Integer i : remaining) {
             assertTrue(tested.contains(i));
         }
-
-
     }
 
     @Test
-    public void equalsIfSameCardsInside() {
-        Deck<String> d1 = new Deck<>(g);
-        Deck<String> d2 = new Deck<>(g);
-        ArrayList<String> al = new ArrayList<>();
-        d1.add("ciao");
-        d2.add("ciao");
-        al.add("ciao");
-        d1.add("seconda");
-        d2.add("seconda");
-        al.add("seconda");
-        assertEquals(d1, d2);
-        assertEquals(d2, d1);
-        assertNotEquals(d1, al);
-        assertNotEquals(d2, al);
-        d2.draw();
-        assertNotEquals(d1, d2);
-        assertNotEquals(d2, d1);
+    public void equalsisOrderSensitive() {
+        Deck<Integer> d2 = new Deck<>( g );
+        for(Integer i: zeroTo99){
+            d2.add( i );
+        }
+        assertNotEquals(tested, d2);
+        assertNotEquals(d2, tested);
+    }
+    
+    @Test
+    public void equalsWorksWithSameCardsInSameOrder() throws CloneNotSupportedException {
+        Deck<Integer> d2 = ( Deck<Integer> ) tested.clone();
+        assertEquals( tested,d2 );
+    }
+    
+    @Test
+    public void equalsReturnsFalseOnOtherClasses(){
+        assertNotEquals( tested, "ciao"  );
+    }
+    
+    @Test
+    public void shuffleWorksFine() throws CloneNotSupportedException {
+        Deck<Integer> clone = ( Deck<Integer> ) tested.clone();
+        clone.shuffle();
+        assertNotEquals(tested,clone);
     }
 
     @Test

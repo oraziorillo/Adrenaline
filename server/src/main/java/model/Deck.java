@@ -1,8 +1,14 @@
 package model;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
 
+/**
+ * This class models a deck of objects by decorating an arraylist
+ * @param <E> the Type of the cards
+ * @see ArrayList
+ */
 public class Deck<E> {
 
     private Game currGame;
@@ -24,7 +30,6 @@ public class Deck<E> {
 
     /**
      * draw a card
-     *
      * @return the first card of the deck
      */
     public E draw() {
@@ -34,7 +39,7 @@ public class Deck<E> {
     }
 
     /**
-     * shuffles the deck
+     * shuffles the deck (NOTE: the deck is pre-shuffled)
      */
     public void shuffle(){
         for (int i = size() - 1; i > 0; i--){
@@ -48,8 +53,7 @@ public class Deck<E> {
     }
 
     /**
-     * Adds the given card to a random position
-     *
+     * Adds the given card to a random position     *
      * @param e a generic card
      */
     public void add(E e) {
@@ -63,8 +67,7 @@ public class Deck<E> {
     }
 
     /**
-     * like one from collection
-     *
+     * Returns the number of cards in the deck
      * @return the number of cards in the deck
      */
     public int size() {
@@ -73,7 +76,6 @@ public class Deck<E> {
 
     /**
      * Checks if a card is in the deck
-     *
      * @param o the card to check for
      * @return true if and only if o is in the deck
      */
@@ -83,32 +85,30 @@ public class Deck<E> {
 
     @Override
     public boolean equals(Object obj) {
-        boolean equals = true;
-        if (!(obj instanceof Deck)) {
-            equals = false;
-        } else {
-            Deck d = (Deck) obj;
-            for (Object o : d.cards) {
-                if (!this.contains(o)) {
-                    equals = false;
-                }
-            }
-            for (Object o : this.cards) {
-                if (!(d.contains(o))) {
-                    equals = false;
-                }
-            }
+        Deck d;
+        try {
+            d = ( Deck ) obj;
+        }catch ( ClassCastException e ){
+            return false;
         }
-        return equals;
+        
+        return cards.equals( d.cards );
     }
 
     /**
-     * Usual hashcode method
-     *
-     * @return hashcode of ArrayList "cards"
+     * Usual hashcode method     *
+     * @return hashcode of the collection containing the cards
      */
     @Override
     public int hashCode() {
         return cards.hashCode();
+    }
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Deck<E> clone = new Deck<>( currGame );
+        clone.cards = ( ArrayList<E> ) this.cards.clone();
+        clone.random = this.random;
+        return clone;
     }
 }
