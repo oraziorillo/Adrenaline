@@ -1,40 +1,52 @@
 package model;
 
 import enums.PcColourEnum;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.*;
 
-@RunWith(Theories.class)
+@RunWith(MockitoJUnitRunner.class)
 public class KillShotTest {
-    @DataPoints
-    public static boolean[] aBoolean = {true, false};
-    @DataPoints
-    public static PcColourEnum[] charColours = PcColourEnum.values();
-
-    @Theory
-    public void beginsSkulled() {
-        assertTrue(new KillShot().isSkulled());
+    private KillShot tested;
+    private PcColourEnum charColour = PcColourEnum.BLUE;
+    
+    @Before
+    public void setup(){
+        tested = new KillShot();
     }
 
-    @Theory
-    public void killMethodWorksFine(PcColourEnum charColours, boolean aBoolean) {
-        KillShot tested = new KillShot();
-        tested.killOccured(charColours, aBoolean);
-        assertEquals(tested.isOverkilled(), aBoolean);
-        assertEquals(tested.getColour(), charColours);
-        assertFalse(tested.isSkulled());
+    @Test
+    public void beginsSkulledNotOverkilledAndWithNullColour() {
+        assertTrue(tested.isSkulled());
+        assertFalse( tested.isOverkilled() );
+        assertNull( tested.getColour() );
     }
 
-    @Theory
-    public void throwsExceptionIfKilled2Times(PcColourEnum charColours, boolean aBoolean) {
+    @Test
+    public void killMethodWorksFineWhenNotOverkilled() {
+        tested.killOccured( charColour, false );
+        assertFalse( tested.isOverkilled() );
+        assertSame( tested.getColour(), charColour );
+        assertFalse( tested.isSkulled() );
+    }
+    
+    @Test
+    public void killMethodWorksFineWhenOverkilled() {
+        tested.killOccured( charColour, false );
+        assertFalse( tested.isOverkilled() );
+        assertSame( tested.getColour(), charColour );
+        assertFalse( tested.isSkulled() );
+    }
+
+    @Test
+    public void throwsExceptionIfKilled2Times() {
         KillShot tested = new KillShot();
-        tested.killOccured(charColours, aBoolean);
+        tested.killOccured(charColour, true);
         assertThrows("Exception not thrown", IllegalStateException.class, () -> {
-            tested.killOccured(charColours, aBoolean);
+            tested.killOccured(charColour, true);
         });
     }
 }
