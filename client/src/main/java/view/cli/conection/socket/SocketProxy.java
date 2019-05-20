@@ -1,19 +1,20 @@
 package view.cli.conection.socket;
 
-import controller.RemoteController;
-import model.enumerations.PcColourEnum;
+import common.RemoteController;
+import enums.PcColourEnum;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-import static controller.socketConnection.CommandsEnum.*;
+import static enums.SocketCommandsEnum.*;
 
 public class SocketProxy implements RemoteController {
     private final Socket socket;
-    private final ObjectOutputStream out;
-    private final ObjectInputStream in;
+    private final PrintWriter out;
+    private final BufferedReader in;
 
     public SocketProxy(String ip, int port ) throws IOException {
         this(new Socket( ip, port));
@@ -21,9 +22,9 @@ public class SocketProxy implements RemoteController {
 
     public SocketProxy(Socket socket) throws IOException {
         this.socket = socket;
-        out = new ObjectOutputStream( socket.getOutputStream() );
+        out = new PrintWriter( socket.getOutputStream() );
         out.flush();
-        in = new ObjectInputStream( socket.getInputStream() );
+        in = new BufferedReader( new InputStreamReader(  socket.getInputStream() ));
     }
 
     public SocketProxy() throws IOException {
@@ -31,83 +32,120 @@ public class SocketProxy implements RemoteController {
     }
 
     @Override
-    public void chooseMap(int n) throws IOException {
-        out.writeObject( CHOOSE_MAP );
-        out.writeInt( n );
+    public void chooseMap(int n) {
+        out.println( CHOOSE_MAP );
+        out.print( n );
         out.flush();
     }
 
     @Override
-    public void chooseNumberOfSkulls(int n) throws IOException {
-        out.writeObject( CHOOSE_NUMBER_OF_SKULLS );
-        out.writeInt( n );
+    public void chooseNumberOfSkulls(int n) {
+        out.println( CHOOSE_NUMBER_OF_SKULLS );
+        out.write( n );
         out.flush();
     }
 
     @Override
-    public void choosePcColour(PcColourEnum colour) throws IOException {
-        out.writeObject( CHOOSE_PC_COLOUR );
-        out.writeObject( colour );
+    public void choosePcColour(PcColourEnum colour) {
+        out.println( CHOOSE_PC_COLOUR );
+        out.println( colour );
         out.flush();
     }
 
     @Override
-    public void discardAndSpawn(int n) throws IOException {
-        out.writeObject( DISCARD_AND_SPAWN );
-        out.writeInt( n );
+    public void discardAndSpawn(int n) {
+        out.println( DISCARD_AND_SPAWN );
+        out.write( n );
         out.flush();
     }
 
     @Override
-    public void showComment(String comment) throws IOException {
-        out.writeObject( SHOW_COMMENT );
-        out.writeObject( comment );
+    public void showComment(String comment) {
+        out.println( SHOW_COMMENT );
+        out.println( comment );
         out.flush();
     }
 
     @Override
-    public void runAround() throws IOException {
-        out.writeObject( RUN_AROUND );
+    public void runAround() {
+        out.println( RUN_AROUND );
         out.flush();
     }
 
     @Override
-    public void grabStuff() throws IOException {
-        out.writeObject( GRAB_STUFF );
+    public void grabStuff() {
+        out.println( GRAB_STUFF );
         out.flush();
     }
 
     @Override
-    public void shootPeople() throws IOException {
-        out.writeObject( SHOOT_PEOPLE );
+    public void shootPeople() {
+        out.println( SHOOT_PEOPLE );
         out.flush();
     }
 
     @Override
-    public void chooseSquare(int x, int y) throws IOException {
-        out.writeObject( SELECT_SQUARE );
-        out.writeInt( x );
-        out.writeInt( y );
+    public void chooseSquare(int x, int y) {
+        out.println( SELECT_SQUARE );
+        out.print( x );
+        out.print( y );
         out.flush();
     }
 
     @Override
-    public void grabWeapon(int n) throws IOException {
-        out.writeObject( GRAB_WEAPON );
-        out.writeInt( n );
+    public void grabWeapon(int n) {
+        out.println( GRAB_WEAPON );
+        out.print( n );
         out.flush();
     }
 
     @Override
-    public void chooseWeapon(int n) throws IOException {
-        out.writeObject( CHOOSE_WEAPON );
-        out.writeInt( n );
+    public void chooseWeapon(int n) {
+        out.println( CHOOSE_WEAPON );
+        out.print( n );
         out.flush();
     }
-
+    
+    @Override
+    public void switchFiremode() {
+        out.println( SWITCH_FIREMODE );
+        out.flush();
+    }
+    
+    @Override
+    public void upgrade() {
+        out.println( UPGRADE );
+        out.flush();
+    }
+    
+    @Override
+    public void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
+        out.println( CHOOSE_ASYNCH_EFFECT_ORDER );
+        out.println( beforeBasicEffect );
+        out.flush();
+    }
+    
+    @Override
+    public void ok() {
+        out.println( OK );
+        out.flush();
+    }
+    
+    @Override
+    public void reload() {
+        out.println( RELOAD );
+        out.flush();
+    }
+    
+    @Override
+    public void pass() {
+        out.println( PASS );
+        out.flush();
+    }
+    
     @Override
     public void quit() throws IOException {
-        out.writeObject( QUIT );
+        out.println( QUIT );
         out.close();
         in.close();
         socket.close();

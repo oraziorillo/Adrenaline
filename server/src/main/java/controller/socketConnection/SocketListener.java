@@ -4,15 +4,13 @@ import controller.Controller;
 import enums.SocketCommandsEnum;
 import enums.PcColourEnum;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class SocketListener implements Runnable {
     private final Socket socket;
-    private final ObjectInputStream in;
-    private final ObjectOutputStream out;
+    private final BufferedReader in;
+    private final PrintWriter out;
     private final Controller controller;
 
     /**
@@ -22,9 +20,9 @@ public class SocketListener implements Runnable {
     SocketListener(Socket socket, Controller controller) throws IOException {
         this.socket = socket;
         this.controller = controller;
-        out = new ObjectOutputStream( socket.getOutputStream() );
+        out = new PrintWriter( socket.getOutputStream() );
         out.flush();
-        in = new ObjectInputStream( socket.getInputStream() );
+        in = new BufferedReader( new InputStreamReader( socket.getInputStream() ));
     }
 
 
@@ -32,27 +30,27 @@ public class SocketListener implements Runnable {
     public void run() {
         while (!socket.isClosed()) {
             try {
-                SocketCommandsEnum command = ( SocketCommandsEnum ) in.readObject();
+                SocketCommandsEnum command = SocketCommandsEnum.fromString( in.readLine() );
                 int argInt;
                 switch (command) {
                     case CHOOSE_MAP:
-                        argInt = in.readInt();
+                        argInt = Integer.parseInt( in.readLine() );
                         controller.chooseMap( argInt );
                         break;
                     case CHOOSE_NUMBER_OF_SKULLS:
-                        argInt = in.readInt();
+                        argInt = Integer.parseInt( in.readLine() );
                         controller.chooseNumberOfSkulls( argInt );
                         break;
                     case CHOOSE_PC_COLOUR:
-                        PcColourEnum colour = ( PcColourEnum ) in.readObject();
+                        PcColourEnum colour = PcColourEnum.fromString( in.readLine() );
                         controller.choosePcColour( colour );
                         break;
                     case DISCARD_AND_SPAWN:
-                        argInt = in.readInt();
+                        argInt = Integer.parseInt( in.readLine() );
                         controller.discardAndSpawn( argInt );
                         break;
                     case SHOW_COMMENT:
-                        String comment = ( String ) in.readObject();
+                        String comment = in.readLine();
                         controller.showComment( comment );
                         break;
                     case RUN_AROUND:
@@ -65,28 +63,45 @@ public class SocketListener implements Runnable {
                         controller.shootPeople();
                         break;
                     case SELECT_SQUARE:
-                        argInt = in.readInt();
-                        int argInt2 = in.readInt();
+                        argInt = Integer.parseInt( in.readLine() );
+                        int argInt2 = Integer.parseInt( in.readLine() );
                         controller.chooseSquare( argInt, argInt2 );
                         break;
                     case GRAB_WEAPON:
-                        argInt = in.readInt();
+                        argInt = Integer.parseInt( in.readLine() );
                         controller.grabWeapon( argInt );
                         break;
                     case CHOOSE_WEAPON:
-                        argInt = in.readInt();
+                        argInt = Integer.parseInt( in.readLine() );
                         controller.chooseWeapon( argInt );
                         break;
                     case QUIT:
                         controller.quit();
+                        break;
+                    case SWITCH_FIREMODE:
+                        controller.switchFiremode();
+                        break;
+                    case UPGRADE:
+                        controller.upgrade();
+                        break;
+                    case CHOOSE_ASYNCH_EFFECT_ORDER:
+                        boolean beforeBasicEffect = Boolean.getBoolean( in.readLine() );
+                        controller.chooseAsynchronousEffectOrder( beforeBasicEffect );
+                        break;
+                    case OK:
+                        controller.ok();
+                        break;
+                    case RELOAD:
+                        controller.reload();
+                        break;
+                    case PASS:
+                        controller.pass();
                         break;
                     default:
                         throw new IllegalArgumentException( "Unexpected command" );
 
                 }
             } catch ( IOException e ) {
-                e.printStackTrace();
-            } catch ( ClassNotFoundException e ) {
                 e.printStackTrace();
             }
         }
