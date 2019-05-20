@@ -79,8 +79,6 @@ public abstract class Square {
         this.targetable = targetable;
     }
     /**
-     * @author matteo
-     * @implNote usare x e y non sarebbe più pulito?
      * Returns an HashSet containing all the Tiles at a given distance
      * @param dist distance of returned tiles
      * @return HashSet of Tiles at distance dist
@@ -108,8 +106,6 @@ public abstract class Square {
     //La tile alla card. dir. specificata si ottiene più facilmente con semplice algebra sulla mappa
 
     /**
-     * @author matteo
-     * @implNote usando gli indici non risulta più pulito?
      * Given a cardinal direction, returns the first tile in that direction if no wall is encountered
      * @param direction the cardinal direction
      * @return The first tile in the given direction if there is no wall between, Optional.empty else
@@ -195,7 +191,11 @@ class SpawnPoint extends Square {
     }
 
     public void refill(){
-        //TODO
+        for(int i=0; i<weapons.length;i++){
+            if(weapons[i]==null){
+                weapons[i]=weaponDeck.draw();
+            }
+        }
     }
     @Override
     public boolean isEmpty() {

@@ -1,6 +1,6 @@
 package view;
 
-import model.enumerations.PcColourEnum;
+import enums.PcColourEnum;
 
 /**
  * this interface must be used to require input to the user
