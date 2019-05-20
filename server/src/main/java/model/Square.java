@@ -159,15 +159,6 @@ public abstract class Square {
 
     public abstract void refill();
 
-    /**
-     * @author matteo
-     * @apiNote Fare qui il metodo che fa raccogliere cose mi sembra la soluzione più semplice
-     * Abstract method. Used for subclasses for giving objects to a player.
-     * @param player the player wich is collecting something
-     * @param objectIndex the index of the object to collect (weapon). In some subclasses could be irrelevant (one object only)
-     */
-    public abstract void collect(Pc player, int objectIndex);
-
     public abstract boolean isEmpty();
 }
 
@@ -206,12 +197,6 @@ class SpawnPoint extends Square {
     public void refill(){
         //TODO
     }
-
-    @Override
-    public void collect(Pc player, int objectIndex) {
-        //TODO
-    }
-
     @Override
     public boolean isEmpty() {
         for (WeaponCard weapon : weapons)
@@ -243,12 +228,7 @@ class AmmoSquare extends Square {
             ammoTile = ammoDeck.draw();
         }
     }
-
-    @Override
-    public void collect(Pc player, int objectIndex) {
-        //TODO
-    }
-
+    
     @Override
     public boolean isEmpty(){
         return ammoTile == null;
