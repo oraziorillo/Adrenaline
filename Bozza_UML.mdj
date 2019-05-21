@@ -618,7 +618,7 @@
 															"top": 680,
 															"width": 392.0439453125,
 															"height": 13,
-															"text": "-ammos: short[3]",
+															"text": "-ammo: short[3]",
 															"horizontalAlignment": 0
 														},
 														{
@@ -3182,7 +3182,7 @@
 															"top": 1134,
 															"width": 171.6279296875,
 															"height": 13,
-															"text": "-ammos: short[3]",
+															"text": "-ammo: short[3]",
 															"horizontalAlignment": 0
 														},
 														{
@@ -7345,7 +7345,7 @@
 															"top": 1134,
 															"width": 206.33056640625,
 															"height": 13,
-															"text": "-ammos: short[3]",
+															"text": "-ammo: short[3]",
 															"horizontalAlignment": 0
 														},
 														{
@@ -9330,7 +9330,7 @@
 														"$ref": "AAAAAAFp3z8wbXhNbWc="
 													},
 													"edgePosition": 1,
-													"text": "+ammos indexing"
+													"text": "+ammo indexing"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -15317,7 +15317,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFpv9OyWuhAFps="
 											},
-											"name": "ammos indexing",
+											"name": "ammo indexing",
 											"source": {
 												"$ref": "AAAAAAFpv9OyWuhAFps="
 											},
@@ -15333,7 +15333,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFpv9OyWuhAFps="
 											},
-											"name": "ammos",
+											"name": "ammo",
 											"visibility": "private",
 											"type": "short",
 											"multiplicity": "3"
@@ -15424,7 +15424,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFpxKYsDDA4YVQ="
 											},
-											"name": "ammos",
+											"name": "ammo",
 											"visibility": "private",
 											"type": "short",
 											"multiplicity": "3"
@@ -16373,7 +16373,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFpupsZ6y0w3Ms="
 											},
-											"name": "ammos",
+											"name": "ammo",
 											"visibility": "private",
 											"type": "short",
 											"multiplicity": "3"

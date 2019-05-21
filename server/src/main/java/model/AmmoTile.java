@@ -3,25 +3,25 @@ package model;
 
 public class AmmoTile {
 
-    private final short[] ammos;
+    private final short[] ammo;
     private final boolean hasPowerup;
 
     /**
      * Constructor
      *
-     * @param ammos every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
+     * @param ammo every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
      * @param hasPowerup for 2ammos-1powerup cards
      */
-    public AmmoTile(short[] ammos, boolean hasPowerup) {
-        if (!validParameters(ammos, hasPowerup)) {
+    public AmmoTile(short[] ammo, boolean hasPowerup) {
+        if (!validParameters(ammo, hasPowerup)) {
             throw new IllegalArgumentException("Illegal AmmoTile");
         }
-        this.ammos = ammos;
+        this.ammo = ammo;
         this.hasPowerup = hasPowerup;
     }
 
-    public short[] getAmmos() {
-        return ammos.clone();
+    public short[] getAmmo() {
+        return ammo.clone();
     }
 
     public boolean containsPowerup() {
@@ -31,15 +31,15 @@ public class AmmoTile {
     /**
      * Checks if a card of given parameters could exist
      *
-     * @param ammos an array of ammonitions
+     * @param ammo an array of ammunition
      * @param hasPowerup true iif the card has a powerup inside
-     * @return false if some value of ammos is negative, or if the sum of all the elements of ammos (+1 if hasPowerup=true) is not equal to AMMO_COLOURS_NUMBER. true otherwise.
+     * @return false if some value of ammo is negative, or if the sum of all the elements of ammo (+1 if hasPowerup=true) is not equal to AMMO_COLOURS_NUMBER. true otherwise.
      */
 
-    public static boolean validParameters(short[] ammos, boolean hasPowerup) {
+    public static boolean validParameters(short[] ammo, boolean hasPowerup) {
         short t = 0;
-        //Save in t the sum of the elements in ammos
-        for (short s : ammos) {
+        //Save in t the sum of the elements in ammo
+        for (short s : ammo) {
             //if any element is negative the parameters are invalid
             if (s < 0) {
                 return false;

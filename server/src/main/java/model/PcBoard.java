@@ -1,9 +1,9 @@
 package model;
 
-import enums.AmmoEnum;
 import enums.PcColourEnum;
 import exceptions.NotEnoughAmmoException;
 
+import static model.Constants.AMMO_COLOURS_NUMBER;
 import static model.Constants.LIFEPOINTS;
 
 public class PcBoard {
@@ -77,9 +77,9 @@ public class PcBoard {
     }
 
 
-    public void addAmmo(AmmoTile card) {
-        for (int i = 0; i < card.getAmmos().length; i++) {
-            this.ammo[i] += ammo[i];
+    public void addAmmo(AmmoTile ammoTile) {
+        for (int i = 0; i < AMMO_COLOURS_NUMBER; i++) {
+            this.ammo[i] += ammoTile.getAmmo()[i];
             if (ammo[i] > 3)
                 ammo[i] = 3;
         }

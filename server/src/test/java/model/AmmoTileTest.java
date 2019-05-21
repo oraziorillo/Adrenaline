@@ -18,7 +18,7 @@ public class AmmoTileTest {
         boolean hasPowerup = false;
         assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
         AmmoTile tested = new AmmoTile(ammos, hasPowerup);
-        assertEquals("Different ammos", ammos, tested.getAmmos());
+        assertEquals("Different ammos", ammos, tested.getAmmo());
         assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
     }
     
@@ -28,7 +28,7 @@ public class AmmoTileTest {
         boolean hasPowerup = true;
         assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
         AmmoTile tested = new AmmoTile(ammos, hasPowerup);
-        assertEquals("Different ammos", ammos, tested.getAmmos());
+        assertEquals("Different ammos", ammos, tested.getAmmo());
         assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
     }
 
