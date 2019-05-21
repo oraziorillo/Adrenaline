@@ -1,34 +1,32 @@
-- l'adrenalina possiamo modellarla con un decorator
+GENERAL NOTES:
 
 - i return di oggetti devono restituire cloni
 
-- aggiungere collect su Pc o square che non distingue tra spawntile e ammotile
-
 -aggiornare UML
-
--cambiare square
-
--visitor per refillare gli square
-
--potremmo catchare le eccezioni del controller dalla view e agire di conseguenza mostrando messaggi  a schermo oppure modificare una stringa nel model che verrà sempre mostrata a schermo
 
 - invece di controllare gli indici nel controller lanciamo eccezioni nel model che catchiamo nel controller
 
-Rules to implement:
+
+
+
+
+REGOLE DA IMPLEMENTARE:
+
+- funzione che attribuisce punti dopo una kill (ricordarsi Double kill: - Double kill? If you deal multiple killshots on your turn, you get 1 extra
+point. And you are awesome)
 
 -"Choose starting player" 
 
 - Action-hero comment
 
 
-domande:
+
+
+DOMANDE:
+
 - il json va chiuso?
 
-- Double kill? If you deal multiple killshots on your turn, you get 1 extra
-point. And you are awesome
 
-
-- Command pattern per parsare i comandi cli: la gui poi può "emulare" la cli? è una soluzione valida?
 
 
 
