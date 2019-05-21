@@ -3,42 +3,42 @@ package model;
 import enums.CardinalDirectionEnum;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
 
 public abstract class Action {
 
-    int maxNumberOfTargets;
-    boolean explosive, additionalDamage, exclusiveForOldTargets;
+    boolean optional;
     TargetChecker basicTargetChecker, orientedTargetChecker;
-    LinkedList<Pc> targets;
     Square targetSquare;
 
 
 
-    Action (){
-        this.maxNumberOfTargets = 1;
+    Action (JSONObject jsonAction){
+        this.optional = (boolean) jsonAction.get("optional");
         this.basicTargetChecker = new EmptyChecker();
-        this.targets = new LinkedList<>();
     }
 
 
-    public boolean isExplosive(){
-        return explosive;
+    public boolean isOptional() {
+        return optional;
     }
+
+    public void selectPc(Pc targetPc){}
+
+    public void selectSquare(Square targetSquare){}
 
     public boolean isAdditionalDamage(){
-        return additionalDamage;
+        return false;
     }
 
-    public boolean isExclusiveForOldTargets(){
-        return exclusiveForOldTargets;
+    public boolean isExclusiveForOldTargets() {
+        return false;
     }
 
-    public int getMaxNumberOfTargets() {
-        return maxNumberOfTargets;
-    }
 
     public void setTargetSquare(Square s){
         this.targetSquare = s;
@@ -50,24 +50,16 @@ public abstract class Action {
                                                : new SimpleStraightLineDecorator(basicTargetChecker, direction);
     }
 
-
     public Set<Square> validSquares(Square shooterSquare) {
         return (orientedTargetChecker == null) ? basicTargetChecker.validSquares(shooterSquare)
                                                : orientedTargetChecker.validSquares(shooterSquare);
     }
 
 
-    public void addTarget (Pc target){
-        if (targets.size() == maxNumberOfTargets) {
-            //targets.element().setTargetable(true);
-            targets.removeFirst();
-        }
-        //target.setTargetable(false);
-        targets.add(target);
-    }
 
 
-    abstract void apply(Pc shooter);
+
+    public abstract void apply(Pc shooter);
 }
 
 
@@ -75,16 +67,21 @@ public abstract class Action {
 class DamageMarksAction extends Action {
     private short damage;
     private short marks;
+    private LinkedList<Pc> targets;
+    private int maxNumberOfTargets;
+    private boolean squareExplosive, roomExplosive, additionalDamage, exclusiveForOldTargets;
 
     DamageMarksAction(JSONObject jsonAction) {
-        super();
+        super(jsonAction);
+        this.targets = new LinkedList<>();
         this.damage = ((Long) jsonAction.get("damage")).shortValue();
         this.marks = ((Long) jsonAction.get("marks")).shortValue();
         this.maxNumberOfTargets = (int) jsonAction.get("maxNumberOfTargets");
-        this.explosive = (boolean) jsonAction.get("explosive");
+        this.squareExplosive = (boolean) jsonAction.get("squareExplosive");
+        this.roomExplosive = (boolean) jsonAction.get("roomExplosive");
         this.additionalDamage = (boolean) jsonAction.get("additionalDamage");
         this.exclusiveForOldTargets = (boolean) jsonAction.get("exclusiveForOldTargets");
-        JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("targetCheckers");
+        JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("targetChecker");
         JSONObject jsonTargetChecker;
         for (Object checker : jsonTargetCheckers) {
             jsonTargetChecker = (JSONObject) checker;
@@ -119,6 +116,53 @@ class DamageMarksAction extends Action {
         }
     }
 
+
+    public boolean isAdditionalDamage(){
+        return additionalDamage;
+    }
+
+    public boolean isExclusiveForOldTargets(){
+        return exclusiveForOldTargets;
+    }
+
+
+    private void addTarget (Pc target){
+        if (targets.size() == maxNumberOfTargets)
+            targets.removeFirst();
+        targets.add(target);
+    }
+
+    @Override
+    public void selectPc(Pc targetPc) {
+        if(!roomExplosive && ! squareExplosive)
+            addTarget(targetPc);
+    }
+
+
+    @Override
+    public void selectSquare(Square targetSquare) {
+        if (squareExplosive) {
+            targetSquare.getPcs().addAll(targets);
+        } else if (roomExplosive) {
+            TargetChecker t = new SameRoomDecorator(new EmptyChecker());
+            HashSet<Square> room = t.validSquares(targetSquare);
+            room.forEach(s -> s.getPcs().addAll(targets));
+        }
+    }
+
+
+    @Override
+    public void apply(Pc shooter) {
+        targets.forEach(pc -> {
+            if (damage != 0)
+                pc.takeDamage(shooter.getColour(), damage);
+            if (marks != 0)
+                pc.takeMarks(shooter.getColour(), marks);
+        });
+        targets.clear();
+        orientedTargetChecker = null;
+
+    }
 
     /*
     @Override
@@ -138,40 +182,25 @@ class DamageMarksAction extends Action {
     }
 
      */
-
-
-    @Override
-    public void apply(Pc shooter) {
-        if (explosive) {
-            targetSquare.getPcs().addAll(targets);
-        }
-        targets.forEach(pc -> {
-            if (damage != 0)
-                pc.takeDamage(shooter.getColour(), damage);
-            if (marks != 0)
-                pc.takeMarks(shooter.getColour(), marks);
-        });
-        targets.clear();
-
-    }
 }
 
 
 
 class MovementAction extends Action {
-    private int maxWalkingDistance;
-    private boolean visibleDestination;
-    private Square destination;
+    private boolean selfMovement;
+    private Pc target;
+    private TargetChecker destinationChecker;
 
     MovementAction(JSONObject jsonAction) {
-        super();
-        this.maxWalkingDistance = (int)jsonAction.get("maxWalkingDistance");
-        this.destination = null;
-        JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("targetCheckers");
-        JSONObject jsonTargetChecker;
-        for (Object checker : jsonTargetCheckers) {
-            jsonTargetChecker = (JSONObject) checker;
-            switch ((String) jsonTargetChecker.get("type")) {
+        super(jsonAction);
+        this.selfMovement = (boolean)jsonAction.get("selfMovement");
+        JSONArray jsonCheckers;
+        JSONObject jsonChecker;
+
+        jsonCheckers = (JSONArray) jsonAction.get("targetChecker");
+        for (Object checker : jsonCheckers) {
+            jsonChecker = (JSONObject) checker;
+            switch ((String) jsonChecker.get("type")) {
                 case "visible":
                     this.basicTargetChecker = new VisibleDecorator(basicTargetChecker);
                     break;
@@ -179,10 +208,10 @@ class MovementAction extends Action {
                     this.basicTargetChecker = new BlindnessDecorator(basicTargetChecker);
                     break;
                 case "minDistance":
-                    this.basicTargetChecker = new MinDistanceDecorator(basicTargetChecker, jsonTargetChecker);
+                    this.basicTargetChecker = new MinDistanceDecorator(basicTargetChecker, jsonChecker);
                     break;
                 case "maxDistance":
-                    this.basicTargetChecker = new MaxDistanceDecorator(basicTargetChecker, jsonTargetChecker);
+                    this.basicTargetChecker = new MaxDistanceDecorator(basicTargetChecker, jsonChecker);
                     break;
                 case "straightLine":
                     this.basicTargetChecker = new SimpleStraightLineDecorator(basicTargetChecker, null);
@@ -200,15 +229,51 @@ class MovementAction extends Action {
                     break;
             }
         }
+
+        jsonCheckers = (JSONArray) jsonAction.get("destinationChecker");
+        for(Object checker : jsonCheckers) {
+            jsonChecker = (JSONObject) checker;
+            switch ((String) jsonChecker.get("type")) {
+                case "minDistance":
+                    this.basicTargetChecker = new MinDistanceDecorator(basicTargetChecker, jsonChecker);
+                    break;
+                case "maxDistance":
+                    this.basicTargetChecker = new MaxDistanceDecorator(basicTargetChecker, jsonChecker);
+                    break;
+                case "straightLine":
+                    this.basicTargetChecker = new SimpleStraightLineDecorator(basicTargetChecker, null);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
-    /**
-     * sets the destination of the move action
-     * @param destination tile of destination
-     */
-    public void setDestination(Square destination){
-        this.destination = destination;
+
+    @Override
+    public void selectPc(Pc targetPc) {
+        if (!selfMovement)
+            target = targetPc;
     }
+
+
+    @Override
+    public void selectSquare(Square targetSquare) {
+        //TODO target non è settato non fa nulla, a meno che il target è lo stesso dell'azione precedente
+        this.targetSquare = targetSquare;
+    }
+
+    @Override
+    public void apply(Pc shooter) {
+        if (selfMovement)
+            target = shooter;
+        target.moveTo(targetSquare);
+
+        target = null;
+        destinationChecker = null;
+        orientedTargetChecker = null;
+    }
+
 
     /*
     @Override
@@ -217,13 +282,5 @@ class MovementAction extends Action {
     }
 
      */
-
-    @Override
-    public void apply(Pc shooter) {
-       for (Pc pc : targets) {
-            pc.moveTo(destination);
-        }
-        targets.clear();
-    }
 }
 
