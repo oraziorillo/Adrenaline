@@ -3,6 +3,10 @@ package enums;
 public enum AmmoEnum {
     BLUE,
     RED,
-    YELLOW
+    YELLOW;
+
+    public SquareColourEnum toSquareColour(){
+        return SquareColourEnum.valueOf(this.toString());
+    }
 }
 

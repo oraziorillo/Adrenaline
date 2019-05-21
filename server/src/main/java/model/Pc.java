@@ -1,8 +1,11 @@
 package model;
 
-import exceptions.FullyArmedException;
 import enums.PcColourEnum;
+import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
+import model.powerUps.PowerUpCard;
+import model.squares.Square;
+
 import java.util.ArrayList;
 
 import static model.Constants.LIFEPOINTS;
@@ -10,7 +13,6 @@ import static model.Constants.MAX_WEAPONS_IN_HAND;
 
 public class Pc {
     private final Game currGame;
-    private final String name;
     private final PcColourEnum colour;
     private PcBoard pcBoard;
     private short adrenaline;
@@ -21,14 +23,12 @@ public class Pc {
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
-        this.name = colour.getName();
         this.colour = colour;
-        this.adrenaline = 0;
         this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
-        this.currSquare = null;       //viene posto a null perchè ancora non è stato generato sulla mappa
     }
+
 
     public boolean isFullyArmed() {
         for (WeaponCard weapon : weapons) {
@@ -39,29 +39,36 @@ public class Pc {
         return true;
     }
 
+
     public boolean isFullyPoweredUp(){
         return powerUps.size() == 3;
     }
 
+
     public String getName() {
-        return name;
+        return colour.getName();
     }
+
 
     public PcColourEnum getColour(){
         return colour;
     }
 
+
     public int getAdrenaline(){
         return adrenaline;
     }
+
 
     public Square getCurrSquare() {
         return this.currSquare;
     }
 
+
     public WeaponCard[] getWeapons(){
         return this.weapons;
     }
+
 
     public PowerUpCard getPowerUpCard(int index){
         if(index < 0 || index > powerUps.size() - 1){
@@ -80,20 +87,21 @@ public class Pc {
         return temp;
     }
 
-    public void moveTo(Square t){
-        if(t == null){
-            throw new IllegalArgumentException("Invalid tile");
+
+    public void moveTo(Square s){
+        if(s == null){
+            throw new IllegalArgumentException("Invalid square");
         }
-        else {
-            this.currSquare.removePc(this);
-            this.currSquare = t;
-            this.currSquare.addPc(this);
-        }
+        this.currSquare.removePc(this);
+        this.currSquare = s;
+        this.currSquare.addPc(this);
     }
 
+
     public void drawPowerUp(){
-        powerUps.add((PowerUpCard)currGame.powerUpsDeck.draw());
+        powerUps.add(currGame.powerUpsDeck.draw());
     }
+
 
     public void discardPowerUp(PowerUpCard p){
         if(powerUps.contains(p)){
@@ -104,8 +112,27 @@ public class Pc {
         }
     }
 
-    public void collectWeapon(int weaponIndex) throws FullyArmedException {        //l'arma deve poi essere rimossa dal punto di generazione
-        if (!currGame.getSpawnSquares().contains(currSquare)) {
+
+    public void collect() throws EmptySquareException {
+        currSquare.collect(this);
+    }
+
+
+    public void addAmmo(AmmoTile ammo){
+        pcBoard.addAmmo(ammo);
+        if (ammo.containsPowerup()) {
+            drawPowerUp();
+        }
+    }
+
+
+    public void addWeapon(WeaponCard weapon, int index){
+        weapons[index] = weapon;
+    }
+
+    /*
+    public void collectWeapon(int weaponIndex) throws FullyArmedException {
+        if (!currSquare.isSpawnPoint()) {
             throw new IllegalStateException("You are not in a SpawnPoint");
         }
         if (isFullyArmed()){
@@ -116,33 +143,31 @@ public class Pc {
         while (index < weapons.length && weapons[index] != null) {
             index += 1;
         }
-        weapons[index] = workingTile.pickWeapon(weaponIndex);
+        WeaponCard weaponToPick = workingTile.pickWeapon(weaponIndex);
+        weapons[index] = weaponToPick;
+        short[] cost = weaponToPick.getCurrentCost();
+        cost[weaponToPick.getWeaponColour().ordinal()]--;
+        payAmmo(cost);
     }
+
 
     public void switchWeapons(int weaponToGrabIndex, int weaponToDropIndex) {
 
-        if (!currGame.getSpawnSquares().contains(currSquare)) {
+        if (!currSquare.isSpawnPoint()) {
             throw new IllegalStateException("You are not in a SpawnPoint");
         }
         SpawnPoint workingTile = (SpawnPoint) currSquare;
         weapons[weaponToDropIndex] = workingTile.switchWeapon(weaponToGrabIndex, weaponAtIndex(weaponToDropIndex));
+        //da correggere con payammo come metodo sopra
     }
 
-    public void collectAmmos() {
-        if (currGame.getSpawnSquares().contains(currSquare)) {     //potremmo far confluire tutto in un unico metodo aggiungendo un'optional
-            throw new IllegalStateException("You are not in an AmmoSquare");
-        }
-        AmmoSquare workingTile = (AmmoSquare) currSquare;
-        AmmoTile card = workingTile.pickAmmo();
-        pcBoard.addAmmos(card);
-        if (card.containsPowerup()) {      //da rivedere, troppo dipendente dalla classe AmmoTile??
-            drawPowerUp();
-        }
+     */
+
+
+    public void takeMarks(PcColourEnum shooterColour, short marks){
+        pcBoard.addMarks(shooterColour, marks);
     }
 
-    public void takeMarks(PcColourEnum colour, short marks){
-        pcBoard.addMarks(colour, marks);
-    }
 
     public void takeDamage(PcColourEnum colour, short damages) {
         short totalDamage;
@@ -159,8 +184,9 @@ public class Pc {
             adrenaline = 1;
     }
 
+
     public void respawn(Square t){
-        if(!currGame.getSpawnSquares().contains(t)){
+        if(!t.isSpawnPoint()){
             throw new IllegalArgumentException("Not a spawn Square");
         }
         pcBoard.increaseNumberOfDeaths();

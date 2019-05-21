@@ -69,17 +69,17 @@ public class SocketListener implements Runnable {
                         break;
                     case GRAB_WEAPON:
                         argInt = Integer.parseInt( in.readLine() );
-                        controller.grabWeapon( argInt );
+                        controller.chooseWeaponOnSpawnPoint( argInt );
                         break;
                     case CHOOSE_WEAPON:
                         argInt = Integer.parseInt( in.readLine() );
-                        controller.chooseWeapon( argInt );
+                        controller.chooseWeaponOfMine( argInt );
                         break;
                     case QUIT:
                         controller.quit();
                         break;
                     case SWITCH_FIREMODE:
-                        controller.switchFiremode();
+                        controller.switchFireMode();
                         break;
                     case UPGRADE:
                         controller.upgrade();

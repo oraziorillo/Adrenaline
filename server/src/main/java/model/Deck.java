@@ -11,22 +11,17 @@ import java.util.Random;
  */
 public class Deck<E> {
 
-    private Game currGame;
     /**
      * used for random insertion
      */
     private Random random;
     private ArrayList<E> cards;
 
-    public Deck(Game currGame) {
-        this.currGame = currGame;
+    public Deck() {
         cards = new ArrayList<>();
         random = new Random();
     }
 
-    public Game getCurrGame(){
-        return currGame;
-    }
 
     /**
      * draw a card
@@ -106,7 +101,7 @@ public class Deck<E> {
     
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        Deck<E> clone = new Deck<>( currGame );
+        Deck<E> clone = new Deck<>();
         clone.cards = ( ArrayList<E> ) this.cards.clone();
         clone.random = this.random;
         return clone;

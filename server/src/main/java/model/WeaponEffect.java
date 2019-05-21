@@ -1,13 +1,16 @@
 package model;
 
+import model.actions.Action;
+import model.actions.DamageMarksAction;
+import model.actions.MovementAction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.LinkedList;
 
 public class WeaponEffect {
-    private short[] cost;
     private boolean oriented;
     private boolean asynchronous;
+    private short[] cost;
     private LinkedList<Action> actions = new LinkedList<>();
 
     /**
@@ -41,7 +44,6 @@ public class WeaponEffect {
     public boolean isAsynchronous() {
         return asynchronous;
     }
-
 
     public short[] getCost(){
         return cost.clone();

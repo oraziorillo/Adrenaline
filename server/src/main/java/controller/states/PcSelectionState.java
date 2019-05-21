@@ -1,13 +1,13 @@
 package controller.states;
 
 import controller.Controller;
-import controller.Player;
+import controller.player.Player;
 import model.Pc;
 import enums.PcColourEnum;
 
-public class PcChoiceState extends State {
+public class PcSelectionState extends State {
 
-    PcChoiceState(Controller controller) {
+    PcSelectionState(Controller controller) {
         super(controller);
     }
 

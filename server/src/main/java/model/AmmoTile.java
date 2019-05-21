@@ -21,7 +21,7 @@ public class AmmoTile {
     }
 
     public short[] getAmmos() {
-        return ammos;
+        return ammos.clone();
     }
 
     public boolean containsPowerup() {

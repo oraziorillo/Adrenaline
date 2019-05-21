@@ -1,5 +1,7 @@
 package controller;
 
+import controller.player.Player;
+
 import java.util.ArrayList;
 
 public class WaitingRoom {

@@ -38,12 +38,12 @@ public class JsonWriter {
         return targetChecker;
     }
     /**
-     * builder for a a JSONObject action
-     * @param isMovement boolean representing the type of the action
+     * builder for a a JSONObject actions
+     * @param isMovement boolean representing the type of the actions
      * @param damage number of damage to deal
      * @param marks number of marks to apply
      * @param targetChecker type of target checker to adopt
-     * @return a JSONObject representing an action
+     * @return a JSONObject representing an actions
      */
     static JSONObject buildJsonAction(boolean isMovement, int damage, int marks, JSONArray targetChecker){
         JSONObject action = new JSONObject();

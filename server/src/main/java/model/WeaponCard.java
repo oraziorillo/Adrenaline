@@ -9,12 +9,9 @@ import java.util.LinkedList;
 public class WeaponCard {
     private String name;
     private boolean loaded;
-    private AmmoEnum defaultAmmo;
+    private AmmoEnum weaponColour;
     private short[] ammo;
     private short[] currentCost;
-    //possiamo aggiungere qui un arraylist di powerUp usati con questo attacco in modo tale che quando
-    //viene chiamato il metodo use questi powerup vengono effettivamente scartati (comprende soprattutto powerup
-    //usati come ammo
     private ArrayList<WeaponEffect> fireModes = new ArrayList<>();
     private ArrayList<WeaponEffect> upgrades = new ArrayList<>();
     private LinkedList<WeaponEffect> currEffect;
@@ -27,7 +24,7 @@ public class WeaponCard {
     WeaponCard(JSONObject jsonWeaponCard) {
         this.name = (String) jsonWeaponCard.get("name");
         this.loaded = true;
-        this.defaultAmmo = AmmoEnum.valueOf((String) jsonWeaponCard.get("firstAmmo"));
+        this.weaponColour = AmmoEnum.valueOf((String) jsonWeaponCard.get("firstAmmo"));
         this.ammo = new short[3];
         this.currentCost = new short[3];
         JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammo");
@@ -60,8 +57,12 @@ public class WeaponCard {
         return ammo;
     }
 
+    public AmmoEnum getWeaponColour() {
+        return weaponColour;
+    }
+
     public LinkedList getCurrentEffect(){
-        return (LinkedList) currEffect.clone();
+        return currEffect;
     }
 
     public short[] getCurrentCost(){

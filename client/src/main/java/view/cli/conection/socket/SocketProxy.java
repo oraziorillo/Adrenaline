@@ -93,21 +93,21 @@ public class SocketProxy implements RemoteController {
     }
 
     @Override
-    public void grabWeapon(int n) {
+    public void chooseWeaponOnSpawnPoint(int n) {
         out.println( GRAB_WEAPON );
         out.print( n );
         out.flush();
     }
 
     @Override
-    public void chooseWeapon(int n) {
+    public void chooseWeaponOfMine(int n) {
         out.println( CHOOSE_WEAPON );
         out.print( n );
         out.flush();
     }
     
     @Override
-    public void switchFiremode() {
+    public void switchFireMode() {
         out.println( SWITCH_FIREMODE );
         out.flush();
     }

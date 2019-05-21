@@ -3,6 +3,7 @@ package model;
 import enums.AmmoEnum;
 import enums.PcColourEnum;
 import exceptions.NotEnoughAmmoException;
+
 import static model.Constants.LIFEPOINTS;
 
 public class PcBoard {
@@ -22,45 +23,68 @@ public class PcBoard {
         this.ammo = new short[3];
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
         for(int i = 0; i < 3; i++){
-            ammo[i] = 1;       //ogni giocatore appena creato possiede una munizione per ogni colore
+            ammo[i] = 1;
         }
     }
+
 
     public short getPoints() {
         return points;
     }
 
+
     public short getNumOfDeaths() {
         return numOfDeaths;
     }
+
 
     public short getDamageTrackIndex() {
         return damageTrackIndex;
     }
 
+
     public short getMarks(PcColourEnum selectedColour) {
         return marks[selectedColour.ordinal()];
     }
+
 
     public void increasePoints(int earnedPoints){
         this.points += earnedPoints;
     }
 
+
     public void increaseNumberOfDeaths(){
         numOfDeaths++;
     }
 
-    public void addMarks(PcColourEnum selectedColour, short numOfMarks) {
-        marks[selectedColour.ordinal()] = numOfMarks;
+
+    public void addDamage(PcColourEnum shooterColour, short numOfDamage){
+        while (numOfDamage != 0) {
+            if (damageTrackIndex == LIFEPOINTS)
+                break;
+            damageTrack[damageTrackIndex] = shooterColour;
+            damageTrackIndex++;
+            numOfDamage--;
+        }
     }
 
-    public void addAmmos(AmmoTile card) {
+
+    public void addMarks(PcColourEnum shooterColour, short numOfMarks) {
+        if (marks[shooterColour.ordinal()] + numOfMarks > 3)
+            marks[shooterColour.ordinal()] = 3;
+        else
+            marks[shooterColour.ordinal()] += numOfMarks;
+    }
+
+
+    public void addAmmo(AmmoTile card) {
         for (int i = 0; i < card.getAmmos().length; i++) {
             this.ammo[i] += ammo[i];
             if (ammo[i] > 3)
                 ammo[i] = 3;
         }
     }
+
 
     public boolean hasEnoughAmmo(short[] ammos){
         for(short i : ammos){
@@ -70,23 +94,15 @@ public class PcBoard {
         return true;
     }
 
+
     public void payAmmo(short[] ammo) throws NotEnoughAmmoException {
         if (!hasEnoughAmmo(ammo)) {
             throw new NotEnoughAmmoException();
         }
-        this.ammo[AmmoEnum.BLUE.ordinal()] -= ammo[AmmoEnum.BLUE.ordinal()];
-        this.ammo[AmmoEnum.RED.ordinal()] -= ammo[AmmoEnum.RED.ordinal()];
-        this.ammo[AmmoEnum.YELLOW.ordinal()] -= ammo[AmmoEnum.YELLOW.ordinal()];
+        for (short i = 0; i < 3; i++)
+            this.ammo[i] -= ammo[i];
     }
 
-    public void addDamage(PcColourEnum selectedColour, short numOfDamage){
-        while (numOfDamage != 0) {
-            if (damageTrackIndex == LIFEPOINTS)
-                break;
-            damageTrack[damageTrackIndex] = selectedColour;
-            damageTrackIndex++;
-        }
-    }
 
     public void resetDamageTrack(){
         damageTrackIndex = 0;

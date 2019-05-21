@@ -1,7 +1,6 @@
 package controller.states;
 
 import controller.Controller;
-import model.Square;
 
 public class EndTurnState extends State {
 

@@ -2,10 +2,9 @@ package controller.states;
 
 import controller.Controller;
 import model.Pc;
-import model.PowerUpCard;
-import model.Square;
+import model.powerUps.PowerUpCard;
+import model.squares.Square;
 import enums.AmmoEnum;
-import java.util.Optional;
 
 public class FirstTurnState extends State{
 
@@ -17,13 +16,11 @@ public class FirstTurnState extends State{
     public boolean spawnPc(Pc pc, int n){
         PowerUpCard powerUp = pc.getPowerUpCard(n);
         AmmoEnum colour = powerUp.getColour();
-        Optional<Square> t = controller.getGame().getSpawnSquares().stream()
-                .filter(elem -> elem.getTileColour().ordinal() == colour.ordinal())
-                .findFirst();
-        pc.respawn(t.get());
-        pc.moveTo(t.get());
+        Square s = controller.getGame().getSpawnPoint(colour.toSquareColour());
+        pc.respawn(s);
+        pc.moveTo(s);
         pc.discardPowerUp(powerUp);
-        t.get().addPc(pc);
+        s.addPc(pc);
         return true;
     }
 

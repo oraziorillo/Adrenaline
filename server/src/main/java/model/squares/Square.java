@@ -1,7 +1,10 @@
-package model;
+package model.squares;
 
 import enums.CardinalDirectionEnum;
 import enums.SquareColourEnum;
+import exceptions.EmptySquareException;
+import model.Pc;
+
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -9,7 +12,7 @@ public abstract class Square {
     private final int x;
     private final int y;
     private boolean targetable;
-    private final SquareColourEnum tileColour;
+    private final SquareColourEnum colour;
     private HashSet<Pc> pcs;            //ricordarsi di aggiugnere degli observer che ad ogni spostamento del pc modifichi questo insieme
     private HashSet<Square> visibles;
 
@@ -23,10 +26,11 @@ public abstract class Square {
         this.x = x;
         this.y = y;
         this.targetable = false;
-        this.tileColour = colour;
+        this.colour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
     }
+
 
     /**
      * Getter for x coordinate in the map
@@ -50,13 +54,15 @@ public abstract class Square {
         return targetable;
     }
 
+
     /**
      * Getter for room colour
      * @return The colour of this room
      */
-    public SquareColourEnum getTileColour() {
-        return tileColour;
+    public SquareColourEnum getColour() {
+        return colour;
     }
+
 
     /**
      * Returns the Pcs on this tile
@@ -66,18 +72,32 @@ public abstract class Square {
         return pcs;
     }
 
+
     /**
      * returns the tiles that a Pc on this tile could see
      * @return the tile visibles from this
      */
     public HashSet<Square> getVisibles() {
-        return (HashSet<Square>)visibles.clone();
+        return visibles;
     }
 
 
     public void setTargetable(boolean targetable){
         this.targetable = targetable;
     }
+
+
+    public void setWeaponToGrabIndex(int weaponToGrabIndex){}
+
+
+    public void setWeaponToDropIndex(int weaponToDropIndex){}
+
+
+    public void resetWeaponIndexes(){}
+
+
+    public abstract void collect(Pc currPc) throws EmptySquareException;
+
     /**
      * Returns an HashSet containing all the Tiles at a given distance
      * @param dist distance of returned tiles
@@ -95,9 +115,7 @@ public abstract class Square {
         else {
             for(CardinalDirectionEnum direction : CardinalDirectionEnum.values()){
                 tempTile = this.onDirection(direction);
-                if(tempTile.isPresent()) {
-                    temp.addAll(tempTile.get().atDistance(dist - 1));
-                }
+                tempTile.ifPresent(square -> temp.addAll(square.atDistance(dist - 1)));
             }
         }
         return temp;
@@ -125,9 +143,12 @@ public abstract class Square {
             case WEST:
                 temp = visibles.stream().filter(elem -> elem.getX() == this.getX() - 1 && elem.getY() == this.getY()).findFirst();
                 break;
+            default:
+                break;
         }
         return temp;
     }
+
 
     /**
      * adds a pc to this tile
@@ -137,6 +158,7 @@ public abstract class Square {
         pcs.add(pc);
     }
 
+
     /**
      * removes a pc from this tile
      * @param c the pc to remove
@@ -144,6 +166,7 @@ public abstract class Square {
     public void removePc(Pc c) {
         pcs.remove(c);
     }
+
 
     /**
      *after this method the given tile will be visible from this tile (and then contained into the getVisibles collection)
@@ -153,86 +176,13 @@ public abstract class Square {
         visibles.add(t);
     }
 
+
     public abstract void refill();
 
+
     public abstract boolean isEmpty();
+
+
+    public abstract boolean isSpawnPoint();
 }
-
-
-class SpawnPoint extends Square {
-
-    private WeaponCard[] weapons;
-    private Deck<WeaponCard> weaponDeck;
-
-    SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
-        super(x, y, colour);
-        this.weaponDeck = deck;
-        weapons = new WeaponCard[3];
-        for (int i = 0; i < 3; i++)
-            weapons[i] = weaponDeck.draw();
-    }
-
-    public WeaponCard[] getWeapons() {
-        return weapons.clone();
-    }
-
-    WeaponCard pickWeapon(int index) throws NullPointerException{
-        if(weapons[index] == null) throw new NullPointerException();
-        WeaponCard temp = weapons[index];
-        weapons[index] = null;
-        return temp;
-    }
-
-    public WeaponCard switchWeapon(int index, WeaponCard w) {
-        if(weapons[index] == null) throw new NullPointerException();
-        WeaponCard temp = weapons[index];
-        weapons[index] = w;
-        return temp;
-    }
-
-    public void refill(){
-        for(int i=0; i<weapons.length;i++){
-            if(weapons[i]==null){
-                weapons[i]=weaponDeck.draw();
-            }
-        }
-    }
-    @Override
-    public boolean isEmpty() {
-        for (WeaponCard weapon : weapons)
-            if (weapon != null)
-                return false;
-        return true;
-    }
-}
-
-
-class AmmoSquare extends Square {
-    private AmmoTile ammoTile;
-    private Deck<AmmoTile> ammoDeck;
-
-    AmmoSquare(int x, int y, SquareColourEnum colour, Deck<AmmoTile> deck) {
-        super(x, y, colour);
-        ammoDeck = deck;
-        ammoTile = ammoDeck.draw();
-    }
-
-    public AmmoTile pickAmmo() {
-        AmmoTile oldCard = ammoTile;
-        ammoTile = null;
-        return oldCard;
-    }
-
-    public void refill(){
-        if(ammoTile == null) {
-            ammoTile = ammoDeck.draw();
-        }
-    }
-    
-    @Override
-    public boolean isEmpty(){
-        return ammoTile == null;
-    }
-}
-
 

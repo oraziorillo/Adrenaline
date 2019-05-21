@@ -4,7 +4,9 @@ import controller.Controller;
 import exceptions.FullyArmedException;
 import model.Pc;
 
+/*
 public class GrabWeaponState extends State {
+
 
     private int weaponToGrabIndex;
     private int weaponToDropIndex;
@@ -64,11 +66,8 @@ public class GrabWeaponState extends State {
         return false;
     }
 
-
     @Override
     public State nextState() {
-        weaponToDropIndex = -1;
-        weaponToGrabIndex = -1;
         controller.decreaseRemainingActions();
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();
@@ -77,3 +76,5 @@ public class GrabWeaponState extends State {
             return new StartTurnState(controller);
     }
 }
+     */
+

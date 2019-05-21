@@ -1,13 +1,15 @@
 package controller;
 
 import common.RemoteController;
+import controller.player.Player;
 import controller.states.SetupMapState;
 import controller.states.State;
 import enums.PcColourEnum;
+import exceptions.HoleInMapException;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
-import model.Square;
+import model.squares.Square;
 import model.WeaponCard;
 
 import java.rmi.RemoteException;
@@ -176,47 +178,61 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void runAround() {
         if (currState.runAround())
-            currState.setTargetables(getCurrPc());
+            currState.setTargetableSquares(getCurrPc());
     }
 
 
     @Override
     public synchronized void grabStuff() {
         if (currState.grabStuff())
-            currState.setTargetables(getCurrPc());
+            currState.setTargetableSquares(getCurrPc());
     }
 
 
     @Override
     public synchronized void shootPeople() {
         if (currState.shootPeople())
-            currState.setTargetables(getCurrPc());
+            currState.setTargetableSquares(getCurrPc());
     }
 
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
+        /*
         if (currState.selectSquare(getCurrPc(), game.map[x][y]))
             currState = currState.nextState();
+         */
+        try {
+            currState.selectSquare(game.getTile(x, y));
+        } catch (HoleInMapException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
     @Override
-    public synchronized void grabWeapon(int index) {
-        if ((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
+    public synchronized void chooseWeaponOnSpawnPoint(int index) {
+        /*if ((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
             currState = currState.nextState();
+         */
+        currState.setWeaponToGrab(index);
     }
 
 
     @Override
-    public synchronized void chooseWeapon(int index) {
+    public synchronized void chooseWeaponOfMine(int index) {
+        /*
         if ((index >= 0 && index <= 2) && currState.selectWeapon(getCurrPc(), index))
             currState = currState.nextState();
+         */
+        currState.setWeaponToDrop(index);
     }
 
 
     @Override
-    public synchronized void switchFiremode() {
+    public synchronized void switchFireMode() {
         currState.switchFireMode(currWeapon);
     }
 
@@ -237,13 +253,13 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
     @Override
-    public void reload() {
+    public synchronized void reload() {
         if (currState.reload())
             currState = currState.nextState();
     }
 
     @Override
-    public void pass() {
+    public synchronized void pass() {
         if (currState.ok()) {
             nextTurn();
             currState = currState.nextState();
@@ -268,7 +284,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     }
 
-    public Pc getCurrPc() {
+    public synchronized Pc getCurrPc() {
         return players.get(currPlayerIndex).getPc();
     }
 

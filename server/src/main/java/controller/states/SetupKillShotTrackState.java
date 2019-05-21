@@ -15,6 +15,6 @@ public class SetupKillShotTrackState extends State{
     }
 
     public State nextState(){
-        return new PcChoiceState(controller);
+        return new PcSelectionState(controller);
     }
 }

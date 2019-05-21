@@ -1,6 +1,8 @@
 package model;
 
 import enums.SquareColourEnum;
+import model.squares.SpawnPoint;
+import model.squares.Square;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

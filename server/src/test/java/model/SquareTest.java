@@ -2,6 +2,8 @@ package model;
 
 import enums.CardinalDirectionEnum;
 import enums.SquareColourEnum;
+import model.squares.AmmoSquare;
+import model.squares.Square;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,7 +33,7 @@ public class SquareTest {
         //test constructor
         assertTrue( tested.getVisibles().isEmpty() );assertEquals(tested.getX(),x);
         assertEquals( tested.getY(),y );
-        assertEquals( tested.getTileColour(), colour );
+        assertEquals( tested.getColour(), colour );
         assertFalse( tested.isTargetable() );
         assertTrue( tested.getPcs().isEmpty() );
         tested.addVisible( onRight );

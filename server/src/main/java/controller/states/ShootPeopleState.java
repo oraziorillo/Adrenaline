@@ -2,7 +2,8 @@ package controller.states;
 
 import controller.Controller;
 import model.Pc;
-import model.Square;
+import model.squares.Square;
+import model.WeaponCard;
 
 public class ShootPeopleState extends State {
 
@@ -19,18 +20,16 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public boolean selectSquare(Pc currPc, Square targetSquare) {
-        if (moved || !targetSquare.isTargetable()) {
-            return false;
+    public void selectSquare(Square targetSquare) {
+        if (!moved && targetSquare.isTargetable()) {
+            controller.getCurrPc().moveTo(targetSquare);
+            moved = true;
         }
-        move(currPc, targetSquare);
-        this.moved = true;
-        return true;
     }
 
 
     @Override
-    public void setTargetables(Pc referencePc){
+    public void setTargetableSquares(Pc referencePc){
         int maxDistance;
         if (!controller.isFinalFrenzy()) {
             if (referencePc.getAdrenaline() < 2)
@@ -47,13 +46,17 @@ public class ShootPeopleState extends State {
 
     @Override
     public boolean selectWeapon(Pc currPc, int index) {
-        controller.setCurrWeapon(currPc.getWeapons()[index]);
-        this.weaponSelected = true;
-        return true;
+        WeaponCard currWeapon = currPc.getWeapons()[index];
+        if (currWeapon.isLoaded()) {
+            controller.setCurrWeapon(currWeapon);
+            this.weaponSelected = true;
+            return true;
+        }
+        return false;
     }
 
     public boolean reload(){
-        haveToReload = true;
+        this.haveToReload = true;
         return true;
     }
 

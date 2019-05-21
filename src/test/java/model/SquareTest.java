@@ -1,6 +1,5 @@
 package model;
 
-import model.enumerations.TileColourEnum;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -34,7 +33,7 @@ public class SquareTest {
     class ConcreteSquare extends Square {
 
         ConcreteSquare(int x, int y) {
-            super(x, y, TileColourEnum.GREEN);
+            super(x, y, SquareColourEnum.GREEN);
         }
 
         @Override

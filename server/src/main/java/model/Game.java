@@ -1,9 +1,12 @@
 package model;
 
 import controller.Server;
+import enums.SquareColourEnum;
 import exceptions.HoleInMapException;
 import enums.AmmoEnum;
 import enums.PcColourEnum;
+import model.powerUps.*;
+import model.squares.Square;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -18,7 +21,7 @@ public class Game {
     private ArrayList<Pc> pcs;
     private KillShot[] killShotTrack;
     private String message;
-    private ArrayList<Square> spawnSquares;
+    private ArrayList<Square> spawnPoints;
     Deck<AmmoTile> ammosDeck;
     Deck<WeaponCard> weaponsDeck;
     Deck<PowerUpCard> powerUpsDeck;
@@ -41,14 +44,18 @@ public class Game {
     public Square getTile (int x, int y) throws HoleInMapException {
         if (x > (map.length - 1) || y > (map[0].length - 1))
             throw new IndexOutOfBoundsException();
-        Optional<Square> t = Optional.of(map[x][y]);
-        if (t.isEmpty())
+        Square s = map[x][y];
+        if (s == null)
             throw new HoleInMapException();
-        return t.get();
+        return s;
     }
 
-    public ArrayList<Square> getSpawnSquares(){
-        return spawnSquares;
+    public Square getSpawnPoint(SquareColourEnum requiredColour){
+        for (Square s : spawnPoints) {
+            if (s.getColour().equals(requiredColour))
+                return s;
+        }
+        return null;
     }
 
     public KillShot[] getKillShotTrack() {
@@ -75,7 +82,7 @@ public class Game {
     // array di int per ogni Square della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
     */
-    public void initMap(int n){
+    private void initMap(int n){
     /*(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<SquareColourEnum> tileColourList;
         ArrayList<SquareColourEnum> tempList = new ArrayList<>();
@@ -94,7 +101,7 @@ public class Game {
                 }
                 else if(typeOfTileList.get(i*rows+j) == 2){
                     map[i][j] = new SpawnPoint(i, j, tileColourList.get(i*rows+j), weaponsDeck);
-                    spawnSquares.add(map[i][j]);
+                    spawnPoints.add(map[i][j]);
                 }
                 else {
                     map[i][j] = null;   //istruzione inserita per chiarezza, ma omissibile
@@ -104,17 +111,17 @@ public class Game {
         for(int i = 0; i < rows; i++){
             for( int j = 0; j < columns; j++){
                 if(map[i][j] != null) {
-                    tempList.add(map[i][j].getTileColour());
+                    tempList.add(map[i][j].getColour());
                     while (doorsList.contains(i * rows + j) && doorsList.indexOf(i * rows + j) % 2 == 0) {
                         int k = doorsList.get(i * rows + j + 1);
-                        tempList.add(map[k / rows][k % columns].getTileColour());
+                        tempList.add(map[k / rows][k % columns].getColour());
                         doorsList.remove(i * rows + j);
                         doorsList.remove(i * rows + j);
                     }
                 }
                 for(int m = 0; m < rows; m++){
                     for(int n = 0; n < columns; n++){
-                        if(map[m][n] != null && tempList.contains(map[m][n].getTileColour())){
+                        if(map[m][n] != null && tempList.contains(map[m][n].getColour())){
                             map[i][j].addVisible(map[m][n]);
                         }
                     }
@@ -125,21 +132,21 @@ public class Game {
         */
     }
 
-    public void initKillShotTrack(int numberOfSkulls){
+    private void initKillShotTrack(int numberOfSkulls){
         this.killShotTrack = new KillShot[numberOfSkulls];
         this.currentKillShotTrackIndex = numberOfSkulls - 1;
         for(int i = 0; i < numberOfSkulls; i++)
             killShotTrack[i] = new KillShot();
     }
 
-    public void initDecks() {
+    private void initDecks() {
         initWeaponsDeck();
         initPowerUpDeck();
         initAmmosDeck();
     }
 
     private void initWeaponsDeck(){
-        this.weaponsDeck = new Deck<>(this);
+        this.weaponsDeck = new Deck<>();
         try {
             WeaponCard weaponCard;
             JSONArray jsonWeapons = (JSONArray) Server.readJson(WEAPONS_JSON_NAME);
@@ -153,7 +160,7 @@ public class Game {
     }
 
     private void initPowerUpDeck(){
-        this.powerUpsDeck = new Deck<>(this);
+        this.powerUpsDeck = new Deck<>();
         for(int i = 0; i < 3; i++){
             AmmoEnum ammoColour = AmmoEnum.values()[i];
             for(int j = 0; j < 2; j++){
@@ -166,7 +173,7 @@ public class Game {
     }
 
     private void initAmmosDeck(){
-        this.ammosDeck = new Deck<>(this);
+        this.ammosDeck = new Deck<>();
         //TODO
     }
 

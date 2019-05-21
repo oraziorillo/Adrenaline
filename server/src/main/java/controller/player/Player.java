@@ -1,4 +1,4 @@
-package controller;
+package controller.player;
 
 import model.Pc;
 import org.jetbrains.annotations.Contract;
@@ -38,16 +38,3 @@ public abstract class Player{
     }
 }
 
-class RmiPlayer extends Player{
-
-    RmiPlayer(String username, UUID uuid) {
-        super(username, uuid);
-    }
-}
-
-class SocketPlayer extends Player{
-
-    SocketPlayer(String username, UUID uuid) {
-        super(username, uuid);
-    }
-}

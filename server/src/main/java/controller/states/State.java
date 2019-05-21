@@ -1,9 +1,9 @@
 package controller.states;
 
 import controller.Controller;
-import controller.Player;
+import controller.player.Player;
 import model.Pc;
-import model.Square;
+import model.squares.Square;
 import model.WeaponCard;
 import enums.PcColourEnum;
 
@@ -13,12 +13,6 @@ public abstract class State {
 
     State(Controller controller){
         this.controller = controller;
-    }
-
-    void move(Pc pc, Square square){
-        pc.getCurrSquare().removePc(pc);
-        pc.moveTo(square);
-        square.addPc(pc);
     }
 
     public boolean initializeMap(int n) {
@@ -49,11 +43,13 @@ public abstract class State {
         return false;
     }
 
-    public void setTargetables(Pc referencePc){}
+    public void setTargetableSquares(Pc referencePc){}
 
-    public boolean selectSquare(Pc currPc, Square targetSquare) {
-        return false;
-    }
+    public void selectSquare(Square targetSquare){}
+
+    public void setWeaponToGrab(int index){}
+
+    public void setWeaponToDrop(int index){}
 
     public boolean grabWeapon(Pc currPc, int index){ return false; }
 
