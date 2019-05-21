@@ -32,11 +32,5 @@ point. And you are awesome
 
 
 
--mettere tutto nei package
--togliere 3 metodi collect diversi
--mettere isSpawnPoint e togliere getSpawnTiles
--payammo
-
-
 
 

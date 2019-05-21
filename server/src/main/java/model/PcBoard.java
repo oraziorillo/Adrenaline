@@ -10,7 +10,7 @@ public class PcBoard {
 
     private short points;
     private short numOfDeaths;
-    private short damageTrackIndex;     //is the index of the last inserted element
+    private short damageTrackIndex;
     private short[] marks;
     private short[] ammo;
     private PcColourEnum[] damageTrack;
