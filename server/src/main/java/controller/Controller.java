@@ -203,7 +203,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             currState = currState.nextState();
          */
         try {
-            currState.selectSquare(game.getTile(x, y));
+            currState.selectSquare(game.getSquare(x, y));
         } catch (HoleInMapException e) {
             e.printStackTrace();
         }
@@ -214,31 +214,28 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseWeaponOnSpawnPoint(int index) {
-        /*if ((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
-            currState = currState.nextState();
-         */
-        currState.setWeaponToGrab(index);
+        if (index >= 0 && index <= 2)
+            currState.setWeaponToGrab(index);
     }
 
 
     @Override
     public synchronized void chooseWeaponOfMine(int index) {
-        /*
-        if ((index >= 0 && index <= 2) && currState.selectWeapon(getCurrPc(), index))
-            currState = currState.nextState();
-         */
-        currState.setWeaponToDrop(index);
+        if (index >= 0 && index <= 2)
+            currState.setWeaponToDrop(index);
     }
 
 
     @Override
     public synchronized void switchFireMode() {
-        currState.switchFireMode(currWeapon);
+        if(currWeapon.getFireModes().size() > 1)
+            currState.switchFireMode(currWeapon);
     }
 
     @Override
     public synchronized void upgrade() {
-        currState.upgrade(currWeapon);
+        if(!currWeapon.getUpgrades().isEmpty())
+            currState.upgrade(currWeapon);
     }
 
     @Override

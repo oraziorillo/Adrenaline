@@ -96,4 +96,13 @@ public class MovementAction extends Action {
         destinationChecker = null;
         orientedTargetChecker = null;
     }
+
+
+    @Override
+    public boolean isComplete() {
+        if (!selfMovement && target == null ||
+            targetSquare == null)
+            return false;
+        return true;
+    }
 }

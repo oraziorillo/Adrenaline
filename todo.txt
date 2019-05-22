@@ -9,7 +9,6 @@ GENERAL NOTES:
 
 
 
-
 REGOLE DA IMPLEMENTARE:
 
 - funzione che attribuisce punti dopo una kill (ricordarsi Double kill: - Double kill? If you deal multiple killshots on your turn, you get 1 extra
@@ -19,7 +18,9 @@ point. And you are awesome)
 
 - Action-hero comment
 
+-power up devono essere usati per effettuare qualsiasi pagamento
 
+-granade launcher ha un effetto che non è propriamente asincrono per come li abbiamo pensati noi
 
 
 DOMANDE:
@@ -28,6 +29,12 @@ DOMANDE:
 
 
 
+- aggiungere boolean needParameters per onda d'urto
+- vedere meglio il tractor beam 
+- aggiungere lista di targets dell'effetto base nel controller
+- boolean azioni facoltative
+
+-chiedere se si può estrarre l'UML dal codice
 
 
 

@@ -41,7 +41,7 @@ public class Game {
         return pcs;
     }
 
-    public Square getTile (int x, int y) throws HoleInMapException {
+    public Square getSquare(int x, int y) throws HoleInMapException {
         if (x > (map.length - 1) || y > (map[0].length - 1))
             throw new IndexOutOfBoundsException();
         Square s = map[x][y];
@@ -71,6 +71,13 @@ public class Game {
             s.setTargetable(true);
     }
 
+    // potrebbe far comodo avere nel game un set di targettable che possa essere facilmente settato/resettato
+    public void resetTargetables(int maxDistance, Square referenceSquare){
+        for (Square s : referenceSquare.atDistance(maxDistance))
+            s.setTargetable(false);
+    }
+
+
     public void addPc(Pc pc){
         pcs.add(pc);
     }
@@ -82,7 +89,7 @@ public class Game {
     // array di int per ogni Square della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
     // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
     */
-    private void initMap(int n){
+    public void initMap(int n){
     /*(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<SquareColourEnum> tileColourList;
         ArrayList<SquareColourEnum> tempList = new ArrayList<>();

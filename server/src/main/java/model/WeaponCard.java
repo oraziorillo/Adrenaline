@@ -61,7 +61,7 @@ public class WeaponCard {
         return weaponColour;
     }
 
-    public LinkedList getCurrentEffect(){
+    public LinkedList<WeaponEffect> getCurrEffect(){
         return currEffect;
     }
 
@@ -132,10 +132,7 @@ public class WeaponCard {
     }
 
 
-    public void use(Pc shooter) {
-        for (WeaponEffect effect : currEffect) {
-            effect.execute(shooter);
-        }
+    public void clear() {
         currEffect.clear();
     }
 }

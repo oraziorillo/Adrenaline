@@ -44,16 +44,16 @@ public class ShootPeopleState extends State {
     }
 
 
-    @Override
-    public boolean selectWeapon(Pc currPc, int index) {
-        WeaponCard currWeapon = currPc.getWeapons()[index];
-        if (currWeapon.isLoaded()) {
-            controller.setCurrWeapon(currWeapon);
-            this.weaponSelected = true;
-            return true;
-        }
-        return false;
-    }
+//    @Override
+//    public boolean selectWeapon(Pc currPc, int index) {
+//        WeaponCard currWeapon = currPc.getWeapons()[index];
+//        if (currWeapon.isLoaded()) {
+//            controller.setCurrWeapon(currWeapon);
+//            this.weaponSelected = true;
+//            return true;
+//        }
+//        return false;
+//    }
 
     public boolean reload(){
         this.haveToReload = true;

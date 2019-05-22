@@ -30,6 +30,11 @@ public abstract class Action {
         return optional;
     }
 
+    public boolean isExplosive() {
+        return false;
+    }
+
+
     public abstract void selectPc(Pc targetPc);
 
     public abstract void selectSquare(Square targetSquare);
@@ -59,6 +64,11 @@ public abstract class Action {
         return false;
     }
 
+
+    /**
+     * @return true iff this action is ready to be used
+     */
+    public abstract boolean isComplete();
 }
 
 

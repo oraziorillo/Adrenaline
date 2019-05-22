@@ -2,6 +2,7 @@ package controller.states;
 
 import controller.Controller;
 import controller.player.Player;
+import enums.CardinalDirectionEnum;
 import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
@@ -47,21 +48,21 @@ public abstract class State {
 
     public void selectSquare(Square targetSquare){}
 
+    public void selectTarget(Pc targetPc){}
+
+    public void selectDirection(CardinalDirectionEnum direction){}
+
     public void setWeaponToGrab(int index){}
 
     public void setWeaponToDrop(int index){}
-
-    public boolean grabWeapon(Pc currPc, int index){ return false; }
-
-    public boolean selectWeapon(Pc currPc, int index){
-        return false;
-    }
 
     public void switchFireMode(WeaponCard weapon) {}
 
     public void upgrade(WeaponCard weapon) {}
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
+
+    public boolean skipAction() { return false; }
 
     public boolean ok() {
         return false;

@@ -34,7 +34,7 @@ public class AmmoSquareTest {
     public void constructedFine() {
         assertEquals("x is different", tested.getX(), x);
         assertEquals("y is different", tested.getY(), y);
-        assertEquals( "Colour has changed", tested.getTileColour(), colour );
+        assertEquals( "Colour has changed", tested.getSquareColour(), colour );
     }
 
     @Test
