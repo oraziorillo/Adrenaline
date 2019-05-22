@@ -27,12 +27,14 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
+        //TODO: lanciare eccezione per l'index
         this.weaponToGrabIndex = weaponToGrabIndex;
     }
 
 
     @Override
     public void setWeaponToDropIndex(int weaponToDropIndex) {
+        //TODO: lanciare eccezione per l'index
         this.weaponToDropIndex = weaponToDropIndex;
     }
 

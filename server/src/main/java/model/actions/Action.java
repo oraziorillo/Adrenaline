@@ -31,6 +31,11 @@ public abstract class Action {
     }
 
 
+    public boolean isExplosive() {
+        return false;
+    }
+
+
     public boolean isSquareExplosive() {
         return false;
     }
@@ -75,6 +80,8 @@ public abstract class Action {
         return (orientedTargetChecker == null) ? basicTargetChecker.validSquares(shooterSquare)
                                                : orientedTargetChecker.validSquares(shooterSquare);
     }
+
+    public abstract boolean isComplete();
 }
 
 

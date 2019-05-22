@@ -3,7 +3,6 @@ package controller.states;
 import controller.Controller;
 import model.Pc;
 import model.squares.Square;
-
 import java.util.HashSet;
 
 public class RunAroundState extends State{

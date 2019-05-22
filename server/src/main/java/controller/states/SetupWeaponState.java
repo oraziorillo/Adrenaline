@@ -56,6 +56,7 @@ public class SetupWeaponState extends State {
 
     @Override
     public boolean ok() {
+        //TODO: gli facciamo pagare ora il costo dell'arma??
         return true;
     }
 

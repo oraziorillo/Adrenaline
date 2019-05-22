@@ -12,7 +12,6 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -228,12 +227,14 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void switchFireMode() {
-        currState.switchFireMode(currWeapon);
+        if(currWeapon.getFireModes().size() > 1)
+            currState.switchFireMode(currWeapon);
     }
 
     @Override
     public synchronized void upgrade() {
-        currState.upgrade(currWeapon);
+        if(!currWeapon.getUpgrades().isEmpty())
+            currState.upgrade(currWeapon);
     }
 
     @Override
@@ -242,7 +243,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
     @Override
-    public void skip() throws IOException {
+    public void skip() {
         if (currState.skipAction())
             currState = currState.nextState();
     }

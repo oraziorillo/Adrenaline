@@ -132,10 +132,7 @@ public class WeaponCard {
     }
 
 
-    public void use(Pc shooter) {
-        for (WeaponEffect effect : effectsToApply) {
-            effect.execute(shooter);
-        }
+    public void clear() {
         effectsToApply.clear();
     }
 }

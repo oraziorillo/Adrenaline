@@ -74,6 +74,13 @@ public class Game {
         //TODO
     }
 
+    // potrebbe far comodo avere nel game un set di targettable che possa essere facilmente settato/resettato
+    public void resetTargetables(int maxDistance, Square referenceSquare){
+        for (Square s : referenceSquare.atDistance(maxDistance))
+            s.setTargetable(false);
+    }
+
+
     public void addPc(Pc pc){
         pcs.add(pc);
     }

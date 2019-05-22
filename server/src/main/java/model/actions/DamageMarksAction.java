@@ -63,6 +63,12 @@ public class DamageMarksAction extends Action {
 
 
     @Override
+    public boolean isExplosive() {
+        return roomExplosive || squareExplosive;
+    }
+
+
+    @Override
     public boolean isAdditionalDamage(){
         return additionalDamage;
     }
@@ -88,7 +94,7 @@ public class DamageMarksAction extends Action {
 
     @Override
     public void selectPc(Pc targetPc) {
-        if(!roomExplosive && ! squareExplosive)
+        if(!roomExplosive && !squareExplosive)
             addTarget(targetPc);
     }
 
@@ -119,10 +125,15 @@ public class DamageMarksAction extends Action {
     }
 
 
-
     private void addTarget (Pc target){
         if (targets.size() == maxNumberOfTargets)
             targets.removeFirst();
         targets.add(target);
+    }
+
+
+    @Override
+    public boolean isComplete() {
+        return !targets.isEmpty();
     }
 }
