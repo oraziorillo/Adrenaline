@@ -11,6 +11,7 @@ import java.util.HashSet;
 public class GrabStuffState extends State{
 
     private Square targetSquare;
+    private HashSet<Square> targetableSquares;
 
     GrabStuffState(Controller controller) {
         super(controller);
@@ -46,8 +47,8 @@ public class GrabStuffState extends State{
         else {
             maxDistance = (controller.beforeFirstPlayer(controller.getCurrPlayerIndex())) ? 2 : 3;
         }
-        HashSet<Square> targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
-        controller.getGame().setTargetableSquares(targetableSquares);
+        targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
 
@@ -73,7 +74,7 @@ public class GrabStuffState extends State{
             //TODO the pc has not enough ammo
             return false;
         }
-        controller.getGame().resetTargetableSquares();
+        controller.getGame().setTargetableSquares(targetableSquares, false);
         return true;
     }
 

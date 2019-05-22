@@ -66,18 +66,8 @@ public class Game {
         this.message = s;
     }
 
-    public void setTargetableSquares(HashSet<Square> targetableSquares){
-        targetableSquares.forEach(s -> s.setTargetable(true));
-    }
-
-    public void resetTargetableSquares() {
-        //TODO
-    }
-
-    // potrebbe far comodo avere nel game un set di targettable che possa essere facilmente settato/resettato
-    public void resetTargetables(int maxDistance, Square referenceSquare){
-        for (Square s : referenceSquare.atDistance(maxDistance))
-            s.setTargetable(false);
+    public void setTargetableSquares(HashSet<Square> targetableSquares, boolean targetable){
+        targetableSquares.forEach(s -> s.setTargetable(targetable));
     }
 
 

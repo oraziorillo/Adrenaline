@@ -2,6 +2,7 @@ package controller.states;
 
 import controller.Controller;
 import controller.player.Player;
+import enums.CardinalDirectionEnum;
 import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
@@ -48,6 +49,10 @@ public abstract class State {
     public void upgrade(WeaponCard weapon) {}
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
+
+    public void selectTarget(Pc targetPc) {}
+
+    public void selectDirection(CardinalDirectionEnum direction) {}
 
     public boolean skipAction() {
         return false;

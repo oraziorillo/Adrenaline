@@ -9,7 +9,7 @@ public class RunAroundState extends State{
 
 
     private Square targetSquare;
-
+    private HashSet<Square> targetableSquares;
 
     RunAroundState(Controller controller) {
         super(controller);
@@ -27,8 +27,8 @@ public class RunAroundState extends State{
     @Override
     void setTargetableToValidSquares(Pc referencePc){
         int maxDistance = controller.isFinalFrenzy() ? 4 : 3;
-        HashSet<Square> targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
-        controller.getGame().setTargetableSquares(targetableSquares);
+        targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
 
@@ -36,7 +36,7 @@ public class RunAroundState extends State{
     public boolean ok() {
         if (targetSquare != null) {
             controller.getCurrPc().moveTo(targetSquare);
-            controller.getGame().resetTargetableSquares();
+            controller.getGame().setTargetableSquares(targetableSquares, false);
             return true;
         }
         return false;

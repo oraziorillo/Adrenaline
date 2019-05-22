@@ -12,6 +12,7 @@ public class ShootPeopleState extends State {
     private boolean weaponSelected;
     private boolean haveToReload;
     private Square targetSquare;
+    private HashSet<Square> targetableSquares;
 
     ShootPeopleState(Controller controller) {
         super(controller);
@@ -59,8 +60,8 @@ public class ShootPeopleState extends State {
             maxDistance = 1;
         } else
             maxDistance = 2;
-        HashSet<Square> targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
-        controller.getGame().setTargetableSquares(targetableSquares);
+        targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
 
@@ -68,7 +69,7 @@ public class ShootPeopleState extends State {
     public boolean ok() {
         if (targetSquare != null) {
             controller.getCurrPc().moveTo(targetSquare);
-            controller.getGame().resetTargetableSquares();
+            controller.getGame().setTargetableSquares(targetableSquares, false);
             moved = true;
             return false;
         }

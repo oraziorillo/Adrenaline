@@ -9,6 +9,7 @@ import model.targetCheckers.SimpleStraightLineDecorator;
 import model.targetCheckers.TargetChecker;
 import org.json.simple.JSONObject;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -76,9 +77,13 @@ public abstract class Action {
     }
 
 
-    public Set<Square> validSquares(Square shooterSquare) {
+    public HashSet<Square> validSquares(Square shooterSquare) {
         return (orientedTargetChecker == null) ? basicTargetChecker.validSquares(shooterSquare)
                                                : orientedTargetChecker.validSquares(shooterSquare);
+    }
+
+    public HashSet<Square> validDestinations(Square targetSquare) {
+        return null;
     }
 
     public abstract boolean isComplete();

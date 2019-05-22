@@ -6,6 +6,8 @@ import model.targetCheckers.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.HashSet;
+
 public class MovementAction extends Action {
 
     private boolean selfMovement;
@@ -83,6 +85,12 @@ public class MovementAction extends Action {
     public void selectSquare(Square targetSquare) {
         if (target != null)
             this.targetSquare = targetSquare;
+    }
+
+
+    @Override
+    public HashSet<Square> validDestinations(Square targetSquare) {
+        return destinationChecker.validSquares(targetSquare);
     }
 
 

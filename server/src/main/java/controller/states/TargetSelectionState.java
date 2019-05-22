@@ -6,8 +6,6 @@ import model.Pc;
 import model.WeaponEffect;
 import model.actions.Action;
 import model.squares.Square;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -20,17 +18,15 @@ public class TargetSelectionState extends State {
     private WeaponEffect currEffect;
     private Action currAction;
     private Set<Pc> mainEffectTargets;
-    private ArrayList<Pc> targetSelected;
-    private Set<Square> targettableSquares;
+    private HashSet<Square> targetableSquares;
 
     TargetSelectionState(Controller controller) {
         super(controller);
         this.mainEffectTargets = new HashSet<>();
-        this.effectsToApply = controller.getCurrWeapon().getCurrEffect();
+        this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
-        this.targetSelected = new ArrayList<>();
-        targettableSquares = currAction.validSquares(controller.getCurrPc().getCurrSquare());
+        setTargetableToValidSquares(controller.getCurrPc());
     }
 
 
@@ -48,14 +44,21 @@ public class TargetSelectionState extends State {
             currEffect = effectsToApply.get(effectIndex);
         } else
             actionIndex++;
-         currAction = currEffect.getActionAtIndex(actionIndex);
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        setTargetableToValidSquares(controller.getCurrPc());
+        currAction = currEffect.getActionAtIndex(actionIndex);
     }
 
 
+    @Override
+    void setTargetableToValidSquares(Pc referencePc) {
+        targetableSquares = currAction.validSquares(controller.getCurrPc().getCurrSquare());
+        controller.getGame().setTargetableSquares(targetableSquares, true);
+    }
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if((!currEffect.isOriented() || directionSelected) && targettableSquares.contains(targetSquare)){
+        if((!currEffect.isOriented() || directionSelected) && targetSquare.isTargetable()){
             currAction.selectSquare(targetSquare);
         }
     }
@@ -97,21 +100,28 @@ public class TargetSelectionState extends State {
     public boolean ok() {
         if (currEffect.isOriented() && !directionSelected)
             return false;
-        if (currAction.isComplete())
-            controller.getGame().resetTargetableSquares(//TODO);
+        if (currAction.isComplete()) {
             if (hasNext()) {
                 next();
                 return false;
             } else {
                 currEffect.execute(controller.getCurrPc());
                 controller.getCurrWeapon().clear();
+                controller.getGame().setTargetableSquares(targetableSquares, false);
                 return true;
             }
-            return false;
+        }
+        return false;
     }
+
 
     @Override
     public State nextState() {
-        return null;
+        controller.decreaseRemainingActions();
+        if (controller.getRemainingActions() == 0) {
+            controller.resetRemainingActions();
+            return new EndTurnState(controller);
+        } else
+            return new StartTurnState(controller);
     }
 }
