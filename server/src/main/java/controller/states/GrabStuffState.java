@@ -2,8 +2,11 @@ package controller.states;
 
 import controller.Controller;
 import exceptions.EmptySquareException;
+import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import model.squares.Square;
+
+import java.util.HashSet;
 
 public class GrabStuffState extends State{
 
@@ -11,18 +14,19 @@ public class GrabStuffState extends State{
 
     GrabStuffState(Controller controller) {
         super(controller);
+        setTargetableToValidSquares(controller.getCurrPc());
     }
 
 
     @Override
-    public void setWeaponToGrab(int index) {
+    public void selectWeaponOnBoard(int index) {
         if (targetSquare != null)
             targetSquare.setWeaponToGrabIndex(index);
     }
 
 
     @Override
-    public void setWeaponToDrop(int index) {
+    public void selectWeaponOfMine(int index) {
         if (targetSquare != null)
             targetSquare.setWeaponToDropIndex(index);
     }
@@ -33,6 +37,19 @@ public class GrabStuffState extends State{
         if (!targetSquare.isEmpty())
             this.targetSquare = targetSquare;
     }
+
+    @Override
+    void setTargetableToValidSquares(Pc referencePc){
+        int maxDistance;
+        if (!controller.isFinalFrenzy())
+            maxDistance = (referencePc.getAdrenaline() < 1) ? 1 : 2;
+        else {
+            maxDistance = (controller.beforeFirstPlayer(controller.getCurrPlayerIndex())) ? 2 : 3;
+        }
+        HashSet<Square> targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        controller.getGame().setTargetableSquares(targetableSquares);
+    }
+
 
     @Override
     public boolean ok() {
@@ -48,21 +65,16 @@ public class GrabStuffState extends State{
             //TODO print error
             return false;
         } catch (IllegalStateException e) {
+            currPc.moveTo(oldPosition);
             //TODO print what the player should select
             return false;
+        } catch (NotEnoughAmmoException e) {
+            currPc.moveTo(oldPosition);
+            //TODO the pc has not enough ammo
+            return false;
         }
+        controller.getGame().resetTargetableSquares();
         return true;
-    }
-
-    @Override
-    public void setTargetableSquares(Pc referencePc){
-        int maxDistance;
-        if (!controller.isFinalFrenzy())
-            maxDistance = (referencePc.getAdrenaline() < 1) ? 1 : 2;
-        else {
-            maxDistance = (controller.beforeFirstPlayer(controller.getCurrPlayerIndex())) ? 2 : 3;
-        }
-        controller.getGame().setTargetables(maxDistance, referencePc.getCurrSquare());
     }
 
 

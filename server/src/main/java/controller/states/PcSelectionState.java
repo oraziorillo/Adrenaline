@@ -7,17 +7,28 @@ import enums.PcColourEnum;
 
 public class PcSelectionState extends State {
 
+    private PcColourEnum pcColour;
+    private Player player;
+
     PcSelectionState(Controller controller) {
         super(controller);
     }
 
     @Override
-    public boolean assignPcToPlayer(PcColourEnum colour, Player player) {
-        Pc pc;
-        pc = new Pc(colour, controller.getGame());
-        player.setPc(pc);
-        controller.getGame().addPc(pc);
-        return true;
+    public void selectPcForPlayer(PcColourEnum colour, Player player) {
+        this.pcColour = colour;
+        this.player = player;
+    }
+
+    @Override
+    public boolean ok() {
+        if (pcColour != null && player != null) {
+            Pc pc = new Pc(pcColour, controller.getGame());
+            player.setPc(pc);
+            controller.getGame().addPc(pc);
+            return true;
+        }
+        return false;
     }
 
     @Override

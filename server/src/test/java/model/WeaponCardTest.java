@@ -39,9 +39,9 @@ public class WeaponCardTest {
     public void updateFiremodesAndUpgradesFine(){
         weaponCard.selectFireMode(0);
         weaponCard.addUpgrade(0);
-        assertEquals(2, weaponCard.getCurrentEffect().size());
+        assertEquals(2, weaponCard.getEffectsToApply().size());
         weaponCard.removeUpgrade(0);
-        assertEquals(1, weaponCard.getCurrentEffect().size());
+        assertEquals(1, weaponCard.getEffectsToApply().size());
         weaponCard.addUpgrade(0);
     }
 

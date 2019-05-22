@@ -30,11 +30,35 @@ public abstract class Action {
         return optional;
     }
 
+
+    public boolean isSquareExplosive() {
+        return false;
+    }
+
+
+    public boolean isRoomExplosive() {
+        return false;
+    }
+
+
+    public boolean isAdditionalDamage(){
+        return false;
+    }
+
+
+    public boolean isExclusiveForOldTargets() {
+        return false;
+    }
+
+
     public abstract void selectPc(Pc targetPc);
+
 
     public abstract void selectSquare(Square targetSquare);
 
+
     public abstract void apply(Pc shooter);
+
 
     public void setTargetSquare(Square s){
         this.targetSquare = s;
@@ -46,19 +70,11 @@ public abstract class Action {
                                                : new SimpleStraightLineDecorator(basicTargetChecker, direction);
     }
 
+
     public Set<Square> validSquares(Square shooterSquare) {
         return (orientedTargetChecker == null) ? basicTargetChecker.validSquares(shooterSquare)
                                                : orientedTargetChecker.validSquares(shooterSquare);
     }
-
-    public boolean isAdditionalDamage(){
-        return false;
-    }
-
-    public boolean isExclusiveForOldTargets() {
-        return false;
-    }
-
 }
 
 

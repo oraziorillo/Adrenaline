@@ -2,6 +2,7 @@ package model.squares;
 
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
+import exceptions.NotEnoughAmmoException;
 import model.Deck;
 import model.Pc;
 import model.WeaponCard;
@@ -21,11 +22,6 @@ public class SpawnPoint extends Square {
         weapons = new WeaponCard[3];
         for (int i = 0; i < 3; i++)
             weapons[i] = weaponDeck.draw();
-    }
-
-
-    public WeaponCard[] getWeapons() {
-        return weapons;
     }
 
 
@@ -49,7 +45,7 @@ public class SpawnPoint extends Square {
 
 
     @Override
-    public void collect(Pc currPc) throws EmptySquareException {
+    public void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException {
         if (isEmpty())
             throw new EmptySquareException();
         if (weaponToGrabIndex < 0)
@@ -58,7 +54,7 @@ public class SpawnPoint extends Square {
         if (weaponToDropIndex < 0 && currPc.isFullyArmed())
             throw new IllegalStateException("You have to choose a weapon to drop");
         else {
-            WeaponCard weaponToDrop = currPc.getWeapons()[weaponToDropIndex];
+            WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
             weapons[weaponToGrabIndex] = weaponToDrop;
         }
         currPc.addWeapon(weaponToGrab, weaponToDropIndex);

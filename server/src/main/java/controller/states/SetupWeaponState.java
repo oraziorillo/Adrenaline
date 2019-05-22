@@ -3,13 +3,12 @@ package controller.states;
 import controller.Controller;
 import model.WeaponCard;
 import model.WeaponEffect;
-
 import java.util.ArrayList;
 
 public class SetupWeaponState extends State {
 
-    boolean waiting;
-    int fireModeIndex, upgradeIndex;
+    private boolean waiting;
+    private int fireModeIndex, upgradeIndex;
 
     SetupWeaponState(Controller controller) {
         super(controller);

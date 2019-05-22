@@ -62,6 +62,29 @@ public class DamageMarksAction extends Action {
     }
 
 
+    @Override
+    public boolean isAdditionalDamage(){
+        return additionalDamage;
+    }
+
+
+    @Override
+    public boolean isSquareExplosive() {
+        return squareExplosive;
+    }
+
+
+    @Override
+    public boolean isRoomExplosive() {
+        return roomExplosive;
+    }
+
+
+    @Override
+    public boolean isExclusiveForOldTargets(){
+        return exclusiveForOldTargets;
+    }
+
 
     @Override
     public void selectPc(Pc targetPc) {
@@ -95,17 +118,6 @@ public class DamageMarksAction extends Action {
 
     }
 
-
-    @Override
-    public boolean isAdditionalDamage(){
-        return additionalDamage;
-    }
-
-
-    @Override
-    public boolean isExclusiveForOldTargets(){
-        return exclusiveForOldTargets;
-    }
 
 
     private void addTarget (Pc target){

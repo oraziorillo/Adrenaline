@@ -36,6 +36,8 @@ public interface RemoteController extends Remote {
 
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
 
+    void skip() throws IOException;
+
     void ok() throws IOException;
 
     void reload() throws IOException;

@@ -65,14 +65,7 @@ public class SpawnPointTest {
       assertSame( card1,tested.pickWeapon( 1 ) );
       assertSame( card2,tested.pickWeapon( 2 ) );
    }
-   
-   @Test
-   public void getWeaponsReturnedArrayEqualsButNotSame(){
-      WeaponCard[] expected = new WeaponCard[]{card0,card1,card2};
-      assertEquals( expected,tested.getWeapons() );
-      assertNotSame( expected,tested.getWeapons() );
-      
-   }
+
    
    private void emptyTheSquare(Square toEmpty){
       for(int i=0; i<3;i++){

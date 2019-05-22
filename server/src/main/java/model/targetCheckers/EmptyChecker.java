@@ -13,7 +13,7 @@ public class EmptyChecker extends TargetChecker {
         for(int i = 0; i < game.map.length; i++){
             for(int j = 0; j < game.map[0].length; j++){
                 try {
-                    temp.add(game.getTile(i, j));
+                    temp.add(game.getSquare(i, j));
                 } catch (HoleInMapException e) {
                     e.printStackTrace();
                 }

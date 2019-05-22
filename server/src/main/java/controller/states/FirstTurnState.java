@@ -8,20 +8,33 @@ import enums.AmmoEnum;
 
 public class FirstTurnState extends State{
 
+    private Pc pcToSpawn;
+    private int powerUpToDropIndex;
+
     FirstTurnState(Controller controller) {
         super(controller);
+        powerUpToDropIndex = -1;
     }
 
     @Override
-    public boolean spawnPc(Pc pc, int n){
-        PowerUpCard powerUp = pc.getPowerUpCard(n);
-        AmmoEnum colour = powerUp.getColour();
-        Square s = controller.getGame().getSpawnPoint(colour.toSquareColour());
-        pc.respawn(s);
-        pc.moveTo(s);
-        pc.discardPowerUp(powerUp);
-        s.addPc(pc);
-        return true;
+    public void spawnPc(Pc pc, int powerUpToDropIndex){
+        this.pcToSpawn = pc;
+        this.powerUpToDropIndex = powerUpToDropIndex;
+    }
+
+    @Override
+    public boolean ok() {
+        if (pcToSpawn != null && powerUpToDropIndex > 0) {
+            PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
+            AmmoEnum colour = powerUp.getColour();
+            Square s = controller.getGame().getSpawnPoint(colour.toSquareColour());
+            pcToSpawn.respawn(s);
+            pcToSpawn.moveTo(s);
+            pcToSpawn.discardPowerUp(powerUp);
+            s.addPc(pcToSpawn);
+            return true;
+        }
+        return false;
     }
 
     @Override

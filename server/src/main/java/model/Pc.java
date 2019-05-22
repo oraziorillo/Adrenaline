@@ -65,11 +65,6 @@ public class Pc {
     }
 
 
-    public WeaponCard[] getWeapons(){
-        return this.weapons;
-    }
-
-
     public PowerUpCard getPowerUpCard(int index){
         if(index < 0 || index > powerUps.size() - 1){
             throw new IllegalArgumentException("This index is not valid");
@@ -78,13 +73,11 @@ public class Pc {
     }
 
 
-    private WeaponCard weaponAtIndex(int index) {
-        WeaponCard temp;
+    public WeaponCard weaponAtIndex(int index) {
         if (index < 0 || index > 3) {
             throw new IllegalArgumentException("This index is not valid");
         }
-        temp = weapons[index];
-        return temp;
+        return weapons[index];
     }
 
 
@@ -138,7 +131,7 @@ public class Pc {
         if (isFullyArmed()){
             throw new FullyArmedException("You have to drop one card");
         }
-        SpawnPoint workingTile = (SpawnPoint) currSquare;
+        SpawnPoint workingTile  =(SpawnPoint) currSquare;
         int index = 0;
         while (index < weapons.length && weapons[index] != null) {
             index += 1;

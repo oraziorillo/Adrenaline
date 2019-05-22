@@ -4,30 +4,43 @@ import controller.Controller;
 import model.Pc;
 import model.squares.Square;
 
+import java.util.HashSet;
+
 public class RunAroundState extends State{
+
 
     private Square targetSquare;
 
+
     RunAroundState(Controller controller) {
         super(controller);
+        setTargetableToValidSquares(controller.getCurrPc());
     }
+
 
     @Override
     public void selectSquare(Square targetSquare){
-        this.targetSquare = targetSquare;
+        if (targetSquare.isTargetable())
+            this.targetSquare = targetSquare;
+    }
+
+
+    @Override
+    void setTargetableToValidSquares(Pc referencePc){
+        int maxDistance = controller.isFinalFrenzy() ? 4 : 3;
+        HashSet<Square> targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        controller.getGame().setTargetableSquares(targetableSquares);
     }
 
 
     @Override
     public boolean ok() {
-        controller.getCurrPc().moveTo(targetSquare);
-        return true;
-    }
-
-    @Override
-    public void setTargetableSquares(Pc referencePc){
-        int maxDistance = controller.isFinalFrenzy() ? 4 : 3;
-        controller.getGame().setTargetables(maxDistance, referencePc.getCurrSquare());
+        if (targetSquare != null) {
+            controller.getCurrPc().moveTo(targetSquare);
+            controller.getGame().resetTargetableSquares();
+            return true;
+        }
+        return false;
     }
 
 

@@ -1,10 +1,11 @@
 package controller.states;
 
 import controller.Controller;
+import model.squares.Square;
 
 public class EndTurnState extends State {
 
-    Boolean toReload;
+    private Boolean toReload;
 
     EndTurnState(Controller controller) {
         super(controller);
@@ -17,8 +18,8 @@ public class EndTurnState extends State {
     }
 
     @Override
-    public boolean ok() {
-        controller.getSquaresToRefill().forEach(s -> s.refill());
+    public boolean pass() {
+        controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
         return true;
     }

@@ -4,16 +4,28 @@ import controller.Controller;
 
 public class SetupKillShotTrackState extends State{
 
+    private int killShotTrackIndex;
+
     SetupKillShotTrackState(Controller controller) {
         super(controller);
+        this.killShotTrackIndex = -1;
     }
 
     @Override
-    public boolean setNumberOfSkulls(int n) {
-        controller.getGame().initKillShotTrack(n);
-        return true;
+    public void selectNumberOfSkulls(int n) {
+        this.killShotTrackIndex = n;
     }
 
+    @Override
+    public boolean ok() {
+        if (killShotTrackIndex >= 0){
+            controller.getGame().initKillShotTrack(killShotTrackIndex);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public State nextState(){
         return new PcSelectionState(controller);
     }

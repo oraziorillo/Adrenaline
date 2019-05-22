@@ -2,34 +2,53 @@ package controller.states;
 
 import controller.Controller;
 import model.Pc;
-import model.squares.Square;
 import model.WeaponCard;
+import model.squares.Square;
+import java.util.HashSet;
 
 public class ShootPeopleState extends State {
 
     private boolean moved;
     private boolean weaponSelected;
     private boolean haveToReload;
+    private Square targetSquare;
 
     ShootPeopleState(Controller controller) {
         super(controller);
         this.moved = false;
         this.weaponSelected = false;
         this.haveToReload = false;
+        setTargetableToValidSquares(controller.getCurrPc());
     }
 
 
     @Override
     public void selectSquare(Square targetSquare) {
         if (!moved && targetSquare.isTargetable()) {
-            controller.getCurrPc().moveTo(targetSquare);
-            moved = true;
+            this.targetSquare = targetSquare;
         }
     }
 
 
     @Override
-    public void setTargetableSquares(Pc referencePc){
+    public void selectWeaponOfMine(int index) {
+        WeaponCard currWeapon = controller.getCurrPc().weaponAtIndex(index);
+        if (currWeapon.isLoaded()) {
+            controller.setCurrWeapon(currWeapon);
+            this.weaponSelected = true;
+        }
+    }
+
+
+    @Override
+    public boolean reload(){
+        this.haveToReload = true;
+        return true;
+    }
+
+
+    @Override
+    void setTargetableToValidSquares(Pc referencePc){
         int maxDistance;
         if (!controller.isFinalFrenzy()) {
             if (referencePc.getAdrenaline() < 2)
@@ -40,25 +59,22 @@ public class ShootPeopleState extends State {
             maxDistance = 1;
         } else
             maxDistance = 2;
-        controller.getGame().setTargetables(maxDistance, referencePc.getCurrSquare());
+        HashSet<Square> targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        controller.getGame().setTargetableSquares(targetableSquares);
     }
 
 
     @Override
-    public boolean selectWeapon(Pc currPc, int index) {
-        WeaponCard currWeapon = currPc.getWeapons()[index];
-        if (currWeapon.isLoaded()) {
-            controller.setCurrWeapon(currWeapon);
-            this.weaponSelected = true;
-            return true;
+    public boolean ok() {
+        if (targetSquare != null) {
+            controller.getCurrPc().moveTo(targetSquare);
+            controller.getGame().resetTargetableSquares();
+            moved = true;
+            return false;
         }
-        return false;
+        return weaponSelected || haveToReload;
     }
 
-    public boolean reload(){
-        this.haveToReload = true;
-        return true;
-    }
 
     @Override
     public State nextState() {

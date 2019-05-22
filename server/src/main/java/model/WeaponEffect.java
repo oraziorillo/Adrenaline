@@ -49,6 +49,14 @@ public class WeaponEffect {
         return cost.clone();
     }
 
+    public LinkedList<Action> getActions() {
+        return actions;
+    }
+
+    public Action getActionAtIndex(int index) {
+        return actions.get(index);
+    }
+
     public void execute(Pc shooter) {
         for (Action currAction : actions) {
                 currAction.apply(shooter);

@@ -15,21 +15,15 @@ public abstract class State {
         this.controller = controller;
     }
 
-    public boolean initializeMap(int n) {
-        return false;
-    }
+    void setTargetableToValidSquares(Pc referencePc) {}
 
-    public boolean setNumberOfSkulls(int n) {
-        return false;
-    }
+    public void selectMap(int n) {}
 
-    public boolean assignPcToPlayer(PcColourEnum colour, Player player){
-        return false;
-    }
+    public void selectNumberOfSkulls(int n) {}
 
-    public boolean spawnPc(Pc pc, int n) {
-        return false;
-    }
+    public void selectPcForPlayer(PcColourEnum colour, Player player) {}
+
+    public void spawnPc(Pc pc, int n) {}
 
     public boolean runAround(){
         return false;
@@ -43,25 +37,21 @@ public abstract class State {
         return false;
     }
 
-    public void setTargetableSquares(Pc referencePc){}
+    public void selectSquare(Square targetSquare) {}
 
-    public void selectSquare(Square targetSquare){}
+    public void selectWeaponOnBoard(int index) {}
 
-    public void setWeaponToGrab(int index){}
-
-    public void setWeaponToDrop(int index){}
-
-    public boolean grabWeapon(Pc currPc, int index){ return false; }
-
-    public boolean selectWeapon(Pc currPc, int index){
-        return false;
-    }
+    public void selectWeaponOfMine(int index) {}
 
     public void switchFireMode(WeaponCard weapon) {}
 
     public void upgrade(WeaponCard weapon) {}
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
+
+    public boolean skipAction() {
+        return false;
+    }
 
     public boolean ok() {
         return false;

@@ -12,6 +12,7 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -140,21 +141,22 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseMap(int n) {
-        if (n >= FIRST_MAP && n <= LAST_MAP && currState.initializeMap(n))
-            currState = currState.nextState();
+        if (n >= FIRST_MAP && n <= LAST_MAP)
+            currState.selectMap(n);
     }
 
 
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
-        if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE && (currState.setNumberOfSkulls(n)))
-            currState = currState.nextState();
+        if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE)
+            currState.selectNumberOfSkulls(n);
     }
 
 
     @Override
     public synchronized void choosePcColour(PcColourEnum colour) {
-        if (availablePcColours.contains(colour) && currState.assignPcToPlayer(colour, players.get(currPlayerIndex))) {
+        if (availablePcColours.contains(colour)) {
+            currState.selectPcForPlayer(colour, players.get(currPlayerIndex));
             availablePcColours.remove(colour);
             nextTurn();
             if (currPlayerIndex == 0)
@@ -166,7 +168,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void discardAndSpawn(int n) {
         Pc currPc = getCurrPc();
-        if (n == 0 || n == 1 && currState.spawnPc(currPc, n)) {
+        if (n == 0 || n == 1) {
+            currState.spawnPc(currPc, n);
             nextTurn();
             if (currPlayerIndex == 0)
                 currState = currState.nextState();
@@ -177,22 +180,19 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void runAround() {
-        if (currState.runAround())
-            currState.setTargetableSquares(getCurrPc());
+        currState.runAround();
     }
 
 
     @Override
     public synchronized void grabStuff() {
-        if (currState.grabStuff())
-            currState.setTargetableSquares(getCurrPc());
+        currState.grabStuff();
     }
 
 
     @Override
     public synchronized void shootPeople() {
-        if (currState.shootPeople())
-            currState.setTargetableSquares(getCurrPc());
+        currState.shootPeople();
     }
 
 
@@ -203,7 +203,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             currState = currState.nextState();
          */
         try {
-            currState.selectSquare(game.getTile(x, y));
+            currState.selectSquare(game.getSquare(x, y));
         } catch (HoleInMapException e) {
             e.printStackTrace();
         }
@@ -214,20 +214,15 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseWeaponOnSpawnPoint(int index) {
-        /*if ((index >= 0 && index <= 2) && currState.grabWeapon(getCurrPc(), index))
-            currState = currState.nextState();
-         */
-        currState.setWeaponToGrab(index);
+        if (index >= 0 && index <= 2)
+            currState.selectWeaponOnBoard(index);
     }
 
 
     @Override
     public synchronized void chooseWeaponOfMine(int index) {
-        /*
-        if ((index >= 0 && index <= 2) && currState.selectWeapon(getCurrPc(), index))
-            currState = currState.nextState();
-         */
-        currState.setWeaponToDrop(index);
+        if (index >= 0 && index <= 2)
+            currState.selectWeaponOfMine(index);
     }
 
 
@@ -244,6 +239,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
         currState.setAsynchronousEffectOrder(currWeapon, beforeBasicEffect);
+    }
+
+    @Override
+    public void skip() throws IOException {
+        if (currState.skipAction())
+            currState = currState.nextState();
     }
 
     @Override
