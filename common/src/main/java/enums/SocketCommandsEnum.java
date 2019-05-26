@@ -25,12 +25,4 @@ public enum SocketCommandsEnum {
         return super.toString();
     }
     
-    public static SocketCommandsEnum fromString(String s){
-        for( SocketCommandsEnum cmd: SocketCommandsEnum.values()){
-            if(s.equals( cmd.toString())){
-                return cmd;
-            }
-        }
-        throw new IllegalArgumentException("Invalid command");
-    }
 }
