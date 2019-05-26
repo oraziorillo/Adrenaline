@@ -6,7 +6,8 @@ GENERAL NOTES:
 
 - invece di controllare gli indici nel controller lanciamo eccezioni nel model che catchiamo nel controller
 
-- stabilire il paramtero da passare a resetTargettables
+-stabilire quando chiamare il destination checker in targetSelectionState
+-additionalDamage and exclusiveOldTargets (teniamo una lista dei target selezionati
 
 
 

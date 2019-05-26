@@ -16,7 +16,7 @@ public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
 
     public HashSet<Square> validSquares(Square referenceSquare) {
         Square tempRefSquare;
-        Optional<Square> temp;
+        Square temp;
         HashSet<Square> tilesInDirections = new HashSet<>();
         HashSet<Square> resultSquares;
         if (direction == null) {
@@ -24,21 +24,21 @@ public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
                 tempRefSquare = referenceSquare;
                 do {
                     temp = tempRefSquare.onDirection(d);
-                    if (temp.isPresent()) {
-                        tilesInDirections.add(temp.get());
-                        tempRefSquare = temp.get();
+                    if (temp != null) {
+                        tilesInDirections.add(temp);
+                        tempRefSquare = temp;
                     }
-                } while (temp.isPresent());
+                } while (temp != null);
             }
         } else {
             tempRefSquare = referenceSquare;
             do {
                 temp = tempRefSquare.onDirection(direction);
-                if (temp.isPresent()) {
-                    tilesInDirections.add(temp.get());
-                    tempRefSquare = temp.get();
+                if (temp != null) {
+                    tilesInDirections.add(temp);
+                    tempRefSquare = temp;
                 }
-            } while (temp.isPresent());
+            } while (temp != null);
         }
         resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(tilesInDirections);

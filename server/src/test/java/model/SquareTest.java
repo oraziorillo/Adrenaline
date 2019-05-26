@@ -43,7 +43,7 @@ public class SquareTest {
     }
     
     /**
-     * assicurarsi che non ci sia nessuna tile a sinistra di tested
+     * assicurarsi che non ci sia nessun tile a sinistra di tested
      */
     private void setupSquareMocks(){
         onRight = Mockito.mock( Square.class );
@@ -106,18 +106,17 @@ public class SquareTest {
     }
     
     @Test
-    public void onCardinalDirectionReturnsOptionalContainingTheTileOnTheRightWhenOneTileReachableInThatDirection(){
-        assertSame(onRight, tested.onDirection( CardinalDirectionEnum.EAST ).get() );
+    public void onCardinalDirectionReturnsTheVisibleSquareOnTheSelectedDirectionIfThereIsOne(){
+        assertSame(onRight, tested.onDirection( CardinalDirectionEnum.EAST ) );
     }
     
     @Test
-    public void onCardinalDirectionReturnsEmptyOptionalWhenNoTileInThatDirection(){
-        //TODO: fix it assertTrue( tested.onDirection( CardinalDirectionEnum.WEST ).isEmpty());
+    public void onCardinalDirectionReturnsNullWhenNoSquareInThatDirection(){
+        assertSame(null, tested.onDirection( CardinalDirectionEnum.WEST ));
     }
     
     @Test
-    public void atDistanceReturnedCollectionContainsAllTheInterestedTilesAndNoMore(){
-        //TODO: Alessio, non riesco a testare il funzionamento di questo metodo. Puoi controllarlo?
+    public void atDistanceReturnedCollectionContainsAllTheInterestedSquaresAndNoMore(){
         int distance = 2;
         Collection<Square> ok = new HashSet<>();
         Collection<Square> nope = new HashSet<>();

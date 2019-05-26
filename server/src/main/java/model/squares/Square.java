@@ -107,17 +107,17 @@ public abstract class Square {
         if(dist < 0){
             throw new IllegalArgumentException("Distance has to be positive");
         }
-        Optional<Square> tempTile;
+        Square tempSquare;
         HashSet<Square> temp = new HashSet<>();
-        if(dist == 0){
-            temp.add(this);
-        }
-        else {
+        if(dist != 0){
             for(CardinalDirectionEnum direction : CardinalDirectionEnum.values()){
-                tempTile = this.onDirection(direction);
-                tempTile.ifPresent(square -> temp.addAll(square.atDistance(dist - 1)));
+                tempSquare = this.onDirection(direction);
+                if(tempSquare != null) {
+                    temp.addAll(tempSquare.atDistance(dist -1));
+                }
             }
         }
+        temp.add(this);
         return temp;
     }
 
@@ -128,25 +128,25 @@ public abstract class Square {
      * @param direction the cardinal direction
      * @return The first tile in the given direction if there is no wall between, Optional.empty else
      */
-    public Optional<Square> onDirection(CardinalDirectionEnum direction){
+    public Square onDirection(CardinalDirectionEnum direction){
         Optional<Square> temp = Optional.empty();
         switch(direction) {
             case NORTH:
-                temp = visibles.stream().filter(elem -> elem.getY() == this.getY() + 1 && elem.getX() == this.getX()).findFirst();
+                temp = this.getVisibles().stream().filter(elem -> elem.getY() == this.getY() + 1 && elem.getX() == this.getX()).findFirst();
                 break;
             case EAST:
-                temp = visibles.stream().filter(elem -> elem.getX() == this.getX() + 1 && elem.getY() == this.getY()).findFirst();
+                temp = this.getVisibles().stream().filter(elem -> elem.getX() == this.getX() + 1 && elem.getY() == this.getY()).findFirst();
                 break;
             case SOUTH:
-                temp = visibles.stream().filter(elem -> elem.getY() == this.getY() - 1 && elem.getX() == this.getX()).findFirst();
+                temp = this.getVisibles().stream().filter(elem -> elem.getY() == this.getY() - 1 && elem.getX() == this.getX()).findFirst();
                 break;
             case WEST:
-                temp = visibles.stream().filter(elem -> elem.getX() == this.getX() - 1 && elem.getY() == this.getY()).findFirst();
+                temp = this.getVisibles().stream().filter(elem -> elem.getX() == this.getX() - 1 && elem.getY() == this.getY()).findFirst();
                 break;
             default:
                 break;
         }
-        return temp;
+        return temp.isPresent() ? temp.get() : null;
     }
 
 
