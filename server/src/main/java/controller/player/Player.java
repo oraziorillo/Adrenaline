@@ -12,7 +12,7 @@ public class Player{
     private Pc pc;
 
     @Contract(pure = true)
-    Player(String username, UUID uuid){
+    public Player(String username, UUID uuid){
         this.username=username;
         this.uuid=uuid;
     }
