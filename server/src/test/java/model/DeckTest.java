@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class DeckTest {
     @Mock private Game g;
@@ -26,15 +27,10 @@ public class DeckTest {
     
     @Before
     public void setup(){
-        tested = new Deck<>( g );
+        tested = new Deck<>( );
         for(Integer i: zeroTo99){
             tested.add( i );
         }
-    }
-
-    @Test
-    public void constructedWell(){
-        assertSame( tested.getCurrGame(),g );
     }
     
     @Test
@@ -58,7 +54,7 @@ public class DeckTest {
 
     @Test
     public void equalsisOrderSensitive() {
-        Deck<Integer> d2 = new Deck<>( g );
+        Deck<Integer> d2 = new Deck<>( );
         for(Integer i: zeroTo99){
             d2.add( i );
         }
@@ -86,8 +82,8 @@ public class DeckTest {
 
     @Test
     public void sameHashcodeWithSameCards() {
-        Deck<String> d1 = new Deck<>(g);
-        Deck<String> d2 = new Deck<>(g);
+        Deck<String> d1 = new Deck<>();
+        Deck<String> d2 = new Deck<>();
         ArrayList<String> al = new ArrayList<>();
         d1.add("ciao");
         d2.add("ciao");

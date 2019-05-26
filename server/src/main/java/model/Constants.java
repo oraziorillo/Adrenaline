@@ -1,6 +1,6 @@
 package model;
 
-class Constants {
+abstract class Constants {
 
     static final int LIFEPOINTS = 11;
     static final int MAX_WEAPONS_IN_HAND = 3;
