@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 
-public abstract class Player{
+public class Player{
 
     private String username;
     private final UUID uuid;
