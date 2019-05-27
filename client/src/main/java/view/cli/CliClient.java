@@ -1,6 +1,8 @@
 package view.cli;
 
-import controller.RemoteController;
+import common.RemoteController;
+import view.cli.conection.commands.CliCommand;
+import view.cli.conection.commands.CommandFactory;
 import view.cli.conection.socket.SocketProxy;
 
 import java.io.BufferedReader;
@@ -10,7 +12,7 @@ import java.util.UUID;
 
 public class CliClient implements RemoteView{
 
-    public static final String NOPE="Invalid Command";
+    private static final String NOPE="Invalid Command";
 
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -37,29 +39,12 @@ public class CliClient implements RemoteView{
                 e.printStackTrace();
             }
         }while (connection == null);
-        System.out.println("Connected to the server:\n (l)og in \n (s)ign in");
-        do{
-            cmd=in.readLine();
-            switch (cmd){
-                case "l":
-                    System.out.println("Insert your token");
-                    token=UUID.fromString(in.readLine());
-                    if(!connection.login(token)){
-                        token = null;
-                    }
-                    break;
-                case "s":
-                    System.out.println(">>> Please provide username: ");
-                    token = connection.signIn(in.readLine());
-                    System.out.println("This is your token. Use it to access again in the future.");
-                    System.out.println(token);
-                    break;
-                    default:
-                        System.out.println(NOPE);
-            }
-        }while (token == null);
-        connection.update();
-        //TODO: a questo punto l'utente è ALMENO nella lobby
+        //TODO: notifica l'utente quando viene inserito nella partita.
+        //TODO: gestisci la risposta al metodo eseguito
+        while (connection.isOpened()){
+            CliCommand command  = CommandFactory.getCommand( in.readLine(),connection,false );
+            command.execute();
+        }
 
     }
 
