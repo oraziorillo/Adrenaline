@@ -1,11 +1,10 @@
 package view.cli.conection.commands;
 
 import common.RemoteController;
-
 import java.io.IOException;
 
-class GrabWeaponCommand extends CliCommand {
-    GrabWeaponCommand(RemoteController controller, boolean gui) {
+public class ChooseWeaponOnSpawnPointCommand extends CliCommand {
+    ChooseWeaponOnSpawnPointCommand(RemoteController controller, boolean gui) {
         super(controller, gui );
     }
 

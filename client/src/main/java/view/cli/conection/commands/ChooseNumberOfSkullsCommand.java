@@ -1,7 +1,6 @@
 package view.cli.conection.commands;
 
 import common.RemoteController;
-
 import java.io.IOException;
 
 class ChooseNumberOfSkullsCommand extends CliCommand {

@@ -27,7 +27,7 @@ public class DeckTest {
     
     @Before
     public void setup(){
-        tested = new Deck<>( );
+        tested = new Deck<>();
         for(Integer i: zeroTo99){
             tested.add( i );
         }
@@ -54,7 +54,7 @@ public class DeckTest {
 
     @Test
     public void equalsisOrderSensitive() {
-        Deck<Integer> d2 = new Deck<>( );
+        Deck<Integer> d2 = new Deck<>();
         for(Integer i: zeroTo99){
             d2.add( i );
         }

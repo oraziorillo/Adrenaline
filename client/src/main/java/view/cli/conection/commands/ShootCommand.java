@@ -1,7 +1,6 @@
 package view.cli.conection.commands;
 
 import common.RemoteController;
-
 import java.io.IOException;
 
 final class ShootCommand extends CliCommand {

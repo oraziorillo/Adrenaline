@@ -2,6 +2,7 @@ package model;
 
 
 import enums.SquareColourEnum;
+import exceptions.EmptySquareException;
 import model.squares.AmmoSquare;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmmoSquareTest {
@@ -18,11 +21,13 @@ public class AmmoSquareTest {
     private final int x = 3;
     private final int y = 5;
     private final SquareColourEnum colour = SquareColourEnum.BLUE;
+    private AmmoSquare tested;
+    @Mock
+    private AmmoTile card1, card2;
     @Mock
     private Deck<AmmoTile> deck;
     @Mock
-    private AmmoTile card1, card2;
-    private AmmoSquare tested;
+    private Pc pc;
 
     @Before
     public void setup() {
@@ -37,27 +42,25 @@ public class AmmoSquareTest {
         assertEquals( "Colour has changed", tested.getColour(), colour );
     }
 
-    /*TODO: fix these tests
     @Test
     public void drawsOnSpawnTheFirstCardOfDeck() {
-        assertSame(tested.pickAmmo(), card1);
+        assertSame(tested.getAmmoTile(), card1);
     }
-    
+
     @Test
-    public void isEmptyWorksAndDoesntAutoRefill(){
+    public void isEmptyWorksAndDoesntAutoRefill() throws EmptySquareException {
        assertFalse( tested.isEmpty() );
-       tested.pickAmmo();
+       tested.collect(pc);
        assertTrue( tested.isEmpty() );
     }
     
     @Test
-   public void refillWorksFine(){
-       tested.pickAmmo();
+   public void refillWorksFine() throws EmptySquareException {
+       tested.collect(pc);
        assumeTrue(tested.isEmpty());
        tested.refill();
        assertFalse( tested.isEmpty() );
-       assertSame( tested.pickAmmo(), card2 );
+       assertSame( tested.getAmmoTile(), card2 );
     }
-    */
 }
 
