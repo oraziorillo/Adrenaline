@@ -8,6 +8,8 @@ GENERAL NOTES:
 
 - stabilire il paramtero da passare a resetTargettables
 
+- creare una classe mappa
+
 
 
 

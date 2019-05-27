@@ -24,7 +24,7 @@ public abstract class State {
 
     public void selectPcForPlayer(PcColourEnum colour, Player player) {}
 
-    public void spawnPc(Pc pc, int n) {}
+    public void spawnPc(Pc pc, int powerUpToDropIndex) {}
 
     public boolean runAround(){
         return false;

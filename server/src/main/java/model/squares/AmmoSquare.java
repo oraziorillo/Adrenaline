@@ -23,6 +23,9 @@ public class AmmoSquare extends Square {
         return ammoTile == null;
     }
 
+    public AmmoTile getAmmoTile() {
+        return ammoTile;
+    }
 
     @Override
     public void collect(Pc currPc) throws EmptySquareException {

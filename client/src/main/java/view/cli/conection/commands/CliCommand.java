@@ -1,6 +1,6 @@
 package view.cli.conection.commands;
 
-import controller.RemoteController;
+import common.RemoteController;
 import org.jetbrains.annotations.NotNull;
 import view.InputRequier;
 import view.cli.CliInputRequier;
@@ -18,13 +18,13 @@ public abstract class CliCommand {
 
     public static CliCommand parseInputString(@NotNull String s, RemoteController controller, boolean gui){
         switch (s.toLowerCase().trim()){
-            case MAP_LONG: case MAP_SHORT: case MAP_LONGER:
+            case MAP_LONG: case MAP_SHORT: case MAP_EXTENDED:
                 return new ChooseMapCommand( controller, gui );
-            case SKULLS_SHORT: case SKULLS_LONG: case SKULLS_LONGER:
+            case SKULLS_SHORT: case SKULLS_LONG: case SKULLS_EXTENDED:
                 return new ChooseNumberOfSkullsCommand( controller, gui);
-            case COLOUR_SHORT: case COLOUR_LONG: case COLOUR_LONGER:
+            case COLOUR_SHORT: case COLOUR_LONG: case COLOUR_EXTENDED:
                 return new ChoosePcColourCommand(controller, gui);
-            case SPAWN_SHORT: case SPAWN_LONG:
+            case DROP_AND_SPAWN_SHORT: case DROP_AND_SPAWN_EXTENDED:
                 return new DiscardAndSpawnCommand(controller, gui);
             case COMMENT_SHORT: case COMMENT_LONG:
                 return new ShowCommentCommand(controller, gui);
@@ -37,9 +37,9 @@ public abstract class CliCommand {
             case SQUARE_LONG: case SQUARE_SHORT:
                 return new SelectSquareCommand(controller, gui);
             case GRAB_WEAPON_SHORT: case GRAB_WEAPON_LONG:
-                return new GrabWeaponCommand(controller,gui);
+                return new ChooseWeaponOnSpawnPointCommand(controller,gui);
             case CHOOSE_WEAPON_SHORT: case CHOOSE_WEAPON_LONG:
-                return new ChooseWeaponCommand(controller,gui);
+                return new ChooseWeaponOfMineCommand(controller,gui);
             case QUIT_LONG: case QUIT_SHORT:
                 return new QuitCommand(controller, gui);
                 default:

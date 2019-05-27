@@ -1,6 +1,7 @@
 package model;
 
 import enums.SquareColourEnum;
+import exceptions.EmptySquareException;
 import model.squares.SpawnPoint;
 import model.squares.Square;
 import org.junit.Before;
@@ -22,6 +23,7 @@ public class SpawnPointTest {
    @Mock WeaponCard card0;
    @Mock WeaponCard card1;
    @Mock WeaponCard card2;
+   @Mock Pc pc;
    
    @Before
    public void setupAndConstructorTest(){
@@ -31,13 +33,13 @@ public class SpawnPointTest {
    }
    
    @Test
-   public void pickWeaponWorksFine(){
-      assertSame( card0, tested.pickWeapon( 0 ) );
-      assertSame( card1,tested.pickWeapon( 1 ) );
-      assertSame( card2,tested.pickWeapon( 2 ) );
-      assertThrows( NullPointerException.class,()->tested.pickWeapon( 0 ) );
-      assertThrows( NullPointerException.class,()->tested.pickWeapon( 1 ) );
-      assertThrows( NullPointerException.class,()->tested.pickWeapon( 2 ) );
+   public void pickWeaponWorksFine() throws EmptySquareException {
+      for (int i = 0; i < 2; i++) {
+         tested.setWeaponToGrabIndex(i);
+         assertSame( card0, tested.weaponAtIndex(i));
+         tested.collect(pc);
+         assertThrows( NullPointerException.class,()->tested.collect( pc ) );
+      }
    }
    
    @Test
@@ -45,7 +47,7 @@ public class SpawnPointTest {
       emptyTheSquare(tested);
       tested.refill();
       for(int i=0;i<3;i++) {
-         assertNotNull( tested.pickWeapon( i ) );
+         assertNotNull( tested.weaponAtIndex( i ) );
       }
    }
    
@@ -58,19 +60,12 @@ public class SpawnPointTest {
    
    @Test
    public void switchWeaponWorksFine(){
-      WeaponCard switched = Mockito.mock( WeaponCard.class );
-      WeaponCard returned = tested.switchWeapon( 0,switched );
-      assertSame( returned,card0 );
-      assertSame( switched,tested.pickWeapon( 0 ) );
-      assertSame( card1,tested.pickWeapon( 1 ) );
-      assertSame( card2,tested.pickWeapon( 2 ) );
+      //TODO
    }
 
-   
+
    private void emptyTheSquare(Square toEmpty){
-      for(int i=0; i<3;i++){
-         tested.pickWeapon( i );
-      }
+      //TODO
    }
    
    
