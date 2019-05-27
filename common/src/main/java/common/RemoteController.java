@@ -45,5 +45,6 @@ public interface RemoteController extends Remote {
     void pass() throws IOException;
 
     void quit() throws IOException;
-
+   
+   boolean isOpened();
 }

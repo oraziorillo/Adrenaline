@@ -126,6 +126,12 @@ public class SocketProxy implements RemoteController {
     }
     
     @Override
+    public void skip() {
+        out.println( SKIP );
+        out.flush();
+    }
+    
+    @Override
     public void ok() {
         out.println( OK );
         out.flush();
@@ -149,5 +155,10 @@ public class SocketProxy implements RemoteController {
         out.close();
         in.close();
         socket.close();
+    }
+    
+    @Override
+    public boolean isOpened() {
+        return !socket.isClosed();
     }
 }
