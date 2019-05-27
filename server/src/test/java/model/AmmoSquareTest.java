@@ -11,8 +11,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmmoSquareTest {
@@ -61,5 +62,5 @@ public class AmmoSquareTest {
        assertFalse( tested.isEmpty() );
        assertSame( tested.getAmmoTile(), card2 );
     }
-
 }
+

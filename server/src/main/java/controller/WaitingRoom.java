@@ -25,7 +25,5 @@ public class WaitingRoom {
 
         //se il gioco inizia, waitingPlayers diventa vuoto
     }
-
-
-
+    
 }

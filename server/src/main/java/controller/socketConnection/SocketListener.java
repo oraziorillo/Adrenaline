@@ -30,7 +30,7 @@ public class SocketListener implements Runnable {
     public void run() {
         while (!socket.isClosed()) {
             try {
-                SocketCommandsEnum command = SocketCommandsEnum.fromString( in.readLine() );
+                SocketCommandsEnum command = SocketCommandsEnum.valueOf( in.readLine() );
                 int argInt;
                 switch (command) {
                     case CHOOSE_MAP:

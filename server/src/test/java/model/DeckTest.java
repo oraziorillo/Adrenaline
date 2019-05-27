@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class DeckTest {
     @Mock private Game g;
