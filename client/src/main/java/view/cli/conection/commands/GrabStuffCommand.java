@@ -1,10 +1,10 @@
 package view.cli.conection.commands;
 
-import controller.RemoteController;
+import common.RemoteController;
 
 import java.io.IOException;
 
-public class GrabStuffCommand extends CliCommand {
+class GrabStuffCommand extends CliCommand {
     GrabStuffCommand(RemoteController controller, boolean gui) {
         super(controller, gui );
     }

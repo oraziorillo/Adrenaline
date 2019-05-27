@@ -1,16 +1,16 @@
 package view.cli.conection.commands;
 
-import controller.RemoteController;
+import common.RemoteController;
 
 import java.io.IOException;
 
-public class GrabWeaponCommand extends CliCommand {
-    public GrabWeaponCommand(RemoteController controller, boolean gui) {
+class GrabWeaponCommand extends CliCommand {
+    GrabWeaponCommand(RemoteController controller, boolean gui) {
         super(controller, gui );
     }
 
     @Override
     public void execute() throws IOException {
-        controller.grabWeapon( inputRequier.askInt( "Insert weapon number" ) );
+        controller.chooseWeaponOnSpawnPoint( inputRequier.askInt( "Insert weapon number" ) );
     }
 }
