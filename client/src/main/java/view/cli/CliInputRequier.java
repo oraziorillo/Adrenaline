@@ -1,6 +1,6 @@
 package view.cli;
 
-import model.enumerations.PcColourEnum;
+import enums.PcColourEnum;
 import view.InputRequier;
 
 import java.io.InputStream;

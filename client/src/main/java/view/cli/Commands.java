@@ -32,4 +32,6 @@ public abstract class Commands{
     public static final String CHOOSE_WEAPON_LONG = "choose_weapon";
     public static final String SQUARE_SHORT = "ss";
     public static final String SQUARE_LONG = "select_square";
+    public static final String SKIP_SHORT = "sk";
+    public static final String SKIP_LONG ="skip";
 }
