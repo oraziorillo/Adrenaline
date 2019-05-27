@@ -12,6 +12,7 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -195,6 +196,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
 
+
+
     @Override
     public synchronized void chooseSquare(int x, int y) {
         /*
@@ -208,6 +211,13 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         }
 
 
+    }
+
+    @Override
+    public synchronized void choosePowerUp(int index) throws IOException {
+        if (index >= 0 && index <= 3){
+            currState.selectPowerUP(index);
+        }
     }
 
 
