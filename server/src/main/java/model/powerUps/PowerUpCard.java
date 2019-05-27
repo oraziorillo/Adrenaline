@@ -7,9 +7,9 @@ import model.squares.Square;
 
 public class PowerUpCard {
 
-    private AmmoEnum colour;
     private boolean selectedAsAmmo;
     private boolean shooting;
+    private AmmoEnum colour;
     private WeaponEffect effect;
 
     public PowerUpCard(AmmoEnum colour){
@@ -17,23 +17,20 @@ public class PowerUpCard {
         this.colour = colour;
         this.selectedAsAmmo = false;
         //TODO inizializzare l'effect
-
     }
-
-    public AmmoEnum getColour(){ return this.colour; }
 
     public boolean isSelectedAsAmmo() {
         return selectedAsAmmo;
     }
 
-    public boolean isSelfMovement() { return selfMovement; }
-
-    public boolean isAsynchronous() {
-        return asynchronous;
-    }
-
     public boolean isShooting() {
         return shooting;
+    }
+
+    public AmmoEnum getColour(){ return this.colour; }
+
+    public WeaponEffect getEffect() {
+        return effect;
     }
 
     public boolean useEffect(Pc pc, Square square) { return false; }

@@ -52,7 +52,8 @@ public class TargetSelectionState extends State {
 
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
-        targetableSquares = currAction.validSquares(controller.getCurrPc().getCurrSquare());
+        targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
+        //TODO se targetableSquares è vuota, l'effetto non può essere eseguito
         controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 

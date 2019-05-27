@@ -63,6 +63,9 @@ public abstract class Action {
     public abstract void selectSquare(Square targetSquare);
 
 
+    public abstract void resetAction();
+
+
     public abstract void apply(Pc shooter);
 
 

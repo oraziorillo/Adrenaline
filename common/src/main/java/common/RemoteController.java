@@ -22,6 +22,8 @@ public interface RemoteController extends Remote {
 
     void grabStuff() throws IOException;
 
+    void usePowerUp() throws IOException;
+
     void shootPeople() throws IOException;
 
     void chooseSquare(int x, int y) throws IOException;
@@ -39,6 +41,8 @@ public interface RemoteController extends Remote {
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
 
     void skip() throws IOException;
+
+    void undo() throws IOException;
 
     void ok() throws IOException;
 

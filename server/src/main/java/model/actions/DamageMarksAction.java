@@ -110,6 +110,11 @@ public class DamageMarksAction extends Action {
         }
     }
 
+    @Override
+    public void resetAction() {
+        targets.clear();
+        orientedTargetChecker = null;
+    }
 
     @Override
     public void apply(Pc shooter) {
@@ -119,9 +124,7 @@ public class DamageMarksAction extends Action {
             if (marks != 0)
                 pc.takeMarks(shooter.getColour(), marks);
         });
-        targets.clear();
-        orientedTargetChecker = null;
-
+        resetAction();
     }
 
 

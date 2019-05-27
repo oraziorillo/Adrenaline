@@ -49,6 +49,8 @@ public class MovementAction extends Action {
                 case "differentRoom":
                     this.basicTargetChecker = new DifferentRoomDecorator(basicTargetChecker);
                     break;
+                case "emptyChecker":
+                    this.basicTargetChecker = new EmptyChecker();
                 default:
                     break;
             }
@@ -95,14 +97,17 @@ public class MovementAction extends Action {
 
 
     @Override
+    public void resetAction() {
+        target = null;
+        targetSquare = null;
+    }
+
+    @Override
     public void apply(Pc shooter) {
         if (selfMovement)
             target = shooter;
         target.moveTo(targetSquare);
-
-        target = null;
-        destinationChecker = null;
-        orientedTargetChecker = null;
+        resetAction();
     }
 
 

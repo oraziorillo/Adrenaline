@@ -38,31 +38,9 @@ public class StartTurnState extends State {
     }
 
     @Override
-    public void selectPowerUP(int index) {
-        //qui non serve controllare l'indice poichè in questo punto del gioco non dovrebbe mai aver4 powerUP
-        PowerUpCard powerUp;
-        powerUp = controller.getCurrPc().getPowerUpCard(index);
-        if (!powerUp.isShooting() && !powerUp.isAsynchronous()){
-            currPowerUp = powerUp;
-        } else {
-            //magari qui stampa a video il messaggio che non può usare quel power up in quel momento
-        }
-
-        setTargetableToValidSquares(controller.getCurrPc());
-    }
-
-    @Override
-    public void selectTarget(Pc targetPc) {
-        if( currPowerUp != null && !currPowerUp.isSelfMovement()){
-            powerUpTarget = targetPc;
-        }
-    }
-
-    @Override
-    public void selectSquare(Square targetSquare) {
-        if(currPowerUp.isSelfMovement()){
-            controller.getCurrPc();
-        }
+    public boolean usePowerUp() {
+        nextState = new UsePowerUpState(controller);
+        return true;
     }
 
     @Override

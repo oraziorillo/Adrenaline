@@ -73,6 +73,11 @@ public class Pc {
     }
 
 
+    public void removePowerUp(PowerUpCard powerUpCard){
+        powerUps.remove(powerUpCard);
+    }
+
+
     public WeaponCard weaponAtIndex(int index) {
         if (index < 0 || index > 3) {
             throw new IllegalArgumentException("This index is not valid");

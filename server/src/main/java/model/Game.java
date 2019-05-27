@@ -67,6 +67,8 @@ public class Game {
     }
 
     public void setTargetableSquares(HashSet<Square> targetableSquares, boolean targetable){
+        if (targetableSquares.isEmpty())
+            return;
         targetableSquares.forEach(s -> s.setTargetable(targetable));
     }
 

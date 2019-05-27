@@ -38,9 +38,11 @@ public abstract class State {
         return false;
     }
 
+    public boolean usePowerUp() { return false; }
+
     public void selectSquare(Square targetSquare) {}
 
-    public void selectPowerUP(int index) {}
+    public void selectPowerUp(int index) {}
 
     public void selectWeaponOnBoard(int index) {}
 
@@ -59,6 +61,8 @@ public abstract class State {
     public boolean skipAction() {
         return false;
     }
+
+    public boolean undo() { return false; }
 
     public boolean ok() {
         return false;

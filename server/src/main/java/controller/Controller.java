@@ -12,7 +12,6 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -180,23 +179,34 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void runAround() {
-        currState.runAround();
+        if (currState.runAround()){
+            currState = currState.nextState();
+        }
     }
 
 
     @Override
     public synchronized void grabStuff() {
-        currState.grabStuff();
+        if (currState.grabStuff()){
+            currState = currState.nextState();
+        }
     }
 
 
     @Override
     public synchronized void shootPeople() {
-        currState.shootPeople();
+        if (currState.shootPeople()){
+            currState = currState.nextState();
+        }
     }
 
 
-
+    @Override
+    public synchronized void usePowerUp() {
+        if (currState.usePowerUp()){
+            currState = currState.nextState();
+        }
+    }
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
@@ -205,17 +215,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         } catch (HoleInMapException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
-    public synchronized void choosePowerUp(int index) throws IOException {
-        if (index >= 0 && index <= 3){
-            currState.selectPowerUP(index);
-        }
+    public synchronized void choosePowerUp(int n) {
+        currState.selectPowerUp(n);
     }
-
 
     @Override
     public synchronized void chooseWeaponOnSpawnPoint(int index) {
@@ -251,6 +256,14 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public void skip() {
         if (currState.skipAction())
+            currState = currState.nextState();
+    }
+
+    //se nello stato in cui siamo il comando di undo non ci fa cambiare stato
+    // ma resettare quello in cui ci troviamo, restituisce false
+    @Override
+    public void undo() {
+        if (currState.undo())
             currState = currState.nextState();
     }
 
