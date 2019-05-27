@@ -166,10 +166,10 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
 
     @Override
-    public synchronized void discardAndSpawn(int n) {
+    public synchronized void discardAndSpawn(int powerUpToDropIndex) {
         Pc currPc = getCurrPc();
-        if (n == 0 || n == 1) {
-            currState.spawnPc(currPc, n);
+        if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
+            currState.spawnPc(currPc, powerUpToDropIndex);
             nextTurn();
             if (currPlayerIndex == 0)
                 currState = currState.nextState();
@@ -200,10 +200,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
-        /*
-        if (currState.selectSquare(getCurrPc(), game.map[x][y]))
-            currState = currState.nextState();
-         */
         try {
             currState.selectSquare(game.getSquare(x, y));
         } catch (HoleInMapException e) {
@@ -282,7 +278,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public synchronized void quit() {
         //gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-
+    
+    @Override
+    public boolean isOpened() {
+        return true;
+    }
+    
     private synchronized void nextTurn() {
         if (currPlayerIndex == players.size() - 1)
             currPlayerIndex = 0;

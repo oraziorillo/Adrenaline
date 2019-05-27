@@ -5,7 +5,6 @@ import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import model.squares.Square;
-
 import java.util.HashSet;
 
 public class GrabStuffState extends State{

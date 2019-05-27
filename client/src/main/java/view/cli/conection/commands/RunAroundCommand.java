@@ -1,10 +1,9 @@
 package view.cli.conection.commands;
 
-import controller.RemoteController;
-
+import common.RemoteController;
 import java.io.IOException;
 
-public class RunAroundCommand extends CliCommand {
+class RunAroundCommand extends CliCommand {
     RunAroundCommand(RemoteController controller, boolean gui) {
         super(controller, gui);
     }

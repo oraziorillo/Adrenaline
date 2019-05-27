@@ -18,19 +18,12 @@ public enum SocketCommandsEnum {
     CHOOSE_ASYNCH_EFFECT_ORDER,
     OK,
     RELOAD,
-    PASS;
+    PASS,
+    SKIP;
     
     @Override
     public String toString() {
         return super.toString();
     }
     
-    public static SocketCommandsEnum fromString(String s){
-        for( SocketCommandsEnum cmd: SocketCommandsEnum.values()){
-            if(s.equals( cmd.toString())){
-                return cmd;
-            }
-        }
-        throw new IllegalArgumentException("Invalid command");
-    }
 }

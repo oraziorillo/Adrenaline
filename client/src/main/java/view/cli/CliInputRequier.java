@@ -1,9 +1,10 @@
 package view.cli;
 
-import model.enumerations.PcColourEnum;
+import enums.PcColourEnum;
 import view.InputRequier;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -35,7 +36,7 @@ public class CliInputRequier implements InputRequier {
     public PcColourEnum askPcColourEnum() {
         String stringed = null;
         while (!PcColourEnum.stringCollection().contains( stringed )){
-            System.out.println("Select your colour. Existing colours are: "+PcColourEnum.values());
+            System.out.println("Select your colour. Existing colours are: " + Arrays.toString(PcColourEnum.values()));
             stringed = in.next();
         }
         return PcColourEnum.fromString(stringed);

@@ -14,7 +14,7 @@ public class SpawnPoint extends Square {
     private int weaponToGrabIndex;
     private int weaponToDropIndex;
 
-    SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
+    public SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
         super(x, y, colour);
         this.weaponDeck = deck;
         this.weaponToGrabIndex = -1;
@@ -23,6 +23,22 @@ public class SpawnPoint extends Square {
         for (int i = 0; i < 3; i++)
             weapons[i] = weaponDeck.draw();
     }
+
+
+    @Override
+    public boolean isEmpty() {
+        for (WeaponCard weapon : weapons)
+            if (weapon != null)
+                return false;
+        return true;
+    }
+
+
+    @Override
+    public boolean isSpawnPoint() {
+        return true;
+    }
+
 
 
     @Override
@@ -46,12 +62,20 @@ public class SpawnPoint extends Square {
     }
 
 
+    public WeaponCard weaponAtIndex(int index){
+        if (index >= 0 && index <= 2)
+            return weapons[index];
+        return null;
+    }
+
     @Override
     public void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException {
         if (isEmpty())
             throw new EmptySquareException();
         if (weaponToGrabIndex < 0)
             throw new IllegalStateException("You have to choose a weapon to grab");
+        if (weapons[weaponToGrabIndex] == null)
+            throw new NullPointerException();
         WeaponCard weaponToGrab = weapons[weaponToGrabIndex];
         if (weaponToDropIndex < 0 && currPc.isFullyArmed())
             throw new IllegalStateException("You have to choose a weapon to drop");
@@ -75,17 +99,4 @@ public class SpawnPoint extends Square {
         }
     }
 
-
-    @Override
-    public boolean isEmpty() {
-        for (WeaponCard weapon : weapons)
-            if (weapon != null)
-                return false;
-        return true;
-    }
-
-    @Override
-    public boolean isSpawnPoint() {
-        return true;
-    }
 }

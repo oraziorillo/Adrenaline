@@ -1,10 +1,9 @@
 package view.cli.conection.commands;
 
-import controller.RemoteController;
-
+import common.RemoteController;
 import java.io.IOException;
 
-public class ChoosePcColourCommand extends CliCommand {
+class ChoosePcColourCommand extends CliCommand {
     ChoosePcColourCommand(RemoteController controller, boolean gui) {
         super( controller, gui );
     }

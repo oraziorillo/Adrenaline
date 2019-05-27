@@ -1,31 +1,38 @@
 package controller;
 
 import controller.player.Player;
+import model.Game;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class WaitingRoom {
     private ArrayList<Player> waitingPlayers;
-    //private View view;
+    private Timer timer;
+    private static final int TIME = 1000*60*3;
 
     public WaitingRoom() {
         waitingPlayers = new ArrayList<>();
-        //view = new view();          //da definire
+        timer= new Timer( TIME, actionEvent -> startGame());
+        timer.stop();
     }
 
-    public void addPlayer(Player p){        //questo metodo può prendere come parametro anche il tipo di connessione del player
+    public void addPlayer(Player p){
         waitingPlayers.add(p);
         if(waitingPlayers.size() > 2){
-            //parte il timer; se il timer scade, inizia il gioco
+            timer.restart();
         }
         if(waitingPlayers.size() == 5){
-            //fa partire il thread del gioco
-            //inizia il gioco
+            timer.stop();
+            startGame();
         }
-
-        //se il gioco inizia, waitingPlayers diventa vuoto
     }
-
-
-
+    
+    private void startGame(){
+        Game g = new Game();
+        //add Pcs
+        waitingPlayers.clear();
+        timer.stop();
+    }
 }
+

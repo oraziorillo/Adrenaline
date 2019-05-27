@@ -5,14 +5,14 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 
-public abstract class Player{
+public class Player{
 
     private String username;
     private final UUID uuid;
     private Pc pc;
 
     @Contract(pure = true)
-    Player(String username, UUID uuid){
+    public Player(String username, UUID uuid){
         this.username=username;
         this.uuid=uuid;
     }
