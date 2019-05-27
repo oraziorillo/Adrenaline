@@ -272,7 +272,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public synchronized void quit() {
         //gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-
+    
+    @Override
+    public boolean isOpened() {
+        return true;
+    }
+    
     private synchronized void nextTurn() {
         if (currPlayerIndex == players.size() - 1)
             currPlayerIndex = 0;
