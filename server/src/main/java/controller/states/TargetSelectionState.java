@@ -139,11 +139,12 @@ public class TargetSelectionState extends State {
 
     @Override
     public State nextState() {
-        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
-            //TODO if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage())
-        }
-
+        controller.getCurrWeapon().setLoaded(false);
         controller.decreaseRemainingActions();
+        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
+            if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage())
+                return new UsePowerUpState(controller, shotTargets);
+        }
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();
             return new EndTurnState(controller);

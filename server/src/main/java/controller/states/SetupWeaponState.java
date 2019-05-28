@@ -1,8 +1,8 @@
 package controller.states;
 
 import controller.Controller;
-import model.Effect;
 import model.WeaponCard;
+import model.Effect;
 import model.PowerUpCard;
 
 import java.util.ArrayList;
@@ -62,6 +62,12 @@ public class SetupWeaponState extends State {
         powerUp.setSelectedAsAmmo(!powerUp.isSelectedAsAmmo());
     }
 
+
+    @Override
+    public boolean undo() {
+        //TODO
+        return false;
+    }
 
     @Override
     public boolean ok() {

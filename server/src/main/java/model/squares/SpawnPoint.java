@@ -43,14 +43,15 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
-        //TODO: lanciare eccezione per l'index
-        this.weaponToGrabIndex = weaponToGrabIndex;
+        if (weapons[weaponToGrabIndex] != null)
+            this.weaponToGrabIndex = weaponToGrabIndex;
+        else
+            throw new NullPointerException("You have to choose a weapon to grab");
     }
 
 
     @Override
     public void setWeaponToDropIndex(int weaponToDropIndex) {
-        //TODO: lanciare eccezione per l'index
         this.weaponToDropIndex = weaponToDropIndex;
     }
 

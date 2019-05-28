@@ -49,6 +49,10 @@ public class WeaponCard {
         return loaded;
     }
 
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
     public String getName() {
         return name;
     }
@@ -134,5 +138,6 @@ public class WeaponCard {
 
     public void clear() {
         effectsToApply.clear();
+        effectsToApply.add(fireModes.get(0));
     }
 }

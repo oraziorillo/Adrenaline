@@ -68,6 +68,8 @@ public class Pc {
         if(index < 0 || index > powerUps.size() - 1){
             throw new IllegalArgumentException("This index is not valid");
         }
+        if (powerUps.get(index) == null)
+            throw new NullPointerException("You have to select a powerUp!");
         return powerUps.get(index);
     }
 

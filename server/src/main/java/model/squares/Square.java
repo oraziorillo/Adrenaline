@@ -104,7 +104,7 @@ public abstract class Square {
     public abstract void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException;
 
     /**
-     * Returns an HashSet containing all the Tiles at a given distance
+     * Returns a Set containing all the Squares at a given distance
      * @param dist distance of returned tiles
      * @return HashSet of Tiles at distance dist
      */
@@ -128,7 +128,7 @@ public abstract class Square {
 
 
     /**
-     * Given a cardinal direction, returns the first tile in that direction if no wall is encountered
+     * Given a cardinal direction, returns the first square in that direction if no wall is encountered
      * @param direction the cardinal direction
      * @return The first tile in the given direction if there is no wall between, Optional.empty else
      */
