@@ -5,6 +5,7 @@ import enums.CardinalDirectionEnum;
 import model.Pc;
 import model.WeaponEffect;
 import model.actions.Action;
+import model.powerUps.PowerUpCard;
 import model.squares.Square;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,12 +18,12 @@ public class TargetSelectionState extends State {
     private LinkedList<WeaponEffect> effectsToApply;
     private WeaponEffect currEffect;
     private Action currAction;
-    private Set<Pc> mainEffectTargets;
+    private Set<Pc> shotTargets;
     private HashSet<Square> targetableSquares;
 
     TargetSelectionState(Controller controller) {
         super(controller);
-        this.mainEffectTargets = new HashSet<>();
+        this.shotTargets = new HashSet<>();
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
@@ -52,26 +53,40 @@ public class TargetSelectionState extends State {
 
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
-        targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
-        //TODO se targetableSquares è vuota, l'effetto non può essere eseguito
-        controller.getGame().setTargetableSquares(targetableSquares, true);
+        if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets()) {
+            targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
+            //TODO se targetableSquares è vuota, l'effetto non può essere eseguito
+            controller.getGame().setTargetableSquares(targetableSquares, true);
+        } else {
+            //TODO display the list of valid Targets
+        }
     }
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if((!currEffect.isOriented() || directionSelected) && targetSquare.isTargetable()){
-            currAction.selectSquare(targetSquare);
+        if (targetSquare.isTargetable()) {
+            if ((!currEffect.isOriented() || directionSelected) && targetSquare.isTargetable()) {
+                currAction.selectSquare(targetSquare);
+            }
         }
     }
 
 
     @Override
     public void selectTarget(Pc targetPc) {
-        if((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()){
-            if(currEffect.hasSameTarget()){
-                currEffect.getActions().forEach(a -> a.selectPc(targetPc));
-            } else
-                currAction.selectPc(targetPc);
+        if (targetPc.getCurrSquare().isTargetable()) {
+            if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
+                if (currEffect.hasOnlyOneTarget()) {
+                    currEffect.getActions().forEach(a -> a.selectPc(targetPc));
+                } else if (currAction.isAdditionalDamage()) {
+                    if (shotTargets.contains(targetPc))
+                        currAction.selectPc(targetPc);
+                } else if (currAction.isExclusiveForOldTargets()) {
+                    if (!shotTargets.contains(targetPc))
+                        currAction.selectPc(targetPc);
+                } else
+                    currAction.selectPc(targetPc);
+            }
         }
     }
 
@@ -118,6 +133,10 @@ public class TargetSelectionState extends State {
 
     @Override
     public State nextState() {
+        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
+            if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage())
+        }
+
         controller.decreaseRemainingActions();
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();

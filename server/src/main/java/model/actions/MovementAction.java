@@ -85,8 +85,9 @@ public class MovementAction extends Action {
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if (target != null)
+        if (target != null || this.selfMovement) {
             this.targetSquare = targetSquare;
+        }
     }
 
 

@@ -8,8 +8,6 @@ import model.squares.Square;
 
 import java.util.HashSet;
 
-Constant
-
 public class UsePowerUpState extends State {
 
     final int actionIndex;
@@ -53,6 +51,7 @@ public class UsePowerUpState extends State {
         }
     }
 
+
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
         if(!targetableSquares.isEmpty())
@@ -63,12 +62,19 @@ public class UsePowerUpState extends State {
 
     @Override
     public void selectTarget(Pc targetPc) {
-
+        if (targetPc.getCurrSquare().isTargetable()){
+            if (currAction.isAdditionalDamage()){
+                if (targetablePcs.contains(targetPc))
+                    currAction.selectPc(targetPc);
+            } else
+                currAction.selectPc(targetPc);
+        }
     }
 
     @Override
     public void selectSquare(Square targetSquare) {
-        currAction.selectSquare(targetSquare);
+        if (targetSquare.isTargetable())
+            currAction.selectSquare(targetSquare);
     }
 
     @Override
@@ -81,7 +87,7 @@ public class UsePowerUpState extends State {
     @Override
     public boolean ok() {
         if (currAction.isComplete())
-            currAction.apply();
+            currAction.apply(controller.getCurrPc());
     }
 
 

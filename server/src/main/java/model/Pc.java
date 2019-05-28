@@ -72,6 +72,9 @@ public class Pc {
         return powerUps.get(index);
     }
 
+    public ArrayList<PowerUpCard> getPowerUps() {
+        return powerUps;
+    }
 
     public void removePowerUp(PowerUpCard powerUpCard){
         powerUps.remove(powerUpCard);
@@ -193,6 +196,9 @@ public class Pc {
         this.currSquare = t;
     }
 
+    public boolean hasAtLeastOneAmmo(){
+        return pcBoard.hasAtLeastOneAmmo() || powerUps.size() > 1;
+    }
 
     public boolean hasEnoughAmmo(short[] ammos){
         return pcBoard.hasEnoughAmmo(ammos);
