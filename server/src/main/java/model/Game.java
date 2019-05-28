@@ -1,7 +1,6 @@
 package model;
 
 import controller.Server;
-import enums.AmmoEnum;
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
 import exceptions.HoleInMapException;

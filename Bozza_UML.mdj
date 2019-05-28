@@ -14941,7 +14941,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFpuovfdyxE+HY="
 									},
-									"name": "weaponEffect",
+									"name": "effect",
 									"attributes": [
 										{
 											"_type": "UMLAttribute",

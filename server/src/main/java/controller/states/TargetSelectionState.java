@@ -4,7 +4,7 @@ import controller.Controller;
 import enums.CardinalDirectionEnum;
 import exceptions.NotEnoughAmmoException;
 import model.Pc;
-import model.WeaponEffect;
+import model.Effect;
 import model.actions.Action;
 import model.PowerUpCard;
 import model.squares.Square;
@@ -16,8 +16,8 @@ public class TargetSelectionState extends State {
 
     private boolean directionSelected;
     private int effectIndex, actionIndex;
-    private LinkedList<WeaponEffect> effectsToApply;
-    private WeaponEffect currEffect;
+    private LinkedList<Effect> effectsToApply;
+    private Effect currEffect;
     private Action currAction;
     private Set<Pc> shotTargets;
     private Set<Square> targetableSquares;

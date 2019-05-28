@@ -8,7 +8,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.LinkedList;
 
-public class WeaponEffect {
+public class Effect {
     private boolean oriented;
     private boolean beyondWalls;
     private boolean asynchronous;
@@ -17,10 +17,10 @@ public class WeaponEffect {
     private LinkedList<Action> actions = new LinkedList<>();
 
     /**
-     * constructor for WeaponEffect
+     * constructor for Effect
      * @param jsonWeaponEffect JsonObject representing a weapon effect
      */
-    WeaponEffect(JSONObject jsonWeaponEffect) {
+    Effect(JSONObject jsonWeaponEffect) {
         this.cost = new short[3];
         this.oriented = (boolean) jsonWeaponEffect.get("oriented");
         this.beyondWalls = (boolean) jsonWeaponEffect.get("beyondWalls");

@@ -1,8 +1,8 @@
 package controller.states;
 
 import controller.Controller;
+import model.Effect;
 import model.WeaponCard;
-import model.WeaponEffect;
 import model.PowerUpCard;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class SetupWeaponState extends State {
 
     @Override
     public void switchFireMode(WeaponCard weapon) {
-        ArrayList<WeaponEffect> fireModes = weapon.getFireModes();
+        ArrayList<Effect> fireModes = weapon.getFireModes();
         if (fireModes.size() > 1 && controller.getCurrPc().hasEnoughAmmo(fireModes.get(fireModeIndex).getCost())){
             weapon.selectFireMode(fireModeIndex);
             fireModeIndex = (fireModeIndex == fireModes.size() - 1) ? 0 : (fireModeIndex + 1);
@@ -30,7 +30,7 @@ public class SetupWeaponState extends State {
     @Override
     public void upgrade(WeaponCard weapon) {
         if (!waiting) {
-            ArrayList<WeaponEffect> upgrades = weapon.getUpgrades();
+            ArrayList<Effect> upgrades = weapon.getUpgrades();
             if (upgradeIndex < upgrades.size() && controller.getCurrPc().hasEnoughAmmo(upgrades.get(upgradeIndex).getCost())) {
                 if (!upgrades.get(upgradeIndex).isAsynchronous()) {
                     weapon.addUpgrade(upgradeIndex);

@@ -12,9 +12,9 @@ public class WeaponCard {
     private AmmoEnum weaponColour;
     private short[] ammo;
     private short[] currentCost;
-    private ArrayList<WeaponEffect> fireModes = new ArrayList<>();
-    private ArrayList<WeaponEffect> upgrades = new ArrayList<>();
-    private LinkedList<WeaponEffect> effectsToApply;
+    private ArrayList<Effect> fireModes = new ArrayList<>();
+    private ArrayList<Effect> upgrades = new ArrayList<>();
+    private LinkedList<Effect> effectsToApply;
 
 
     /**
@@ -33,13 +33,13 @@ public class WeaponCard {
         }
         JSONArray jsonFireModes = (JSONArray) jsonWeaponCard.get("firemodes");
         for (Object jsonFireMode : jsonFireModes) {
-            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonFireMode);
-            this.fireModes.add(weaponEffect);
+            Effect effect = new Effect((JSONObject)jsonFireMode);
+            this.fireModes.add(effect);
         }
         JSONArray jsonUpgrades = (JSONArray) jsonWeaponCard.get("upgrades");
         for (Object jsonUpgrade : jsonUpgrades) {
-            WeaponEffect weaponEffect = new WeaponEffect((JSONObject)jsonUpgrade);
-            this.upgrades.add(weaponEffect);
+            Effect effect = new Effect((JSONObject)jsonUpgrade);
+            this.upgrades.add(effect);
         }
         this.effectsToApply = new LinkedList<>();
         effectsToApply.add(fireModes.get(0));
@@ -61,7 +61,7 @@ public class WeaponCard {
         return weaponColour;
     }
 
-    public LinkedList<WeaponEffect> getEffectsToApply(){
+    public LinkedList<Effect> getEffectsToApply(){
         return effectsToApply;
     }
 
@@ -69,20 +69,20 @@ public class WeaponCard {
         return currentCost;
     }
 
-    public ArrayList<WeaponEffect> getFireModes(){
+    public ArrayList<Effect> getFireModes(){
         return fireModes;
     }
 
-    public ArrayList<WeaponEffect> getUpgrades() {
+    public ArrayList<Effect> getUpgrades() {
         return upgrades;
     }
 
     public void selectFireMode(int index){
-        WeaponEffect eff;
+        Effect eff;
         if(fireModes.size() > index) {
             eff = fireModes.get(index);
             //if effectsToApply isn't composed only by asynchronous moves, reset it
-            if (!effectsToApply.stream().map(WeaponEffect::isAsynchronous).reduce(true, (a, b) -> a && b)) {
+            if (!effectsToApply.stream().map(Effect::isAsynchronous).reduce(true, (a, b) -> a && b)) {
                 this.effectsToApply = new LinkedList<>();
                 this.currentCost = new short[3];
             }
@@ -95,7 +95,7 @@ public class WeaponCard {
     }
 
     public void addUpgrade(int index) {
-        WeaponEffect eff;
+        Effect eff;
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
             for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
@@ -107,7 +107,7 @@ public class WeaponCard {
     }
 
     public void addFirst(int index) {
-        WeaponEffect eff;
+        Effect eff;
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
             for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
@@ -120,7 +120,7 @@ public class WeaponCard {
     }
 
     public void removeUpgrade(int index) {
-        WeaponEffect eff;
+        Effect eff;
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
             for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)

@@ -1,13 +1,12 @@
 package model;
 
 import enums.AmmoEnum;
-import model.WeaponEffect;
 
 public class PowerUpCard {
 
     private boolean selectedAsAmmo;
     private AmmoEnum colour;
-    private WeaponEffect effect;
+    private Effect effect;
 
     public PowerUpCard(AmmoEnum colour){
         //inizializzazione fatta con jSon
@@ -22,7 +21,7 @@ public class PowerUpCard {
 
     public AmmoEnum getColour(){ return this.colour; }
 
-    public WeaponEffect getEffect() {
+    public Effect getEffect() {
         return effect;
     }
 
