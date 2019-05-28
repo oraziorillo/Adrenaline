@@ -4,7 +4,7 @@ import common.RemoteController;
 
 import java.io.IOException;
 
-public class DiscardAndSpawnCommand extends CliCommand {
+class DiscardAndSpawnCommand extends CliCommand {
     DiscardAndSpawnCommand(RemoteController controller, boolean gui) {
         super(controller, gui);
     }

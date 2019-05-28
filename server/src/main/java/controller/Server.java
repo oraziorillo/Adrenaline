@@ -25,7 +25,7 @@ public class Server {
                PrintWriter out = new PrintWriter( clientSocket.getOutputStream() );
                 UUID token;
                 Player player;
-                switch (in.next()){
+                switch (in.next()){ //TODO: rendi register e login metodi del controller
                     case "register":
                         token = UUID.randomUUID();
                         String username = in.next();

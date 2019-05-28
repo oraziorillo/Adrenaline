@@ -136,7 +136,7 @@ public class SquareTest {
     }
    
     @Test
-    public void atDistanceReturnsCallingTileOnlyWithDistance0(){
+    public void atDistanceReturnsCallingSquareOnlyWithDistance0(){
         Collection<Square> result = tested.atDistance( 0 );
         assertEquals( 1, result.size() );
         assertTrue( result.contains( tested ) );

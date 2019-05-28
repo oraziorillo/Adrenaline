@@ -4,8 +4,8 @@ import common.RemoteController;
 
 import java.io.IOException;
 
-public class ShowCommentCommand extends CliCommand {
-    public ShowCommentCommand(RemoteController controller, boolean gui) {
+class ShowCommentCommand extends CliCommand {
+    ShowCommentCommand(RemoteController controller, boolean gui) {
         super(controller, gui );
     }
 

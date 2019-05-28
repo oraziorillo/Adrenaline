@@ -4,7 +4,7 @@ import common.RemoteController;
 
 import java.io.IOException;
 
-public class QuitCommand extends CliCommand {
+class QuitCommand extends CliCommand {
     QuitCommand(RemoteController controller, boolean gui) {
         super(controller, gui);
     }

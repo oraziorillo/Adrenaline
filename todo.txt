@@ -9,8 +9,8 @@ GENERAL NOTES:
 -stabilire quando chiamare il destination checker in targetSelectionState
 -additionalDamage and exclusiveOldTargets (teniamo una lista dei target selezionati
 
-- creare una classe mappa
-
+-modificare il hasEnoughAmmos
+-ricordarsi di aggiungere i target nel shotTargets
 
 
 ROBA DA CONTROLLER

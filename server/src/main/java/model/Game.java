@@ -5,7 +5,6 @@ import enums.AmmoEnum;
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
 import exceptions.HoleInMapException;
-import model.powerUps.*;
 import model.squares.Square;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -70,7 +69,9 @@ public class Game {
     }
 
 
-    public void setTargetableSquares(HashSet<Square> targetableSquares, boolean isTargetable){
+    public void setTargetableSquares(Set<Square> targetableSquares, boolean isTargetable){
+        if (targetableSquares.isEmpty())
+            return;
         targetableSquares.forEach(s -> s.setTargetable(isTargetable));
     }
 
@@ -112,15 +113,7 @@ public class Game {
 
 
     private void initPowerUpDeck(){
-        for(int i = 0; i < 3; i++){
-            AmmoEnum ammoColour = AmmoEnum.values()[i];
-            for(int j = 0; j < 2; j++){
-                powerUpsDeck.add(new Newton(ammoColour));
-                powerUpsDeck.add(new TargetingScope(ammoColour));
-                powerUpsDeck.add(new TagbackGrenade(ammoColour));
-                powerUpsDeck.add(new Teleporter(ammoColour));
-            }
-        }
+        //TODO
     }
 
 

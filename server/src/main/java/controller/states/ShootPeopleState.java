@@ -4,7 +4,7 @@ import controller.Controller;
 import model.Pc;
 import model.WeaponCard;
 import model.squares.Square;
-import java.util.HashSet;
+import java.util.Set;
 
 public class ShootPeopleState extends State {
 
@@ -12,7 +12,7 @@ public class ShootPeopleState extends State {
     private boolean weaponSelected;
     private boolean haveToReload;
     private Square targetSquare;
-    private HashSet<Square> targetableSquares;
+    private Set<Square> targetableSquares;
 
     ShootPeopleState(Controller controller) {
         super(controller);

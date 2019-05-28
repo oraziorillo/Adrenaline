@@ -2,9 +2,11 @@ package controller.states;
 
 import controller.Controller;
 import enums.CardinalDirectionEnum;
+import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import model.WeaponEffect;
 import model.actions.Action;
+import model.PowerUpCard;
 import model.squares.Square;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -18,7 +20,7 @@ public class TargetSelectionState extends State {
     private WeaponEffect currEffect;
     private Action currAction;
     private Set<Pc> shotTargets;
-    private HashSet<Square> targetableSquares;
+    private Set<Square> targetableSquares;
 
     TargetSelectionState(Controller controller) {
         super(controller);
@@ -52,25 +54,40 @@ public class TargetSelectionState extends State {
 
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
-        targetableSquares = currAction.validSquares(controller.getCurrPc().getCurrSquare());
-        controller.getGame().setTargetableSquares(targetableSquares, true);
+        if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets()) {
+            targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
+            //TODO se targetableSquares è vuota, l'effetto non può essere eseguito
+            controller.getGame().setTargetableSquares(targetableSquares, true);
+        } else {
+            //TODO display the list of valid Targets
+        }
     }
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if((!currEffect.isOriented() || directionSelected) && targetSquare.isTargetable()){
-            currAction.selectSquare(targetSquare);
+        if (targetSquare.isTargetable()) {
+            if ((!currEffect.isOriented() || directionSelected) && targetSquare.isTargetable()) {
+                currAction.selectSquare(targetSquare);
+            }
         }
     }
 
 
     @Override
     public void selectTarget(Pc targetPc) {
-        if((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()){
-            if(currEffect.hasSameTarget()){
-                currEffect.getActions().forEach(a -> a.selectPc(targetPc));
-            } else
-                currAction.selectPc(targetPc);
+        if (targetPc.getCurrSquare().isTargetable()) {
+            if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
+                if (currEffect.hasOnlyOneTarget()) {
+                    currEffect.getActions().forEach(a -> a.selectPc(targetPc));
+                } else if (currAction.isAdditionalDamage()) {
+                    if (shotTargets.contains(targetPc))
+                        currAction.selectPc(targetPc);
+                } else if (currAction.isExclusiveForOldTargets()) {
+                    if (!shotTargets.contains(targetPc))
+                        currAction.selectPc(targetPc);
+                } else
+                    currAction.selectPc(targetPc);
+            }
         }
     }
 
@@ -105,11 +122,15 @@ public class TargetSelectionState extends State {
                 next();
                 return false;
             } else {
-                currEffect.execute(controller.getCurrPc());
-                controller.getCurrPc().payAmmo(currEffect.getCost());
-                controller.getCurrWeapon().clear();
-                controller.getGame().setTargetableSquares(targetableSquares, false);
-                return true;
+                try {
+                    controller.getCurrPc().payAmmo(currEffect.getCost());
+                    currEffect.execute(controller.getCurrPc());
+                    controller.getCurrWeapon().clear();
+                    controller.getGame().setTargetableSquares(targetableSquares, false);
+                    return true;
+                } catch (NotEnoughAmmoException e) {
+                    return false;
+                }
             }
         }
         return false;
@@ -118,6 +139,10 @@ public class TargetSelectionState extends State {
 
     @Override
     public State nextState() {
+        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
+            //TODO if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage())
+        }
+
         controller.decreaseRemainingActions();
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();

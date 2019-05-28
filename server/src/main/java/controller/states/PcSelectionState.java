@@ -26,6 +26,8 @@ public class PcSelectionState extends State {
             Pc pc = new Pc(pcColour, controller.getGame());
             player.setPc(pc);
             controller.getGame().addPc(pc);
+            pcColour = null;
+            player = null;
             return true;
         }
         return false;

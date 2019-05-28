@@ -4,8 +4,8 @@ import common.RemoteController;
 
 import java.io.IOException;
 
-public class SelectSquareCommand extends CliCommand {
-    public SelectSquareCommand(RemoteController controller, boolean gui) {
+class SelectSquareCommand extends CliCommand {
+    SelectSquareCommand(RemoteController controller, boolean gui) {
         super(controller, gui );
     }
 

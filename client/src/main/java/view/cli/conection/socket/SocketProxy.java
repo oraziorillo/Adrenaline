@@ -79,6 +79,11 @@ public class SocketProxy implements RemoteController {
     }
 
     @Override
+    public void usePowerUp() throws IOException {
+
+    }
+
+    @Override
     public void shootPeople() {
         out.println( SHOOT_PEOPLE );
         out.flush();
@@ -90,6 +95,11 @@ public class SocketProxy implements RemoteController {
         out.print( x );
         out.print( y );
         out.flush();
+    }
+
+    @Override
+    public void choosePowerUp(int index) throws IOException {
+
     }
 
     @Override
@@ -126,6 +136,17 @@ public class SocketProxy implements RemoteController {
     }
     
     @Override
+    public void skip() {
+        out.println( SKIP );
+        out.flush();
+    }
+
+    @Override
+    public void undo() throws IOException {
+
+    }
+
+    @Override
     public void ok() {
         out.println( OK );
         out.flush();
@@ -149,5 +170,10 @@ public class SocketProxy implements RemoteController {
         out.close();
         in.close();
         socket.close();
+    }
+    
+    @Override
+    public boolean isOpened() {
+        return !socket.isClosed();
     }
 }

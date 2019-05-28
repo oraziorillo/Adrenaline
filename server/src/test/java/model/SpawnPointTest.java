@@ -2,6 +2,7 @@ package model;
 
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
+import exceptions.NotEnoughAmmoException;
 import model.squares.SpawnPoint;
 import model.squares.Square;
 import org.junit.Before;
@@ -35,7 +36,7 @@ public class SpawnPointTest {
    }
    
    @Test
-   public void pickWeaponWorksFine() throws EmptySquareException {
+   public void pickWeaponWorksFine() throws EmptySquareException, NotEnoughAmmoException {
       for (int i = 0; i < 2; i++) {
          tested.setWeaponToGrabIndex(i);
          assertSame( card0, tested.weaponAtIndex(i));
@@ -45,7 +46,7 @@ public class SpawnPointTest {
    }
    
    @Test
-   public void refillRefillsTheEntireSquare() throws EmptySquareException {
+   public void refillRefillsTheEntireSquare() throws EmptySquareException, NotEnoughAmmoException {
       emptyTheSquare(tested);
       tested.refill();
       for(int i=0;i<3;i++) {
@@ -54,7 +55,7 @@ public class SpawnPointTest {
    }
    
    @Test
-   public void isEmptyWorksFine() throws EmptySquareException {
+   public void isEmptyWorksFine() throws EmptySquareException, NotEnoughAmmoException {
       assertFalse( tested.isEmpty() );
       emptyTheSquare( tested );
       assertTrue( tested.isEmpty() );
@@ -66,7 +67,7 @@ public class SpawnPointTest {
    }
 
 
-   private void emptyTheSquare(Square toEmpty) throws EmptySquareException {
+   private void emptyTheSquare(Square toEmpty) throws EmptySquareException, NotEnoughAmmoException {
       for (int i = 0; i < 3; i++) {
          toEmpty.setWeaponToGrabIndex(i);
          toEmpty.collect(pc);

@@ -3,13 +3,13 @@ package controller.states;
 import controller.Controller;
 import model.Pc;
 import model.squares.Square;
-import java.util.HashSet;
+import java.util.Set;
 
 public class RunAroundState extends State{
 
 
     private Square targetSquare;
-    private HashSet<Square> targetableSquares;
+    private Set<Square> targetableSquares;
 
     RunAroundState(Controller controller) {
         super(controller);

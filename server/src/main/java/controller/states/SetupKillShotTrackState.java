@@ -13,7 +13,9 @@ public class SetupKillShotTrackState extends State{
 
     @Override
     public void selectNumberOfSkulls(int n) {
-        this.killShotTrackIndex = n;
+        if (n > 4 && n < 9) {
+            this.killShotTrackIndex = n;
+        }
     }
 
     @Override

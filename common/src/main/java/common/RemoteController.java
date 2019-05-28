@@ -1,6 +1,5 @@
 package common;
 
-
 import enums.PcColourEnum;
 
 import java.io.IOException;
@@ -22,15 +21,17 @@ public interface RemoteController extends Remote {
 
     void grabStuff() throws IOException;
 
+    void usePowerUp() throws IOException;
+
     void shootPeople() throws IOException;
 
     void chooseSquare(int x, int y) throws IOException;
 
     void choosePowerUp(int index) throws IOException;
 
-    void chooseWeaponOnSpawnPoint(int n) throws IOException;
+    void chooseWeaponOnSpawnPoint(int index) throws IOException;
 
-    void chooseWeaponOfMine(int n) throws IOException;
+    void chooseWeaponOfMine(int index) throws IOException;
 
     void switchFireMode() throws IOException;
 
@@ -40,6 +41,8 @@ public interface RemoteController extends Remote {
 
     void skip() throws IOException;
 
+    void undo() throws IOException;
+
     void ok() throws IOException;
 
     void reload() throws IOException;
@@ -47,5 +50,6 @@ public interface RemoteController extends Remote {
     void pass() throws IOException;
 
     void quit() throws IOException;
-
+   
+    boolean isOpened();
 }

@@ -3,6 +3,7 @@ package model.squares;
 import enums.CardinalDirectionEnum;
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
+import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -100,7 +101,7 @@ public abstract class Square {
     public void resetWeaponIndexes(){}
 
 
-    public abstract void collect(Pc currPc) throws EmptySquareException;
+    public abstract void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException;
 
     /**
      * Returns an HashSet containing all the Tiles at a given distance

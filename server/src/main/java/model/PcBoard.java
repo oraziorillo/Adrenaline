@@ -87,6 +87,15 @@ public class PcBoard {
     }
 
 
+    public boolean hasAtLeastOneAmmo() {
+        for (int i = 0; i < 3; i++){
+            if(ammo[i] > 0)
+                return true;
+        }
+        return false;
+    }
+
+
     public boolean hasEnoughAmmo(short[] ammos){
         for(short i : ammos){
             if(this.ammo[i] < ammos[i])

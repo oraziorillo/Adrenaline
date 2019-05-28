@@ -3,7 +3,7 @@ package view.cli.conection.commands;
 import common.RemoteController;
 import java.io.IOException;
 
-public class ChooseNumberOfSkullsCommand extends CliCommand {
+class ChooseNumberOfSkullsCommand extends CliCommand {
     ChooseNumberOfSkullsCommand(RemoteController controller, boolean gui) {
         super(controller, gui);
     }

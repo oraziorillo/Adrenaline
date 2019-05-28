@@ -2,7 +2,7 @@ package controller.states;
 
 import controller.Controller;
 import model.Pc;
-import model.powerUps.PowerUpCard;
+import model.PowerUpCard;
 import model.squares.Square;
 import enums.AmmoEnum;
 
@@ -28,10 +28,10 @@ public class FirstTurnState extends State{
             PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
             AmmoEnum colour = powerUp.getColour();
             Square s = controller.getGame().getSpawnPoint(colour.toSquareColour());
-            pcToSpawn.respawn(s);
             pcToSpawn.moveTo(s);
             pcToSpawn.discardPowerUp(powerUp);
-            s.addPc(pcToSpawn);
+            pcToSpawn = null;
+            powerUpToDropIndex = -1;
             return true;
         }
         return false;

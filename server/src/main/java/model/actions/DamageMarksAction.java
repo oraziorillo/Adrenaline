@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class DamageMarksAction extends Action {
     private short damage;
@@ -105,11 +106,16 @@ public class DamageMarksAction extends Action {
             targetSquare.getPcs().addAll(targets);
         } else if (roomExplosive) {
             TargetChecker t = new SameRoomDecorator(new EmptyChecker());
-            HashSet<Square> room = t.validSquares(targetSquare);
+            Set<Square> room = t.validSquares(targetSquare);
             room.forEach(s -> s.getPcs().addAll(targets));
         }
     }
 
+    @Override
+    public void resetAction() {
+        targets.clear();
+        orientedTargetChecker = null;
+    }
 
     @Override
     public void apply(Pc shooter) {
@@ -119,9 +125,7 @@ public class DamageMarksAction extends Action {
             if (marks != 0)
                 pc.takeMarks(shooter.getColour(), marks);
         });
-        targets.clear();
-        orientedTargetChecker = null;
-
+        resetAction();
     }
 
 

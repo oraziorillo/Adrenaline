@@ -3,7 +3,6 @@ package model;
 import enums.PcColourEnum;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
-import model.powerUps.PowerUpCard;
 import model.squares.Square;
 import java.util.ArrayList;
 import static model.Constants.LIFEPOINTS;
@@ -70,6 +69,14 @@ public class Pc {
         return powerUps.get(index);
     }
 
+    public ArrayList<PowerUpCard> getPowerUps() {
+        return powerUps;
+    }
+
+    public void removePowerUp(PowerUpCard powerUpCard){
+        powerUps.remove(powerUpCard);
+    }
+
 
     public WeaponCard weaponAtIndex(int index) {
         if (index < 0 || index > 3) {
@@ -104,7 +111,7 @@ public class Pc {
     }
 
 
-    public void collect() throws EmptySquareException {
+    public void collect() throws EmptySquareException, NotEnoughAmmoException {
         currSquare.collect(this);
     }
 
@@ -153,6 +160,9 @@ public class Pc {
         this.currSquare = t;
     }
 
+    public boolean hasAtLeastOneAmmo(){
+        return pcBoard.hasAtLeastOneAmmo() || powerUps.size() > 1;
+    }
 
     public boolean hasEnoughAmmo(short[] ammo){
         return pcBoard.hasEnoughAmmo(ammo);

@@ -50,7 +50,7 @@ public class WeaponEffect {
         return asynchronous;
     }
 
-    public boolean hasSameTarget() {
+    public boolean hasOnlyOneTarget() {
         return sameTarget;
     }
 

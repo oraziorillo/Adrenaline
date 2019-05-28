@@ -179,21 +179,34 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void runAround() {
-        currState.runAround();
+        if (currState.runAround()){
+            currState = currState.nextState();
+        }
     }
 
 
     @Override
     public synchronized void grabStuff() {
-        currState.grabStuff();
+        if (currState.grabStuff()){
+            currState = currState.nextState();
+        }
     }
 
 
     @Override
     public synchronized void shootPeople() {
-        currState.shootPeople();
+        if (currState.shootPeople()){
+            currState = currState.nextState();
+        }
     }
 
+
+    @Override
+    public synchronized void usePowerUp() {
+        if (currState.usePowerUp()){
+            currState = currState.nextState();
+        }
+    }
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
@@ -202,12 +215,10 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         } catch (HoleInMapException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
-    public void choosePowerUp(int index) throws IOException {
+    public synchronized void choosePowerUp(int index) {
         if (index >= 0 && index <= 2)
             currState.selectPowerUp(index);
     }
@@ -245,8 +256,16 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
     @Override
-    public void skip() {
+    public synchronized void skip() {
         if (currState.skipAction())
+            currState = currState.nextState();
+    }
+
+    //se nello stato in cui siamo il comando di undo non ci fa cambiare stato
+    // ma resettare quello in cui ci troviamo, restituisce false
+    @Override
+    public synchronized void undo() {
+        if (currState.undo())
             currState = currState.nextState();
     }
 
@@ -273,6 +292,11 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     @Override
     public synchronized void quit() {
         //gestire la disconnessione in modo tale da far saltare il turno al giocatore
+    }
+    
+    @Override
+    public boolean isOpened() {
+        return true;
     }
 
     private synchronized void nextTurn() {

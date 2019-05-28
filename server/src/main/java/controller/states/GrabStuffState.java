@@ -5,12 +5,12 @@ import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import model.squares.Square;
-import java.util.HashSet;
+import java.util.Set;
 
 public class GrabStuffState extends State{
 
     private Square targetSquare;
-    private HashSet<Square> targetableSquares;
+    private Set<Square> targetableSquares;
 
     GrabStuffState(Controller controller) {
         super(controller);

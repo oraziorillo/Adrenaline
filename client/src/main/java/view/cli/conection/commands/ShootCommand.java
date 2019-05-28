@@ -3,7 +3,7 @@ package view.cli.conection.commands;
 import common.RemoteController;
 import java.io.IOException;
 
-public final class ShootCommand extends CliCommand {
+final class ShootCommand extends CliCommand {
 
     ShootCommand(RemoteController controller, boolean gui) {
         super( controller, gui );

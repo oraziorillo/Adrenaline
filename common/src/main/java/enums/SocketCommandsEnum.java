@@ -18,7 +18,8 @@ public enum SocketCommandsEnum {
     CHOOSE_ASYNCH_EFFECT_ORDER,
     OK,
     RELOAD,
-    PASS;
+    PASS,
+    SKIP;
     
     @Override
     public String toString() {
