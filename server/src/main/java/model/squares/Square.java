@@ -126,7 +126,6 @@ public abstract class Square {
         return temp;
     }
 
-    //La tile alla card. dir. specificata si ottiene più facilmente con semplice algebra sulla mappa
 
     /**
      * Given a cardinal direction, returns the first tile in that direction if no wall is encountered
@@ -134,23 +133,24 @@ public abstract class Square {
      * @return The first tile in the given direction if there is no wall between, Optional.empty else
      */
     public Square onDirection(CardinalDirectionEnum direction){
-        Optional<Square> temp = Optional.empty();
-        switch(direction) {
-            case NORTH:
-                temp = this.getVisibles().stream().filter(elem -> elem.getY() == this.getY() + 1 && elem.getX() == this.getX()).findFirst();
-                break;
-            case EAST:
-                temp = this.getVisibles().stream().filter(elem -> elem.getX() == this.getX() + 1 && elem.getY() == this.getY()).findFirst();
-                break;
-            case SOUTH:
-                temp = this.getVisibles().stream().filter(elem -> elem.getY() == this.getY() - 1 && elem.getX() == this.getX()).findFirst();
-                break;
-            case WEST:
-                temp = this.getVisibles().stream().filter(elem -> elem.getX() == this.getX() - 1 && elem.getY() == this.getY()).findFirst();
-                break;
-            default:
-                break;
-        }
+        Optional<Square> temp = visibles
+                .stream()
+                .parallel()
+                .filter(s -> {
+                    switch (direction) {
+                        case NORTH:
+                            return s.getY() == this.getY() + 1 && s.getX() == this.getX();
+                        case EAST:
+                            return s.getX() == this.getX() + 1 && s.getY() == this.getY();
+                        case SOUTH:
+                            return s.getY() == this.getY() - 1 && s.getX() == this.getX();
+                        case WEST:
+                            return s.getX() == this.getX() - 1 && s.getY() == this.getY();
+                        default:
+                            return false;
+                    }
+                })
+                .findFirst();
         return temp.orElse(null);
     }
 
@@ -226,8 +226,6 @@ public abstract class Square {
                 .collect(Collectors.toSet());
         return resultSet;
     }
-
-
 
 
     public abstract void refill();

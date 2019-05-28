@@ -1,22 +1,13 @@
 package controller.states;
 
 import controller.Controller;
-import model.Pc;
-import model.PowerUpCard;
-import model.squares.Square;
-
-import java.util.HashSet;
 
 public class StartTurnState extends State {
 
-    private PowerUpCard currPowerUp;
-    private Pc powerUpTarget;
     private State nextState;
-    private HashSet<Square> targetableSquares;
 
     StartTurnState(Controller controller) {
         super(controller);
-        this.currPowerUp = null;
     }
 
     @Override

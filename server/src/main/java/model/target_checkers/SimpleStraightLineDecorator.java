@@ -14,34 +14,26 @@ public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
+
+    private void addSquareOnDirection(Set<Square> validSquares, Square referenceSquare, CardinalDirectionEnum directionSelected){
+        if (referenceSquare != null) {
+            validSquares.add(referenceSquare);
+            referenceSquare = referenceSquare.onDirection(directionSelected);
+            addSquareOnDirection(validSquares, referenceSquare, directionSelected);
+        }
+    }
+
     public Set<Square> validSquares(Square referenceSquare) {
-        Square tempRefSquare;
-        Square temp;
-        Set<Square> tilesInDirections = new HashSet<>();
-        Set<Square> resultSquares;
+        Set<Square> validSquares = new HashSet<>();
         if (direction == null) {
             for (CardinalDirectionEnum d : CardinalDirectionEnum.values()) {
-                tempRefSquare = referenceSquare;
-                do {
-                    temp = tempRefSquare.onDirection(d);
-                    if (temp != null) {
-                        tilesInDirections.add(temp);
-                        tempRefSquare = temp;
-                    }
-                } while (temp != null);
+                addSquareOnDirection(validSquares, referenceSquare, d);
             }
         } else {
-            tempRefSquare = referenceSquare;
-            do {
-                temp = tempRefSquare.onDirection(direction);
-                if (temp != null) {
-                    tilesInDirections.add(temp);
-                    tempRefSquare = temp;
-                }
-            } while (temp != null);
+            addSquareOnDirection(validSquares, referenceSquare, direction);
         }
-        resultSquares = base.validSquares(referenceSquare);
-        resultSquares.retainAll(tilesInDirections);
+        Set<Square> resultSquares = base.validSquares(referenceSquare);
+        resultSquares.retainAll(validSquares);
         return resultSquares;
     }
 }

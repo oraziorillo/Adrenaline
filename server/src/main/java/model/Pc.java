@@ -5,6 +5,8 @@ import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
 import model.squares.Square;
 import java.util.ArrayList;
+import java.util.List;
+
 import static model.Constants.LIFEPOINTS;
 import static model.Constants.MAX_WEAPONS_IN_HAND;
 
@@ -69,7 +71,7 @@ public class Pc {
         return powerUps.get(index);
     }
 
-    public ArrayList<PowerUpCard> getPowerUps() {
+    public List<PowerUpCard> getPowerUps() {
         return powerUps;
     }
 
@@ -160,9 +162,11 @@ public class Pc {
         this.currSquare = t;
     }
 
+
     public boolean hasAtLeastOneAmmo(){
         return pcBoard.hasAtLeastOneAmmo() || powerUps.size() > 1;
     }
+
 
     public boolean hasEnoughAmmo(short[] ammo){
         return pcBoard.hasEnoughAmmo(ammo);
