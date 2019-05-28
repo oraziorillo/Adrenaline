@@ -1,5 +1,6 @@
 package model;
 
+import enums.AmmoEnum;
 import enums.PcColourEnum;
 import exceptions.NotEnoughAmmoException;
 
@@ -108,6 +109,5 @@ public class PcBoard {
         damageTrackIndex = 0;
         damageTrack = new PcColourEnum[LIFEPOINTS];
     }
-
 
 }

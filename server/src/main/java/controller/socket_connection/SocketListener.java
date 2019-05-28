@@ -1,4 +1,4 @@
-package controller.socketConnection;
+package controller.socket_connection;
 
 import controller.Controller;
 import enums.SocketCommandsEnum;

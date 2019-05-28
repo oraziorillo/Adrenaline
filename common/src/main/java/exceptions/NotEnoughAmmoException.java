@@ -1,5 +1,4 @@
 package exceptions;
 
-public class NotEnoughAmmoException extends UnsupportedOperationException {
-    public void printError(){}
+public class NotEnoughAmmoException extends Throwable {
 }

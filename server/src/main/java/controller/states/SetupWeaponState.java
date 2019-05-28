@@ -3,6 +3,8 @@ package controller.states;
 import controller.Controller;
 import model.WeaponCard;
 import model.WeaponEffect;
+import model.powerUps.PowerUpCard;
+
 import java.util.ArrayList;
 
 public class SetupWeaponState extends State {
@@ -53,6 +55,18 @@ public class SetupWeaponState extends State {
         }
     }
 
+
+    @Override
+    public void selectPowerUp(int index) {
+        PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
+        if(!powerUp.isSelectedAsAmmo()) {
+            powerUp.setSelectedAsAmmo(true);
+        } else {
+            controller.getCurrWeapon().increaseCost(powerUp);
+            powerUp.setSelectedAdAmmo(false);
+        }
+
+    }
 
     @Override
     public boolean ok() {

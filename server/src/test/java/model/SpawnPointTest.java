@@ -3,9 +3,16 @@ package model;
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
 import model.squares.SpawnPoint;
+import model.squares.Square;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpawnPointTest {
@@ -18,8 +25,8 @@ public class SpawnPointTest {
    @Mock WeaponCard card1;
    @Mock WeaponCard card2;
    @Mock Pc pc;
-   
-   /*TODO: fix tests
+
+
    @Before
    public void setupAndConstructorTest(){
       Deck<WeaponCard> deck = Mockito.mock( Deck.class );
@@ -38,7 +45,7 @@ public class SpawnPointTest {
    }
    
    @Test
-   public void refillRefillsTheEntireSquare(){
+   public void refillRefillsTheEntireSquare() throws EmptySquareException {
       emptyTheSquare(tested);
       tested.refill();
       for(int i=0;i<3;i++) {
@@ -47,7 +54,7 @@ public class SpawnPointTest {
    }
    
    @Test
-   public void isEmptyWorksFine(){
+   public void isEmptyWorksFine() throws EmptySquareException {
       assertFalse( tested.isEmpty() );
       emptyTheSquare( tested );
       assertTrue( tested.isEmpty() );
@@ -59,12 +66,11 @@ public class SpawnPointTest {
    }
 
 
-   private void emptyTheSquare(Square toEmpty){
-      //TODO
+   private void emptyTheSquare(Square toEmpty) throws EmptySquareException {
+      for (int i = 0; i < 3; i++) {
+         toEmpty.setWeaponToGrabIndex(i);
+         toEmpty.collect(pc);
+      }
    }
-   */
-   
-   
-   
    
 }

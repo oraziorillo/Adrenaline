@@ -2,7 +2,7 @@ package model.actions;
 
 import model.*;
 import model.squares.Square;
-import model.targetCheckers.*;
+import model.target_checkers.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -26,7 +26,7 @@ public class DamageMarksAction extends Action {
         this.roomExplosive = (boolean) jsonAction.get("roomExplosive");
         this.additionalDamage = (boolean) jsonAction.get("additionalDamage");
         this.exclusiveForOldTargets = (boolean) jsonAction.get("exclusiveForOldTargets");
-        JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("targetCheckers");
+        JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("target_checkers");
         JSONObject jsonTargetChecker;
         for (Object checker : jsonTargetCheckers) {
             jsonTargetChecker = (JSONObject) checker;

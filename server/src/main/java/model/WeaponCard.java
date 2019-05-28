@@ -1,6 +1,7 @@
 package model;
 
 import enums.AmmoEnum;
+import model.powerUps.PowerUpCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.ArrayList;

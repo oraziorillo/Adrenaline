@@ -5,9 +5,7 @@ import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
 import model.powerUps.PowerUpCard;
 import model.squares.Square;
-
 import java.util.ArrayList;
-
 import static model.Constants.LIFEPOINTS;
 import static model.Constants.MAX_WEAPONS_IN_HAND;
 
@@ -123,39 +121,6 @@ public class Pc {
         weapons[index] = weapon;
     }
 
-    /*
-    public void collectWeapon(int weaponIndex) throws FullyArmedException {
-        if (!currSquare.isSpawnPoint()) {
-            throw new IllegalStateException("You are not in a SpawnPoint");
-        }
-        if (isFullyArmed()){
-            throw new FullyArmedException("You have to drop one card");
-        }
-        SpawnPoint workingTile  =(SpawnPoint) currSquare;
-        int index = 0;
-        while (index < weapons.length && weapons[index] != null) {
-            index += 1;
-        }
-        WeaponCard weaponToPick = workingTile.pickWeapon(weaponIndex);
-        weapons[index] = weaponToPick;
-        short[] cost = weaponToPick.getCurrentCost();
-        cost[weaponToPick.getWeaponColour().ordinal()]--;
-        payAmmo(cost);
-    }
-
-
-    public void switchWeapons(int weaponToGrabIndex, int weaponToDropIndex) {
-
-        if (!currSquare.isSpawnPoint()) {
-            throw new IllegalStateException("You are not in a SpawnPoint");
-        }
-        SpawnPoint workingTile = (SpawnPoint) currSquare;
-        weapons[weaponToDropIndex] = workingTile.switchWeapon(weaponToGrabIndex, weaponAtIndex(weaponToDropIndex));
-        //da correggere con payammo come metodo sopra
-    }
-
-     */
-
 
     public void takeMarks(PcColourEnum shooterColour, short marks){
         pcBoard.addMarks(shooterColour, marks);
@@ -189,13 +154,19 @@ public class Pc {
     }
 
 
-    public boolean hasEnoughAmmo(short[] ammos){
-        return pcBoard.hasEnoughAmmo(ammos);
+    public boolean hasEnoughAmmo(short[] ammo){
+        return pcBoard.hasEnoughAmmo(ammo);
     }
 
 
-    public void payAmmo(short[] ammos) throws NotEnoughAmmoException {
-        pcBoard.payAmmo(ammos);
+    public void payAmmo(short[] cost) throws NotEnoughAmmoException {
+        powerUps.forEach(p -> {
+            if (p.isSelectedAsAmmo() && cost[p.getColour().ordinal()] > 0) {
+                cost[p.getColour().ordinal()]--;
+                discardPowerUp(p);
+            }
+        });
+        pcBoard.payAmmo(cost);
     }
 }
 

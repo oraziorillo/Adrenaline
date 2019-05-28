@@ -1,8 +1,7 @@
-package model.targetCheckers;
+package model.target_checkers;
 
 import model.squares.Square;
-
-import java.util.HashSet;
+import java.util.Set;
 
 public class VisibleDecorator extends TargetCheckerDecorator {
 
@@ -10,8 +9,8 @@ public class VisibleDecorator extends TargetCheckerDecorator {
         super(decorated);
     }
 
-    public HashSet<Square> validSquares(Square referenceSquare) {
-        HashSet<Square> visibleSquares, resultSquares;
+    public Set<Square> validSquares(Square referenceSquare) {
+        Set<Square> visibleSquares, resultSquares;
         visibleSquares = referenceSquare.getVisibles();
         resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(visibleSquares);

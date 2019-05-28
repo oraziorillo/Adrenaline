@@ -3,19 +3,17 @@ package model.actions;
 import enums.CardinalDirectionEnum;
 import model.*;
 import model.squares.Square;
-import model.targetCheckers.BeyondWallsStraightLineDecorator;
-import model.targetCheckers.EmptyChecker;
-import model.targetCheckers.SimpleStraightLineDecorator;
-import model.targetCheckers.TargetChecker;
+import model.target_checkers.BeyondWallsStraightLineDecorator;
+import model.target_checkers.EmptyChecker;
+import model.target_checkers.SimpleStraightLineDecorator;
+import model.target_checkers.TargetChecker;
 import org.json.simple.JSONObject;
-
 import java.util.HashSet;
-import java.util.Set;
 
 
 public abstract class Action {
 
-    boolean optional;
+    private boolean optional;
     TargetChecker basicTargetChecker, orientedTargetChecker;
     Square targetSquare;
 
@@ -57,14 +55,6 @@ public abstract class Action {
     }
 
 
-    public abstract void selectPc(Pc targetPc);
-
-
-    public abstract void selectSquare(Square targetSquare);
-
-
-    public abstract void apply(Pc shooter);
-
 
     public void setTargetSquare(Square s){
         this.targetSquare = s;
@@ -86,7 +76,17 @@ public abstract class Action {
         return null;
     }
 
+
     public abstract boolean isComplete();
+
+
+    public abstract void selectPc(Pc targetPc);
+
+
+    public abstract void selectSquare(Square targetSquare);
+
+
+    public abstract void apply(Pc shooter);
 }
 
 

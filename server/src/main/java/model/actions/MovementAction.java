@@ -2,7 +2,7 @@ package model.actions;
 
 import model.*;
 import model.squares.Square;
-import model.targetCheckers.*;
+import model.target_checkers.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -21,7 +21,7 @@ public class MovementAction extends Action {
         JSONArray jsonCheckers;
         JSONObject jsonChecker;
 
-        jsonCheckers = (JSONArray) jsonAction.get("targetCheckers");
+        jsonCheckers = (JSONArray) jsonAction.get("target_checkers");
         for (Object checker : jsonCheckers) {
             jsonChecker = (JSONObject) checker;
             switch ((String) jsonChecker.get("type")) {

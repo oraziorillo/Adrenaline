@@ -26,6 +26,8 @@ public interface RemoteController extends Remote {
 
     void chooseSquare(int x, int y) throws IOException;
 
+    void choosePowerUp(int index) throws IOException;
+
     void chooseWeaponOnSpawnPoint(int n) throws IOException;
 
     void chooseWeaponOfMine(int n) throws IOException;

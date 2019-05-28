@@ -4,16 +4,19 @@ import enums.CardinalDirectionEnum;
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
 import model.Pc;
-
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class Square {
     private final int x;
     private final int y;
     private boolean targetable;
+    private boolean marked;
     private final SquareColourEnum colour;
-    private HashSet<Pc> pcs;            //ricordarsi di aggiugnere degli observer che ad ogni spostamento del pc modifichi questo insieme
+    private HashSet<Pc> pcs;
     private HashSet<Square> visibles;
 
     /**
@@ -26,6 +29,7 @@ public abstract class Square {
         this.x = x;
         this.y = y;
         this.targetable = false;
+        this.marked = false;
         this.colour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
@@ -68,7 +72,7 @@ public abstract class Square {
      * Returns the Pcs on this tile
      * @return the Pcs on this tile
      */
-    public HashSet<Pc> getPcs() {
+    public Set<Pc> getPcs() {
         return pcs;
     }
 
@@ -77,7 +81,7 @@ public abstract class Square {
      * returns the tiles that a Pc on this tile could see
      * @return the tile visibles from this
      */
-    public HashSet<Square> getVisibles() {
+    public Set<Square> getVisibles() {
         return visibles;
     }
 
@@ -103,7 +107,7 @@ public abstract class Square {
      * @param dist distance of returned tiles
      * @return HashSet of Tiles at distance dist
      */
-    public HashSet<Square> atDistance(int dist){
+    public Set<Square> atDistance(int dist){
         if(dist < 0){
             throw new IllegalArgumentException("Distance has to be positive");
         }
@@ -146,7 +150,7 @@ public abstract class Square {
             default:
                 break;
         }
-        return temp.isPresent() ? temp.get() : null;
+        return temp.orElse(null);
     }
 
 
@@ -169,12 +173,60 @@ public abstract class Square {
 
 
     /**
-     *after this method the given tile will be visible from this tile (and then contained into the getVisibles collection)
+     *after this method the given square will be "visible" from this square
      * @param t the tile to make visible
      */
     public void addVisible(Square t) {
         visibles.add(t);
     }
+
+
+    /**
+     * @return an HashSet containing all squares on the map
+     */
+    public Set<Square> allSquares(){
+        LinkedList<Square> queue = new LinkedList<>();
+        HashSet<Square> resultSet = new HashSet<>();
+        queue.offer(this);
+        resultSet.add(this);
+        this.marked = true;
+        while (!queue.isEmpty()){
+            Square currSquare = queue.poll();
+            currSquare.visibles.forEach(s -> {
+                if (!marked) {
+                    s.marked = true;
+                    queue.offer(s);
+                    resultSet.add(s);
+                }
+            });
+        }
+        return resultSet;
+    }
+
+
+    public Set<Square> allSquaresOnDirection(CardinalDirectionEnum direction){
+        Set<Square> resultSet = allSquares();
+        resultSet = resultSet.stream()
+                .parallel()
+                .filter(s -> {
+                    switch (direction){
+                        case NORTH:
+                            return s.getX() == this.getX() && s.getY() >= this.getY();
+                        case EAST:
+                            return s.getX() >= this.getX() && s.getY() == this.getY();
+                        case SOUTH:
+                            return s.getX() == this.getX() && s.getY() <= this.getY();
+                        case WEST:
+                            return s.getX() <= this.getX() && s.getY() == this.getY();
+                        default:
+                            return s.getX() == this.getX() || s.getY() == this.getY();
+                    }
+                })
+                .collect(Collectors.toSet());
+        return resultSet;
+    }
+
+
 
 
     public abstract void refill();

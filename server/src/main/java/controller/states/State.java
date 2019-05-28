@@ -40,6 +40,8 @@ public abstract class State {
 
     public void selectSquare(Square targetSquare) {}
 
+    public void selectPowerUp(int index) {}
+
     public void selectWeaponOnBoard(int index) {}
 
     public void selectWeaponOfMine(int index) {}

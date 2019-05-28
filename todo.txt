@@ -13,6 +13,14 @@ GENERAL NOTES:
 
 
 
+ROBA DA CONTROLLER
+ - quando la lista di target validi è vuota viene chiamato next state e bisogna ricordarcisi che bisogna controllare la lista dei powerup del current player. se qualcuno è selectedAsAmmo allora dovbiamo metterli a falso
+
+ - discard and Spawn     e     choosePowerUp sono uguali, bisogna unirli
+ 
+ - implementare funzionalita di additional damage and exclusive damage
+ 
+
 
 REGOLE DA IMPLEMENTARE:
 
@@ -42,5 +50,11 @@ DOMANDE:
 -chiedere se si può estrarre l'UML dal codice
 
 
-
+ORAZIO:
+ - creare la classe mappa
+ 
+ALESSIO: 
+ - finire power up
+ 
+ 
 

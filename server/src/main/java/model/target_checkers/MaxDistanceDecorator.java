@@ -1,9 +1,10 @@
-package model.targetCheckers;
+package model.target_checkers;
 
 import model.squares.Square;
 import org.json.simple.JSONObject;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class MaxDistanceDecorator extends TargetCheckerDecorator {
 
@@ -14,9 +15,9 @@ public class MaxDistanceDecorator extends TargetCheckerDecorator {
         this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
     }
 
-    public HashSet<Square> validSquares(Square referenceSquare) {
-        HashSet<Square> resultSquares;
-        HashSet<Square> selectedSquares = new HashSet<>();
+    public Set<Square> validSquares(Square referenceSquare) {
+        Set<Square> resultSquares;
+        Set<Square> selectedSquares = new HashSet<>();
         for (int tempMaxDistance = 0; tempMaxDistance <= maxDistance; tempMaxDistance++) {
             selectedSquares.addAll(referenceSquare.atDistance(tempMaxDistance));
         }

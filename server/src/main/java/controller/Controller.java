@@ -12,6 +12,7 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -19,13 +20,12 @@ import java.util.Collections;
 
 public class Controller extends UnicastRemoteObject implements RemoteController {
 
-    static final int FIRST_MAP = 1;
-    static final int LAST_MAP = 4;
-    static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
-    static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
+    private static final int FIRST_MAP = 1;
+    private static final int LAST_MAP = 4;
+    private static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
+    private static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
     private static final int ACTIONS_PER_TURN = 2;
     private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
-
 
     private boolean finalFrenzy = false;
     private boolean firstTurn = false;
@@ -204,6 +204,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         }
 
 
+    }
+
+    @Override
+    public void choosePowerUp(int index) throws IOException {
+        if (index >= 0 && index <= 2)
+            currState.selectPowerUp(index);
     }
 
 

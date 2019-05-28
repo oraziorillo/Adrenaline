@@ -17,12 +17,12 @@ public class TargetSelectionState extends State {
     private LinkedList<WeaponEffect> effectsToApply;
     private WeaponEffect currEffect;
     private Action currAction;
-    private Set<Pc> mainEffectTargets;
+    private Set<Pc> shotTargets;
     private HashSet<Square> targetableSquares;
 
     TargetSelectionState(Controller controller) {
         super(controller);
-        this.mainEffectTargets = new HashSet<>();
+        this.shotTargets = new HashSet<>();
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
@@ -106,6 +106,7 @@ public class TargetSelectionState extends State {
                 return false;
             } else {
                 currEffect.execute(controller.getCurrPc());
+                controller.getCurrPc().payAmmo(currEffect.getCost());
                 controller.getCurrWeapon().clear();
                 controller.getGame().setTargetableSquares(targetableSquares, false);
                 return true;

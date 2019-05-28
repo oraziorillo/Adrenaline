@@ -1,9 +1,9 @@
-package model.targetCheckers;
+package model.target_checkers;
 
 import enums.CardinalDirectionEnum;
 import model.squares.Square;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.Set;
 
 public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
 
@@ -14,11 +14,11 @@ public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
         this.direction = selectedDirection;
     }
 
-    public HashSet<Square> validSquares(Square referenceSquare) {
+    public Set<Square> validSquares(Square referenceSquare) {
         Square tempRefSquare;
         Square temp;
-        HashSet<Square> tilesInDirections = new HashSet<>();
-        HashSet<Square> resultSquares;
+        Set<Square> tilesInDirections = new HashSet<>();
+        Set<Square> resultSquares;
         if (direction == null) {
             for (CardinalDirectionEnum d : CardinalDirectionEnum.values()) {
                 tempRefSquare = referenceSquare;
