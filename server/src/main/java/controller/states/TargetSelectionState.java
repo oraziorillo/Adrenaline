@@ -142,7 +142,8 @@ public class TargetSelectionState extends State {
         controller.getCurrWeapon().setLoaded(false);
         controller.decreaseRemainingActions();
         for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
-            if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage())
+            if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage() &&
+                    controller.getCurrPc().hasAtLeastOneAmmo())
                 return new UsePowerUpState(controller, shotTargets);
         }
         if (controller.getRemainingActions() == 0) {

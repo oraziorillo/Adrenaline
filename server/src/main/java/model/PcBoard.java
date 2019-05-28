@@ -38,6 +38,9 @@ public class PcBoard {
         return numOfDeaths;
     }
 
+    public short[] getAmmo() {
+        return ammo;
+    }
 
     public short getDamageTrackIndex() {
         return damageTrackIndex;
@@ -96,21 +99,17 @@ public class PcBoard {
     }
 
 
-    public boolean hasEnoughAmmo(short[] ammos){
-        for(short i : ammos){
-            if(this.ammo[i] < ammos[i])
-                return false;
+    public short[] payAmmo(short[] ammo) {
+        for (short i = 0; i < 3; i++){
+            if (this.ammo[i] > ammo[i]){
+                this.ammo[i] -= ammo[i];
+                ammo[i] = 0;
+            } else {
+                ammo[i] -= this.ammo[i];
+                this.ammo[i] = 0;
+            }
         }
-        return true;
-    }
-
-
-    public void payAmmo(short[] ammo) throws NotEnoughAmmoException {
-        if (!hasEnoughAmmo(ammo)) {
-            throw new NotEnoughAmmoException();
-        }
-        for (short i = 0; i < 3; i++)
-            this.ammo[i] -= ammo[i];
+        return ammo;
     }
 
 

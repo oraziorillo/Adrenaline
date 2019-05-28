@@ -89,7 +89,7 @@ public class UsePowerUpState extends State {
     public boolean ok() {
         if (currAction.isComplete()) {
             currPowerUp.useEffect(controller.getCurrPc());
-            controller.getCurrPc().removePowerUp(currPowerUp);
+            controller.getCurrPc().discardPowerUp(currPowerUp);
             //TODO bisogna aggiungere il pagamento dell'ammocard nel caso del mirino
             return true;
         }

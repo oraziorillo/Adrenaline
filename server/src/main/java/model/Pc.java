@@ -1,5 +1,6 @@
 package model;
 
+import enums.AmmoEnum;
 import enums.PcColourEnum;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
@@ -75,10 +76,6 @@ public class Pc {
 
     public List<PowerUpCard> getPowerUps() {
         return powerUps;
-    }
-
-    public void removePowerUp(PowerUpCard powerUpCard){
-        powerUps.remove(powerUpCard);
     }
 
 
@@ -170,19 +167,28 @@ public class Pc {
     }
 
 
-    public boolean hasEnoughAmmo(short[] ammo){
-        return pcBoard.hasEnoughAmmo(ammo);
+    public boolean hasEnoughAmmo(short[] ammo) {
+        short [] pcAmmo = pcBoard.getAmmo();
+        powerUps.stream().filter(PowerUpCard::isSelectedAsAmmo).forEach(p -> pcAmmo[p.getColour().ordinal()]++);
+        for(AmmoEnum colour : AmmoEnum.values()){
+            if(pcAmmo[colour.ordinal()] < ammo[colour.ordinal()])
+                return false;
+        }
+        return true;
     }
 
-
+    //potremmo anche rendere payAmmo un boolean che restituisce True se può effettuare il pagamento, false altrimenti
     public void payAmmo(short[] cost) throws NotEnoughAmmoException {
+        if (!hasEnoughAmmo(cost)) {
+            throw new NotEnoughAmmoException();
+        }
+        short [] remainingCost = pcBoard.payAmmo(cost);
         powerUps.forEach(p -> {
-            if (p.isSelectedAsAmmo() && cost[p.getColour().ordinal()] > 0) {
-                cost[p.getColour().ordinal()]--;
+            if (p.isSelectedAsAmmo() && remainingCost[p.getColour().ordinal()] > 0) {
+                remainingCost[p.getColour().ordinal()]--;
                 discardPowerUp(p);
             }
         });
-        pcBoard.payAmmo(cost);
     }
 }
 
