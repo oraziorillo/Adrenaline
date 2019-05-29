@@ -18,10 +18,10 @@ public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
     private void addSquareOnDirection(Set<Square> validSquares, Square referenceSquare, CardinalDirectionEnum directionSelected){
         if (referenceSquare != null) {
             validSquares.add(referenceSquare);
-            referenceSquare = referenceSquare.onDirection(directionSelected);
-            addSquareOnDirection(validSquares, referenceSquare, directionSelected);
+            addSquareOnDirection(validSquares, referenceSquare.onDirection(directionSelected), directionSelected);
         }
     }
+
 
     public Set<Square> validSquares(Square referenceSquare) {
         Set<Square> validSquares = new HashSet<>();

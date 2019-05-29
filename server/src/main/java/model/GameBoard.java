@@ -1,31 +1,40 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
 import exceptions.HoleInMapException;
 import model.squares.Square;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
-public class GameBoard {
+class GameBoard {
 
+    @Expose private int rows, columns;
+    @Expose private ArrayList<Square> map;
+    private ArrayList<Square> spawnPoints;
     private KillShot[] killShotTrack;
     private int currentKillShotTrackIndex;
-    private ArrayList<Square> spawnPoints;
-    private Square[][] map;
 
 
-    GameBoard(){
-        this.spawnPoints = new ArrayList<>();
+    GameBoard(int n){
+
     }
 
 
     int rows() {
-        return map.length;
+        return rows;
     }
 
 
     int columns() {
-        return map[0].length;
+        return columns;
     }
 
 
@@ -36,8 +45,7 @@ public class GameBoard {
      // array di int per ogni Square della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
      // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
      */
-    void initMap(int numberOfMap){
-    /*(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
+    void initMap(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<SquareColourEnum> tileColourList;
         ArrayList<SquareColourEnum> tempList = new ArrayList<>();
         ArrayList<Integer> doorsList, typeOfTileList;
@@ -83,7 +91,6 @@ public class GameBoard {
                 tempList.clear();
             }
         }
-        */
     }
 
 
