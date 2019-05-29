@@ -2,7 +2,6 @@ package controller.states;
 
 import controller.Controller;
 import enums.CardinalDirectionEnum;
-import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import model.Effect;
 import model.actions.Action;
