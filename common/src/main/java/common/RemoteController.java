@@ -4,6 +4,7 @@ import enums.PcColourEnum;
 
 import java.io.IOException;
 import java.rmi.Remote;
+import java.util.UUID;
 
 public interface RemoteController extends Remote {
 

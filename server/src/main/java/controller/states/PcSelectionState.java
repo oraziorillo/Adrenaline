@@ -1,7 +1,7 @@
 package controller.states;
 
 import controller.Controller;
-import common.player.Player;
+import controller.player.Player;
 import model.Pc;
 import enums.PcColourEnum;
 

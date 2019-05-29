@@ -50,11 +50,11 @@ public class GameBoard {
         map = new Square[rows][columns];
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
-                if (typeOfTileList.get(i*rows+j) == 1) {
-                    map[i][j] = new AmmoSquare(i, j, tileColourList.get(i*rows+j), ammoDeck);
+                if (typeOfTileList.getPlayer(i*rows+j) == 1) {
+                    map[i][j] = new AmmoSquare(i, j, tileColourList.getPlayer(i*rows+j), ammoDeck);
                 }
-                else if(typeOfTileList.get(i*rows+j) == 2){
-                    map[i][j] = new SpawnPoint(i, j, tileColourList.get(i*rows+j), weaponsDeck);
+                else if(typeOfTileList.getPlayer(i*rows+j) == 2){
+                    map[i][j] = new SpawnPoint(i, j, tileColourList.getPlayer(i*rows+j), weaponsDeck);
                     spawnPoints.add(map[i][j]);
                 }
                 else {
@@ -67,7 +67,7 @@ public class GameBoard {
                 if(map[i][j] != null) {
                     tempList.add(map[i][j].getColour());
                     while (doorsList.contains(i * rows + j) && doorsList.indexOf(i * rows + j) % 2 == 0) {
-                        int k = doorsList.get(i * rows + j + 1);
+                        int k = doorsList.getPlayer(i * rows + j + 1);
                         tempList.add(map[k / rows][k % columns].getColour());
                         doorsList.remove(i * rows + j);
                         doorsList.remove(i * rows + j);

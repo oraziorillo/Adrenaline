@@ -7,7 +7,7 @@ import enums.PcColourEnum;
 import java.io.*;
 import java.net.Socket;
 
-public class SocketListener implements Runnable {
+public class GameSocketListener implements Runnable {
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
@@ -17,7 +17,7 @@ public class SocketListener implements Runnable {
      * Creates a connection listener by an existing socket
      * @param socket the given socket, created by ServerSocket.accept and then already opened
      */
-    SocketListener(Socket socket, Controller controller) throws IOException {
+    GameSocketListener(Socket socket, Controller controller) throws IOException {
         this.socket = socket;
         this.controller = controller;
         out = new PrintWriter( socket.getOutputStream() );

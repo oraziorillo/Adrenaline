@@ -1,7 +1,7 @@
 package controller;
 
 import common.RemoteController;
-import common.player.Player;
+import controller.player.Player;
 import controller.states.SetupMapState;
 import controller.states.State;
 import enums.PcColourEnum;

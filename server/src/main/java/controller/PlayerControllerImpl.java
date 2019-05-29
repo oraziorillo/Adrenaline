@@ -1,14 +1,15 @@
 package controller;
 
 import common.PlayerController;
-import common.player.Player;
+import controller.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class PlayerControllerImpl implements PlayerController {
-   private Map<UUID, Player> players = new HashMap<>();
+   private static Map<UUID, Player> players = new HashMap<>();
+   
    @Override
    public UUID register(String username) {
       UUID token;
@@ -21,7 +22,7 @@ public class PlayerControllerImpl implements PlayerController {
    }
    
    @Override
-   public Player login(UUID token) {
+   public Player getPlayer(UUID token) {
       return players.get( token );
    }
 }

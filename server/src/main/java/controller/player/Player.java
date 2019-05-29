@@ -1,4 +1,4 @@
-package common.player;
+package controller.player;
 
 import model.Pc;
 import org.jetbrains.annotations.Contract;
