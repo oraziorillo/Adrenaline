@@ -178,7 +178,7 @@ public class Pc {
         return true;
     }
 
-    //potremmo anche rendere payAmmo un boolean che restituisce True se può effettuare il pagamento, false altrimenti
+
     public boolean payAmmo(short[] cost) {
         if (!hasEnoughAmmo(cost))
             return false;

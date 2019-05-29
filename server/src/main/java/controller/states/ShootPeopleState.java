@@ -8,17 +8,18 @@ import java.util.Set;
 
 public class ShootPeopleState extends State {
 
+    private boolean undo;
     private boolean moved;
     private boolean weaponSelected;
-    private boolean haveToReload;
+    private boolean wantsToReload;
+    private boolean reloadDone;
     private Square targetSquare;
     private Set<Square> targetableSquares;
 
-    ShootPeopleState(Controller controller) {
+    ShootPeopleState(Controller controller, boolean hasMoved, boolean hasReloaded) {
         super(controller);
-        this.moved = false;
-        this.weaponSelected = false;
-        this.haveToReload = false;
+        this.moved = hasMoved;
+        this.reloadDone = hasReloaded;
         setTargetableToValidSquares(controller.getCurrPc());
     }
 
@@ -43,8 +44,11 @@ public class ShootPeopleState extends State {
 
     @Override
     public boolean reload(){
-        this.haveToReload = true;
-        return true;
+        if (controller.isFinalFrenzy() && !reloadDone) {
+            this.wantsToReload = true;
+            return true;
+        }
+        return false;
     }
 
 
@@ -68,27 +72,33 @@ public class ShootPeopleState extends State {
     @Override
     public boolean undo() {
         if (!moved){
-            controller.getGame().setTargetableSquares(targetableSquares, true);
+            controller.getGame().setTargetableSquares(targetableSquares, false);
+            undo = true;
+            return true;
         }
+        return false;
     }
+
 
     @Override
     public boolean ok() {
-        if (targetSquare != null) {
+        if (targetSquare != null && !moved) {
             controller.getCurrPc().moveTo(targetSquare);
             controller.getGame().setTargetableSquares(targetableSquares, false);
             moved = true;
             return false;
         }
-        return weaponSelected || haveToReload;
+        return weaponSelected || wantsToReload;
     }
 
 
     @Override
     public State nextState() {
+        if (undo)
+            return new ShootPeopleState(controller, false, false);
         if (weaponSelected)
             return new SetupWeaponState(controller);
-        if (haveToReload)
+        if (wantsToReload)
             return new ReloadState(controller);
         return this;
     }

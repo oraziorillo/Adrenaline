@@ -3,6 +3,7 @@ package controller.states;
 import controller.Controller;
 import model.PowerUpCard;
 import model.WeaponCard;
+import model.squares.Square;
 
 public class ReloadState extends State {
 
@@ -34,6 +35,7 @@ public class ReloadState extends State {
             if (controller.getCurrPc().hasEnoughAmmo(weaponCost)) {
                 controller.getCurrPc().payAmmo(weaponCost);
                 weaponToReload.setLoaded(true);
+                weaponToReload = null;
             }
         }
         return false;
@@ -41,6 +43,8 @@ public class ReloadState extends State {
 
     @Override
     public boolean pass() {
+        controller.getSquaresToRefill().forEach(Square::refill);
+        controller.resetSquaresToRefill();
         return true;
     }
 
@@ -48,7 +52,8 @@ public class ReloadState extends State {
     @Override
     public State nextState() {
         if (controller.isFinalFrenzy())
-            return new
-        return null;
+            return new ShootPeopleState(controller, true, true);
+        controller.nextTurn();
+        return new StartTurnState(controller);
     }
 }

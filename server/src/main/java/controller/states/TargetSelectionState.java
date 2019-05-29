@@ -40,6 +40,7 @@ public class TargetSelectionState extends State {
 
     private void next(){
         if(actionIndex == currEffect.getActions().size() -1){
+            controller.getCurrPc().payAmmo(currEffect.getCost());
             currEffect.execute(controller.getCurrPc());
             effectIndex++;
             actionIndex = 0;
@@ -122,15 +123,11 @@ public class TargetSelectionState extends State {
                 next();
                 return false;
             } else {
-                try {
-                    controller.getCurrPc().payAmmo(currEffect.getCost());
-                    currEffect.execute(controller.getCurrPc());
-                    controller.getCurrWeapon().clear();
-                    controller.getGame().setTargetableSquares(targetableSquares, false);
-                    return true;
-                } catch (NotEnoughAmmoException e) {
-                    return false;
-                }
+                controller.getCurrPc().payAmmo(currEffect.getCost());
+                currEffect.execute(controller.getCurrPc());
+                controller.getCurrWeapon().clear();
+                controller.getGame().setTargetableSquares(targetableSquares, false);
+                return true;
             }
         }
         return false;

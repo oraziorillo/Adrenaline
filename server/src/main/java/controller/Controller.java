@@ -306,7 +306,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return true;
     }
 
-    private synchronized void nextTurn() {
+    public synchronized void nextTurn() {
         if (currPlayerIndex == players.size() - 1)
             currPlayerIndex = 0;
         else
