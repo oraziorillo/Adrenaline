@@ -1,6 +1,6 @@
 package controller;
 
-import controller.player.Player;
+import common.player.Player;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 

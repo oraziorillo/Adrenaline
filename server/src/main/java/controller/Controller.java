@@ -1,7 +1,7 @@
 package controller;
 
 import common.RemoteController;
-import controller.player.Player;
+import common.player.Player;
 import controller.states.SetupMapState;
 import controller.states.State;
 import enums.PcColourEnum;
@@ -12,7 +12,6 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;

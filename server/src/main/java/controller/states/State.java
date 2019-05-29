@@ -1,7 +1,7 @@
 package controller.states;
 
 import controller.Controller;
-import controller.player.Player;
+import common.player.Player;
 import enums.CardinalDirectionEnum;
 import model.Pc;
 import model.squares.Square;

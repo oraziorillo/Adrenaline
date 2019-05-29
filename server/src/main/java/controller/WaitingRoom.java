@@ -1,6 +1,6 @@
 package controller;
 
-import controller.player.Player;
+import common.player.Player;
 import model.Game;
 
 import javax.swing.*;
