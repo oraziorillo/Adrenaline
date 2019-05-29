@@ -51,62 +51,64 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         this.currState = new SetupMapState(this);
     }
 
-    public synchronized boolean isFirstTurn() {
+    public boolean isFirstTurn() {
         return firstTurn;
     }
 
-    public synchronized boolean isFinalFrenzy() {
+    public boolean isFinalFrenzy() {
         return finalFrenzy;
     }
 
 
-    public synchronized Game getGame() {
+    public Game getGame() {
         return game;
     }
 
-    public synchronized ArrayList<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
 
-    public synchronized int getCurrPlayerIndex() {
+    public int getCurrPlayerIndex() {
         return currPlayerIndex;
     }
 
-    public synchronized int getRemainingActions() {
+    public int getRemainingActions() {
         return remainingActions;
     }
 
-    public synchronized WeaponCard getCurrWeapon() {
+    public WeaponCard getCurrWeapon() {
         return currWeapon;
     }
 
-    public synchronized ArrayList<Square> getSquaresToRefill(){
+    public void resetCurrWeapon() { this.currWeapon = null; }
+
+    public ArrayList<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
 
-    public synchronized void setFirstTurn(boolean booleanValue) {
+    public void setFirstTurn(boolean booleanValue) {
         firstTurn = booleanValue;
     }
 
 
-    public synchronized void setFinalFrenzy(boolean booleanValue) {
+    public void setFinalFrenzy(boolean booleanValue) {
         finalFrenzy = booleanValue;
     }
 
-    public synchronized void setLastPlayerIndex(int index) {
+    public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
     }
 
-    public synchronized void setCurrWeapon(WeaponCard weapon) {
+    public void setCurrWeapon(WeaponCard weapon) {
         this.currWeapon = weapon;
     }
 
-    public synchronized void decreaseRemainingActions() {
+    public void decreaseRemainingActions() {
         this.remainingActions--;
     }
 
-    public synchronized void resetRemainingActions() {
+    public void resetRemainingActions() {
         if (!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
             this.remainingActions = ACTIONS_PER_TURN;
         else
@@ -248,6 +250,11 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public synchronized void upgrade() {
         if(!currWeapon.getUpgrades().isEmpty())
             currState.upgrade(currWeapon);
+    }
+
+    @Override
+    public synchronized void removeUpgrade() throws IOException {
+        currState.removeUpgrade(currWeapon);
     }
 
     @Override

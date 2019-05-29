@@ -4,6 +4,7 @@ import controller.Controller;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
 import model.Pc;
+import model.PowerUpCard;
 import model.squares.Square;
 import java.util.Set;
 
@@ -46,6 +47,13 @@ public class GrabStuffState extends State{
         }
     }
 
+    @Override
+    public void selectPowerUp(int index) {
+        PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
+        if (powerUp != null && powerUp.isSelectedAsAmmo())
+            powerUp.setSelectedAsAmmo(true);
+    }
+
 
     @Override
     void setTargetableToValidSquares(Pc referencePc){
@@ -62,6 +70,7 @@ public class GrabStuffState extends State{
     @Override
     public boolean undo() {
         controller.getGame().setTargetableSquares(targetableSquares, false);
+        controller.getCurrPc().resetPowerUpAsAmmo();
         targetSquare.resetWeaponIndexes();
         undo = true;
         return true;
@@ -90,7 +99,10 @@ public class GrabStuffState extends State{
 
     @Override
     public State nextState() {
+        if (undo)
+            return new StartTurnState(controller);
         controller.decreaseRemainingActions();
+        controller.getCurrPc().resetPowerUpAsAmmo();
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();
             return new EndTurnState(controller);

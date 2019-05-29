@@ -34,7 +34,7 @@ public class ShootPeopleState extends State {
     @Override
     public void selectWeaponOfMine(int index) {
         WeaponCard currWeapon = controller.getCurrPc().weaponAtIndex(index);
-        if (currWeapon.isLoaded()) {
+        if (currWeapon != null && currWeapon.isLoaded()) {
             controller.setCurrWeapon(currWeapon);
             this.weaponSelected = true;
         }
@@ -64,6 +64,13 @@ public class ShootPeopleState extends State {
         controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
+
+    @Override
+    public boolean undo() {
+        if (!moved){
+            controller.getGame().setTargetableSquares(targetableSquares, true);
+        }
+    }
 
     @Override
     public boolean ok() {

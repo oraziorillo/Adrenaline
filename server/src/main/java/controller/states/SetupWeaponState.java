@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class SetupWeaponState extends State {
 
+    private boolean undo;
     private boolean waiting;
     private int fireModeIndex, upgradeIndex;
 
@@ -54,6 +55,13 @@ public class SetupWeaponState extends State {
         }
     }
 
+    @Override
+    public void removeUpgrade(WeaponCard weapon){
+        if (!waiting && upgradeIndex != 0) {
+            weapon.removeUpgrade(--upgradeIndex);
+        }
+    }
+
 
     @Override
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect){
@@ -67,36 +75,36 @@ public class SetupWeaponState extends State {
         }
     }
 
+
     //con questa implementazione l'utente non può deselezionare il powerUpAsAmmo a meno che non usi undo
     @Override
     public void selectPowerUp(int index) {
-        try {
-            PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
-            powerUp.setSelectedAsAmmo(!powerUp.isSelectedAsAmmo());
-        } catch (NullPointerException e) {
-            //TODO stampa a video: Non hai selezionato alcun powerUp
-        }
-
+        PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
+        if (powerUp != null && powerUp.isSelectedAsAmmo())
+            powerUp.setSelectedAsAmmo(true);
     }
-
 
     @Override
     public boolean undo() {
-        //dovremmo modificarlo in modo tale da resettare l'intero stato
-        if (upgradeIndex > 0)
-            controller.getCurrWeapon().removeUpgrade(--upgradeIndex);
-        return false;
+        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
+            if (p.isSelectedAsAmmo())
+                p.setSelectedAsAmmo(false);
+        }
+        controller.getCurrWeapon().clear();
+        undo = true;
+        return true;
     }
 
     @Override
     public boolean ok() {
-        //TODO: gli facciamo pagare ora il costo dell'arma??
         return true;
     }
 
 
     @Override
     public State nextState() {
+        if (undo)
+            return new SetupWeaponState(controller);
         return new TargetSelectionState(controller);
     }
 }

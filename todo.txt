@@ -19,6 +19,8 @@ ROBA DA CONTROLLER
  - discard and Spawn     e     choosePowerUp sono uguali, bisogna unirli
  
  - implementare funzionalita di additional damage and exclusive damage
+
+- considerare l'utilizzo di undo quando è final frenzy and in shootpeopleState seleziona l'arma
  
 
 

@@ -80,12 +80,12 @@ public class SpawnPoint extends Square {
         WeaponCard weaponToGrab = weapons[weaponToGrabIndex];
         if (weaponToDropIndex < 0 && currPc.isFullyArmed())
             throw new IllegalStateException("You have to choose a weapon to drop");
-        else {
-            WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
-            weapons[weaponToGrabIndex] = weaponToDrop;
-        }
+        if (!currPc.hasEnoughAmmo(weaponToGrab.getAmmo()))
+            throw new NotEnoughAmmoException();
+        WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
+        weapons[weaponToGrabIndex] = weaponToDrop;
         currPc.addWeapon(weaponToGrab, weaponToDropIndex);
-        short[] cost = weaponToGrab.getCurrentCost();
+        short[] cost = weaponToGrab.getAmmo();
         cost[weaponToGrab.getWeaponColour().ordinal()]--;
         currPc.payAmmo(cost);
         resetWeaponIndexes();

@@ -37,6 +37,8 @@ public interface RemoteController extends Remote {
 
     void upgrade() throws IOException;
 
+    void removeUpgrade() throws IOException;
+
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
 
     void skip() throws IOException;
