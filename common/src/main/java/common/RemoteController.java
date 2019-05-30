@@ -15,8 +15,6 @@ public interface RemoteController extends Remote {
 
     void discardAndSpawn(int n) throws IOException;
 
-    void showComment(String comment) throws IOException;
-
     void runAround() throws IOException;
 
     void grabStuff() throws IOException;

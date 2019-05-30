@@ -99,7 +99,9 @@ public class Pc {
 
 
     public void drawPowerUp(){
-        powerUps.add(currGame.powerUpsDeck.draw());
+        PowerUpCard powerUpToDraw = currGame.drawPowerUp();
+        if (powerUpToDraw != null)
+            powerUps.add(powerUpToDraw);
     }
 
 

@@ -175,10 +175,10 @@ public abstract class Square {
 
     /**
      *after this method the given square will be "visible" from this square
-     * @param t the tile to make visible
+     * @param s the tile to make visible
      */
-    public void addVisible(Square t) {
-        visibles.add(t);
+    public void addVisible(Square s) {
+        visibles.add(s);
     }
 
 

@@ -1,6 +1,5 @@
 package model;
 
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,7 +16,8 @@ public class Deck<E> {
     private Random random;
     private ArrayList<E> cards;
 
-    public Deck() {
+
+    Deck() {
         cards = new ArrayList<>();
         random = new Random();
     }
@@ -28,15 +28,18 @@ public class Deck<E> {
      * @return the first card of the deck
      */
     public E draw() {
+        if (cards.isEmpty())
+            return null;
         E card = cards.get(0);
         cards.remove(0);
         return card;
     }
 
+
     /**
      * shuffles the deck (NOTE: the deck is pre-shuffled)
      */
-    public void shuffle(){
+    void shuffle(){
         for (int i = size() - 1; i > 0; i--){
             int index = random.nextInt(i + 1);
             //Simple swap
@@ -44,8 +47,8 @@ public class Deck<E> {
             cards.set(index, cards.get(i));
             cards.set(i, card);
         }
-
     }
+
 
     /**
      * Adds the given card to a random position     *
@@ -61,6 +64,7 @@ public class Deck<E> {
         cards.add(index, e);
     }
 
+
     /**
      * Returns the number of cards in the deck
      * @return the number of cards in the deck
@@ -69,14 +73,16 @@ public class Deck<E> {
         return cards.size();
     }
 
+
     /**
      * Checks if a card is in the deck
      * @param o the card to check for
      * @return true if and only if o is in the deck
      */
-    public boolean contains(Object o) {
+    boolean contains(Object o) {
         return cards.contains(o);
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -90,6 +96,7 @@ public class Deck<E> {
         return cards.equals( d.cards );
     }
 
+
     /**
      * Usual hashcode method     *
      * @return hashcode of the collection containing the cards
@@ -98,7 +105,8 @@ public class Deck<E> {
     public int hashCode() {
         return cards.hashCode();
     }
-    
+
+
     @Override
     protected Object clone() throws CloneNotSupportedException {
         Deck<E> clone = new Deck<>();

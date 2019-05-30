@@ -40,7 +40,7 @@ DOMANDE:
 
 - il json va chiuso?
 
-
+-possiamo usare javatuple?
 
 - aggiungere boolean needParameters per onda d'urto
 - vedere meglio il tractor beam 

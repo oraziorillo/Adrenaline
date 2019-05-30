@@ -49,10 +49,6 @@ public class SocketListener implements Runnable {
                         argInt = Integer.parseInt( in.readLine() );
                         controller.discardAndSpawn( argInt );
                         break;
-                    case SHOW_COMMENT:
-                        String comment = in.readLine();
-                        controller.showComment( comment );
-                        break;
                     case RUN_AROUND:
                         controller.runAround();
                         break;

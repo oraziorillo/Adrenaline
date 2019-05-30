@@ -5,18 +5,16 @@ import controller.player.Player;
 import controller.states.SetupMapState;
 import controller.states.State;
 import enums.PcColourEnum;
-import exceptions.HoleInMapException;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
-
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Controller extends UnicastRemoteObject implements RemoteController {
 
@@ -39,7 +37,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private ArrayList<Player> players;
     private ArrayList<Square> squaresToRefill;
 
-    public Controller(ArrayList<Player> players) throws RemoteException {
+    public Controller(List<Player> players) throws RemoteException {
         super();
         this.game = new Game();
         this.players = new ArrayList<>();
@@ -64,7 +62,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return game;
     }
 
-    public synchronized ArrayList<Player> getPlayers() {
+    public synchronized List<Player> getPlayers() {
         return players;
     }
 
@@ -81,7 +79,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return currWeapon;
     }
 
-    public synchronized ArrayList<Square> getSquaresToRefill(){
+    public synchronized List<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
 
@@ -130,11 +128,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         //TODO: deve prendere come arg un token
         //      deve sollevare un eccezione NotCurrPlayerException
         //      aggiungere try catch a tutti i metodi
-    }
-
-    @Override
-    public synchronized void showComment(String comment) {
-        game.setMessage(comment);
     }
 
 
@@ -210,11 +203,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
-        try {
-            currState.selectSquare(game.getSquare(x, y));
-        } catch (HoleInMapException e) {
-            e.printStackTrace();
-        }
+        Square chosenSquare = game.getSquare(x, y);
+        if (chosenSquare != null)
+            currState.selectSquare(chosenSquare);
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import controller.Server;
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
-import exceptions.HoleInMapException;
 import model.squares.AmmoSquare;
 import model.squares.SpawnPoint;
 import model.squares.Square;
@@ -28,7 +27,6 @@ public class Game {
 
     public Game() {
         this.pcs = new ArrayList<>();
-        this.gameBoard = new GameBoard();
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
@@ -36,53 +34,22 @@ public class Game {
     }
 
 
-    public List<Pc> getPcs(){
-        return pcs;
-    }
-
-
-    public Square getSquare(int x, int y) throws HoleInMapException {
-        return gameBoard.getSquare(x, y);
-    }
-
-
-    public Square getSpawnPoint(SquareColourEnum requiredColour) {
-        return gameBoard.getSpawnPoint(requiredColour);
-    }
-
-
-    public int mapRows(){
-        return gameBoard.rows();
-    }
-
-
-    public int mapColumns(){
-        return gameBoard.columns();
-    }
-
-
-    public void setTargetableSquares(Set<Square> targetableSquares, boolean isTargetable){
-        if (targetableSquares.isEmpty())
-            return;
-        targetableSquares.forEach(s -> s.setTargetable(isTargetable));
-    }
-
-
-    public void addPc(Pc pc){
-        pcs.add(pc);
-    }
-
-
     public void initMap(int numberOfMap){
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        JsonDeserializer<GameBoard> deserializer = ...; // will implement in a second
-        gsonBuilder.registerTypeAdapter(GameBoard.class, deserializer);
-        Gson customGson = gsonBuilder.create();
-        gameBoard = customGson.fromJson("gameBoard", GameBoard.class);
-
         Gson gson = new Gson();
-        Type mapType = new TypeToken<ArrayList<Square>>(){}.getType();
-        gameBoard = gson.fromJson("map", mapType);
+
+        JsonArray gameBoards = gson.fromJson("game_boards", JsonArray.class);
+
+        JsonObject myJsonGameBoard = gameBoards.get(numberOfMap).getAsJsonObject();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        JsonDeserializer<Square> squareDeserializer = new SquareDeserializer();
+        JsonDeserializer<GameBoard> gameBoardDeserializer = new GameBoardDeserializer();
+        gsonBuilder.registerTypeAdapter(Square.class, squareDeserializer);
+        gsonBuilder.registerTypeAdapter(GameBoard.class, gameBoardDeserializer);
+
+        Gson customGson = gsonBuilder.create();
+        gameBoard = customGson.fromJson(myJsonGameBoard, GameBoard.class);
     }
 
 
@@ -93,8 +60,8 @@ public class Game {
 
     private void initDecks() {
         initWeaponsDeck();
-        initPowerUpDeck();
-        initAmmosDeck();
+        initPowerUpsDeck();
+        initAmmoDeck();
     }
 
 
@@ -112,13 +79,41 @@ public class Game {
     }
 
 
-    private void initPowerUpDeck(){
+    private void initPowerUpsDeck(){
         //TODO
     }
 
 
-    private void initAmmosDeck(){
+    private void initAmmoDeck(){
         //TODO
+    }
+
+
+    public Square getSquare(int x, int y){
+        return gameBoard.getSquare(x, y);
+    }
+
+
+    public Square getSpawnPoint(SquareColourEnum requiredColour) {
+        return gameBoard.getSpawnPoint(requiredColour);
+    }
+
+
+    public void setTargetableSquares(Set<Square> targetableSquares, boolean isTargetable){
+        if (targetableSquares.isEmpty())
+            return;
+        targetableSquares.forEach(s -> s.setTargetable(isTargetable));
+    }
+
+
+    public void addPc(Pc pc){
+        pcs.add(pc);
+    }
+
+
+
+    PowerUpCard drawPowerUp(){
+        return powerUpsDeck.draw();
     }
 
 
@@ -127,51 +122,61 @@ public class Game {
     }
 
 
-}
+    class SquareDeserializer implements JsonDeserializer<Square> {
 
+        @Override
+        public Square deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
 
-class GameBoardDeserializer implements JsonDeserializer<GameBoard> {
-
-    @Override
-    public GameBoard deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-            throws JsonParseException {
-
-        JsonArray gameBoards = json.getAsJsonArray();
-
-        JsonObject myGameBoard = gameBoards.get(numberOfMap).getAsJsonObject();
-
-        int rows = myGameBoard.get("rows").getAsInt();
-
-        int columns = myGameBoard.get("columns").getAsInt();
-
-        ArrayList<SpawnPoint> spawnPoints = new ArrayList<>();
-
-        JsonArray squares = myGameBoard.get("squares").getAsJsonArray();
-
-        squares.forEach(s -> {
-
-            JsonObject currSquare = s.getAsJsonObject();
+            JsonObject currSquare = json.getAsJsonObject();
 
             boolean isSpawnPoint = currSquare.get("isSpawnPoint").getAsBoolean();
 
-            if (isSpawnPoint){
-                SpawnPoint mySpawnPoint = new SpawnPoint(
+            if (isSpawnPoint)
+                return new SpawnPoint(
                         currSquare.get("x").getAsInt(),
                         currSquare.get("y").getAsInt(),
                         SquareColourEnum.valueOf(currSquare.get("colour").getAsString()),
                         weaponsDeck
                 );
-                spawnPoints.add(mySpawnPoint);
-
-            } else {
-                AmmoSquare myAmmoSquare = new AmmoSquare(
+            else
+                return new AmmoSquare(
                         currSquare.get("x").getAsInt(),
                         currSquare.get("y").getAsInt(),
                         SquareColourEnum.valueOf(currSquare.get("colour").getAsString()),
                         ammoDeck
                 );
-            }
-        });
+        }
+    }
 
+
+    class GameBoardDeserializer implements JsonDeserializer<GameBoard> {
+
+        @Override
+        public GameBoard deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+
+            JsonObject jsonGameBoard = json.getAsJsonObject();
+            Gson gson = new Gson();
+
+            Type squaresType = new TypeToken<ArrayList<Square>>(){}.getType();
+
+            JsonArray jsonDoors = gson.fromJson(jsonGameBoard.get("doors"), JsonArray.class);
+            int[] doors = new int[jsonDoors.size()];
+            for (int i = 0; i < jsonDoors.size(); i++)
+                doors[i] = jsonDoors.get(i).getAsInt();
+
+            return new GameBoard(
+                    jsonGameBoard.get("rows").getAsInt(),
+                    jsonGameBoard.get("columns").getAsInt(),
+                    gson.fromJson(jsonGameBoard.get("squares"), squaresType),
+                    doors
+            );
+        }
     }
 }
+
+
+
+
+
