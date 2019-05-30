@@ -1,5 +1,6 @@
 package model;
 
+import enums.AmmoEnum;
 import enums.PcColourEnum;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
@@ -39,7 +40,7 @@ public class Pc {
     }
 
 
-    public boolean isFullyPoweredUp(){
+    public boolean isFullyPoweredUp() {
         return powerUps.size() == 3;
     }
 
@@ -49,12 +50,12 @@ public class Pc {
     }
 
 
-    public PcColourEnum getColour(){
+    public PcColourEnum getColour() {
         return colour;
     }
 
 
-    public int getAdrenaline(){
+    public int getAdrenaline() {
         return adrenaline;
     }
 
@@ -64,8 +65,8 @@ public class Pc {
     }
 
 
-    public PowerUpCard getPowerUpCard(int index){
-        if(index < 0 || index > powerUps.size() - 1){
+    public PowerUpCard getPowerUpCard(int index) {
+        if (index < 0 || index > powerUps.size() - 1) {
             throw new IllegalArgumentException("This index is not valid");
         }
         return powerUps.get(index);
@@ -73,10 +74,6 @@ public class Pc {
 
     public List<PowerUpCard> getPowerUps() {
         return powerUps;
-    }
-
-    public void removePowerUp(PowerUpCard powerUpCard){
-        powerUps.remove(powerUpCard);
     }
 
 
@@ -88,8 +85,8 @@ public class Pc {
     }
 
 
-    public void moveTo(Square s){
-        if(s == null){
+    public void moveTo(Square s) {
+        if (s == null) {
             throw new IllegalArgumentException("Invalid square");
         }
         this.currSquare.removePc(this);
@@ -105,11 +102,10 @@ public class Pc {
     }
 
 
-    public void discardPowerUp(PowerUpCard p){
-        if(powerUps.contains(p)){
+    public void discardPowerUp(PowerUpCard p) {
+        if (powerUps.contains(p)) {
             powerUps.remove(p);
-        }
-        else{
+        } else {
             throw new IllegalArgumentException("You don't have this powerUp");
         }
     }
@@ -120,20 +116,24 @@ public class Pc {
     }
 
 
-    public void addAmmo(AmmoTile ammo){
+    public void addAmmo(AmmoTile ammo) {
         pcBoard.addAmmo(ammo);
         if (ammo.containsPowerup()) {
             drawPowerUp();
         }
     }
 
+    public void resetPowerUpAsAmmo (){
+        for (PowerUpCard p: powerUps)
+            p.setSelectedAsAmmo(false);
+    }
 
-    public void addWeapon(WeaponCard weapon, int index){
+    public void addWeapon(WeaponCard weapon, int index) {
         weapons[index] = weapon;
     }
 
 
-    public void takeMarks(PcColourEnum shooterColour, short marks){
+    public void takeMarks(PcColourEnum shooterColour, short marks) {
         pcBoard.addMarks(shooterColour, marks);
     }
 
@@ -143,7 +143,7 @@ public class Pc {
         totalDamage = (short) (pcBoard.getMarks(colour) + damages);
         pcBoard.addDamage(colour, totalDamage);
         int damageIndex = pcBoard.getDamageTrackIndex();
-        if(damageIndex >= LIFEPOINTS - 2){
+        if (damageIndex >= LIFEPOINTS - 2) {
             //TODO notify controller e view
             currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
         }
@@ -154,8 +154,8 @@ public class Pc {
     }
 
 
-    public void respawn(Square t){
-        if(!t.isSpawnPoint()){
+    public void respawn(Square t) {
+        if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
         }
         pcBoard.increaseNumberOfDeaths();
@@ -165,25 +165,35 @@ public class Pc {
     }
 
 
-    public boolean hasAtLeastOneAmmo(){
+    public boolean hasAtLeastOneAmmo() {
         return pcBoard.hasAtLeastOneAmmo() || powerUps.size() > 1;
     }
 
 
-    public boolean hasEnoughAmmo(short[] ammo){
-        return pcBoard.hasEnoughAmmo(ammo);
+    public boolean hasEnoughAmmo(short[] ammo) {
+        short[] pcAmmo = pcBoard.getAmmo();
+        powerUps.stream().filter(PowerUpCard::isSelectedAsAmmo).forEach(p -> pcAmmo[p.getColour().ordinal()]++);
+        for (AmmoEnum colour : AmmoEnum.values()) {
+            if (pcAmmo[colour.ordinal()] < ammo[colour.ordinal()])
+                return false;
+        }
+        return true;
     }
 
 
-    public void payAmmo(short[] cost) throws NotEnoughAmmoException {
+    public boolean payAmmo(short[] cost) {
+        if (!hasEnoughAmmo(cost))
+            return false;
+        short[] remainingCost = pcBoard.payAmmo(cost);
         powerUps.forEach(p -> {
-            if (p.isSelectedAsAmmo() && cost[p.getColour().ordinal()] > 0) {
-                cost[p.getColour().ordinal()]--;
+            if (p.isSelectedAsAmmo() && remainingCost[p.getColour().ordinal()] > 0) {
+                remainingCost[p.getColour().ordinal()]--;
                 discardPowerUp(p);
             }
         });
-        pcBoard.payAmmo(cost);
+        return true;
     }
 }
+
 
 

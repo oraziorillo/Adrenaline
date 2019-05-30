@@ -2,7 +2,6 @@ package controller.states;
 
 import controller.Controller;
 import enums.CardinalDirectionEnum;
-import exceptions.NotEnoughAmmoException;
 import model.Pc;
 import model.Effect;
 import model.actions.Action;
@@ -40,6 +39,7 @@ public class TargetSelectionState extends State {
 
     private void next(){
         if(actionIndex == currEffect.getActions().size() -1){
+            controller.getCurrPc().payAmmo(currEffect.getCost());
             currEffect.execute(controller.getCurrPc());
             effectIndex++;
             actionIndex = 0;
@@ -122,15 +122,11 @@ public class TargetSelectionState extends State {
                 next();
                 return false;
             } else {
-                try {
-                    controller.getCurrPc().payAmmo(currEffect.getCost());
-                    currEffect.execute(controller.getCurrPc());
-                    controller.getCurrWeapon().clear();
-                    controller.getGame().setTargetableSquares(targetableSquares, false);
-                    return true;
-                } catch (NotEnoughAmmoException e) {
-                    return false;
-                }
+                controller.getCurrPc().payAmmo(currEffect.getCost());
+                currEffect.execute(controller.getCurrPc());
+                controller.getCurrWeapon().clear();
+                controller.getGame().setTargetableSquares(targetableSquares, false);
+                return true;
             }
         }
         return false;
@@ -139,11 +135,14 @@ public class TargetSelectionState extends State {
 
     @Override
     public State nextState() {
-        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
-            //TODO if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage())
-        }
-
+        controller.getCurrWeapon().setLoaded(false);
         controller.decreaseRemainingActions();
+        controller.resetCurrWeapon();
+        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
+            if (p.getEffect().getActionAtIndex(actionIndex).isAdditionalDamage() &&
+                    controller.getCurrPc().hasAtLeastOneAmmo())
+                return new UsePowerUpState(controller, shotTargets);
+        }
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();
             return new EndTurnState(controller);

@@ -49,6 +49,10 @@ public class WeaponCard {
         return loaded;
     }
 
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
     public String getName() {
         return name;
     }
@@ -123,9 +127,11 @@ public class WeaponCard {
         Effect eff;
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
-            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
-                currentCost[i] -= eff.getCost()[i];
-            effectsToApply.remove(eff);
+            if (effectsToApply.remove(eff)) {
+                for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                    currentCost[i] -= eff.getCost()[i];
+                effectsToApply.remove(eff);
+            }
         } else {
             throw new IllegalArgumentException();
         }
@@ -134,5 +140,7 @@ public class WeaponCard {
 
     public void clear() {
         effectsToApply.clear();
+        effectsToApply.add(fireModes.get(0));
+        currentCost = new short[3];
     }
 }

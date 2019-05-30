@@ -7,12 +7,13 @@ import java.util.Set;
 
 public class RunAroundState extends State{
 
-
+    private boolean undo;
     private Square targetSquare;
     private Set<Square> targetableSquares;
 
     RunAroundState(Controller controller) {
         super(controller);
+        this.undo = false;
         setTargetableToValidSquares(controller.getCurrPc());
     }
 
@@ -31,6 +32,12 @@ public class RunAroundState extends State{
         controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
+    @Override
+    public boolean undo() {
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        undo = true;
+        return true;
+    }
 
     @Override
     public boolean ok() {
@@ -45,6 +52,8 @@ public class RunAroundState extends State{
 
     @Override
     public State nextState() {
+        if (undo)
+            return new StartTurnState(controller);
         controller.decreaseRemainingActions();
         if(controller.getRemainingActions() == 0){
             controller.resetRemainingActions();

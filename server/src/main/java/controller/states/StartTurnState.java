@@ -24,7 +24,7 @@ public class StartTurnState extends State {
 
     @Override
     public boolean shootPeople(){
-        nextState = new ShootPeopleState(controller);
+        nextState = new ShootPeopleState(controller, false, false);
         return true;
     }
 

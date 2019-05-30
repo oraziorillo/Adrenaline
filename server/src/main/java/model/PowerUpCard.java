@@ -1,6 +1,7 @@
 package model;
 
 import enums.AmmoEnum;
+import model.Effect;
 
 public class PowerUpCard {
 
@@ -23,6 +24,10 @@ public class PowerUpCard {
 
     public Effect getEffect() {
         return effect;
+    }
+
+    public void useEffect(Pc shooter) {
+        effect.execute(shooter);
     }
 
     public void setSelectedAsAmmo(boolean selectedAsAmmo) {
