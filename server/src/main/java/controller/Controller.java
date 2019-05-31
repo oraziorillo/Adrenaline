@@ -12,10 +12,12 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Controller extends UnicastRemoteObject implements RemoteController {
 
@@ -38,7 +40,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private ArrayList<Player> players;
     private ArrayList<Square> squaresToRefill;
 
-    public Controller(ArrayList<Player> players) throws RemoteException {
+    public Controller(List<Player> players) throws RemoteException {
         super();
         this.game = new Game();
         this.players = new ArrayList<>();
@@ -50,62 +52,65 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         this.currState = new SetupMapState(this);
     }
 
-    public synchronized boolean isFirstTurn() {
+    public boolean isFirstTurn() {
         return firstTurn;
     }
 
-    public synchronized boolean isFinalFrenzy() {
+    public boolean isFinalFrenzy() {
         return finalFrenzy;
     }
 
 
-    public synchronized Game getGame() {
+    public Game getGame() {
         return game;
     }
 
-    public synchronized ArrayList<Player> getPlayers() {
+
+    public List<Player> getPlayers() {
         return players;
     }
 
 
-    public synchronized int getCurrPlayerIndex() {
+    public int getCurrPlayerIndex() {
         return currPlayerIndex;
     }
 
-    public synchronized int getRemainingActions() {
+    public int getRemainingActions() {
         return remainingActions;
     }
 
-    public synchronized WeaponCard getCurrWeapon() {
+    public WeaponCard getCurrWeapon() {
         return currWeapon;
     }
 
-    public synchronized ArrayList<Square> getSquaresToRefill(){
+    public void resetCurrWeapon() { this.currWeapon = null; }
+
+    public List<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
 
-    public synchronized void setFirstTurn(boolean booleanValue) {
+    public void setFirstTurn(boolean booleanValue) {
         firstTurn = booleanValue;
     }
 
 
-    public synchronized void setFinalFrenzy(boolean booleanValue) {
+    public void setFinalFrenzy(boolean booleanValue) {
         finalFrenzy = booleanValue;
     }
 
-    public synchronized void setLastPlayerIndex(int index) {
+    public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
     }
 
-    public synchronized void setCurrWeapon(WeaponCard weapon) {
+    public void setCurrWeapon(WeaponCard weapon) {
         this.currWeapon = weapon;
     }
 
-    public synchronized void decreaseRemainingActions() {
+    public void decreaseRemainingActions() {
         this.remainingActions--;
     }
 
-    public synchronized void resetRemainingActions() {
+    public void resetRemainingActions() {
         if (!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
             this.remainingActions = ACTIONS_PER_TURN;
         else
@@ -129,11 +134,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         //TODO: deve prendere come arg un token
         //      deve sollevare un eccezione NotCurrPlayerException
         //      aggiungere try catch a tutti i metodi
-    }
-
-    @Override
-    public synchronized void showComment(String comment) {
-        game.setMessage(comment);
     }
 
 
@@ -209,11 +209,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
-        try {
-            currState.selectSquare(game.getSquare(x, y));
-        } catch (HoleInMapException e) {
-            e.printStackTrace();
-        }
+        Square chosenSquare = game.getSquare(x, y);
+        if (chosenSquare != null)
+            currState.selectSquare(chosenSquare);
     }
 
     @Override
@@ -248,6 +246,12 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         if(!currWeapon.getUpgrades().isEmpty())
             currState.upgrade(currWeapon);
     }
+
+    @Override
+    public synchronized void removeUpgrade() {
+        currState.removeUpgrade(currWeapon);
+    }
+
 
     @Override
     public synchronized void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
@@ -292,13 +296,15 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public synchronized void quit() {
         //gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-    
+
+
     @Override
     public boolean isOpened() {
         return true;
     }
 
-    private synchronized void nextTurn() {
+
+    public synchronized void nextTurn() {
         if (currPlayerIndex == players.size() - 1)
             currPlayerIndex = 0;
         else

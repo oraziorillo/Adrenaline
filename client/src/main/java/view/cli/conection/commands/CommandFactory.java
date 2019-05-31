@@ -15,8 +15,6 @@ public class CommandFactory {
                return new ChoosePcColourCommand(controller, gui);
             case DROP_AND_SPAWN_SHORT: case DROP_AND_SPAWN_EXTENDED:
                return new DiscardAndSpawnCommand(controller, gui);
-            case COMMENT_SHORT: case COMMENT_LONG:
-               return new ShowCommentCommand(controller, gui);
             case RUN_LONG: case RUN_SHORT:
                return new RunAroundCommand(controller, gui);
             case GRAB_STUFF_SHORT: case GRAB_STUFF_LONG:

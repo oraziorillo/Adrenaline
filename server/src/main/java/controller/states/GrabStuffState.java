@@ -4,11 +4,13 @@ import controller.Controller;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
 import model.Pc;
+import model.PowerUpCard;
 import model.squares.Square;
 import java.util.Set;
 
 public class GrabStuffState extends State{
 
+    private boolean undo;
     private Square targetSquare;
     private Set<Square> targetableSquares;
 
@@ -20,8 +22,13 @@ public class GrabStuffState extends State{
 
     @Override
     public void selectWeaponOnBoard(int index) {
-        if (targetSquare != null)
-            targetSquare.setWeaponToGrabIndex(index);
+        if (targetSquare != null) {
+            try {
+                targetSquare.setWeaponToGrabIndex(index);
+            } catch (NullPointerException e) {
+                //TODO stampa a video messaggio di errore
+            }
+        }
     }
 
 
@@ -34,9 +41,19 @@ public class GrabStuffState extends State{
 
     @Override
     public void selectSquare(Square targetSquare){
-        if (!targetSquare.isEmpty())
+        if (!targetSquare.isEmpty()) {
             this.targetSquare = targetSquare;
+            targetSquare.resetWeaponIndexes();
+        }
     }
+
+    @Override
+    public void selectPowerUp(int index) {
+        PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
+        if (powerUp != null && powerUp.isSelectedAsAmmo())
+            powerUp.setSelectedAsAmmo(true);
+    }
+
 
     @Override
     void setTargetableToValidSquares(Pc referencePc){
@@ -50,26 +67,28 @@ public class GrabStuffState extends State{
         controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
+    @Override
+    public boolean undo() {
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        controller.getCurrPc().resetPowerUpAsAmmo();
+        targetSquare.resetWeaponIndexes();
+        undo = true;
+        return true;
+    }
 
     @Override
     public boolean ok() {
-        if (targetSquare.isEmpty())
-            return false;
         Pc currPc = controller.getCurrPc();
-        Square oldPosition = currPc.getCurrSquare();
-        currPc.moveTo(targetSquare);
         try {
             currPc.collect();
+            currPc.moveTo(targetSquare);
         } catch (EmptySquareException e) {
-            currPc.moveTo(oldPosition);
             //TODO print error
             return false;
         } catch (IllegalStateException e) {
-            currPc.moveTo(oldPosition);
             //TODO print what the player should select
             return false;
         } catch (NotEnoughAmmoException e) {
-            currPc.moveTo(oldPosition);
             //TODO the pc has not enough ammo
             return false;
         }
@@ -80,7 +99,10 @@ public class GrabStuffState extends State{
 
     @Override
     public State nextState() {
+        if (undo)
+            return new StartTurnState(controller);
         controller.decreaseRemainingActions();
+        controller.getCurrPc().resetPowerUpAsAmmo();
         if (controller.getRemainingActions() == 0) {
             controller.resetRemainingActions();
             return new EndTurnState(controller);

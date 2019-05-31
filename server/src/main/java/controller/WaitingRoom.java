@@ -10,11 +10,11 @@ public class WaitingRoom {
     private static WaitingRoom instance = new WaitingRoom();
     private ArrayList<Player> waitingPlayers;
     private Timer timer;
-    private static final int TIME = 1000*60*3;
+    private static final int TIME = 1000 * 60 * 3;
 
     private WaitingRoom() {
         waitingPlayers = new ArrayList<>();
-        timer= new Timer( TIME, actionEvent -> startGame());
+        timer = new Timer(TIME, actionEvent -> startGame());
         timer.stop();
     }
     
@@ -22,18 +22,18 @@ public class WaitingRoom {
         return instance;
     }
 
-    public void addPlayer(Player p){
+    public void addPlayer(Player p) {
         waitingPlayers.add(p);
-        if(waitingPlayers.size() > 2){
+        if (waitingPlayers.size() > 2) {
             timer.restart();
         }
-        if(waitingPlayers.size() == 5){
+        if (waitingPlayers.size() == 5) {
             timer.stop();
             startGame();
         }
     }
-    
-    private void startGame(){
+
+    private void startGame() {
         Game g = new Game();
         //add Pcs
         waitingPlayers.clear();

@@ -5,24 +5,20 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 
-public class Player{
+public class Player {
 
     private String username;
     private final UUID uuid;
     private Pc pc;
 
     @Contract(pure = true)
-    public Player(String username, UUID uuid){
-        this.username=username;
-        this.uuid=uuid;
+    public Player(String username, UUID uuid) {
+        this.username = username;
+        this.uuid = uuid;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    protected void setUsername(String username) {
-        this.username = username;
     }
 
     public UUID getUuid() {
@@ -35,6 +31,10 @@ public class Player{
 
     public void setPc(Pc pc) {
         this.pc = pc;
+    }
+
+    protected void setUsername(String username) {
+        this.username = username;
     }
 }
 

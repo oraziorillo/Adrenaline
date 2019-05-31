@@ -52,6 +52,8 @@ public abstract class State {
 
     public void upgrade(WeaponCard weapon) {}
 
+    public void removeUpgrade(WeaponCard weapon) {}
+
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
 
     public void selectTarget(Pc targetPc) {}

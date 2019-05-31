@@ -19,6 +19,8 @@ ROBA DA CONTROLLER
  - discard and Spawn     e     choosePowerUp sono uguali, bisogna unirli
  
  - implementare funzionalita di additional damage and exclusive damage
+
+- considerare l'utilizzo di undo quando è final frenzy and in shootpeopleState seleziona l'arma
  
 
 
@@ -40,7 +42,7 @@ DOMANDE:
 
 - il json va chiuso?
 
-
+-possiamo usare javatuple?
 
 - aggiungere boolean needParameters per onda d'urto
 - vedere meglio il tractor beam 

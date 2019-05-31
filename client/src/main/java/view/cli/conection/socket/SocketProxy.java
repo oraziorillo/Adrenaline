@@ -59,12 +59,6 @@ public class SocketProxy implements RemoteController {
         out.flush();
     }
 
-    @Override
-    public void showComment(String comment) {
-        out.println( SHOW_COMMENT );
-        out.println( comment );
-        out.flush();
-    }
 
     @Override
     public void runAround() {
@@ -127,7 +121,13 @@ public class SocketProxy implements RemoteController {
         out.println( UPGRADE );
         out.flush();
     }
-    
+
+    @Override
+    public void removeUpgrade() {
+
+    }
+
+
     @Override
     public void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
         out.println( CHOOSE_ASYNCH_EFFECT_ORDER );

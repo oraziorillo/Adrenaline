@@ -43,14 +43,15 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
-        //TODO: lanciare eccezione per l'index
-        this.weaponToGrabIndex = weaponToGrabIndex;
+        if (weapons[weaponToGrabIndex] != null)
+            this.weaponToGrabIndex = weaponToGrabIndex;
+        else
+            throw new NullPointerException("You have to choose a weapon to grab");
     }
 
 
     @Override
     public void setWeaponToDropIndex(int weaponToDropIndex) {
-        //TODO: lanciare eccezione per l'index
         this.weaponToDropIndex = weaponToDropIndex;
     }
 
@@ -79,12 +80,12 @@ public class SpawnPoint extends Square {
         WeaponCard weaponToGrab = weapons[weaponToGrabIndex];
         if (weaponToDropIndex < 0 && currPc.isFullyArmed())
             throw new IllegalStateException("You have to choose a weapon to drop");
-        else {
-            WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
-            weapons[weaponToGrabIndex] = weaponToDrop;
-        }
+        if (!currPc.hasEnoughAmmo(weaponToGrab.getAmmo()))
+            throw new NotEnoughAmmoException();
+        WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
+        weapons[weaponToGrabIndex] = weaponToDrop;
         currPc.addWeapon(weaponToGrab, weaponToDropIndex);
-        short[] cost = weaponToGrab.getCurrentCost();
+        short[] cost = weaponToGrab.getAmmo();
         cost[weaponToGrab.getWeaponColour().ordinal()]--;
         currPc.payAmmo(cost);
         resetWeaponIndexes();
@@ -93,7 +94,7 @@ public class SpawnPoint extends Square {
 
     public void refill() {
         for (int i = 0; i < weapons.length; i++) {
-            if (weapons[i] == null) {
+            if (weapons[i] == null && weaponDeck.size() > 0) {
                 weapons[i] = weaponDeck.draw();
             }
         }

@@ -16,8 +16,6 @@ public interface RemoteController extends Remote {
 
     void discardAndSpawn(int n) throws IOException;
 
-    void showComment(String comment) throws IOException;
-
     void runAround() throws IOException;
 
     void grabStuff() throws IOException;
@@ -37,6 +35,8 @@ public interface RemoteController extends Remote {
     void switchFireMode() throws IOException;
 
     void upgrade() throws IOException;
+
+    void removeUpgrade() throws IOException;
 
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
 

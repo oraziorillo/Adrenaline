@@ -2,42 +2,60 @@ package model;
 
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
-import exceptions.HoleInMapException;
 import model.squares.Square;
 import java.util.ArrayList;
+import java.util.Optional;
 
-public class GameBoard {
+class GameBoard {
 
+    private int rows, columns;
+    private ArrayList<Square> squares;
+    private ArrayList<Square> spawnPoints;
     private KillShot[] killShotTrack;
     private int currentKillShotTrackIndex;
-    private ArrayList<Square> spawnPoints;
-    private Square[][] map;
 
 
-    GameBoard(){
+    GameBoard(int rows, int columns, ArrayList<Square> squares, int[] doors) {
+        this.rows = rows;
+        this.columns = columns;
+        this.squares = squares;
         this.spawnPoints = new ArrayList<>();
+        squares.stream()
+                .parallel()
+                .filter(Square::isSpawnPoint)
+                .forEach(s -> spawnPoints.add(s));
+
+        for (Square s : squares) {
+
+            //initialize an ArrayList of visible colours
+            ArrayList<SquareColourEnum> visibleColours = new ArrayList<>();
+            visibleColours.add(s.getColour());
+
+            int sId = s.getX() + s.getY() * columns;
+
+            for (int j = 0; j < doors.length; j = j + 2)
+                if (doors[j] == sId)
+                    visibleColours.add(getSquare(
+                            sId / columns,
+                            sId % columns
+                    ).getColour());
+
+            //then add all squares whose colour is contained in visibleColours to the list of i's visible squares
+            squares.stream()
+                    .parallel()
+                    .filter(x -> visibleColours.contains(x.getColour()))
+                    .forEach(s::addVisible);
+        }
     }
 
 
-    int rows() {
-        return map.length;
-    }
-
-
-    int columns() {
-        return map[0].length;
-    }
-
-
-    /**
+    /*
      // I paramteri che il metodo riceve sono così strutturati:
      // numero di righe, numero di colonne
      // array di SquareColourEnum che definisce il colore di ogni Square della mappa. Se un dato Square è null, lo sarà anche nell'array
      // array di int per ogni Square della mappa: se int vale 0 corrisponde ad un tile null, se vale 1 corrisponde ad un ammoTile, se vale 2 ad uno spawnTile
      // array di int dove, per ogni tile, per ogni porta che possiede, c'è una coppia di numeri consecutivi che indica il tile corrente e il tile a cui è collegato tramite porta
-     */
-    void initMap(int numberOfMap){
-    /*(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
+    void initMap(int rows, int columns, SquareColourEnum[] colourOfMapTile, int[] typeOfTile, int[] doorsInMap){
         ArrayList<SquareColourEnum> tileColourList;
         ArrayList<SquareColourEnum> tempList = new ArrayList<>();
         ArrayList<Integer> doorsList, typeOfTileList;
@@ -83,8 +101,8 @@ public class GameBoard {
                 tempList.clear();
             }
         }
-        */
     }
+    */
 
 
     void initKillShotTrack(int numberOfSkulls){
@@ -92,6 +110,17 @@ public class GameBoard {
         this.currentKillShotTrackIndex = numberOfSkulls - 1;
         for(int i = 0; i < numberOfSkulls; i++)
             killShotTrack[i] = new KillShot();
+    }
+
+
+    Square getSquare(int x, int y){
+        if (x >= rows || y >= columns)
+            return null;
+        Optional<Square> currSquare = squares.stream()
+                .parallel()
+                .filter(s -> (x == s.getX() && y == s.getY()))
+                .findFirst();
+        return currSquare.orElse(null);
     }
 
 
@@ -103,15 +132,6 @@ public class GameBoard {
         return null;
     }
 
-
-    Square getSquare(int x, int y) throws HoleInMapException {
-        if (x > (map.length - 1) || y > (map[0].length - 1))
-            throw new IndexOutOfBoundsException();
-        Square s = map[x][y];
-        if (s == null)
-            throw new HoleInMapException();
-        return s;
-    }
 
 
     void killOccured(PcColourEnum killerColour, Boolean overkilled){
