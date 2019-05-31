@@ -1,21 +1,24 @@
 package controller;
 
 import controller.player.Player;
+import enums.PcColourEnum;
 import model.Game;
+import model.Pc;
+
 import javax.swing.Timer;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Pre-game, singleton waiting room. Stores players and starts a game when has enough of them.
  */
 public class WaitingRoom {
     private static WaitingRoom instance = new WaitingRoom();
-    private ArrayList<Player> waitingPlayers;
+    private Set<Player> waitingPlayers;
     private Timer timer;
     private static final int TIME = 1000 * 60 * 3;
 
     private WaitingRoom() {
-        waitingPlayers = new ArrayList<>();
+        waitingPlayers = new HashSet<>();
         timer = new Timer(TIME, actionEvent -> startGame());
         timer.stop();
     }
@@ -44,7 +47,11 @@ public class WaitingRoom {
 
     private void startGame() {
         Game g = new Game();
-        //add Pcs
+        List<PcColourEnum> availableColours = Arrays.asList( PcColourEnum.values() );
+        for(Player p:waitingPlayers){
+           Pc pc = new Pc( availableColours.remove( 0 ),g );
+           p.setPc( pc );
+        }
         waitingPlayers.clear();
         timer.stop();
     }
