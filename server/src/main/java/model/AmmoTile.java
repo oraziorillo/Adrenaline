@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 /**
  * Represents the ammo tiles
  */
@@ -10,7 +12,6 @@ public class AmmoTile {
 
     /**
      * Constructor
-     *
      * @param ammo every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
      * @param hasPowerup for 2ammos-1powerup cards
      */
@@ -53,6 +54,12 @@ public class AmmoTile {
             t++;
         }
         return t == Constants.AMMO_COLOURS_NUMBER;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        AmmoTile casted = (AmmoTile) obj;
+        return Arrays.equals( this.ammo,casted.ammo ) && (this.hasPowerup==casted.hasPowerup);
     }
 }
 
