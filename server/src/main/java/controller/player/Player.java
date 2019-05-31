@@ -2,9 +2,12 @@ package controller.player;
 
 import model.Pc;
 import org.jetbrains.annotations.Contract;
-
 import java.util.UUID;
 
+/**
+ * Represents an user out-game.
+ * @see Pc for in-game representation
+ */
 public class Player {
 
     private String username;
