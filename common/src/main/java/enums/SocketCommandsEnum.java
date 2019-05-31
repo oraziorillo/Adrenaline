@@ -1,5 +1,9 @@
 package enums;
 
+/**
+ * Contains the possible actions an user can perform.
+ * Support enum for hand-made socket stubs
+ */
 public enum SocketCommandsEnum {
     CHOOSE_MAP,
     CHOOSE_NUMBER_OF_SKULLS,

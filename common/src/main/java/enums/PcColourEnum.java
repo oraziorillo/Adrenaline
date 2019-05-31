@@ -1,8 +1,5 @@
 package enums;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  * Enumerates the possible colours of a Pc. Has a method to get the Pc name (Not the Player's username)
  */
