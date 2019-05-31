@@ -37,9 +37,9 @@ public class CliInputRequier implements InputRequier {
         String stringed = null;
         while (!PcColourEnum.stringCollection().contains( stringed )){
             System.out.println("Select your colour. Existing colours are: " + Arrays.toString(PcColourEnum.values()));
-            stringed = in.next();
+            stringed = in.next().toUpperCase();
         }
-        return PcColourEnum.fromString(stringed);
+        return PcColourEnum.valueOf( stringed );
     }
 
     @Override
