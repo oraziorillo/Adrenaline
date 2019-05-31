@@ -32,11 +32,4 @@ public enum PcColourEnum {
         return name;
     }
 
-    public static Collection<String> stringCollection(){
-        ArrayList<String> returned = new ArrayList(values().length);
-        for( PcColourEnum e: values()){
-            returned.add( e.toString() );
-        }
-        return returned;
-    }
 }

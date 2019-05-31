@@ -34,11 +34,17 @@ public class CliInputRequier implements InputRequier {
 
     @Override
     public PcColourEnum askPcColourEnum() {
-        String stringed = null;
-        while (!PcColourEnum.stringCollection().contains( stringed )){
+        String stringed;
+        PcColourEnum choice = null;
+       do{
             System.out.println("Select your colour. Existing colours are: " + Arrays.toString(PcColourEnum.values()));
             stringed = in.next().toUpperCase();
-        }
+            try {
+                choice = PcColourEnum.valueOf( stringed );
+            }catch ( IllegalArgumentException e ){
+                System.out.println("Illegal Argument");
+            }
+        } while (!Arrays.asList( PcColourEnum.values()).contains( choice ));
         return PcColourEnum.valueOf( stringed );
     }
 
