@@ -1,3 +1,4 @@
+/*
 package controller;
 
 import common.PlayerController;
@@ -11,10 +12,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-   
+
    public static final WaitingRoom waitingRoom = WaitingRoom.getInstance();
    public static final PlayerController playerController = new PlayerControllerImpl();
-   
+
     public static void main(String[] args) throws Exception {
         //TODO: inizializza rmi
         ServerSocket serverSocket = new ServerSocket( 10000 );
@@ -32,3 +33,4 @@ public class Server {
         return jsonParser.parse(reader);
     }
 }
+*/

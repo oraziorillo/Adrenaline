@@ -24,7 +24,6 @@ public class SquareTest {
     
     @Before
     public void setupAndContructorTest(){
-        //attributes setup and mocking
         Deck<AmmoTile> uselessDeck = Mockito.mock( Deck.class );
         AmmoTile uselessTile = Mockito.mock( AmmoTile.class );
         Mockito.when( uselessDeck.draw() ).thenReturn( uselessTile );

@@ -5,7 +5,6 @@ import controller.player.Player;
 import controller.states.SetupMapState;
 import controller.states.State;
 import enums.PcColourEnum;
-import exceptions.HoleInMapException;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
@@ -29,7 +28,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
 
     private boolean finalFrenzy = false;
-    private boolean firstTurn = false;
     private Game game;
     private ArrayList<PcColourEnum> availablePcColours;
     private int remainingActions;
@@ -52,14 +50,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         this.currState = new SetupMapState(this);
     }
 
-    public boolean isFirstTurn() {
-        return firstTurn;
-    }
-
     public boolean isFinalFrenzy() {
         return finalFrenzy;
     }
-
 
     public Game getGame() {
         return game;
@@ -70,6 +63,9 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return players;
     }
 
+    public synchronized Pc getCurrPc() {
+        return players.get(currPlayerIndex).getPc();
+    }
 
     public int getCurrPlayerIndex() {
         return currPlayerIndex;
@@ -88,11 +84,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     public List<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
-
-    public void setFirstTurn(boolean booleanValue) {
-        firstTurn = booleanValue;
-    }
-
 
     public void setFinalFrenzy(boolean booleanValue) {
         finalFrenzy = booleanValue;
@@ -160,19 +151,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             if (currPlayerIndex == 0)
                 currState = currState.nextState();
         }
-    }
-
-
-    @Override
-    public synchronized void discardAndSpawn(int powerUpToDropIndex) {
-        Pc currPc = getCurrPc();
-        if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
-            currState.spawnPc(currPc, powerUpToDropIndex);
-            nextTurn();
-            if (currPlayerIndex == 0)
-                currState = currState.nextState();
-        }
-
     }
 
 
@@ -309,16 +287,6 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             currPlayerIndex = 0;
         else
             currPlayerIndex++;
-        if (isFirstTurn()) {
-            Pc currPc = getCurrPc();
-            currPc.drawPowerUp();
-            currPc.drawPowerUp();
-        }
-
-    }
-
-    public synchronized Pc getCurrPc() {
-        return players.get(currPlayerIndex).getPc();
     }
 
 

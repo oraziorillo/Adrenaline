@@ -14,24 +14,26 @@ public class FirstTurnState extends State{
     FirstTurnState(Controller controller) {
         super(controller);
         powerUpToDropIndex = -1;
+        controller.getCurrPc().drawPowerUp();
+        controller.getCurrPc().drawPowerUp();
     }
 
     @Override
-    public void spawnPc(Pc pc, int powerUpToDropIndex){
-        this.pcToSpawn = pc;
-        this.powerUpToDropIndex = powerUpToDropIndex;
+    public void selectPowerUp (int powerUpToDropIndex) {
+        if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
+            this.pcToSpawn = controller.getCurrPc();
+            this.powerUpToDropIndex = powerUpToDropIndex;
+        }
     }
 
     @Override
     public boolean ok() {
-        if (pcToSpawn != null && powerUpToDropIndex > 0) {
+        if (pcToSpawn != null && powerUpToDropIndex > -1) {
             PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
-            AmmoEnum colour = powerUp.getColour();
-            Square s = controller.getGame().getSpawnPoint(colour.toSquareColour());
-            pcToSpawn.moveTo(s);
+            AmmoEnum respawnColour = powerUp.getColour();
+            Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
+            pcToSpawn.spawn(s);
             pcToSpawn.discardPowerUp(powerUp);
-            pcToSpawn = null;
-            powerUpToDropIndex = -1;
             return true;
         }
         return false;
@@ -39,7 +41,11 @@ public class FirstTurnState extends State{
 
     @Override
     public State nextState() {
-        controller.setFirstTurn(false);
-        return new StartTurnState(controller);
+        if (controller.getCurrPlayerIndex() == controller.getPlayers().size() - 1) {
+            controller.nextTurn();
+            return new StartTurnState(controller);
+        }
+        controller.nextTurn();
+        return new FirstTurnState(controller);
     }
 }

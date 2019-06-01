@@ -25,13 +25,42 @@ public class SpawnPoint extends Square {
     }
 
 
-    @Override
+/*    public SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
+        super(x, y, colour);
+        this.weaponDeck = deck;
+        this.weaponToGrabIndex = -1;
+        this.weaponToDropIndex = -1;
+        weapons = new WeaponCard[3];
+        for (int i = 0; i < 3; i++)
+            weapons[i] = weaponDeck.draw();
+    }*/
+
+
+
+  /*  @Override
     public boolean isEmpty() {
         for (WeaponCard weapon : weapons)
             if (weapon != null)
                 return false;
         return true;
+    }*/
+
+
+    @Override
+    public boolean isEmpty() {
+        if (weapons[0] != null)
+            return false;
+        return true;
     }
+
+    public WeaponCard[] getWeapons() {
+        return weapons;
+    }
+
+    public int getWeaponToDropIndex() {
+        return weaponToDropIndex;
+    }
+
 
 
     @Override
@@ -43,7 +72,7 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
-        if (weapons[weaponToGrabIndex] != null)
+        if (weaponToGrabIndex >= 0 && weaponToGrabIndex < 3 && weapons[weaponToGrabIndex] != null)
             this.weaponToGrabIndex = weaponToGrabIndex;
         else
             throw new NullPointerException("You have to choose a weapon to grab");
@@ -52,7 +81,8 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToDropIndex(int weaponToDropIndex) {
-        this.weaponToDropIndex = weaponToDropIndex;
+        if (weaponToDropIndex >= 0 && weaponToDropIndex < 3)
+            this.weaponToDropIndex = weaponToDropIndex;
     }
 
 
@@ -78,12 +108,20 @@ public class SpawnPoint extends Square {
         if (weapons[weaponToGrabIndex] == null)
             throw new NullPointerException();
         WeaponCard weaponToGrab = weapons[weaponToGrabIndex];
-        if (weaponToDropIndex < 0 && currPc.isFullyArmed())
-            throw new IllegalStateException("You have to choose a weapon to drop");
         if (!currPc.hasEnoughAmmo(weaponToGrab.getAmmo()))
             throw new NotEnoughAmmoException();
-        WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
-        weapons[weaponToGrabIndex] = weaponToDrop;
+        if (weaponToDropIndex > 0) {
+            if (!currPc.isFullyArmed())
+                throw new IllegalStateException("You can't drop a weapon now");
+            else {
+                WeaponCard weaponToDrop = currPc.weaponAtIndex(weaponToDropIndex);
+                weapons[weaponToGrabIndex] = weaponToDrop;
+            }
+        } else {
+            if (currPc.isFullyArmed())
+                throw new IllegalStateException("You have to choose a weapon to drop");
+            weapons[weaponToGrabIndex] = null;
+        }
         currPc.addWeapon(weaponToGrab, weaponToDropIndex);
         short[] cost = weaponToGrab.getAmmo();
         cost[weaponToGrab.getWeaponColour().ordinal()]--;

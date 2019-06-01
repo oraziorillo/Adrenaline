@@ -45,10 +45,6 @@ public class GameSocketListener implements Runnable {
                         PcColourEnum colour = PcColourEnum.fromString( in.readLine() );
                         controller.choosePcColour( colour );
                         break;
-                    case DISCARD_AND_SPAWN:
-                        argInt = Integer.parseInt( in.readLine() );
-                        controller.discardAndSpawn( argInt );
-                        break;
                     case RUN_AROUND:
                         controller.runAround();
                         break;

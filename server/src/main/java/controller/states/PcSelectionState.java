@@ -26,8 +26,6 @@ public class PcSelectionState extends State {
             Pc pc = new Pc(pcColour, controller.getGame());
             player.setPc(pc);
             controller.getGame().addPc(pc);
-            pcColour = null;
-            player = null;
             return true;
         }
         return false;
@@ -35,8 +33,12 @@ public class PcSelectionState extends State {
 
     @Override
     public State nextState() {
-        controller.setFirstTurn(true);
-        return new FirstTurnState(controller);
+        if (controller.getCurrPlayerIndex() == controller.getPlayers().size() - 1) {
+            controller.nextTurn();
+            return new FirstTurnState(controller);
+        }
+        controller.nextTurn();
+        return new PcSelectionState(controller);
     }
 
 

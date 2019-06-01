@@ -1,3 +1,4 @@
+/*
 package common;
 
 import controller.player.Player;
@@ -9,3 +10,4 @@ public interface PlayerController extends Remote {
    UUID register(String username);
    Player getPlayer(UUID token);
 }
+*/

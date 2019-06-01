@@ -14,8 +14,6 @@ public interface RemoteController extends Remote {
 
     void choosePcColour(PcColourEnum colour) throws IOException;
 
-    void discardAndSpawn(int n) throws IOException;
-
     void runAround() throws IOException;
 
     void grabStuff() throws IOException;

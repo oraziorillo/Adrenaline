@@ -1,8 +1,6 @@
 package model;
 
-import enums.AmmoEnum;
 import enums.PcColourEnum;
-import exceptions.NotEnoughAmmoException;
 
 import static model.Constants.AMMO_COLOURS_NUMBER;
 import static model.Constants.LIFEPOINTS;
@@ -38,9 +36,16 @@ public class PcBoard {
         return numOfDeaths;
     }
 
+
     public short[] getAmmo() {
         return ammo;
     }
+
+
+    public PcColourEnum[] getDamageTrack() {
+        return damageTrack;
+    }
+
 
     public short getDamageTrackIndex() {
         return damageTrackIndex;
@@ -100,8 +105,8 @@ public class PcBoard {
 
 
     public short[] payAmmo(short[] ammo) {
-        for (short i = 0; i < 3; i++){
-            if (this.ammo[i] > ammo[i]){
+        for (int i = 0; i < 3; i++){
+            if (this.ammo[i] >= ammo[i]){
                 this.ammo[i] -= ammo[i];
                 ammo[i] = 0;
             } else {

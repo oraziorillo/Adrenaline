@@ -24,6 +24,7 @@ public class Pc {
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
         this.colour = colour;
+        this.adrenaline = 0;
         this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
@@ -40,7 +41,7 @@ public class Pc {
     }
 
 
-    public boolean isFullyPoweredUp() {
+    public boolean hasMaxPowerUpNumber() {
         return powerUps.size() == 3;
     }
 
@@ -54,9 +55,20 @@ public class Pc {
         return colour;
     }
 
+    public WeaponCard[] getWeapons() {
+        return weapons;
+    }
+
+    public PcColourEnum[] getDamageTrack() {
+        return pcBoard.getDamageTrack();
+    }
 
     public int getAdrenaline() {
         return adrenaline;
+    }
+
+    public short[] getAmmo() {
+        return this.pcBoard.getAmmo();
     }
 
 
@@ -118,9 +130,8 @@ public class Pc {
 
     public void addAmmo(AmmoTile ammo) {
         pcBoard.addAmmo(ammo);
-        if (ammo.containsPowerup()) {
+        if (ammo.containsPowerup() && powerUps.size() < 3)
             drawPowerUp();
-        }
     }
 
     public void resetPowerUpAsAmmo (){
@@ -129,16 +140,29 @@ public class Pc {
     }
 
     public void addWeapon(WeaponCard weapon, int index) {
-        weapons[index] = weapon;
+        if (index != -1)
+            weapons[index] = weapon;
+        else {
+            for(int i = 0; i < 3; i++){
+                if (weapons[i] == null){
+                    weapons[i] = weapon;
+                    break;
+                }
+            }
+        }
     }
 
 
     public void takeMarks(PcColourEnum shooterColour, short marks) {
+        if (this.colour == shooterColour)
+            return;
         pcBoard.addMarks(shooterColour, marks);
     }
 
 
     public void takeDamage(PcColourEnum colour, short damages) {
+        if (this.colour == colour)
+            return;
         short totalDamage;
         totalDamage = (short) (pcBoard.getMarks(colour) + damages);
         pcBoard.addDamage(colour, totalDamage);
@@ -154,7 +178,7 @@ public class Pc {
     }
 
 
-    public void respawn(Square t) {
+    public void spawn(Square t) {
         if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
         }
@@ -162,16 +186,17 @@ public class Pc {
         pcBoard.resetDamageTrack();
         this.adrenaline = 0;
         this.currSquare = t;
+        currSquare.addPc(this);
     }
 
 
-    public boolean hasAtLeastOneAmmo() {
+    public boolean hasAtLeastOneAvailableAmmo() {
         return pcBoard.hasAtLeastOneAmmo() || powerUps.size() > 1;
     }
 
 
     public boolean hasEnoughAmmo(short[] ammo) {
-        short[] pcAmmo = pcBoard.getAmmo();
+        short[] pcAmmo = pcBoard.getAmmo().clone();
         powerUps.stream().filter(PowerUpCard::isSelectedAsAmmo).forEach(p -> pcAmmo[p.getColour().ordinal()]++);
         for (AmmoEnum colour : AmmoEnum.values()) {
             if (pcAmmo[colour.ordinal()] < ammo[colour.ordinal()])
@@ -185,12 +210,14 @@ public class Pc {
         if (!hasEnoughAmmo(cost))
             return false;
         short[] remainingCost = pcBoard.payAmmo(cost);
+        List<PowerUpCard> powerUpToDiscard = new ArrayList<>();
         powerUps.forEach(p -> {
             if (p.isSelectedAsAmmo() && remainingCost[p.getColour().ordinal()] > 0) {
                 remainingCost[p.getColour().ordinal()]--;
-                discardPowerUp(p);
+                powerUpToDiscard.add(p);
             }
         });
+        powerUps.removeAll(powerUpToDiscard);
         return true;
     }
 }

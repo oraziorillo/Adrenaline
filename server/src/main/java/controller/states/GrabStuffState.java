@@ -78,22 +78,25 @@ public class GrabStuffState extends State{
 
     @Override
     public boolean ok() {
-        Pc currPc = controller.getCurrPc();
-        try {
-            currPc.collect();
-            currPc.moveTo(targetSquare);
-        } catch (EmptySquareException e) {
-            //TODO print error
-            return false;
-        } catch (IllegalStateException e) {
-            //TODO print what the player should select
-            return false;
-        } catch (NotEnoughAmmoException e) {
-            //TODO the pc has not enough ammo
-            return false;
+        if (targetSquare != null) {
+            Pc currPc = controller.getCurrPc();
+            try {
+                currPc.collect();
+                currPc.moveTo(targetSquare);
+            } catch (EmptySquareException e) {
+                //TODO print error
+                return false;
+            } catch (IllegalStateException e) {
+                //TODO print what the player should select
+                return false;
+            } catch (NotEnoughAmmoException e) {
+                //TODO the pc has not enough ammo
+                return false;
+            }
+            controller.getGame().setTargetableSquares(targetableSquares, false);
+            return true;
         }
-        controller.getGame().setTargetableSquares(targetableSquares, false);
-        return true;
+        return false;
     }
 
 

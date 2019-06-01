@@ -2,7 +2,7 @@ package model;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import controller.Server;
+//import controller.Server;
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
 import model.squares.AmmoSquare;
@@ -30,7 +30,7 @@ public class Game {
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
-        initDecks();
+        //initDecks();
     }
 
 
@@ -58,13 +58,16 @@ public class Game {
     }
 
 
+/*
     private void initDecks() {
         initWeaponsDeck();
         initPowerUpsDeck();
         initAmmoDeck();
     }
+*/
 
 
+/*
     private void initWeaponsDeck(){
         try {
             WeaponCard weaponCard;
@@ -77,6 +80,7 @@ public class Game {
             e.printStackTrace();
         }
     }
+*/
 
 
     private void initPowerUpsDeck(){
