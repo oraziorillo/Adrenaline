@@ -6,6 +6,9 @@ import model.Deck;
 import exceptions.EmptySquareException;
 import model.Pc;
 
+/**
+ * A square containing an AmmoTile
+ */
 public class AmmoSquare extends Square {
 
     private AmmoTile ammoTile;
@@ -26,7 +29,12 @@ public class AmmoSquare extends Square {
     public AmmoTile getAmmoTile() {
         return ammoTile;
     }
-
+    
+    /**
+     * Adds the ammos of the ammotile on this square to the given Pc, using Pc.addAmmo()
+     * @param currPc the pc to add the ammos to
+     * @throws EmptySquareException
+     */
     @Override
     public void collect(Pc currPc) throws EmptySquareException {
         if (isEmpty())
@@ -34,15 +42,16 @@ public class AmmoSquare extends Square {
         currPc.addAmmo(ammoTile);
         ammoTile = null;
     }
-
-
+    
+    /**
+     * If not present, loads a card
+     */
     public void refill(){
         if(ammoTile == null) {
             ammoTile = ammoDeck.draw();
         }
     }
-
-
+    
     @Override
     public boolean isSpawnPoint() {
         return false;
