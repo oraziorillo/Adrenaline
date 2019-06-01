@@ -6,6 +6,9 @@ import model.squares.Square;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Support class for game
+ */
 class GameBoard {
 
     private int rows, columns;
@@ -13,8 +16,7 @@ class GameBoard {
     private ArrayList<Square> spawnPoints;
     private KillShot[] killShotTrack;
     private int currentKillShotTrackIndex;
-
-
+    
     GameBoard(int rows, int columns, ArrayList<Square> squares, int[] doors) {
         this.rows = rows;
         this.columns = columns;
@@ -49,7 +51,7 @@ class GameBoard {
     }
 
 
-    /*
+    /*TODO: se non ci serve, togliere, se ci serve sistemare
      // I paramteri che il metodo riceve sono così strutturati:
      // numero di righe, numero di colonne
      // array di SquareColourEnum che definisce il colore di ogni Square della mappa. Se un dato Square è null, lo sarà anche nell'array
@@ -103,8 +105,11 @@ class GameBoard {
         }
     }
     */
-
-
+    
+    /**
+     * Inits the killshottrack with the given number of skulls
+     * @param numberOfSkulls the desired number of skulls
+     */
     void initKillShotTrack(int numberOfSkulls){
         this.killShotTrack = new KillShot[numberOfSkulls];
         this.currentKillShotTrackIndex = numberOfSkulls - 1;
@@ -122,7 +127,7 @@ class GameBoard {
                 .findFirst();
         return currSquare.orElse(null);
     }
-
+    
 
     Square getSpawnPoint(SquareColourEnum requiredColour){
         for (Square s : spawnPoints) {
@@ -131,9 +136,13 @@ class GameBoard {
         }
         return null;
     }
-
-
-
+    
+    
+    /**
+     * Updates the KillshotTrack with the occurred kill
+     * @param killerColour the colour of the killer
+     * @param overkilled se the game manual
+     */
     void killOccured(PcColourEnum killerColour, Boolean overkilled){
         killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
         currentKillShotTrackIndex--;

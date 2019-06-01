@@ -5,14 +5,12 @@ import controller.player.Player;
 import controller.states.SetupMapState;
 import controller.states.State;
 import enums.PcColourEnum;
-import exceptions.HoleInMapException;
 import exceptions.NotCurrPlayerException;
 import model.Game;
 import model.Pc;
-import model.squares.Square;
 import model.WeaponCard;
+import model.squares.Square;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;

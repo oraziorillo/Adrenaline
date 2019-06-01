@@ -6,6 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Utility class for json parsing
+ */
 public class JsonWriter {
 
     public static void main(String[] args) throws Exception {

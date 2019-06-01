@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Some game contants
+ */
 abstract class Constants {
 
     static final int LIFEPOINTS = 11;

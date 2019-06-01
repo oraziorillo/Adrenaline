@@ -17,14 +17,16 @@ import java.util.*;
 
 import static model.Constants.WEAPONS_JSON_NAME;
 
+/**
+ * This class represents an ADRENALINE game
+ */
 public class Game {
     private ArrayList<Pc> pcs;
     private GameBoard gameBoard;
     private Deck<WeaponCard> weaponsDeck;
     private Deck<PowerUpCard> powerUpsDeck;
     private Deck<AmmoTile> ammoDeck;
-
-
+    
     public Game() {
         this.pcs = new ArrayList<>();
         this.weaponsDeck = new Deck<>();
@@ -32,8 +34,11 @@ public class Game {
         this.ammoDeck = new Deck<>();
         initDecks();
     }
-
-
+    
+    /**
+     * Loads a map given the index
+     * @param numberOfMap the index of the map
+     */
     public void initMap(int numberOfMap){
         Gson gson = new Gson();
 
@@ -51,20 +56,21 @@ public class Game {
         Gson customGson = gsonBuilder.create();
         gameBoard = customGson.fromJson(myJsonGameBoard, GameBoard.class);
     }
-
-
+    
+    /**
+     * Inits the KillShotTrack with the given number of skulls
+     * @param numberOfSkulls The desired number of skulls
+     */
     public void initKillShotTrack(int numberOfSkulls){
         gameBoard.initKillShotTrack(numberOfSkulls);
     }
-
-
+    
     private void initDecks() {
         initWeaponsDeck();
         initPowerUpsDeck();
         initAmmoDeck();
     }
-
-
+    
     private void initWeaponsDeck(){
         try {
             WeaponCard weaponCard;
@@ -109,14 +115,17 @@ public class Game {
     public void addPc(Pc pc){
         pcs.add(pc);
     }
-
-
+    
 
     PowerUpCard drawPowerUp(){
         return powerUpsDeck.draw();
     }
-
-
+    
+    /**
+     * Marks a kill on the KillShotTrack
+     * @param killerColour the colour of the player who performed the kill
+     * @param overkilled true if the player was overkilled, see the manual
+     */
     public void killOccured(PcColourEnum killerColour, Boolean overkilled){
         gameBoard.killOccured(killerColour, overkilled);
     }

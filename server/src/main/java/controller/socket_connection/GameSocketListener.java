@@ -24,8 +24,10 @@ public class GameSocketListener implements Runnable {
         out.flush();
         in = new BufferedReader( new InputStreamReader( socket.getInputStream() ));
     }
-
-
+    
+    /**
+     * While the socket is opened, ciclically listens for a command and executes it
+     */
     @Override
     public void run() {
         while (!socket.isClosed()) {
