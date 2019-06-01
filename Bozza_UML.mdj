@@ -870,7 +870,7 @@
 															"top": 515,
 															"width": 392.0439453125,
 															"height": 13,
-															"text": "+move(x: int, y: int, maxDist: int)",
+															"text": "+move(row: int, col: int, maxDist: int)",
 															"horizontalAlignment": 0
 														}
 													],
@@ -16604,7 +16604,7 @@
 													"_parent": {
 														"$ref": "AAAAAAFqbm3FAFiIi+w="
 													},
-													"name": "x",
+													"name": "row",
 													"type": "int"
 												},
 												{
@@ -16613,7 +16613,7 @@
 													"_parent": {
 														"$ref": "AAAAAAFqbm3FAFiIi+w="
 													},
-													"name": "y",
+													"name": "col",
 													"type": "int"
 												},
 												{
@@ -20021,7 +20021,7 @@
 																		"$ref": "AAAAAAFqbm1Fb01jhsQ="
 																	},
 																	"edgePosition": 1,
-																	"text": "2 : move(x: int, y: int, maxDist: int)"
+																	"text": "2 : move(row: int, col: int, maxDist: int)"
 																},
 																{
 																	"_type": "EdgeLabelView",

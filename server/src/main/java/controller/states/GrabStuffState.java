@@ -8,7 +8,10 @@ import model.PowerUpCard;
 import model.squares.Square;
 import java.util.Set;
 
-public class GrabStuffState extends State{
+/**
+ * When the user chooses the "collect" action
+ */
+class GrabStuffState extends State{
 
     private boolean undo;
     private Square targetSquare;
@@ -18,27 +21,38 @@ public class GrabStuffState extends State{
         super(controller);
         setTargetableToValidSquares(controller.getCurrPc());
     }
-
-
+    
+    /**
+     * Calls the setWeaponToGrabIndec method of the pre-selected Square
+     * @see Square
+     * @param index the index to pass to the method
+     */
     @Override
     public void selectWeaponOnBoard(int index) {
         if (targetSquare != null) {
             try {
                 targetSquare.setWeaponToGrabIndex(index);
             } catch (NullPointerException e) {
-                //TODO stampa a video messaggio di errore
+                e.printStackTrace();
             }
         }
     }
-
-
+    
+    /**
+     * Calls the setWeaponToDropIndex on the pre-selected Square
+     * @param index the index to pass to the method
+     * @see Square
+     */
     @Override
     public void selectWeaponOfMine(int index) {
         if (targetSquare != null)
             targetSquare.setWeaponToDropIndex(index);
     }
-
-
+    
+    /**
+     * Prepares a square for doing something
+     * @param targetSquare the square wich will do something
+     */
     @Override
     public void selectSquare(Square targetSquare){
         if (!targetSquare.isEmpty()) {
@@ -46,15 +60,24 @@ public class GrabStuffState extends State{
             targetSquare.resetWeaponIndexes();
         }
     }
-
+    
+    /**
+     * Selects a powerUp to use as a weapon when collecting a weapon
+     * @param index the powerup card index
+     */
     @Override
     public void selectPowerUp(int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null && powerUp.isSelectedAsAmmo())
             powerUp.setSelectedAsAmmo(true);
     }
-
-
+    
+    /**
+     * Prepares an arrayList containing the Squares reachable with the collect action.
+     * Sets it up in Game,
+     * @see model.Game
+     * @param referencePc the pc using the action
+     */
     @Override
     void setTargetableToValidSquares(Pc referencePc){
         int maxDistance;
@@ -66,7 +89,11 @@ public class GrabStuffState extends State{
         targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
         controller.getGame().setTargetableSquares(targetableSquares, true);
     }
-
+    
+    /**
+     * undos the setup
+     * @return true
+     */
     @Override
     public boolean undo() {
         controller.getGame().setTargetableSquares(targetableSquares, false);
@@ -75,7 +102,11 @@ public class GrabStuffState extends State{
         undo = true;
         return true;
     }
-
+    
+    /**
+     * executes the setted up collect action
+     * @return true
+     */
     @Override
     public boolean ok() {
         if (targetSquare != null) {
@@ -98,8 +129,11 @@ public class GrabStuffState extends State{
         }
         return false;
     }
-
-
+    
+    /**
+     * Transition
+     * @return EndTurnState if this was the 2nd action of the player, StartTurnState else
+     */
     @Override
     public State nextState() {
         if (undo)

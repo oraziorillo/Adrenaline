@@ -1,6 +1,10 @@
 package model;
 
+import java.util.Arrays;
 
+/**
+ * Represents the ammo tiles
+ */
 public class AmmoTile {
 
     private final short[] ammo;
@@ -8,11 +12,10 @@ public class AmmoTile {
 
     /**
      * Constructor
-     *
      * @param ammo every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
      * @param hasPowerup for 2ammos-1powerup cards
      */
-    public AmmoTile(short[] ammo, boolean hasPowerup) {
+    AmmoTile(short[] ammo, boolean hasPowerup) {
         if (!validParameters(ammo, hasPowerup)) {
             throw new IllegalArgumentException("Illegal AmmoTile");
         }
@@ -20,11 +23,11 @@ public class AmmoTile {
         this.hasPowerup = hasPowerup;
     }
 
-    public short[] getAmmo() {
+    short[] getAmmo() {
         return ammo.clone();
     }
 
-    public boolean containsPowerup() {
+    boolean containsPowerup() {
         return hasPowerup;
     }
 
@@ -36,7 +39,7 @@ public class AmmoTile {
      * @return false if some value of ammo is negative, or if the sum of all the elements of ammo (+1 if hasPowerup=true) is not equal to AMMO_COLOURS_NUMBER. true otherwise.
      */
 
-    public static boolean validParameters(short[] ammo, boolean hasPowerup) {
+    static boolean validParameters(short[] ammo, boolean hasPowerup) {
         short t = 0;
         //Save in t the sum of the elements in ammo
         for (short s : ammo) {
@@ -51,6 +54,12 @@ public class AmmoTile {
             t++;
         }
         return t == Constants.AMMO_COLOURS_NUMBER;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        AmmoTile casted = (AmmoTile) obj;
+        return Arrays.equals( this.ammo,casted.ammo ) && (this.hasPowerup==casted.hasPowerup);
     }
 }
 

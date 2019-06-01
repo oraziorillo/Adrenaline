@@ -1,8 +1,10 @@
 package model;
 
 import enums.AmmoEnum;
-import model.Effect;
 
+/**
+ * Represents a power up card
+ */
 public class PowerUpCard {
 
     private boolean selectedAsAmmo;

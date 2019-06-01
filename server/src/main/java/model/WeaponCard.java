@@ -1,49 +1,58 @@
 package model;
 
+import com.google.gson.*;
+import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import enums.AmmoEnum;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import java.util.ArrayList;
+import model.actions.Action;
+import model.deserializers.ActionDeserializer;
+import java.lang.reflect.Type;
 import java.util.LinkedList;
+import java.util.List;
 
 public class WeaponCard {
-    private String name;
+    @Expose private String name;
+    @Expose private AmmoEnum colour;
+    @Expose private short[] ammo;
+    @Expose private List<Effect> fireModes;
+    @Expose private List<Effect> upgrades;
     private boolean loaded;
-    private AmmoEnum weaponColour;
-    private short[] ammo;
-    private short[] currentCost;
-    private ArrayList<Effect> fireModes = new ArrayList<>();
-    private ArrayList<Effect> upgrades = new ArrayList<>();
     private LinkedList<Effect> effectsToApply;
+    private short[] currentCost;
 
+
+    WeaponCard(){
+        this.loaded = true;
+        this.effectsToApply = new LinkedList<>();
+        this.currentCost = new short[3];
+    }
 
     /**
      * constructor for WeaponCard
      * @param jsonWeaponCard JsonObject representing a WeaponCard
      */
-    WeaponCard(JSONObject jsonWeaponCard) {
-        this.name = (String) jsonWeaponCard.get("name");
+    public WeaponCard(JsonObject jsonWeaponCard) {
+        this.name = jsonWeaponCard.get("name").getAsString();
         this.loaded = true;
-        this.weaponColour = AmmoEnum.valueOf((String) jsonWeaponCard.get("firstAmmo"));
+        this.colour = AmmoEnum.valueOf(jsonWeaponCard.get("colour").getAsString());
         this.ammo = new short[3];
         this.currentCost = new short[3];
-        JSONArray jsonAmmos = (JSONArray) jsonWeaponCard.get("ammo");
-        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++) {
-            ammo[i] = ((Long) jsonAmmos.get(i)).shortValue();
-        }
-        JSONArray jsonFireModes = (JSONArray) jsonWeaponCard.get("firemodes");
-        for (Object jsonFireMode : jsonFireModes) {
-            Effect effect = new Effect((JSONObject)jsonFireMode);
-            this.fireModes.add(effect);
-        }
-        JSONArray jsonUpgrades = (JSONArray) jsonWeaponCard.get("upgrades");
-        for (Object jsonUpgrade : jsonUpgrades) {
-            Effect effect = new Effect((JSONObject)jsonUpgrade);
-            this.upgrades.add(effect);
-        }
-        this.effectsToApply = new LinkedList<>();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        Type effectsType = new TypeToken<LinkedList<Effect>>(){}.getType();
+
+        this.ammo = customGson.fromJson(jsonWeaponCard.get("ammo"), short[].class);
+        this.fireModes = customGson.fromJson(jsonWeaponCard.get("fireModes"), effectsType);
+        this.upgrades = customGson.fromJson(jsonWeaponCard.get("upgrades"), effectsType);
+    }
+
+    public void init(){
         effectsToApply.add(fireModes.get(0));
     }
+
 
     public boolean isLoaded(){
         return loaded;
@@ -61,11 +70,11 @@ public class WeaponCard {
         return ammo;
     }
 
-    public AmmoEnum getWeaponColour() {
-        return weaponColour;
+    public AmmoEnum getColour() {
+        return colour;
     }
 
-    public LinkedList<Effect> getEffectsToApply(){
+    public List<Effect> getEffectsToApply(){
         return effectsToApply;
     }
 
@@ -73,11 +82,11 @@ public class WeaponCard {
         return currentCost;
     }
 
-    public ArrayList<Effect> getFireModes(){
+    public List<Effect> getFireModes(){
         return fireModes;
     }
 
-    public ArrayList<Effect> getUpgrades() {
+    public List<Effect> getUpgrades() {
         return upgrades;
     }
 

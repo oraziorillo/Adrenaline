@@ -6,6 +6,9 @@ import model.PowerUpCard;
 import model.squares.Square;
 import enums.AmmoEnum;
 
+/**
+ * Spawns the pcs for the first time
+ */
 public class FirstTurnState extends State{
 
     private Pc pcToSpawn;
@@ -17,7 +20,12 @@ public class FirstTurnState extends State{
         controller.getCurrPc().drawPowerUp();
         controller.getCurrPc().drawPowerUp();
     }
-
+    
+    /**
+     * Sets the params for later respawn. See the game manual for the dynamics
+     * @param pc the pc to respawn
+     * @param powerUpToDropIndex the index of the powerup card the pc will use to respawn
+     */
     @Override
     public void selectPowerUp (int powerUpToDropIndex) {
         if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
@@ -25,7 +33,11 @@ public class FirstTurnState extends State{
             this.powerUpToDropIndex = powerUpToDropIndex;
         }
     }
-
+    
+    /**
+     * Executes the respawn: Puts the pre-given pc on the GenerationSquare of the colour of the card with the given index
+     * @return true if pc is respawned fine, false if some parameters was invalid
+     */
     @Override
     public boolean ok() {
         if (pcToSpawn != null && powerUpToDropIndex > -1) {
@@ -38,7 +50,10 @@ public class FirstTurnState extends State{
         }
         return false;
     }
-
+    
+    /**
+     * @return StartTurnState
+     */
     @Override
     public State nextState() {
         if (controller.getCurrPlayerIndex() == controller.getPlayers().size() - 1) {

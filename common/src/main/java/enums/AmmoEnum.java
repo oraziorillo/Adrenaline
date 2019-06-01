@@ -1,4 +1,5 @@
 package enums;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Enumerates the possible colours for the ammunitions.
@@ -6,8 +7,11 @@ package enums;
  * @see SquareColourEnum
  */
 public enum AmmoEnum {
+    @SerializedName("BLUE")
     BLUE,
+    @SerializedName("RED")
     RED,
+    @SerializedName("YELLOW")
     YELLOW;
     
     /**

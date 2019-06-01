@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
@@ -18,7 +20,7 @@ public class AmmoTileTest {
         boolean hasPowerup = false;
         assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
         AmmoTile tested = new AmmoTile(ammos, hasPowerup);
-        assertEquals("Different ammos", ammos, tested.getAmmo());
+        assertTrue("Different ammos", Arrays.equals( ammos, tested.getAmmo()));
         assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
     }
     
@@ -28,7 +30,7 @@ public class AmmoTileTest {
         boolean hasPowerup = true;
         assumeTrue("Invalid parameters", AmmoTile.validParameters(ammos, hasPowerup));
         AmmoTile tested = new AmmoTile(ammos, hasPowerup);
-        assertEquals("Different ammos", ammos, tested.getAmmo());
+        assertTrue("Different ammos", Arrays.equals(ammos, tested.getAmmo()));
         assertEquals("Different powerup", hasPowerup, tested.containsPowerup());
     }
 

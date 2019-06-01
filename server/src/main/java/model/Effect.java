@@ -1,48 +1,48 @@
 package model;
 
+import com.google.gson.*;
+import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import enums.CardinalDirectionEnum;
 import model.actions.Action;
-import model.actions.DamageMarksAction;
-import model.actions.MovementAction;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import model.deserializers.ActionDeserializer;
+
+import java.lang.reflect.Type;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Effect {
-    private boolean oriented;
-    private boolean beyondWalls;
-    private boolean asynchronous;
-    private boolean sameTarget;
-    private short[] cost;
-    private LinkedList<Action> actions = new LinkedList<>();
+    @Expose private boolean oriented;
+    @Expose private boolean beyondWalls;
+    @Expose private boolean asynchronous;
+    @Expose private boolean sameTarget;
+    @Expose private short[] cost;
+    @Expose private List<Action> actions;
 
     /**
      * constructor for Effect
-     * @param jsonWeaponEffect JsonObject representing a weapon effect
+     *
+     * @param jsonEffect JsonObject representing a weapon effect
      */
-    Effect(JSONObject jsonWeaponEffect) {
+    public Effect(JsonObject jsonEffect) {
         this.cost = new short[3];
-        this.oriented = (boolean) jsonWeaponEffect.get("oriented");
-        this.beyondWalls = (boolean) jsonWeaponEffect.get("beyondWalls");
-        this.asynchronous = (boolean) jsonWeaponEffect.get("asynchronous");
-        this.sameTarget = (boolean) jsonWeaponEffect.get("sameTarget");
-        JSONArray jsonCost = (JSONArray) jsonWeaponEffect.get("cost");
-        JSONArray jsonActions = (JSONArray) jsonWeaponEffect.get("actions");
-        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++) {
-            cost[i] = ((Long) jsonCost.get(i)).shortValue();
-        }
-        for (Object jsonAction : jsonActions) {
-            Action action;
-            if ((boolean)(((JSONObject)jsonAction).get("isMovement"))) {
-                action = new MovementAction((JSONObject)jsonAction);
-            } else {
-                action = new DamageMarksAction((JSONObject)jsonAction);
-            }
-            actions.add(action);
-        }
+        this.oriented = jsonEffect.get("oriented").getAsBoolean();
+        this.beyondWalls = jsonEffect.get("beyondWalls").getAsBoolean();
+        this.asynchronous = jsonEffect.get("asynchronous").getAsBoolean();
+        this.sameTarget = jsonEffect.get("sameTarget").getAsBoolean();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        JsonDeserializer<Action> actionDeserializer = new ActionDeserializer();
+        gsonBuilder.registerTypeAdapter(Action.class, actionDeserializer);
+        Gson customGson = gsonBuilder.create();
+
+        Type actionsType = new TypeToken<LinkedList<Action>>(){}.getType();
+
+        this.cost = customGson.fromJson(jsonEffect.get("cost"), short[].class);
+        this.actions = customGson.fromJson(jsonEffect.get("actions"), actionsType);
     }
 
-    public boolean isOriented(){
+    public boolean isOriented() {
         return oriented;
     }
 
@@ -54,15 +54,15 @@ public class Effect {
         return sameTarget;
     }
 
-    public void assignDirection(CardinalDirectionEnum direction){
+    public void assignDirection(CardinalDirectionEnum direction) {
         actions.forEach(a -> a.setOrientedTargetChecker(direction, beyondWalls));
     }
 
-    public short[] getCost(){
+    public short[] getCost() {
         return cost.clone();
     }
 
-    public LinkedList<Action> getActions() {
+    public List<Action> getActions() {
         return actions;
     }
 
@@ -72,7 +72,10 @@ public class Effect {
 
     public void execute(Pc shooter) {
         for (Action currAction : actions) {
-                currAction.apply(shooter);
-            }
+            currAction.apply(shooter);
+        }
     }
 }
+
+
+

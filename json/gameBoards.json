@@ -1,0 +1,75 @@
+[
+  {
+    "rows": 3,
+    "columns": 4,
+    "squares": [
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 0,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 1,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 0,
+        "col": 2,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 3,
+        "colour": "GREEN"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 1,
+        "col": 0,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 1,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 2,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 3,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 1,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 2,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 2,
+        "col": 3,
+        "colour": "YELLOW"
+      }
+    ],
+    "doors": [0, 4, 2, 3, 2, 6, 3, 2, 3, 7, 4, 0, 5, 9, 6, 2, 7, 3, 9, 5, 9, 10, 10, 9]
+  }
+]

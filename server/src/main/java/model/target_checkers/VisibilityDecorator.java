@@ -3,9 +3,9 @@ package model.target_checkers;
 import model.squares.Square;
 import java.util.Set;
 
-public class VisibleDecorator extends TargetCheckerDecorator {
+public class VisibilityDecorator extends TargetCheckerDecorator {
 
-    public VisibleDecorator(TargetChecker decorated){
+    public VisibilityDecorator(TargetChecker decorated){
         super(decorated);
     }
 

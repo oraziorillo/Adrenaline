@@ -2,6 +2,9 @@ package model;
 
 import enums.PcColourEnum;
 
+/**
+ * A single kill marker
+ */
 public class KillShot {
     private PcColourEnum colour;
     private boolean skulled;
@@ -24,7 +27,12 @@ public class KillShot {
     public PcColourEnum getColour() {
         return colour;
     }
-
+    
+    /**
+     * Marks a kill
+     * @param killerColour colour of the killer
+     * @param overkill see the game anual
+     */
     public void killOccured(PcColourEnum killerColour, boolean overkill) {
         if (skulled) {
             this.colour = killerColour;

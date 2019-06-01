@@ -5,6 +5,9 @@ import model.PowerUpCard;
 import model.WeaponCard;
 import model.squares.Square;
 
+/**
+ * Reloads the weapons
+ */
 public class ReloadState extends State {
 
     private WeaponCard weaponToReload;
@@ -12,14 +15,23 @@ public class ReloadState extends State {
     ReloadState(Controller controller) {
         super(controller);
     }
-
+    
+    /**
+     * Selects a powerup to use as an ammo
+     * @param index the powerup card index
+     * @see PowerUpCard
+     */
     @Override
     public void selectPowerUp(int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null)
             powerUp.setSelectedAsAmmo(!powerUp.isSelectedAsAmmo());
     }
-
+    
+    /**
+     * selects a weapon to reload
+     * @param index the WeaponCard index
+     */
     @Override
     public void selectWeaponOfMine(int index) {
         WeaponCard currWeapon = controller.getCurrPc().weaponAtIndex(index);
@@ -27,7 +39,13 @@ public class ReloadState extends State {
             this.weaponToReload = currWeapon;
         }
     }
-
+    
+    /**
+     * Reloads the pre-selected weapon using methods from Pc and WeaponCard
+     * @see model.Pc
+     * @see WeaponCard
+     * @return true iif a weapon was pre-selected
+     */
     @Override
     public boolean reload() {
         if (weaponToReload != null){
@@ -40,15 +58,22 @@ public class ReloadState extends State {
         }
         return false;
     }
-
+    
+    /**
+     * Ends the player turn
+     * @return true
+     */
     @Override
     public boolean pass() {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
         return true;
     }
-
-
+    
+    /**
+     * Transition
+     * @return ShootPeopleState if final frenzy is on, StartTurnState else
+     */
     @Override
     public State nextState() {
         if (controller.isFinalFrenzy())

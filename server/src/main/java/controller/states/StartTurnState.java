@@ -2,6 +2,7 @@ package controller.states;
 
 import controller.Controller;
 
+/**Turn beginning state*/
 public class StartTurnState extends State {
 
     private State nextState;
@@ -33,7 +34,11 @@ public class StartTurnState extends State {
         nextState = new UsePowerUpState(controller, null);
         return true;
     }
-
+    
+    /**
+     * Transition
+     * @return the state with the same name of the last method called on this state
+     */
     @Override
     public State nextState() {
         return nextState;

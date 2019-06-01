@@ -1,6 +1,5 @@
 package model;
 
-
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
 import model.squares.AmmoSquare;
@@ -10,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -32,13 +30,13 @@ public class AmmoSquareTest {
     @Before
     public void setup() {
         Mockito.when(deck.draw()).thenReturn(card1).thenReturn(card2);
-        tested = new AmmoSquare( x,y,SquareColourEnum.BLUE,deck );
+        tested = new AmmoSquare( x,y,SquareColourEnum.BLUE);
     }
 
     @Test
     public void constructedFine() {
-        assertEquals("x is different", tested.getX(), x);
-        assertEquals("y is different", tested.getY(), y);
+        assertEquals("x is different", tested.getRow(), x);
+        assertEquals("y is different", tested.getCol(), y);
         assertEquals( "Colour has changed", tested.getColour(), colour );
     }
 

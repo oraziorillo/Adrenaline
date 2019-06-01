@@ -23,6 +23,10 @@ public class PlayerControllerImpl implements PlayerController {
    }
    
    @Override
+   public boolean containsPlayer(UUID token) {
+      return players.containsKey( token );
+   }
+   
    public Player getPlayer(UUID token) {
       return players.get( token );
    }

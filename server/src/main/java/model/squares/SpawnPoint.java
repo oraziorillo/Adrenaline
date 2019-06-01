@@ -1,55 +1,48 @@
 package model.squares;
 
+import com.google.gson.annotations.Expose;
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
+import model.AmmoTile;
 import model.Deck;
 import model.Pc;
 import model.WeaponCard;
 
 public class SpawnPoint extends Square {
 
+    @Expose private int weaponToGrabIndex;
+    @Expose private int weaponToDropIndex;
     private WeaponCard[] weapons;
-    private Deck<WeaponCard> weaponDeck;
-    private int weaponToGrabIndex;
-    private int weaponToDropIndex;
+    private Deck<WeaponCard> weaponsDeck;
 
-    public SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
-        super(x, y, colour);
-        this.weaponDeck = deck;
+    public SpawnPoint(){
+        super();
         this.weaponToGrabIndex = -1;
         this.weaponToDropIndex = -1;
-        weapons = new WeaponCard[3];
-        for (int i = 0; i < 3; i++)
-            weapons[i] = weaponDeck.draw();
+    }
+
+    public SpawnPoint(int x, int y, SquareColourEnum colour) {
+        super(x, y, colour);
+        this.weaponToGrabIndex = -1;
+        this.weaponToDropIndex = -1;
     }
 
 
-/*    public SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
-        super(x, y, colour);
-        this.weaponDeck = deck;
-        this.weaponToGrabIndex = -1;
-        this.weaponToDropIndex = -1;
+    @Override
+    public void assignDeck(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+        this.weaponsDeck = weaponsDeck;
         weapons = new WeaponCard[3];
         for (int i = 0; i < 3; i++)
-            weapons[i] = weaponDeck.draw();
-    }*/
-
-
-
-  /*  @Override
-    public boolean isEmpty() {
-        for (WeaponCard weapon : weapons)
-            if (weapon != null)
-                return false;
-        return true;
-    }*/
+            weapons[i] = weaponsDeck.draw();
+    }
 
 
     @Override
     public boolean isEmpty() {
-        if (weapons[0] != null)
-            return false;
+        for (WeaponCard weapon : weapons)
+            if (weapon != null)
+                return false;
         return true;
     }
 
@@ -67,8 +60,6 @@ public class SpawnPoint extends Square {
     public boolean isSpawnPoint() {
         return true;
     }
-
-
 
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
@@ -99,6 +90,16 @@ public class SpawnPoint extends Square {
         return null;
     }
 
+    /**
+     * Adds the pre-selected weapon to the given player, unless
+     * 1. this square is not empty
+     * 2. the pre-selected weapon index is not negative
+     * 3. the weapon slot on that index is not empty
+     * 4. the given pc already has the max weapon number and didn't select a weapon to drop (drop index <0)
+     * @param currPc the pc collecting from this tile
+     * @throws EmptySquareException if no weapon is available
+     * @throws NotEnoughAmmoException if the player cannot pay the half-recharge cost
+     */
     @Override
     public void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException {
         if (isEmpty())
@@ -106,7 +107,7 @@ public class SpawnPoint extends Square {
         if (weaponToGrabIndex < 0)
             throw new IllegalStateException("You have to choose a weapon to grab");
         if (weapons[weaponToGrabIndex] == null)
-            throw new NullPointerException();
+            throw new NullPointerException("No weapon on that slot");
         WeaponCard weaponToGrab = weapons[weaponToGrabIndex];
         if (!currPc.hasEnoughAmmo(weaponToGrab.getAmmo()))
             throw new NotEnoughAmmoException();
@@ -124,7 +125,7 @@ public class SpawnPoint extends Square {
         }
         currPc.addWeapon(weaponToGrab, weaponToDropIndex);
         short[] cost = weaponToGrab.getAmmo();
-        cost[weaponToGrab.getWeaponColour().ordinal()]--;
+        cost[weaponToGrab.getColour().ordinal()]--;
         currPc.payAmmo(cost);
         resetWeaponIndexes();
     }
@@ -132,8 +133,8 @@ public class SpawnPoint extends Square {
 
     public void refill() {
         for (int i = 0; i < weapons.length; i++) {
-            if (weapons[i] == null && weaponDeck.size() > 0) {
-                weapons[i] = weaponDeck.draw();
+            if (weapons[i] == null && weaponsDeck.size() > 0) {
+                weapons[i] = weaponsDeck.draw();
             }
         }
     }

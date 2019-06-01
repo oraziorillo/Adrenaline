@@ -32,7 +32,8 @@ public class LoginSocketListener implements Runnable {
                out.flush();
                break;
             case "getPlayer":
-               this.player = Server.playerController.getPlayer( UUID.fromString( in.next() ) );
+               //TODO: il controller sarà spostato in player, che non viene trasferito interamente a solo l'UUID
+               //this.player = Server.playerController.getPlayer( UUID.fromString( in.next() ) );
                out.println( player.getUsername() );
                out.flush();
                break;

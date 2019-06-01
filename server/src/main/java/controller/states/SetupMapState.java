@@ -2,6 +2,9 @@ package controller.states;
 
 import controller.Controller;
 
+/**
+ * State to init the map
+ */
 public class SetupMapState extends State{
 
     private int mapIndex;
@@ -10,13 +13,20 @@ public class SetupMapState extends State{
         super(controller);
         this.mapIndex = -1;
     }
-
+    
+    /**
+     * Sets a map index
+     * @param n the index of the map
+     */
     @Override
     public void selectMap(int n) {
         this.mapIndex = n;
     }
-
-
+    
+    /**
+     * Initialise the game map with the specified index
+     * @return true if the index was non-negative (and then the map is selected), false else
+     */
     @Override
     public boolean ok() {
         if (mapIndex >= 0) {
@@ -25,8 +35,11 @@ public class SetupMapState extends State{
         }
         return false;
     }
-
-
+    
+    /**
+     * Transition
+     * @return SetupKillshotTrackState
+     */
     @Override
     public State nextState() {
         return new SetupKillShotTrackState(controller);

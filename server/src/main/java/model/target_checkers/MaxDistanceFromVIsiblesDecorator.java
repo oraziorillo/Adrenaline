@@ -1,7 +1,6 @@
 package model.target_checkers;
 
 import model.squares.Square;
-import org.json.simple.JSONObject;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,9 +8,9 @@ public class MaxDistanceFromVIsiblesDecorator extends TargetCheckerDecorator {
 
     private int maxDistance;
 
-    MaxDistanceFromVIsiblesDecorator(TargetChecker decorated, JSONObject jsonTargetChecker) {
+    public MaxDistanceFromVIsiblesDecorator(TargetChecker decorated, int maxDistance) {
         super(decorated);
-        this.maxDistance = (int) jsonTargetChecker.get("maxDistance");
+        this.maxDistance = maxDistance;
     }
 
     @Override

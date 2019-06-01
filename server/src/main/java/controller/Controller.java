@@ -38,7 +38,7 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     private ArrayList<Player> players;
     private ArrayList<Square> squaresToRefill;
 
-    public Controller(List<Player> players) throws RemoteException {
+    public Controller(List<Player> players) throws RemoteException, FileNotFoundException {
         super();
         this.game = new Game();
         this.players = new ArrayList<>();
@@ -71,15 +71,19 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         return currPlayerIndex;
     }
 
+
     public int getRemainingActions() {
         return remainingActions;
     }
+
 
     public WeaponCard getCurrWeapon() {
         return currWeapon;
     }
 
+
     public void resetCurrWeapon() { this.currWeapon = null; }
+
 
     public List<Square> getSquaresToRefill(){
         return squaresToRefill;
@@ -89,17 +93,21 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
         finalFrenzy = booleanValue;
     }
 
+
     public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
     }
+
 
     public void setCurrWeapon(WeaponCard weapon) {
         this.currWeapon = weapon;
     }
 
+
     public void decreaseRemainingActions() {
         this.remainingActions--;
     }
+
 
     public void resetRemainingActions() {
         if (!isFinalFrenzy() || beforeFirstPlayer(getCurrPlayerIndex()))
@@ -108,13 +116,16 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
             this.remainingActions = ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
     }
 
+
     public synchronized void addSquareToRefill(Square s) {
         squaresToRefill.add(s);
     }
 
+
     public synchronized void resetSquaresToRefill() {
         squaresToRefill.clear();
     }
+
 
     /**
      * checks if the player who is trying to do something is the able to do it in this moment
@@ -186,8 +197,8 @@ public class Controller extends UnicastRemoteObject implements RemoteController 
     }
 
     @Override
-    public synchronized void chooseSquare(int x, int y) {
-        Square chosenSquare = game.getSquare(x, y);
+    public synchronized void chooseSquare(int row, int col) {
+        Square chosenSquare = game.getSquare(row, col);
         if (chosenSquare != null)
             currState.selectSquare(chosenSquare);
     }
