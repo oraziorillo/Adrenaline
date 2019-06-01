@@ -1,0 +1,16 @@
+{
+  "optional": false,
+  "isMovement": false,
+  "damage": 2,
+  "marks": 1,
+  "maxNumberOfTargets": 1,
+  "squareExplosive": false,
+  "roomExplosive": false,
+  "additionalDamage": false,
+  "exclusiveForOldTargets": false,
+  "targetCheckers": [
+    {
+      "type": "visible"
+    }
+  ]
+}

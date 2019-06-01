@@ -1,11 +1,6 @@
 package controller;
 
 import controller.player.Player;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -44,9 +39,12 @@ public class Server {
         }
     }
 
+/*
     public static Object readJson(String filename) throws IOException, ParseException {
         FileReader reader = new FileReader(filename);
         JSONParser jsonParser = new JSONParser();
         return jsonParser.parse(reader);
     }
+
+ */
 }

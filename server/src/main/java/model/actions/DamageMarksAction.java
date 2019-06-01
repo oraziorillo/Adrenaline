@@ -1,65 +1,76 @@
 package model.actions;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
 import model.*;
 import model.squares.Square;
 import model.target_checkers.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class DamageMarksAction extends Action {
-    private short damage;
-    private short marks;
-    private LinkedList<Pc> targets;
-    private int maxNumberOfTargets;
-    private boolean squareExplosive, roomExplosive, additionalDamage, exclusiveForOldTargets;
+    @Expose private short damage;
+    @Expose private short marks;
+    @Expose private boolean squareExplosive;
+    @Expose private boolean roomExplosive;
+    @Expose private boolean additionalDamage;
+    @Expose private boolean exclusiveForOldTargets;
 
-    public DamageMarksAction(JSONObject jsonAction) {
+
+    public DamageMarksAction(JsonObject jsonAction) {
         super(jsonAction);
         this.targets = new LinkedList<>();
-        this.damage = ((Long) jsonAction.get("damage")).shortValue();
-        this.marks = ((Long) jsonAction.get("marks")).shortValue();
-        this.maxNumberOfTargets = (int) jsonAction.get("maxNumberOfTargets");
-        this.squareExplosive = (boolean) jsonAction.get("squareExplosive");
-        this.roomExplosive = (boolean) jsonAction.get("roomExplosive");
-        this.additionalDamage = (boolean) jsonAction.get("additionalDamage");
-        this.exclusiveForOldTargets = (boolean) jsonAction.get("exclusiveForOldTargets");
-        JSONArray jsonTargetCheckers = (JSONArray) jsonAction.get("target_checkers");
-        JSONObject jsonTargetChecker;
-        for (Object checker : jsonTargetCheckers) {
-            jsonTargetChecker = (JSONObject) checker;
-            switch ((String) jsonTargetChecker.get("type")) {
-                case "visible":
-                    this.basicTargetChecker = new VisibleDecorator(basicTargetChecker);
+        this.damage = jsonAction.get("damage").getAsShort();
+        this.marks = jsonAction.get("marks").getAsShort();
+        this.squareExplosive = jsonAction.get("squareExplosive").getAsBoolean();
+        this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
+        this.additionalDamage = jsonAction.get("additionalDamage").getAsBoolean();
+        this.exclusiveForOldTargets = jsonAction.get("exclusiveForOldTargets").getAsBoolean();
+        JsonArray jsonTargetCheckers = jsonAction.get("targetCheckers").getAsJsonArray();
+        JsonObject jsonTargetChecker;
+        for (JsonElement checker : jsonTargetCheckers) {
+            jsonTargetChecker = checker.getAsJsonObject();
+            switch (jsonTargetChecker.get("type").getAsString()) {
+                case "visibility":
+                    this.targetChecker = new VisibilityDecorator(targetChecker);
                     break;
                 case "blindness":
-                    this.basicTargetChecker = new BlindnessDecorator(basicTargetChecker);
+                    this.targetChecker = new BlindnessDecorator(targetChecker);
                     break;
                 case "minDistance":
-                    this.basicTargetChecker = new MinDistanceDecorator(basicTargetChecker, jsonTargetChecker);
+                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker.get("minDistance").getAsInt());
                     break;
                 case "maxDistance":
-                    this.basicTargetChecker = new MaxDistanceDecorator(basicTargetChecker, jsonTargetChecker);
+                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsonTargetChecker.get("maxDistance").getAsInt());
+                    break;
+                case "maxDistanceFromVisible":
+                    this.targetChecker = new MaxDistanceFromVIsiblesDecorator(targetChecker, jsonTargetChecker.getAsJsonObject().get("maxDistance").getAsInt());
                     break;
                 case "straightLine":
-                    this.basicTargetChecker = new SimpleStraightLineDecorator(basicTargetChecker, null);
+                    this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
                     break;
                 case "beyondWallsStraightLine":
-                    this.basicTargetChecker = new BeyondWallsStraightLineDecorator(basicTargetChecker, null);
+                    this.targetChecker = new BeyondWallsStraightLineDecorator(targetChecker, null);
                     break;
                 case "sameRoom":
-                    this.basicTargetChecker = new SameRoomDecorator(basicTargetChecker);
+                    this.targetChecker = new SameRoomDecorator(targetChecker);
                     break;
                 case "differentRoom":
-                    this.basicTargetChecker = new DifferentRoomDecorator(basicTargetChecker);
+                    this.targetChecker = new DifferentRoomDecorator(targetChecker);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+
+    @Override
+    public boolean isComplete() {
+        return !targets.isEmpty();
     }
 
 
@@ -93,10 +104,33 @@ public class DamageMarksAction extends Action {
     }
 
 
+    //methods for tests
+    @Override
+    public short getDamage() {
+        return damage;
+    }
+
+    @Override
+    public short getMarks() {
+        return marks;
+    }
+
+    @Override
+    public int getMaxNumberOfTargets() {
+        return maxNumberOfTargets;
+    }
+
+
+    //end methods for test
+
+
     @Override
     public void selectPc(Pc targetPc) {
-        if(!roomExplosive && !squareExplosive)
-            addTarget(targetPc);
+        if(!roomExplosive && !squareExplosive) {
+            if (targets.size() == maxNumberOfTargets)
+                targets.removeFirst();
+            targets.add(targetPc);
+        }
     }
 
 
@@ -111,11 +145,13 @@ public class DamageMarksAction extends Action {
         }
     }
 
+
     @Override
     public void resetAction() {
         targets.clear();
         orientedTargetChecker = null;
     }
+
 
     @Override
     public void apply(Pc shooter) {
@@ -129,15 +165,10 @@ public class DamageMarksAction extends Action {
     }
 
 
-    private void addTarget (Pc target){
+    private void addTarget (Pc targetPc){
         if (targets.size() == maxNumberOfTargets)
             targets.removeFirst();
-        targets.add(target);
+        targets.add(targetPc);
     }
 
-
-    @Override
-    public boolean isComplete() {
-        return !targets.isEmpty();
-    }
 }

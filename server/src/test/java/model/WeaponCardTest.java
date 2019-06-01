@@ -1,12 +1,15 @@
 package model;
 
-import controller.Server;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import model.actions.Action;
+import model.deserializers.ActionDeserializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,13 +18,12 @@ public class WeaponCardTest {
     private WeaponCard weaponCard;
 
     @Before
-    public void initialize(){
-        try {
-            JSONArray jsonWeapons = (JSONArray) Server.readJson("weapons");
-            weaponCard = new WeaponCard((JSONObject) jsonWeapons.get(0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void initFine() throws FileNotFoundException {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+        Gson customGson = gsonBuilder.create();
+        JsonReader reader = new JsonReader(new FileReader("/home/orazio/Documents/ids_progetto/ing-sw-2019-23/json/weaponCard.json"));
+        weaponCard = customGson.fromJson(reader, WeaponCard.class);
     }
 
     @Test

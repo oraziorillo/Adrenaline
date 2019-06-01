@@ -1,10 +1,14 @@
 package model.squares;
 
+import com.google.gson.annotations.Expose;
 import enums.CardinalDirectionEnum;
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
+import model.AmmoTile;
+import model.Deck;
 import model.Pc;
+import model.WeaponCard;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -12,46 +16,37 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class Square {
-    private final int x;
-    private final int y;
+    @Expose private int row;
+    @Expose private int col;
+    @Expose private SquareColourEnum colour;
     private boolean targetable;
     private boolean marked;
-    private final SquareColourEnum colour;
     private HashSet<Pc> pcs;
     private HashSet<Square> visibles;
 
-    /**
-     * Builder for a generic tile
-     * @param x first index in map
-     * @param y second index in map
-     * @param colour the room colour
-     */
-    public Square(int x, int y, SquareColourEnum colour) {
-        this.x = x;
-        this.y = y;
-        this.targetable = false;
-        this.marked = false;
+
+    public Square(){
+        this.pcs = new HashSet<>();
+        this.visibles = new HashSet<>();
+    }
+
+
+    public Square(int row, int col, SquareColourEnum colour) {
+        this.row = row;
+        this.col = col;
         this.colour = colour;
         this.pcs = new HashSet<>();
         this.visibles = new HashSet<>();
     }
 
 
-    /**
-     * Getter for x coordinate in the map
-     * @return the x coordinate of this tile
-     */
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
 
-    /**
-     * Getter for y coordinate in the map
-     * @return the y coordinate of this tile
-     */
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
 
@@ -60,28 +55,16 @@ public abstract class Square {
     }
 
 
-    /**
-     * Getter for room colour
-     * @return The colour of this room
-     */
     public SquareColourEnum getColour() {
         return colour;
     }
 
 
-    /**
-     * Returns the Pcs on this tile
-     * @return the Pcs on this tile
-     */
     public Set<Pc> getPcs() {
         return pcs;
     }
 
 
-    /**
-     * returns the tiles that a Pc on this tile could see
-     * @return the tile visibles from this
-     */
     public Set<Square> getVisibles() {
         return visibles;
     }
@@ -139,13 +122,13 @@ public abstract class Square {
                 .filter(s -> {
                     switch (direction) {
                         case NORTH:
-                            return s.getY() == this.getY() + 1 && s.getX() == this.getX();
+                            return s.getRow() == this.row + 1 && s.getCol() == this.col;
                         case EAST:
-                            return s.getX() == this.getX() + 1 && s.getY() == this.getY();
+                            return s.getCol() == this.col + 1 && s.getRow() == this.row;
                         case SOUTH:
-                            return s.getY() == this.getY() - 1 && s.getX() == this.getX();
+                            return s.getRow() == this.row - 1 && s.getCol() == this.col;
                         case WEST:
-                            return s.getX() == this.getX() - 1 && s.getY() == this.getY();
+                            return s.getCol() == this.col - 1 && s.getRow() == this.row;
                         default:
                             return false;
                     }
@@ -156,7 +139,7 @@ public abstract class Square {
 
 
     /**
-     * adds a pc to this tile
+     * adds a pc to this square
      * @param pc the pc to put on this tile
      */
     public void addPc(Pc pc) {
@@ -165,7 +148,7 @@ public abstract class Square {
 
 
     /**
-     * removes a pc from this tile
+     * removes a pc from this square
      * @param c the pc to remove
      */
     public void removePc(Pc c) {
@@ -212,15 +195,15 @@ public abstract class Square {
                 .filter(s -> {
                     switch (direction){
                         case NORTH:
-                            return s.getX() == this.getX() && s.getY() >= this.getY();
+                            return s.getRow() >= this.getRow() && s.getCol() == this.getCol();
                         case EAST:
-                            return s.getX() >= this.getX() && s.getY() == this.getY();
+                            return s.getRow() == this.getRow() && s.getCol() >= this.getCol();
                         case SOUTH:
-                            return s.getX() == this.getX() && s.getY() <= this.getY();
+                            return s.getRow() <= this.getRow() && s.getCol() == this.getCol();
                         case WEST:
-                            return s.getX() <= this.getX() && s.getY() == this.getY();
+                            return s.getRow() == this.getRow() && s.getCol() <= this.getCol();
                         default:
-                            return s.getX() == this.getX() || s.getY() == this.getY();
+                            return s.getRow() == this.getRow() || s.getCol() == this.getCol();
                     }
                 })
                 .collect(Collectors.toSet());
@@ -228,12 +211,15 @@ public abstract class Square {
     }
 
 
-    public abstract void refill();
+    public abstract void assignDeck(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck);
 
 
     public abstract boolean isEmpty();
 
 
     public abstract boolean isSpawnPoint();
+
+
+    public abstract void refill();
 }
 

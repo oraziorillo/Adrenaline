@@ -8,14 +8,15 @@ import model.actions.Action;
 import model.PowerUpCard;
 import model.squares.Square;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class TargetSelectionState extends State {
 
     private boolean directionSelected;
-    private int effectIndex, actionIndex;
-    private LinkedList<Effect> effectsToApply;
+    private int effectIndex;
+    private int actionIndex;
+    private List<Effect> effectsToApply;
     private Effect currEffect;
     private Action currAction;
     private Set<Pc> shotTargets;

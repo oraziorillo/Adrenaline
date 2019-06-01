@@ -1,51 +1,55 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import enums.PcColourEnum;
 import enums.SquareColourEnum;
 import model.squares.Square;
-import java.util.ArrayList;
-import java.util.Optional;
 
-class GameBoard {
+import java.util.*;
 
-    private int rows, columns;
-    private ArrayList<Square> squares;
-    private ArrayList<Square> spawnPoints;
+public class GameBoard {
+    @Expose private int rows;
+    @Expose private int columns;
+    @Expose private List<Square> squares;
+    private List<Square> spawnPoints;
     private KillShot[] killShotTrack;
     private int currentKillShotTrackIndex;
 
 
-    GameBoard(int rows, int columns, ArrayList<Square> squares, int[] doors) {
+    public GameBoard(int rows, int columns, List<Square> squares, int[] doors) {
         this.rows = rows;
         this.columns = columns;
         this.squares = squares;
         this.spawnPoints = new ArrayList<>();
-        squares.stream()
-                .parallel()
-                .filter(Square::isSpawnPoint)
-                .forEach(s -> spawnPoints.add(s));
-
         for (Square s : squares) {
 
-            //initialize an ArrayList of visible colours
-            ArrayList<SquareColourEnum> visibleColours = new ArrayList<>();
-            visibleColours.add(s.getColour());
+            if(s.isSpawnPoint())
+                spawnPoints.add(s);
 
-            int sId = s.getX() + s.getY() * columns;
+            //initialize an ArrayList of visible colours
+            HashSet<Integer> visibleColours = new HashSet<>();
+            visibleColours.add(s.getColour().ordinal());
+
+            int sId = s.getRow() * columns + s.getCol();
 
             for (int j = 0; j < doors.length; j = j + 2)
                 if (doors[j] == sId)
                     visibleColours.add(getSquare(
-                            sId / columns,
-                            sId % columns
-                    ).getColour());
+                            doors[j + 1] / columns,
+                            doors[j + 1] % columns
+                    ).getColour().ordinal());
 
             //then add all squares whose colour is contained in visibleColours to the list of i's visible squares
             squares.stream()
                     .parallel()
-                    .filter(x -> visibleColours.contains(x.getColour()))
-                    .forEach(s::addVisible);
+                    .filter(x -> visibleColours.contains(x.getColour().ordinal()))
+                    .forEach(x -> s.addVisible(x));
         }
+    }
+
+
+    public void assignDecks(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+        squares.forEach(s -> s.assignDeck(weaponsDeck, ammoDeck));
     }
 
 
@@ -113,12 +117,12 @@ class GameBoard {
     }
 
 
-    Square getSquare(int x, int y){
-        if (x >= rows || y >= columns)
+    Square getSquare(int row, int col){
+        if (row >= rows || col >= columns)
             return null;
         Optional<Square> currSquare = squares.stream()
                 .parallel()
-                .filter(s -> (x == s.getX() && y == s.getY()))
+                .filter(s -> (col == s.getCol() && row == s.getRow()))
                 .findFirst();
         return currSquare.orElse(null);
     }

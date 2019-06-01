@@ -1,74 +1,74 @@
 package model.actions;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
 import model.*;
 import model.squares.Square;
 import model.target_checkers.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.util.HashSet;
 import java.util.Set;
 
 public class MovementAction extends Action {
 
-    private boolean selfMovement;
-    private Pc target;
-    private TargetChecker destinationChecker;
+    @Expose private boolean selfMovement;
+    @Expose private TargetChecker destinationChecker;
 
 
-    public MovementAction(JSONObject jsonAction) {
+    public MovementAction(JsonObject jsonAction) {
         super(jsonAction);
-        this.selfMovement = (boolean)jsonAction.get("selfMovement");
-        JSONArray jsonCheckers;
-        JSONObject jsonChecker;
+        this.selfMovement = jsonAction.get("selfMovement").getAsBoolean();
+        JsonArray jsonCheckers;
+        JsonObject jsontargetChecker;
 
-        jsonCheckers = (JSONArray) jsonAction.get("target_checkers");
-        for (Object checker : jsonCheckers) {
-            jsonChecker = (JSONObject) checker;
-            switch ((String) jsonChecker.get("type")) {
-                case "visible":
-                    this.basicTargetChecker = new VisibleDecorator(basicTargetChecker);
+        jsonCheckers = jsonAction.get("targetCheckers").getAsJsonArray();
+        for (JsonElement checker : jsonCheckers) {
+            jsontargetChecker = checker.getAsJsonObject();
+            switch (jsontargetChecker.get("type").getAsString()) {
+                case "visibility":
+                    this.targetChecker = new VisibilityDecorator(targetChecker);
                     break;
                 case "blindness":
-                    this.basicTargetChecker = new BlindnessDecorator(basicTargetChecker);
+                    this.targetChecker = new BlindnessDecorator(targetChecker);
                     break;
                 case "minDistance":
-                    this.basicTargetChecker = new MinDistanceDecorator(basicTargetChecker, jsonChecker);
+                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsontargetChecker.get("minDistance").getAsInt());
                     break;
                 case "maxDistance":
-                    this.basicTargetChecker = new MaxDistanceDecorator(basicTargetChecker, jsonChecker);
+                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsontargetChecker.get("maxDistance").getAsInt());
+                    break;
+                case "maxDistanceFromVisible":
+                    this.targetChecker = new MaxDistanceFromVIsiblesDecorator(targetChecker, jsontargetChecker.getAsJsonObject().get("maxDistance").getAsInt());
                     break;
                 case "straightLine":
-                    this.basicTargetChecker = new SimpleStraightLineDecorator(basicTargetChecker, null);
+                    this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
                     break;
                 case "beyondWallsStraightLine":
-                    this.basicTargetChecker = new BeyondWallsStraightLineDecorator(basicTargetChecker, null);
+                    this.targetChecker = new BeyondWallsStraightLineDecorator(targetChecker, null);
                     break;
                 case "sameRoom":
-                    this.basicTargetChecker = new SameRoomDecorator(basicTargetChecker);
+                    this.targetChecker = new SameRoomDecorator(targetChecker);
                     break;
                 case "differentRoom":
-                    this.basicTargetChecker = new DifferentRoomDecorator(basicTargetChecker);
+                    this.targetChecker = new DifferentRoomDecorator(targetChecker);
                     break;
-                case "emptyChecker":
-                    this.basicTargetChecker = new EmptyChecker();
                 default:
                     break;
             }
         }
 
-        jsonCheckers = (JSONArray) jsonAction.get("destinationChecker");
-        for(Object checker : jsonCheckers) {
-            jsonChecker = (JSONObject) checker;
-            switch ((String) jsonChecker.get("type")) {
+        jsonCheckers = jsonAction.get("destinationChecker").getAsJsonArray();
+        for(JsonElement checker : jsonCheckers) {
+            jsontargetChecker = checker.getAsJsonObject();
+            switch (jsontargetChecker.get("type").getAsString()) {
                 case "minDistance":
-                    this.basicTargetChecker = new MinDistanceDecorator(basicTargetChecker, jsonChecker);
+                    this.destinationChecker = new MinDistanceDecorator(destinationChecker, jsontargetChecker.get("minDistance").getAsInt());
                     break;
                 case "maxDistance":
-                    this.basicTargetChecker = new MaxDistanceDecorator(basicTargetChecker, jsonChecker);
+                    this.destinationChecker = new MaxDistanceDecorator(destinationChecker, jsontargetChecker.get("maxDistance").getAsInt());
                     break;
                 case "straightLine":
-                    this.basicTargetChecker = new SimpleStraightLineDecorator(basicTargetChecker, null);
+                    this.destinationChecker = new SimpleStraightLineDecorator(destinationChecker, null);
                     break;
                 default:
                     break;
@@ -79,14 +79,17 @@ public class MovementAction extends Action {
 
     @Override
     public void selectPc(Pc targetPc) {
-        if (!selfMovement)
-            target = targetPc;
+        if (!selfMovement) {
+            if (targets.size() == maxNumberOfTargets)
+                targets.removeFirst();
+            targets.add(targetPc);
+        }
     }
 
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if (target != null || this.selfMovement) {
+        if (!targets.isEmpty() || this.selfMovement) {
             this.targetSquare = targetSquare;
         }
     }
@@ -100,22 +103,25 @@ public class MovementAction extends Action {
 
     @Override
     public void resetAction() {
-        target = null;
+        targets.clear();
         targetSquare = null;
     }
+
 
     @Override
     public void apply(Pc shooter) {
         if (selfMovement)
-            target = shooter;
-        target.moveTo(targetSquare);
+            targets.add(shooter);
+        if (!isComplete())
+            return;
+        targets.getFirst().moveTo(targetSquare);
         resetAction();
     }
 
 
     @Override
     public boolean isComplete() {
-        return (selfMovement || target != null) &&
+        return (selfMovement || !targets.isEmpty()) &&
                 targetSquare != null;
     }
 }

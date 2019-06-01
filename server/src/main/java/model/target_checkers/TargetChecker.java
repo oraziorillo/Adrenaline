@@ -8,3 +8,6 @@ public interface TargetChecker {
     Set<Square> validSquares(Square referenceSquare);
 
 }
+
+
+

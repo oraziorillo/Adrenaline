@@ -1,13 +1,18 @@
 [
   {
     "name": "Lock Rifle",
+    "colour":"BLUE",
     "ammo": [
       2,
       0,
       0
     ],
-    "firemodes": [
+    "fireModes": [
       {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
         "cost": [
           0,
           0,
@@ -15,9 +20,15 @@
         ],
         "actions": [
           {
+            "optional": false,
             "isMovement": false,
             "damage": 2,
             "marks": 1,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
             "targetCheckers": [
               {
                 "type": "visible"
@@ -29,6 +40,10 @@
     ],
     "upgrades": [
       {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
         "cost": [
           0,
           1,
@@ -36,9 +51,15 @@
         ],
         "actions": [
           {
+            "optional": false,
             "isMovement": false,
             "damage": 0,
             "marks": 1,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": true,
             "targetCheckers": [
               {
                 "type": "visible"

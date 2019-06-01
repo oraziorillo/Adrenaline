@@ -29,10 +29,10 @@ public class SquareTest {
         AmmoTile uselessTile = Mockito.mock( AmmoTile.class );
         Mockito.when( uselessDeck.draw() ).thenReturn( uselessTile );
         setupSquareMocks();
-        tested = new AmmoSquare( x,y,colour,uselessDeck );
+        tested = new AmmoSquare( x,y,colour );
         //test constructor
-        assertTrue( tested.getVisibles().isEmpty() );assertEquals(tested.getX(),x);
-        assertEquals( tested.getY(),y );
+        assertTrue( tested.getVisibles().isEmpty() );assertEquals(tested.getRow(),x);
+        assertEquals( tested.getCol(),y );
         assertEquals( tested.getColour(), colour );
         assertFalse( tested.isTargetable() );
         assertTrue( tested.getPcs().isEmpty() );
@@ -55,14 +55,14 @@ public class SquareTest {
         **|s2    |s1     |
         **|tested|onright|
          */
-        Mockito.when( onRight.getX() ).thenReturn( x+1 );
-        Mockito.when( onRight.getY() ).thenReturn( y );
-        Mockito.when( s1.getX() ).thenReturn( x+1 );
-        Mockito.when( s1.getY() ).thenReturn( y+1 );
-        Mockito.when( s2.getX() ).thenReturn( x );
-        Mockito.when( s2.getY() ).thenReturn( y+1 );
-        Mockito.when( s3.getX() ).thenReturn( x+1 );
-        Mockito.when( s3.getY() ).thenReturn( y+2 );
+        Mockito.when( onRight.getRow() ).thenReturn( x+1 );
+        Mockito.when( onRight.getCol() ).thenReturn( y );
+        Mockito.when( s1.getRow() ).thenReturn( x+1 );
+        Mockito.when( s1.getCol() ).thenReturn( y+1 );
+        Mockito.when( s2.getRow() ).thenReturn( x );
+        Mockito.when( s2.getCol() ).thenReturn( y+1 );
+        Mockito.when( s3.getRow() ).thenReturn( x+1 );
+        Mockito.when( s3.getCol() ).thenReturn( y+2 );
         HashSet<Square> onRightVis = new HashSet<>(); onRightVis.add( tested ); onRightVis.add( s1 );
         HashSet<Square> s1Vis = new HashSet<>(); s1Vis.add( tested ); s1Vis.add( s2 ); s1Vis.add( s3 );
         HashSet<Square> s2Vis = new HashSet<>(); s2Vis.add( tested ); s2Vis.add( s1 );

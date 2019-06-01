@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -10,11 +11,12 @@ import java.util.Random;
  */
 public class Deck<E> {
 
+    private ArrayList<E> cards;
+
     /**
      * used for random insertion
      */
     private Random random;
-    private ArrayList<E> cards;
 
 
     Deck() {
@@ -22,6 +24,10 @@ public class Deck<E> {
         random = new Random();
     }
 
+
+    List<E> getCards() {
+        return cards;
+    }
 
     /**
      * draw a card
@@ -92,7 +98,7 @@ public class Deck<E> {
         }catch ( ClassCastException e ){
             return false;
         }
-        
+
         return cards.equals( d.cards );
     }
 

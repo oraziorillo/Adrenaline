@@ -1,18 +1,15 @@
 package model.target_checkers;
 
 import model.squares.Square;
-import org.json.simple.JSONObject;
-
-import java.util.HashSet;
 import java.util.Set;
 
 public class MinDistanceDecorator extends TargetCheckerDecorator {
 
     private int minDistance;
 
-    public MinDistanceDecorator(TargetChecker decorated, JSONObject jsonTargetChecker){
+    public MinDistanceDecorator(TargetChecker decorated, int minDistance){
         super(decorated);
-        this.minDistance = (int)jsonTargetChecker.get("minDistance");
+        this.minDistance = minDistance;
     }
 
     public Set<Square> validSquares(Square referenceSquare) {

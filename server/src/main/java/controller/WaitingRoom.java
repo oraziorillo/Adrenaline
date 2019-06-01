@@ -4,6 +4,7 @@ import controller.player.Player;
 import model.Game;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class WaitingRoom {
@@ -29,10 +30,14 @@ public class WaitingRoom {
     }
 
     private void startGame() {
-        Game g = new Game();
-        //add Pcs
-        waitingPlayers.clear();
-        timer.stop();
+        try {
+            Game g = new Game();
+            //add Pcs
+            waitingPlayers.clear();
+            timer.stop();
+        } catch (FileNotFoundException e) {
+            System.out.println("json files not found");
+        }
     }
 }
 

@@ -4,14 +4,14 @@ import controller.Controller;
 import model.WeaponCard;
 import model.Effect;
 import model.PowerUpCard;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class SetupWeaponState extends State {
 
     private boolean undo;
     private boolean waiting;
-    private int fireModeIndex, upgradeIndex;
+    private int fireModeIndex;
+    private int upgradeIndex;
 
     SetupWeaponState(Controller controller) {
         super(controller);
@@ -26,7 +26,7 @@ public class SetupWeaponState extends State {
 
     @Override
     public void switchFireMode(WeaponCard weapon) {
-        ArrayList<Effect> fireModes = weapon.getFireModes();
+        List<Effect> fireModes = weapon.getFireModes();
         if (fireModes.size() > 1) {
             short [] newCost = sumArray(controller.getCurrWeapon().getCurrentCost(), fireModes.get(fireModeIndex).getCost());
             if (controller.getCurrPc().hasEnoughAmmo(newCost)) {
@@ -40,7 +40,7 @@ public class SetupWeaponState extends State {
     @Override
     public void upgrade(WeaponCard weapon) {
         if (!waiting) {
-            ArrayList<Effect> upgrades = weapon.getUpgrades();
+            List<Effect> upgrades = weapon.getUpgrades();
             if (upgradeIndex < upgrades.size()) {
                 short [] newCost = sumArray(controller.getCurrWeapon().getCurrentCost(), upgrades.get(upgradeIndex).getCost());
                 if (controller.getCurrPc().hasEnoughAmmo(newCost)) {

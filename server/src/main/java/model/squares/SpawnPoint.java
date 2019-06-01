@@ -1,27 +1,40 @@
 package model.squares;
 
+import com.google.gson.annotations.Expose;
 import enums.SquareColourEnum;
 import exceptions.EmptySquareException;
 import exceptions.NotEnoughAmmoException;
+import model.AmmoTile;
 import model.Deck;
 import model.Pc;
 import model.WeaponCard;
 
 public class SpawnPoint extends Square {
 
+    @Expose private int weaponToGrabIndex;
+    @Expose private int weaponToDropIndex;
     private WeaponCard[] weapons;
-    private Deck<WeaponCard> weaponDeck;
-    private int weaponToGrabIndex;
-    private int weaponToDropIndex;
+    private Deck<WeaponCard> weaponsDeck;
 
-    public SpawnPoint(int x, int y, SquareColourEnum colour, Deck<WeaponCard> deck) {
-        super(x, y, colour);
-        this.weaponDeck = deck;
+    public SpawnPoint(){
+        super();
         this.weaponToGrabIndex = -1;
         this.weaponToDropIndex = -1;
+    }
+
+    public SpawnPoint(int x, int y, SquareColourEnum colour) {
+        super(x, y, colour);
+        this.weaponToGrabIndex = -1;
+        this.weaponToDropIndex = -1;
+    }
+
+
+    @Override
+    public void assignDeck(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+        this.weaponsDeck = weaponsDeck;
         weapons = new WeaponCard[3];
         for (int i = 0; i < 3; i++)
-            weapons[i] = weaponDeck.draw();
+            weapons[i] = weaponsDeck.draw();
     }
 
 
@@ -86,7 +99,7 @@ public class SpawnPoint extends Square {
         weapons[weaponToGrabIndex] = weaponToDrop;
         currPc.addWeapon(weaponToGrab, weaponToDropIndex);
         short[] cost = weaponToGrab.getAmmo();
-        cost[weaponToGrab.getWeaponColour().ordinal()]--;
+        cost[weaponToGrab.getColour().ordinal()]--;
         currPc.payAmmo(cost);
         resetWeaponIndexes();
     }
@@ -94,8 +107,8 @@ public class SpawnPoint extends Square {
 
     public void refill() {
         for (int i = 0; i < weapons.length; i++) {
-            if (weapons[i] == null && weaponDeck.size() > 0) {
-                weapons[i] = weaponDeck.draw();
+            if (weapons[i] == null && weaponsDeck.size() > 0) {
+                weapons[i] = weaponsDeck.draw();
             }
         }
     }
