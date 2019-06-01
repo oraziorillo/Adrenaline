@@ -43,7 +43,8 @@ public class Deck<E> {
 
 
     /**
-     * shuffles the deck (NOTE: the deck is pre-shuffled)
+     * shuffles the deck
+     * @implNote The deck is pre-shuffled, see add
      */
     void shuffle(){
         for (int i = size() - 1; i > 0; i--){
@@ -72,7 +73,6 @@ public class Deck<E> {
 
 
     /**
-     * Returns the number of cards in the deck
      * @return the number of cards in the deck
      */
     public int size() {
@@ -98,13 +98,11 @@ public class Deck<E> {
         }catch ( ClassCastException e ){
             return false;
         }
-
         return cards.equals( d.cards );
     }
 
 
     /**
-     * Usual hashcode method     *
      * @return hashcode of the collection containing the cards
      */
     @Override
@@ -116,8 +114,12 @@ public class Deck<E> {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         Deck<E> clone = new Deck<>();
-        clone.cards = ( ArrayList<E> ) this.cards.clone();
-        clone.random = this.random;
+        try {
+            clone.cards = ( ArrayList<E> ) this.cards.clone();
+            clone.random = this.random;
+        }catch ( ClassCastException e ){
+            e.printStackTrace();
+        }
         return clone;
     }
 }

@@ -186,8 +186,12 @@ public abstract class Square {
         }
         return resultSet;
     }
-
-
+    
+    /**
+     * Returns a set with every square on a cardinal direction
+     * @param direction the desired direction
+     * @return A set containing every set on the given direction
+     */
     public Set<Square> allSquaresOnDirection(CardinalDirectionEnum direction){
         Set<Square> resultSet = allSquares();
         resultSet = resultSet.stream()

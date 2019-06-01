@@ -9,12 +9,14 @@ import model.actions.Action;
 import model.deserializers.ActionDeserializer;
 import model.deserializers.GameBoardDeserializer;
 import model.squares.Square;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.*;
 
+/**
+ * This class represents an ADRENALINE game
+ */
 public class Game {
     private ArrayList<Pc> pcs;
     private GameBoard gameBoard;
@@ -31,8 +33,11 @@ public class Game {
         initWeaponsDeck();
         //todo initDecks();
     }
-
-
+    
+    /**
+     * Loads a map given the index
+     * @param numberOfMap the index of the map
+     */
     public void initMap(int numberOfMap){
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -44,8 +49,11 @@ public class Game {
 
         gameBoard.assignDecks(weaponsDeck, ammoDeck);
     }
-
-
+    
+    /**
+     * Inits the KillShotTrack with the given number of skulls
+     * @param numberOfSkulls The desired number of skulls
+     */
     public void initKillShotTrack(int numberOfSkulls){
         gameBoard.initKillShotTrack(numberOfSkulls);
     }
@@ -64,7 +72,8 @@ public class Game {
         gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-        Type weaponsType = new TypeToken<ArrayList<WeaponCard>>(){}.getType();
+        Type weaponsType = new TypeToken<ArrayList<WeaponCard>>() {
+        }.getType();
         JsonReader reader = new JsonReader(new FileReader("/home/orazio/Documents/ids_progetto/ing-sw-2019-23/json/weapons.json"));
         ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
 
@@ -107,14 +116,17 @@ public class Game {
     public void addPc(Pc pc){
         pcs.add(pc);
     }
-
-
+    
 
     PowerUpCard drawPowerUp(){
         return powerUpsDeck.draw();
     }
-
-
+    
+    /**
+     * Marks a kill on the KillShotTrack
+     * @param killerColour the colour of the player who performed the kill
+     * @param overkilled true if the player was overkilled, see the manual
+     */
     public void killOccured(PcColourEnum killerColour, Boolean overkilled){
         gameBoard.killOccured(killerColour, overkilled);
     }

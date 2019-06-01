@@ -6,6 +6,9 @@ import model.WeaponCard;
 import model.squares.Square;
 import java.util.Set;
 
+/**
+ * Firts state in shooting someone
+ */
 public class ShootPeopleState extends State {
 
     private boolean undo;

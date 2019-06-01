@@ -2,6 +2,9 @@ package enums;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Contains the possible colours of a square (room)
+ */
 public enum SquareColourEnum {
     @SerializedName("BLUE")
     BLUE,

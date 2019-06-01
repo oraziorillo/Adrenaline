@@ -11,6 +11,9 @@ import java.util.List;
 import static model.Constants.LIFEPOINTS;
 import static model.Constants.MAX_WEAPONS_IN_HAND;
 
+/**
+ * Represents a player in-game
+ */
 public class Pc {
     private final Game currGame;
     private final PcColourEnum colour;
@@ -67,7 +70,7 @@ public class Pc {
 
     public PowerUpCard getPowerUpCard(int index) {
         if (index < 0 || index > powerUps.size() - 1) {
-            throw new IllegalArgumentException("This index is not valid");
+            throw new ArrayIndexOutOfBoundsException("This index is not valid");
         }
         return powerUps.get(index);
     }
@@ -79,12 +82,15 @@ public class Pc {
 
     public WeaponCard weaponAtIndex(int index) {
         if (index < 0 || index > 3) {
-            throw new IllegalArgumentException("This index is not valid");
+            throw new ArrayIndexOutOfBoundsException("This index is not valid");
         }
         return weapons[index];
     }
-
-
+    
+    /**
+     * Removes this from the square it's currently on, puts this on s
+     * @param s the new square
+     */
     public void moveTo(Square s) {
         if (s == null) {
             throw new IllegalArgumentException("Invalid square");
@@ -109,8 +115,13 @@ public class Pc {
             throw new IllegalArgumentException("You don't have this powerUp");
         }
     }
-
-
+    
+    /**
+     * Calls the collect method of the current square on this
+     * @throws EmptySquareException
+     * @throws NotEnoughAmmoException
+     * @see Square
+     */
     public void collect() throws EmptySquareException, NotEnoughAmmoException {
         currSquare.collect(this);
     }

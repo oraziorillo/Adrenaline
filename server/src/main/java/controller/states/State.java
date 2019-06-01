@@ -8,6 +8,10 @@ import model.squares.Square;
 import model.WeaponCard;
 import enums.PcColourEnum;
 
+/**
+ * This class represents a state of a game state diagram.
+ * All it's methods are useless by default
+ */
 public abstract class State {
 
     Controller controller;
@@ -15,13 +19,14 @@ public abstract class State {
     State(Controller controller){
         this.controller = controller;
     }
-
+    
     void setTargetableToValidSquares(Pc referencePc) {}
-
+    
     public void selectMap(int n) {}
-
+    
     public void selectNumberOfSkulls(int n) {}
 
+    
     public void selectPcForPlayer(PcColourEnum colour, Player player) {}
 
     public void spawnPc(Pc pc, int powerUpToDropIndex) {}
@@ -77,6 +82,19 @@ public abstract class State {
     public boolean pass() {
         return false;
     }
-
+    
+    /**
+     * Calculate the next state and returns it
+     * @return The next expected state
+     */
     public abstract State nextState();
+    
+    /**
+     *
+     * @param controller the controller of the game creating the state diagram
+     * @return The starting state of the diagram (usually, a setup state)
+     */
+    public static State getFirstState(Controller controller){
+        return new SetupMapState( controller );
+    }
 }

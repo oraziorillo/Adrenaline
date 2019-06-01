@@ -1,9 +1,6 @@
 package model;
 
-import enums.AmmoEnum;
 import enums.PcColourEnum;
-import exceptions.NotEnoughAmmoException;
-
 import static model.Constants.AMMO_COLOURS_NUMBER;
 import static model.Constants.LIFEPOINTS;
 
@@ -50,12 +47,10 @@ public class PcBoard {
     public short getMarks(PcColourEnum selectedColour) {
         return marks[selectedColour.ordinal()];
     }
-
-
+    
     public void increasePoints(int earnedPoints){
         this.points += earnedPoints;
     }
-
 
     public void increaseNumberOfDeaths(){
         numOfDeaths++;
@@ -97,8 +92,12 @@ public class PcBoard {
         }
         return false;
     }
-
-
+    
+    /**
+     * reverse of addAmmo
+     * @param ammo some ammos
+     * @return ammo, where every succesfully payed ammo has been removed (so it will be a "not payed" array)
+     */
     public short[] payAmmo(short[] ammo) {
         for (short i = 0; i < 3; i++){
             if (this.ammo[i] > ammo[i]){

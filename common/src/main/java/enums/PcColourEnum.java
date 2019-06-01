@@ -1,8 +1,8 @@
 package enums;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
+/**
+ * Enumerates the possible colours of a Pc. Has a method to get the Pc name (Not the Player's username)
+ */
 public enum PcColourEnum {
     GREY("DOZER"),
     GREEN("SPROG"),
@@ -29,11 +29,4 @@ public enum PcColourEnum {
         return name;
     }
 
-    public static Collection<String> stringCollection(){
-        ArrayList<String> returned = new ArrayList(values().length);
-        for( PcColourEnum e: values()){
-            returned.add( e.toString() );
-        }
-        return returned;
-    }
 }
