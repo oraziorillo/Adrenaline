@@ -5,14 +5,11 @@ import enums.PcColourEnum;
 import model.Game;
 import model.Pc;
 
-<<<<<<< HEAD
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-=======
 import javax.swing.Timer;
 import java.util.*;
->>>>>>> 03d0b552949f59d44e4cffb372c8ed0558afd14d
 
 /**
  * Pre-game, singleton waiting room. Stores players and starts a game when has enough of them.
@@ -52,7 +49,6 @@ public class WaitingRoom {
     }
 
     private void startGame() {
-<<<<<<< HEAD
         try {
             Game g = new Game();
             //add Pcs
@@ -61,7 +57,6 @@ public class WaitingRoom {
         } catch (FileNotFoundException e) {
             System.out.println("json files not found");
         }
-=======
         Game g = new Game();
         List<PcColourEnum> availableColours = Arrays.asList( PcColourEnum.values() );
         for(Player p:waitingPlayers){
@@ -70,7 +65,6 @@ public class WaitingRoom {
         }
         waitingPlayers.clear();
         timer.stop();
->>>>>>> 03d0b552949f59d44e4cffb372c8ed0558afd14d
     }
     
     public int size() {

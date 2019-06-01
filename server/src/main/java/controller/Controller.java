@@ -11,6 +11,7 @@ import model.Pc;
 import model.squares.Square;
 import model.WeaponCard;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

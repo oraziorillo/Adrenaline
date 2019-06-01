@@ -1,4 +1,4 @@
-/*
+
 package controller;
 
 <<<<<<< HEAD
@@ -35,11 +35,7 @@ public class Server {
            }
         }
     }
-<<<<<<< HEAD
 
-/*
-=======
-   
    /**
     * Reads a json from a file located on the specified path
     * @param filename the path to the file to be read
@@ -47,13 +43,11 @@ public class Server {
     * @throws IOException If file isn't readable
     * @throws ParseException If file does not represent a valid Json object
     */
->>>>>>> 03d0b552949f59d44e4cffb372c8ed0558afd14d
     public static Object readJson(String filename) throws IOException, ParseException {
         FileReader reader = new FileReader(filename);
         JSONParser jsonParser = new JSONParser();
         return jsonParser.parse(reader);
     }
 
- */
+
 }
-*/

@@ -210,26 +210,4 @@ public class PcTest {
         assertArrayEquals(resultAmmo, tested.getAmmo());
         assertEquals(0, tested.getPowerUps().size());
     }
-
-
-
-
-
-
-
-    //    @Test
-//    public void resetPowerUpAsAmmoWorksSetsAllPowerUpsAsNotSelected() {
-//        PowerUpCard powerUp1 = Mockito.mock(PowerUpCard.class);
-//        PowerUpCard powerUp2 = Mockito.mock(PowerUpCard.class);
-//        PowerUpCard powerUp3 = Mockito.mock(PowerUpCard.class);
-//        when(powerUp1.isSelectedAsAmmo()).thenReturn(true);
-//        when(powerUp2.isSelectedAsAmmo()).thenReturn(true);
-//        when(powerUp3.isSelectedAsAmmo()).thenReturn(false);
-//        Mockito.when(deck.draw()).thenReturn(powerUp1).thenReturn(powerUp2).thenReturn(powerUp3);
-//        for(int i = 0; i< 3; i++)
-//            tested.drawPowerUp();
-//        tested.resetPowerUpAsAmmo();
-//        assertFalse(powerUp1.isSelectedAsAmmo());
-//
-//    }
 }

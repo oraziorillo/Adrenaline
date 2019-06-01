@@ -35,7 +35,8 @@ public class SpawnPointTest {
        card2 = Mockito.mock(WeaponCard.class);
        deck = Mockito.mock(Deck.class);
        when( deck.draw() ).thenReturn( card0 ).thenReturn( card1 ).thenReturn( card2 );
-       tested = new SpawnPoint(x, y, colour, deck);
+       tested = new SpawnPoint(x, y, colour);
+       tested.assignDeck(deck, null);
        pc = Mockito.mock(Pc.class);
    }
 
@@ -50,7 +51,7 @@ public class SpawnPointTest {
        when(pc.hasEnoughAmmo(any())).thenReturn(true);
        when(pc.weaponAtIndex(dropIndex)).thenReturn(weaponToDrop);
        when(card1.getAmmo()).thenReturn(ammoTile);
-       when(card1.getWeaponColour()).thenReturn(AmmoEnum.BLUE);
+       when(card1.getColour()).thenReturn(AmmoEnum.BLUE);
        tested.setWeaponToGrabIndex(grabIndex);
        tested.setWeaponToDropIndex(dropIndex);
        tested.collect(pc);
@@ -65,7 +66,7 @@ public class SpawnPointTest {
        when(pc.isFullyArmed()).thenReturn(false);
        when(pc.hasEnoughAmmo(any())).thenReturn(true);
        when(card1.getAmmo()).thenReturn(ammoTile);
-       when(card1.getWeaponColour()).thenReturn(AmmoEnum.BLUE);
+       when(card1.getColour()).thenReturn(AmmoEnum.BLUE);
        tested.setWeaponToGrabIndex(grabIndex);
        tested.collect(pc);
        assertNull(tested.weaponAtIndex(grabIndex));
