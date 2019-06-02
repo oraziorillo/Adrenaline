@@ -4,7 +4,7 @@ GENERAL NOTES:
 
 -aggiornare UML
 
-- invece di controllare gli indici nel controller lanciamo eccezioni nel model che catchiamo nel controller
+- invece di controllare gli indici nel server.controller lanciamo eccezioni nel server.model che catchiamo nel server.controller
 
 -stabilire quando chiamare il destination checker in targetSelectionState
 -additionalDamage and exclusiveOldTargets (teniamo una lista dei target selezionati
@@ -46,7 +46,7 @@ DOMANDE:
 
 - aggiungere boolean needParameters per onda d'urto
 - vedere meglio il tractor beam 
-- aggiungere lista di targets dell'effetto base nel controller
+- aggiungere lista di targets dell'effetto base nel server.controller
 - boolean azioni facoltative
 
 -chiedere se si può estrarre l'UML dal codice
