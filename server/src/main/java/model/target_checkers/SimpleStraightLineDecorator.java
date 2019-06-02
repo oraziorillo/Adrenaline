@@ -9,6 +9,7 @@ public class SimpleStraightLineDecorator extends TargetCheckerDecorator {
 
     private CardinalDirectionEnum direction;
 
+
     public SimpleStraightLineDecorator(TargetChecker decorated, CardinalDirectionEnum selectedDirection){
         super(decorated);
         this.direction = selectedDirection;

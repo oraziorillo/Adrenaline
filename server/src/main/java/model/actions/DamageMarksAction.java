@@ -1,14 +1,10 @@
 package model.actions;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import model.*;
 import model.squares.Square;
 import model.target_checkers.*;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 public class DamageMarksAction extends Action {
@@ -22,49 +18,12 @@ public class DamageMarksAction extends Action {
 
     public DamageMarksAction(JsonObject jsonAction) {
         super(jsonAction);
-        this.targets = new LinkedList<>();
         this.damage = jsonAction.get("damage").getAsShort();
         this.marks = jsonAction.get("marks").getAsShort();
         this.squareExplosive = jsonAction.get("squareExplosive").getAsBoolean();
         this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
         this.additionalDamage = jsonAction.get("additionalDamage").getAsBoolean();
         this.exclusiveForOldTargets = jsonAction.get("exclusiveForOldTargets").getAsBoolean();
-        JsonArray jsonTargetCheckers = jsonAction.get("targetCheckers").getAsJsonArray();
-        JsonObject jsonTargetChecker;
-        for (JsonElement checker : jsonTargetCheckers) {
-            jsonTargetChecker = checker.getAsJsonObject();
-            switch (jsonTargetChecker.get("type").getAsString()) {
-                case "visibility":
-                    this.targetChecker = new VisibilityDecorator(targetChecker);
-                    break;
-                case "blindness":
-                    this.targetChecker = new BlindnessDecorator(targetChecker);
-                    break;
-                case "minDistance":
-                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsonTargetChecker.get("minDistance").getAsInt());
-                    break;
-                case "maxDistance":
-                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsonTargetChecker.get("maxDistance").getAsInt());
-                    break;
-                case "maxDistanceFromVisible":
-                    this.targetChecker = new MaxDistanceFromVIsiblesDecorator(targetChecker, jsonTargetChecker.getAsJsonObject().get("maxDistance").getAsInt());
-                    break;
-                case "straightLine":
-                    this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
-                    break;
-                case "beyondWallsStraightLine":
-                    this.targetChecker = new BeyondWallsStraightLineDecorator(targetChecker, null);
-                    break;
-                case "sameRoom":
-                    this.targetChecker = new SameRoomDecorator(targetChecker);
-                    break;
-                case "differentRoom":
-                    this.targetChecker = new DifferentRoomDecorator(targetChecker);
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
 
@@ -163,12 +122,4 @@ public class DamageMarksAction extends Action {
         });
         resetAction();
     }
-
-
-    private void addTarget (Pc targetPc){
-        if (targets.size() == maxNumberOfTargets)
-            targets.removeFirst();
-        targets.add(targetPc);
-    }
-
 }

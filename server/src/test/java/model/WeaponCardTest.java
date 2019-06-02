@@ -14,6 +14,7 @@ import java.io.FileReader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public class WeaponCardTest {
     @Mock Game g;
     private WeaponCard weaponCard;

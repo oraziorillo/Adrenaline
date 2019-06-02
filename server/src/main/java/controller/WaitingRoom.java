@@ -50,21 +50,21 @@ public class WaitingRoom {
 
     private void startGame() {
         try {
-            Game g = new Game();
             //add Pcs
+            waitingPlayers.clear();
+            timer.stop();
+            Game g = new Game();
+            List<PcColourEnum> availableColours = Arrays.asList( PcColourEnum.values() );
+            for(Player p:waitingPlayers){
+                Pc pc = new Pc( availableColours.remove( 0 ),g );
+                p.setPc( pc );
+            }
             waitingPlayers.clear();
             timer.stop();
         } catch (FileNotFoundException e) {
             System.out.println("json files not found");
+            e.printStackTrace();
         }
-        Game g = new Game();
-        List<PcColourEnum> availableColours = Arrays.asList( PcColourEnum.values() );
-        for(Player p:waitingPlayers){
-           Pc pc = new Pc( availableColours.remove( 0 ),g );
-           p.setPc( pc );
-        }
-        waitingPlayers.clear();
-        timer.stop();
     }
     
     public int size() {

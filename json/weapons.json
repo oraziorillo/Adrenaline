@@ -19,7 +19,7 @@
           0
         ],
         "actions": [
-          {
+           {
             "optional": false,
             "isMovement": false,
             "damage": 2,
@@ -29,11 +29,11 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
-            "targetCheckers": [
+            "targetChecker": [
               {
                 "type": "visible"
               }
-            ]
+           ]
           }
         ]
       }
@@ -60,7 +60,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
-            "targetCheckers": [
+            "targetChecker": [
               {
                 "type": "visible"
               }
@@ -69,5 +69,330 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Machine Gun",
+    "colour":"BLUE",
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "fireModes": [
+      {
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 2,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "sameTarget": true,
+        "cost": [
+          0,
+          0,
+          1
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": true,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "sameTarget": true,
+        "cost": [
+          1,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": true,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          },
+          {
+            "optional": true,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": true,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "T.H.O.R.",
+    "colour":"BLUE",
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "fireModes": [
+      {
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "cost": [
+          1,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost": [
+          1,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Plasma Gun",
+    "colour": "BLUE",
+    "ammo": [
+      1,
+      0,
+      1
+    ],
+    "fireModes": [
+      {
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "asynchronous": true,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": true,
+            "isMovement": true,
+            "maxNumberOfTargets": 1,
+            "selfMovement": true,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ],
+            "destinationChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost": [
+          1,
+          0,
+          0
+        ],
+        "actions": [
+           {
+            "optional": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": true,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": ""
+             }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Whisper",
+    "colour": "BLUE",
+    "ammo": [
+      2,
+      1,
+      0
+    ],
+    "fireModes": [
+      {
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "isMovement": false,
+            "damage": 3,
+            "marks": 1,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 2
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": []
   }
 ]

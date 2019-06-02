@@ -18,54 +18,16 @@ public class MovementAction extends Action {
     public MovementAction(JsonObject jsonAction) {
         super(jsonAction);
         this.selfMovement = jsonAction.get("selfMovement").getAsBoolean();
-        JsonArray jsonCheckers;
-        JsonObject jsontargetChecker;
 
-        jsonCheckers = jsonAction.get("targetCheckers").getAsJsonArray();
-        for (JsonElement checker : jsonCheckers) {
-            jsontargetChecker = checker.getAsJsonObject();
-            switch (jsontargetChecker.get("type").getAsString()) {
-                case "visibility":
-                    this.targetChecker = new VisibilityDecorator(targetChecker);
-                    break;
-                case "blindness":
-                    this.targetChecker = new BlindnessDecorator(targetChecker);
-                    break;
+        JsonArray json = jsonAction.get("destinationChecker").getAsJsonArray();
+        for(JsonElement checker : json) {
+            JsonObject jsonChecker = checker.getAsJsonObject();
+            switch (jsonChecker.get("type").getAsString()) {
                 case "minDistance":
-                    this.targetChecker = new MinDistanceDecorator(targetChecker, jsontargetChecker.get("minDistance").getAsInt());
+                    this.destinationChecker = new MinDistanceDecorator(destinationChecker, jsonChecker.get("minDistance").getAsInt());
                     break;
                 case "maxDistance":
-                    this.targetChecker = new MaxDistanceDecorator(targetChecker, jsontargetChecker.get("maxDistance").getAsInt());
-                    break;
-                case "maxDistanceFromVisible":
-                    this.targetChecker = new MaxDistanceFromVIsiblesDecorator(targetChecker, jsontargetChecker.getAsJsonObject().get("maxDistance").getAsInt());
-                    break;
-                case "straightLine":
-                    this.targetChecker = new SimpleStraightLineDecorator(targetChecker, null);
-                    break;
-                case "beyondWallsStraightLine":
-                    this.targetChecker = new BeyondWallsStraightLineDecorator(targetChecker, null);
-                    break;
-                case "sameRoom":
-                    this.targetChecker = new SameRoomDecorator(targetChecker);
-                    break;
-                case "differentRoom":
-                    this.targetChecker = new DifferentRoomDecorator(targetChecker);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        jsonCheckers = jsonAction.get("destinationChecker").getAsJsonArray();
-        for(JsonElement checker : jsonCheckers) {
-            jsontargetChecker = checker.getAsJsonObject();
-            switch (jsontargetChecker.get("type").getAsString()) {
-                case "minDistance":
-                    this.destinationChecker = new MinDistanceDecorator(destinationChecker, jsontargetChecker.get("minDistance").getAsInt());
-                    break;
-                case "maxDistance":
-                    this.destinationChecker = new MaxDistanceDecorator(destinationChecker, jsontargetChecker.get("maxDistance").getAsInt());
+                    this.destinationChecker = new MaxDistanceDecorator(destinationChecker, jsonChecker.get("maxDistance").getAsInt());
                     break;
                 case "straightLine":
                     this.destinationChecker = new SimpleStraightLineDecorator(destinationChecker, null);

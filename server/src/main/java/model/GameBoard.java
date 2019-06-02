@@ -22,9 +22,14 @@ public class GameBoard {
         this.columns = columns;
         this.squares = squares;
         this.spawnPoints = new ArrayList<>();
+        initVisibleLists(doors);
+    }
+
+
+    private void initVisibleLists(int[] doors) {
         for (Square s : squares) {
 
-            if(s.isSpawnPoint())
+            if (s.isSpawnPoint())
                 spawnPoints.add(s);
 
             //initialize an ArrayList of visible colours
@@ -44,18 +49,18 @@ public class GameBoard {
             squares.stream()
                     .parallel()
                     .filter(x -> visibleColours.contains(x.getColour().ordinal()))
-                    .forEach(x -> s.addVisible(x));
+                    .forEach(s::addVisible);
         }
     }
 
 
-    public void assignDecks(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+    void assignProperDeckToEachSquare(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         squares.forEach(s -> s.assignDeck(weaponsDeck, ammoDeck));
     }
 
     
     /**
-     * Inits the killshottrack with the given number of skulls
+     * Inits the kill shot track with the given number of skulls
      * @param numberOfSkulls the desired number of skulls
      */
     void initKillShotTrack(int numberOfSkulls){

@@ -125,7 +125,7 @@ public class TargetSelectionState extends State {
             } else {
                 controller.getCurrPc().payAmmo(currEffect.getCost());
                 currEffect.execute(controller.getCurrPc());
-                controller.getCurrWeapon().clear();
+                controller.getCurrWeapon().reset();
                 controller.getGame().setTargetableSquares(targetableSquares, false);
                 return true;
             }

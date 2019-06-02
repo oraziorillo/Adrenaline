@@ -18,7 +18,6 @@ import java.util.*;
  * This class represents an ADRENALINE game
  */
 public class Game {
-    private ArrayList<Pc> pcs;
     private GameBoard gameBoard;
     private Deck<WeaponCard> weaponsDeck;
     private Deck<PowerUpCard> powerUpsDeck;
@@ -26,12 +25,10 @@ public class Game {
 
 
     public Game() throws FileNotFoundException {
-        this.pcs = new ArrayList<>();
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
-        initWeaponsDeck();
-        //todo initDecks();
+        initDecks();
     }
 
     /**
@@ -47,7 +44,7 @@ public class Game {
         JsonArray gameBoards = customGson.fromJson("game_boards.json", JsonArray.class);
         gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
 
-        gameBoard.assignDecks(weaponsDeck, ammoDeck);
+        gameBoard.assignProperDeckToEachSquare(weaponsDeck, ammoDeck);
     }
 
     /**
@@ -72,8 +69,7 @@ public class Game {
         gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-        Type weaponsType = new TypeToken<ArrayList<WeaponCard>>() {
-        }.getType();
+        Type weaponsType = new TypeToken<ArrayList<WeaponCard>>(){}.getType();
         JsonReader reader = new JsonReader(new FileReader("/home/orazio/Documents/ids_progetto/ing-sw-2019-23/json/weapons.json"));
         ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
 
@@ -110,11 +106,6 @@ public class Game {
         if (targetableSquares.isEmpty())
             return;
         targetableSquares.forEach(s -> s.setTargetable(isTargetable));
-    }
-
-
-    public void addPc(Pc pc){
-        pcs.add(pc);
     }
 
 

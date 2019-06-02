@@ -36,19 +36,6 @@ public class ActionTest {
 
 
     @Test
-    public void attributesWellInitialized(){
-        assertFalse(action.isExplosive());
-        assertFalse(action.isSquareExplosive());
-        assertFalse(action.isRoomExplosive());
-        assertFalse(action.isAdditionalDamage());
-        assertFalse(action.isExclusiveForOldTargets());
-        assertEquals(action.getDamage(), 2 );
-        assertEquals(action.getMarks(), 1);
-        assertEquals(action.getMaxNumberOfTargets(), 1);
-    }
-
-
-    @Test
     public void isCompleteFine(){
         assertFalse(action.isComplete());
         action.selectPc(target1);

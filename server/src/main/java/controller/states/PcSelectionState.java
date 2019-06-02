@@ -37,7 +37,6 @@ public class PcSelectionState extends State {
         if (pcColour != null && player != null) {
             Pc pc = new Pc(pcColour, controller.getGame());
             player.setPc(pc);
-            controller.getGame().addPc(pc);
             return true;
         }
         return false;

@@ -87,7 +87,7 @@ public class SetupWeaponState extends State {
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect){
         if (waiting) {
             if (beforeBasicEffect) {
-                weapon.addFirst(upgradeIndex);
+                weapon.pushFirstUpgrade(upgradeIndex);
             } else {
                 weapon.addUpgrade(upgradeIndex);
             }
@@ -117,7 +117,7 @@ public class SetupWeaponState extends State {
             if (p.isSelectedAsAmmo())
                 p.setSelectedAsAmmo(false);
         }
-        controller.getCurrWeapon().clear();
+        controller.getCurrWeapon().reset();
         undo = true;
         return true;
     }

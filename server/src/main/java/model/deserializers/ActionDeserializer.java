@@ -20,4 +20,6 @@ public class ActionDeserializer implements JsonDeserializer<Action> {
         else
             return new DamageMarksAction(json.getAsJsonObject());
     }
+
+
 }

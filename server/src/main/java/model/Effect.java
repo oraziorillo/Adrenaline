@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 import enums.CardinalDirectionEnum;
 import model.actions.Action;
 import model.deserializers.ActionDeserializer;
-
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;

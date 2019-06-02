@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -121,5 +123,13 @@ public class Deck<E> {
             e.printStackTrace();
         }
         return clone;
+    }
+
+
+    public void print() {
+
+        Gson gson = new Gson();
+
+        cards.forEach( c -> System.out.println(gson.toJson(c)));
     }
 }

@@ -119,13 +119,14 @@ public class WeaponCard {
         }
     }
 
-    public void addFirst(int index) {
-        Effect eff;
+    public void pushFirstUpgrade(int index) {
         if(upgrades.size() > index) {
-            eff = upgrades.get(index);
-            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
-                currentCost[i] += eff.getCost()[i];
-            this.effectsToApply.addFirst(eff);
+            Effect eff = upgrades.get(index);
+            if (eff.isAsynchronous()) {
+                for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                    currentCost[i] += eff.getCost()[i];
+                this.effectsToApply.addFirst(eff);
+            }
         } else {
             throw new IllegalArgumentException();
         }
@@ -147,7 +148,7 @@ public class WeaponCard {
     }
 
 
-    public void clear() {
+    public void reset() {
         effectsToApply.clear();
         effectsToApply.add(fireModes.get(0));
         currentCost = new short[3];

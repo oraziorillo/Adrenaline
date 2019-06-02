@@ -27,13 +27,13 @@ public class WeaponsDeckTest {
         JsonReader reader = new JsonReader(new FileReader("/home/orazio/Documents/ids_progetto/ing-sw-2019-23/json/weapons.json"));
         ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
 
-        deck = new Deck<WeaponCard>();
+        deck = new Deck<>();
 
         weapons.forEach(w -> deck.add(w));
     }
 
     @Test
     public void printDeck(){
-        System.out.println(deck.draw().getName());
+        deck.print();
     }
 }
