@@ -63,26 +63,6 @@ public class DamageMarksAction extends Action {
     }
 
 
-    //methods for tests
-    @Override
-    public short getDamage() {
-        return damage;
-    }
-
-    @Override
-    public short getMarks() {
-        return marks;
-    }
-
-    @Override
-    public int getMaxNumberOfTargets() {
-        return maxNumberOfTargets;
-    }
-
-
-    //end methods for test
-
-
     @Override
     public void selectPc(Pc targetPc) {
         if(!roomExplosive && !squareExplosive) {

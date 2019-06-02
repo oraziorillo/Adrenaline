@@ -13,6 +13,7 @@ import java.util.HashSet;
 
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SquareTest {
     
