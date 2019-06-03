@@ -22,8 +22,8 @@ public class GameBoardTest {
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
         //TODO pesca la risorsa dinamicamente
-        URL path = getClass().getResource( "/json/gameBoards.json" );
-        JsonReader reader = new JsonReader(new FileReader(path.getPath()));
+        //URL path = getClass().getResource( "/json/gameBoards.json" );
+        JsonReader reader = new JsonReader(new FileReader("/home/alessio/Scrivania/progettoJavaGit/ing-sw-2019-23/src/main/resources/json/gameBoards.json"));
         JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
         gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
     }

@@ -16,33 +16,51 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class AmmoSquareTest {
 
-    private final int x = 3;
-    private final int y = 5;
+    private final int row = 3;
+    private final int coloumn = 5;
     private final SquareColourEnum colour = SquareColourEnum.BLUE;
     private AmmoSquare tested;
+
     @Mock
     private AmmoTile card1, card2;
+
     @Mock
     private Deck<AmmoTile> deck;
+
     @Mock
     private Pc pc;
 
     @Before
     public void setup() {
         Mockito.when(deck.draw()).thenReturn(card1).thenReturn(card2);
-        tested = new AmmoSquare( x,y,SquareColourEnum.BLUE);
+        tested = new AmmoSquare(row, coloumn,SquareColourEnum.BLUE);
+        tested.assignDeck(null, deck);
     }
 
     @Test
     public void constructedFine() {
-        assertEquals("x is different", tested.getRow(), x);
-        assertEquals("y is different", tested.getCol(), y);
+        assertEquals("row is different", tested.getRow(), row);
+        assertEquals("coloumn is different", tested.getCol(), coloumn);
         assertEquals( "Colour has changed", tested.getColour(), colour );
+        assertFalse(tested.isSpawnPoint());
     }
 
     @Test
     public void drawsOnSpawnTheFirstCardOfDeck() {
         assertSame(tested.getAmmoTile(), card1);
+    }
+
+    @Test
+    public void collectLaunchExceptionWhenAmmoSquareIsEmpty () throws EmptySquareException {
+        tested.collect(pc);
+        assertThrows(EmptySquareException.class, () -> tested.collect(pc));
+    }
+
+    @Test
+    public void collectWorksFine() throws EmptySquareException {
+        tested.collect(pc);
+        assertTrue(tested.isEmpty());
+        assertNull(tested.getAmmoTile());
     }
 
     @Test

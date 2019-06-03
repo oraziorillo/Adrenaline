@@ -26,7 +26,7 @@ public class GameSocketListener implements Runnable {
     }
     
     /**
-     * While the socket is opened, ciclically listens for a command and executes it
+     * While the socket is opened, cyclically listens for a command and executes it
      */
     @Override
     public void run() {

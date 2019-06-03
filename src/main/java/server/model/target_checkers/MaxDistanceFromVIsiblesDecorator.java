@@ -15,7 +15,7 @@ public class MaxDistanceFromVIsiblesDecorator extends TargetCheckerDecorator {
 
     @Override
     public Set<Square> validSquares(Square referenceSquare) {
-        HashSet<Square> validSquares = new HashSet<>();
+        Set<Square> validSquares = new HashSet<>();
         referenceSquare.getVisibles().forEach(s -> validSquares.addAll(s.atDistance(maxDistance)));
         Set<Square> resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(validSquares);

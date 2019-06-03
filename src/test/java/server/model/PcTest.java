@@ -77,7 +77,7 @@ public class PcTest {
         when(game.drawPowerUp()).thenReturn(powerUp);
         tested.drawPowerUp();
         assertSame(powerUp, tested.getPowerUpCard(0) );
-        assertThrows(IllegalArgumentException.class, () -> tested.getPowerUpCard(1) );
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> tested.getPowerUpCard(1) );
     }
 
     @Test
@@ -87,7 +87,7 @@ public class PcTest {
         tested.addWeapon(card1, -1);
         assertEquals(card0, tested.weaponAtIndex(index));
         assertEquals(card1, tested.weaponAtIndex(index+1));
-        assertThrows(IllegalArgumentException.class, () -> tested.weaponAtIndex(-1));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> tested.weaponAtIndex(-1));
     }
 
     @Test

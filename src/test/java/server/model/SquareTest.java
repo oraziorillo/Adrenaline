@@ -19,8 +19,8 @@ public class SquareTest {
     
     private Square tested;
     private Square onRight, s1,s2,s3;
-    private final int x = 9;
-    private final int y = 7;
+    private final int row = 9;
+    private final int coloumn = 7;
     private final SquareColourEnum colour = SquareColourEnum.BLUE;
     
     @Before
@@ -29,10 +29,10 @@ public class SquareTest {
         AmmoTile uselessTile = Mockito.mock( AmmoTile.class );
         Mockito.when( uselessDeck.draw() ).thenReturn( uselessTile );
         setupSquareMocks();
-        tested = new AmmoSquare( x,y,colour );
+        tested = new AmmoSquare(row, coloumn,colour );
         //test constructor
-        assertTrue( tested.getVisibles().isEmpty() );assertEquals(tested.getRow(),x);
-        assertEquals( tested.getCol(),y );
+        assertTrue( tested.getVisibles().isEmpty() );assertEquals(tested.getRow(), row);
+        assertEquals( tested.getCol(), coloumn);
         assertEquals( tested.getColour(), colour );
         assertFalse( tested.isTargetable() );
         assertTrue( tested.getPcs().isEmpty() );
@@ -55,14 +55,14 @@ public class SquareTest {
         **|s2    |s1     |
         **|tested|onright|
          */
-        Mockito.when( onRight.getRow() ).thenReturn( x+1 );
-        Mockito.when( onRight.getCol() ).thenReturn( y );
-        Mockito.when( s1.getRow() ).thenReturn( x+1 );
-        Mockito.when( s1.getCol() ).thenReturn( y+1 );
-        Mockito.when( s2.getRow() ).thenReturn( x );
-        Mockito.when( s2.getCol() ).thenReturn( y+1 );
-        Mockito.when( s3.getRow() ).thenReturn( x+1 );
-        Mockito.when( s3.getCol() ).thenReturn( y+2 );
+        Mockito.when( onRight.getRow() ).thenReturn( row );
+        Mockito.when( onRight.getCol() ).thenReturn(coloumn + 1);
+        Mockito.when( s1.getRow() ).thenReturn( row - 1 );
+        Mockito.when( s1.getCol() ).thenReturn( coloumn + 1 );
+        Mockito.when( s2.getRow() ).thenReturn(row - 1);
+        Mockito.when( s2.getCol() ).thenReturn( coloumn );
+        Mockito.when( s3.getRow() ).thenReturn( row - 2 );
+        Mockito.when( s3.getCol() ).thenReturn( coloumn + 1 );
         HashSet<Square> onRightVis = new HashSet<>(); onRightVis.add( tested ); onRightVis.add( s1 );
         HashSet<Square> s1Vis = new HashSet<>(); s1Vis.add( tested ); s1Vis.add( s2 ); s1Vis.add( s3 );
         HashSet<Square> s2Vis = new HashSet<>(); s2Vis.add( tested ); s2Vis.add( s1 );
@@ -141,5 +141,7 @@ public class SquareTest {
         assertEquals( 1, result.size() );
         assertTrue( result.contains( tested ) );
     }
+
+    //TODO test di allSquaresInDirection e allSquares
 }
 
