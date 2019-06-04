@@ -1,10 +1,10 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 import java.io.IOException;
 
 class ChooseNumberOfSkullsCommand extends CliCommand {
-    ChooseNumberOfSkullsCommand(RemoteController controller, boolean gui) {
+    ChooseNumberOfSkullsCommand(RemotePlayer controller, boolean gui) {
         super(controller, gui);
     }
 

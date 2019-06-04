@@ -1,4 +1,4 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
 /**
  * This is a do-nothing command, it has been created to avoid NullPointerException

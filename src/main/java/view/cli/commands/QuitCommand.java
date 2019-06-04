@@ -1,11 +1,11 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 
 import java.io.IOException;
 
 class QuitCommand extends CliCommand {
-    QuitCommand(RemoteController controller, boolean gui) {
+    QuitCommand(RemotePlayer controller, boolean gui) {
         super(controller, gui);
     }
 

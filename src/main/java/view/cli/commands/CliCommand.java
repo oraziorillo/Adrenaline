@@ -1,6 +1,6 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 import view.InputRequier;
 import view.cli.CliInputRequier;
 import view.gui.GuiInputRequier;
@@ -8,10 +8,10 @@ import view.gui.GuiInputRequier;
 import java.io.IOException;
 
 public abstract class CliCommand {
-    protected final RemoteController controller;
+    protected final RemotePlayer controller;
     protected final InputRequier inputRequier;
 
-    CliCommand(RemoteController controller, boolean gui){
+    CliCommand(RemotePlayer controller, boolean gui){
         this.controller = controller;
         this.inputRequier = gui? new GuiInputRequier( ) : new CliInputRequier(  );
     }
