@@ -17,8 +17,9 @@ public class FirstTurnState extends State{
     FirstTurnState(Controller controller) {
         super(controller);
         powerUpToDropIndex = -1;
-        controller.getCurrPc().drawPowerUp();
-        controller.getCurrPc().drawPowerUp();
+        this.pcToSpawn = controller.getCurrPc();
+        this.pcToSpawn.drawPowerUp();
+        this.pcToSpawn.drawPowerUp();
     }
     
     /**
@@ -28,18 +29,17 @@ public class FirstTurnState extends State{
     @Override
     public void selectPowerUp (int powerUpToDropIndex) {
         if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
-            this.pcToSpawn = controller.getCurrPc();
             this.powerUpToDropIndex = powerUpToDropIndex;
         }
     }
-    
+
     /**
      * Executes the respawn: Puts the pre-given pc on the GenerationSquare of the colour of the card with the given index
      * @return true if pc is respawned fine, false if some parameters was invalid
      */
     @Override
     public boolean ok() {
-        if (pcToSpawn != null && powerUpToDropIndex > -1) {
+        if (powerUpToDropIndex > -1) {
             PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
             AmmoEnum respawnColour = powerUp.getColour();
             Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());

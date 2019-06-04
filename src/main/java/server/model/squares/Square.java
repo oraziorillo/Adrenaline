@@ -54,6 +54,13 @@ public abstract class Square {
         return targetable;
     }
 
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
+    }
 
     public SquareColourEnum getColour() {
         return colour;
@@ -122,11 +129,11 @@ public abstract class Square {
                 .filter(s -> {
                     switch (direction) {
                         case NORTH:
-                            return s.getRow() == this.row + 1 && s.getCol() == this.col;
+                            return s.getRow() == this.row - 1 && s.getCol() == this.col;
                         case EAST:
                             return s.getCol() == this.col + 1 && s.getRow() == this.row;
                         case SOUTH:
-                            return s.getRow() == this.row - 1 && s.getCol() == this.col;
+                            return s.getRow() == this.row + 1 && s.getCol() == this.col;
                         case WEST:
                             return s.getCol() == this.col - 1 && s.getRow() == this.row;
                         default:
@@ -177,13 +184,14 @@ public abstract class Square {
         while (!queue.isEmpty()){
             Square currSquare = queue.poll();
             currSquare.visibles.forEach(s -> {
-                if (!marked) {
-                    s.marked = true;
+                if (!s.isMarked()) {
+                    s.setMarked(true);
                     queue.offer(s);
                     resultSet.add(s);
                 }
             });
         }
+        resultSet.forEach(s -> s.setMarked(false));
         return resultSet;
     }
     
@@ -197,6 +205,8 @@ public abstract class Square {
         resultSet = resultSet.stream()
                 .parallel()
                 .filter(s -> {
+                    if (direction == null)
+                        return s.getRow() == this.getRow() || s.getCol() == this.getCol();
                     switch (direction){
                         case NORTH:
                             return s.getRow() >= this.getRow() && s.getCol() == this.getCol();
@@ -207,7 +217,7 @@ public abstract class Square {
                         case WEST:
                             return s.getRow() == this.getRow() && s.getCol() <= this.getCol();
                         default:
-                            return s.getRow() == this.getRow() || s.getCol() == this.getCol();
+                            return false;
                     }
                 })
                 .collect(Collectors.toSet());

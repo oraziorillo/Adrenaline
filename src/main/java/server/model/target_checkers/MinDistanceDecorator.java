@@ -15,9 +15,8 @@ public class MinDistanceDecorator extends TargetCheckerDecorator {
     public Set<Square> validSquares(Square referenceSquare) {
         Set<Square> resultSquares;
         resultSquares = base.validSquares(referenceSquare);
-        for (int tempMinDistance = 0; tempMinDistance < minDistance; tempMinDistance++) {
-            resultSquares.removeAll(referenceSquare.atDistance(tempMinDistance));
-        }
+        if (minDistance > 0)
+            resultSquares.removeAll(referenceSquare.atDistance(minDistance - 1));
         return resultSquares;
     }
 }

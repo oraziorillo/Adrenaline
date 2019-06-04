@@ -26,6 +26,7 @@ public class GameBoardTest {
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
         JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
+
         JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
         gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
     }
