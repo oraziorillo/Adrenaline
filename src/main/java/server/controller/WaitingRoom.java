@@ -67,7 +67,7 @@ public class WaitingRoom {
         }
     }
     
-    public int size() {
+    public synchronized int size() {
         return waitingPlayers.size();
     }
 }
