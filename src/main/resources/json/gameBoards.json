@@ -71,5 +71,227 @@
       }
     ],
     "doors": [0, 4, 2, 3, 2, 6, 3, 2, 3, 7, 4, 0, 5, 9, 6, 2, 7, 3, 9, 5, 9, 10, 10, 9]
+  },
+
+  {
+    "rows": 3,
+    "columns": 4,
+    "squares": [
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 0,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 1,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 0,
+        "col": 2,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 1,
+        "col": 0,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 1,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 2,
+        "colour": "VIOLET"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 3,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 1,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 2,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 2,
+        "col": 3,
+        "colour": "YELLOW"
+      }
+    ],
+    "doors": [0, 4, 2, 6, 4, 0, 5, 9, 6, 2, 6, 7, 7, 6, 9, 5, 10, 11, 11, 10]
+  },
+
+  {
+    "rows": 3,
+    "columns": 4,
+    "squares": [
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 0,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 1,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 0,
+        "col": 2,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 1,
+        "col": 0,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 1,
+        "colour": "VIOLET"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 2,
+        "colour": "VIOLET"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 3,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 0,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 1,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 2,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 2,
+        "col": 3,
+        "colour": "YELLOW"
+      }
+    ],
+    "doors": [0, 1, 1, 0, 1, 5, 2, 6, 4, 8, 5, 1, 5, 9, 6, 2, 6, 7, 7, 6, 8, 4, 9, 5, 10, 11, 11, 10]
+  },
+
+  {
+    "rows": 3,
+    "columns": 4,
+    "squares": [
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 0,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 1,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 0,
+        "col": 2,
+        "colour": "BLUE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 0,
+        "col": 3,
+        "colour": "GREEN"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 1,
+        "col": 0,
+        "colour": "RED"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 1,
+        "colour": "VIOLET"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 2,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 1,
+        "col": 3,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 0,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 1,
+        "colour": "WHITE"
+      },
+      {
+        "isSpawnPoint": false,
+        "row": 2,
+        "col": 2,
+        "colour": "YELLOW"
+      },
+      {
+        "isSpawnPoint": true,
+        "row": 2,
+        "col": 3,
+        "colour": "YELLOW"
+      }
+    ],
+    "doors": [0, 1, 1, 0, 1, 5, 2, 3, 2, 6, 3, 2, 3, 7, 4, 8, 5, 1, 5, 9, 6, 2, 7, 3, 8, 4, 9, 5, 9, 10, 10, 9]
   }
 ]
