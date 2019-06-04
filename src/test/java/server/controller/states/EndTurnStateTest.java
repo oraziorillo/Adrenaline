@@ -1,6 +1,6 @@
 package server.controller.states;
 
-import server.controller.Controller;
+import server.controller.Player;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class EndTurnStateTest {
    @Mock
-   static Controller controller;
-   private EndTurnState  tested = new EndTurnState(controller);
+   static Player player;
+   private EndTurnState  tested = new EndTurnState( player );
    
    @BeforeAll
    public static void setUpMocks(){

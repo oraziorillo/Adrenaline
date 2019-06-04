@@ -1,0 +1,9 @@
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<BorderPane fx:controller="view.gui.GuiController" xmlns:fx="http://javafx.com/fxml" id="window">
+    <AnchorPane>
+        <!--TODO: mappa, killshot ecc. AnchorPane è a caso-->
+    </AnchorPane>
+
+
+</BorderPane>

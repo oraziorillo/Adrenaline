@@ -1,95 +1,96 @@
 package server.controller.socket_connection;
-/*
-import server.controller.Controller;
-import server.enums.SocketCommandsEnum;
-import server.enums.PcColourEnum;
 
-import java.io.*;
+import server.controller.Player;
+import server.enums.SocketPlayerEnum;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-public class GameSocketListener implements Runnable {
+public class PlayerSocketListener implements Runnable {
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
-    private final Controller controller;
+    private final Player player;
 
     /**
      * Creates a connection listener by an existing socket
      * @param socket the given socket, created by ServerSocket.accept and then already opened
-     *
-    GameSocketListener(Socket socket, Controller controller) throws IOException {
+     */
+    PlayerSocketListener(Socket socket, Player player) throws IOException {
         this.socket = socket;
-        this.controller = controller;
+        this.player = player;
         out = new PrintWriter( socket.getOutputStream() );
         out.flush();
         in = new BufferedReader( new InputStreamReader( socket.getInputStream() ));
     }
     
     /**
-     * While the socket is opened, cyclically listens for a command and executes it
-     *
+     * While the socket is opened, ciclically listens for a command and executes it
+     */
     @Override
     public void run() {
         while (!socket.isClosed()) {
             try {
-                SocketCommandsEnum command = SocketCommandsEnum.valueOf( in.readLine() );
+                SocketPlayerEnum command = SocketPlayerEnum.valueOf( in.readLine() );
                 int argInt;
                 switch (command) {
                     case CHOOSE_MAP:
                         argInt = Integer.parseInt( in.readLine() );
-                        controller.chooseMap( argInt );
+                        player.chooseMap( argInt );
                         break;
                     case CHOOSE_NUMBER_OF_SKULLS:
                         argInt = Integer.parseInt( in.readLine() );
-                        controller.chooseNumberOfSkulls( argInt );
+                        player.chooseNumberOfSkulls( argInt );
                         break;
                     case CHOOSE_PC_COLOUR:
-                        PcColourEnum colour = PcColourEnum.fromString( in.readLine() );
-                        controller.choosePcColour( colour );
+                        player.choosePcColour( in.readLine() );
                         break;
                     case RUN_AROUND:
-                        controller.runAround();
+                        player.runAround();
                         break;
                     case GRAB_STUFF:
-                        controller.grabStuff();
+                        player.grabStuff();
                         break;
                     case SHOOT_PEOPLE:
-                        controller.shootPeople();
+                        player.shootPeople();
                         break;
                     case SELECT_SQUARE:
                         argInt = Integer.parseInt( in.readLine() );
                         int argInt2 = Integer.parseInt( in.readLine() );
-                        controller.chooseSquare( argInt, argInt2 );
+                        player.chooseSquare( argInt, argInt2 );
                         break;
                     case GRAB_WEAPON:
                         argInt = Integer.parseInt( in.readLine() );
-                        controller.chooseWeaponOnSpawnPoint( argInt );
+                        player.chooseWeaponOnSpawnPoint( argInt );
                         break;
                     case CHOOSE_WEAPON:
                         argInt = Integer.parseInt( in.readLine() );
-                        controller.chooseWeaponOfMine( argInt );
+                        player.chooseWeaponOfMine( argInt );
                         break;
                     case QUIT:
-                        controller.quit();
+                        player.quit();
                         break;
                     case SWITCH_FIREMODE:
-                        controller.switchFireMode();
+                        player.switchFireMode();
                         break;
                     case UPGRADE:
-                        controller.upgrade();
+                        player.upgrade();
                         break;
                     case CHOOSE_ASYNCH_EFFECT_ORDER:
                         boolean beforeBasicEffect = Boolean.getBoolean( in.readLine() );
-                        controller.chooseAsynchronousEffectOrder( beforeBasicEffect );
+                        player.chooseAsynchronousEffectOrder( beforeBasicEffect );
                         break;
                     case OK:
-                        controller.ok();
+                        player.ok();
                         break;
                     case RELOAD:
-                        controller.reload();
+                        player.reload();
                         break;
                     case PASS:
-                        controller.pass();
+                        player.pass();
                         break;
                     default:
                         throw new IllegalArgumentException( "Unexpected command" );
@@ -101,5 +102,3 @@ public class GameSocketListener implements Runnable {
         }
     }
 }
-
- */
