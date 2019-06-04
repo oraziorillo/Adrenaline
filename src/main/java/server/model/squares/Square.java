@@ -209,11 +209,11 @@ public abstract class Square {
                         return s.getRow() == this.getRow() || s.getCol() == this.getCol();
                     switch (direction){
                         case NORTH:
-                            return s.getRow() >= this.getRow() && s.getCol() == this.getCol();
+                            return s.getRow() <= this.getRow() && s.getCol() == this.getCol();
                         case EAST:
                             return s.getRow() == this.getRow() && s.getCol() >= this.getCol();
                         case SOUTH:
-                            return s.getRow() <= this.getRow() && s.getCol() == this.getCol();
+                            return s.getRow() >= this.getRow() && s.getCol() == this.getCol();
                         case WEST:
                             return s.getRow() == this.getRow() && s.getCol() <= this.getCol();
                         default:

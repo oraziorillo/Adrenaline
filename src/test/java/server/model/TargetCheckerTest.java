@@ -28,14 +28,13 @@ public class TargetCheckerTest {
 
     @Before
     public void initMap() throws FileNotFoundException {
-        int numberOfMap = 0;
+        int numberOfMap = 2;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
-        //TODO pesca la risorsa dinamicamente
-        //URL path = getClass().getResource( "/json/gameBoards.json" );
-        JsonReader reader = new JsonReader(new FileReader("/home/alessio/Scrivania/progettoJavaGit/ing-sw-2019-23/src/main/resources/json/gameBoards.json"));
+
+        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
         JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
         gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
     }
