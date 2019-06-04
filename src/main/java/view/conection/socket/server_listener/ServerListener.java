@@ -1,4 +1,4 @@
-package view.cli.conection.socket.server_listener;
+package view.conection.socket.server_listener;
 
 import java.io.IOException;
 import java.net.Socket;
