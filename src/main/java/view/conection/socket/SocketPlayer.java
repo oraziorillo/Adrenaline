@@ -1,33 +1,21 @@
-package view.cli.conection.socket;
+package view.conection.socket;
 
-import common.RemoteController;
+import common.RemotePlayer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.util.UUID;
 
-import static server.enums.SocketCommandsEnum.*;
+import static server.enums.SocketPlayerEnum.*;
 
-public class SocketProxy implements RemoteController {
-    private final Socket socket;
-    private final PrintWriter out;
-    private final BufferedReader in;
+public class SocketPlayer extends AbstractSocketProxy implements RemotePlayer {
+    private String username;
+    private final UUID token;
+    
 
-    public SocketProxy(String ip, int port ) throws IOException {
-        this(new Socket( ip, port));
-    }
-
-    public SocketProxy(Socket socket) throws IOException {
-        this.socket = socket;
-        out = new PrintWriter( socket.getOutputStream() );
-        out.flush();
-        in = new BufferedReader( new InputStreamReader(  socket.getInputStream() ));
-    }
-
-    public SocketProxy() throws IOException {
-        this("localhost",10000);
+    public SocketPlayer(String username, UUID token) throws IOException {
+        super();
+        this.username = username;
+        this.token = token;
     }
 
     @Override
@@ -46,17 +34,10 @@ public class SocketProxy implements RemoteController {
 
     @Override
     public void choosePcColour(String colour) throws IOException {
-
-    }
-    /*
-    @Override
-    public void choosePcColour(PcColourEnum colour) {
         out.println( CHOOSE_PC_COLOUR );
         out.println( colour );
         out.flush();
     }
-    */
-
     @Override
     public void runAround() {
         out.println( RUN_AROUND );
@@ -71,7 +52,8 @@ public class SocketProxy implements RemoteController {
 
     @Override
     public void usePowerUp() throws IOException {
-
+        out.println( USE_POWERUP );
+        out.flush();
     }
 
     @Override
@@ -90,7 +72,9 @@ public class SocketProxy implements RemoteController {
 
     @Override
     public void choosePowerUp(int index) throws IOException {
-
+        out.println( CHOOSE_POWERUP );
+        out.println( index );
+        out.flush();
     }
 
     @Override
@@ -121,7 +105,8 @@ public class SocketProxy implements RemoteController {
 
     @Override
     public void removeUpgrade() {
-
+        out.println( REMOVE_UPGRADE );
+        out.flush();
     }
 
 
@@ -140,7 +125,8 @@ public class SocketProxy implements RemoteController {
 
     @Override
     public void undo() throws IOException {
-
+        out.println( UNDO );
+        out.flush();
     }
 
     @Override
@@ -169,8 +155,4 @@ public class SocketProxy implements RemoteController {
         socket.close();
     }
     
-    @Override
-    public boolean isOpened() {
-        return !socket.isClosed();
-    }
 }
