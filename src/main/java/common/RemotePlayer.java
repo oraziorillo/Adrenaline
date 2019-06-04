@@ -3,7 +3,7 @@ package common;
 import java.io.IOException;
 import java.rmi.Remote;
 
-public interface RemoteController extends Remote {
+public interface RemotePlayer extends Remote {
 
     void chooseMap(int n) throws IOException;
 
@@ -47,5 +47,4 @@ public interface RemoteController extends Remote {
 
     void quit() throws IOException;
    
-    boolean isOpened();
 }
