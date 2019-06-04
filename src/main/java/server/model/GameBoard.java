@@ -47,7 +47,6 @@ public class GameBoard {
 
             //then add all squares whose colour is contained in visibleColours to the list of i's visible squares
             squares.stream()
-                    .parallel()
                     .filter(x -> visibleColours.contains(x.getColour().ordinal()))
                     .forEach(s::addVisible);
         }

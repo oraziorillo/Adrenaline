@@ -203,7 +203,6 @@ public abstract class Square {
     public Set<Square> allSquaresOnDirection(CardinalDirectionEnum direction){
         Set<Square> resultSet = allSquares();
         resultSet = resultSet.stream()
-                .parallel()
                 .filter(s -> {
                     if (direction == null)
                         return s.getRow() == this.getRow() || s.getCol() == this.getCol();

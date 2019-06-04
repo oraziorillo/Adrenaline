@@ -180,7 +180,7 @@ public class Pc {
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFEPOINTS - 2) {
             //TODO notify server.controller e view
-            currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
+            //currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
         }
         if (damageIndex > 4)
             adrenaline = 2;
