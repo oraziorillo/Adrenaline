@@ -203,17 +203,16 @@ public abstract class Square {
     public Set<Square> allSquaresOnDirection(CardinalDirectionEnum direction){
         Set<Square> resultSet = allSquares();
         resultSet = resultSet.stream()
-                .parallel()
                 .filter(s -> {
                     if (direction == null)
                         return s.getRow() == this.getRow() || s.getCol() == this.getCol();
                     switch (direction){
                         case NORTH:
-                            return s.getRow() >= this.getRow() && s.getCol() == this.getCol();
+                            return s.getRow() <= this.getRow() && s.getCol() == this.getCol();
                         case EAST:
                             return s.getRow() == this.getRow() && s.getCol() >= this.getCol();
                         case SOUTH:
-                            return s.getRow() <= this.getRow() && s.getCol() == this.getCol();
+                            return s.getRow() >= this.getRow() && s.getCol() == this.getCol();
                         case WEST:
                             return s.getRow() == this.getRow() && s.getCol() <= this.getCol();
                         default:

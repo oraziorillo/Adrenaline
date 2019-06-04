@@ -15,8 +15,7 @@ public class MaxDistanceDecorator extends TargetCheckerDecorator {
 
     public Set<Square> validSquares(Square referenceSquare) {
         Set<Square> resultSquares;
-        Set<Square> selectedSquares = new HashSet<>();
-        selectedSquares.addAll(referenceSquare.atDistance(maxDistance));
+        Set<Square> selectedSquares = new HashSet<>(referenceSquare.atDistance(maxDistance));
         resultSquares = base.validSquares(referenceSquare);
         resultSquares.retainAll(selectedSquares);
         return resultSquares;
