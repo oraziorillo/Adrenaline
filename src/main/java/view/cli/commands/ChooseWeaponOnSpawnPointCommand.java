@@ -1,10 +1,10 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 import java.io.IOException;
 
 public class ChooseWeaponOnSpawnPointCommand extends CliCommand {
-    ChooseWeaponOnSpawnPointCommand(RemoteController controller, boolean gui) {
+    ChooseWeaponOnSpawnPointCommand(RemotePlayer controller, boolean gui) {
         super(controller, gui );
     }
 

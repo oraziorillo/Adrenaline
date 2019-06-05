@@ -1,11 +1,9 @@
 package server.controller.states;
 
-import server.controller.Controller;
-import org.junit.BeforeClass;
+import server.controller.Player;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FirstTurnStateTest {
    
    @Mock
-   static Controller controller;
-   private FirstTurnState tested = new FirstTurnState( controller );
+   static Player player;
+   private FirstTurnState tested = new FirstTurnState( player );
    
    
    @Test

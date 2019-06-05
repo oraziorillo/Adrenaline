@@ -1,4 +1,3 @@
-/*
 package server.controller.socket_connection;
 
 import server.controller.Player;
@@ -7,6 +6,7 @@ import server.controller.Server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -28,23 +28,32 @@ public class LoginSocketListener implements Runnable {
       while (!client.isClosed()){
          switch (in.next()){
             case "register":
-               out.println( Server.playerController.register( in.next() ) );
+               try {
+                  out.println( Server.loginController.register( in.next() ) );
+               } catch ( IOException e ) {
+                  throw new IllegalStateException("Cannot create a player on server. Something went TERRIBLY wrong");
+               }
                out.flush();
                break;
-            case "getPlayer":
-               //TODO: il server.controller sarà spostato in player, che non viene trasferito interamente a solo l'UUID
-               //this.player = Server.playerController.getPlayer( UUID.fromString( in.next() ) );
+            case "login":
+               try {
+                  this.player = ( Player ) Server.loginController.login( UUID.fromString( in.next() ));
+               } catch ( IOException e ) {
+                  e.printStackTrace();
+               }
                out.println( player.getUsername() );
                out.flush();
                break;
-            case "join_game":
+            case "join_new_game":
                Server.waitingRoom.addPlayer( this.player );
                out.println( "Entered a game. There are "+(Server.waitingRoom.size()-1)+" other players" );
-            case "load_game":
-               //TODO
-               
+               break;
+            case "load_game": case "save_game":
+               //TODO: permanenza
+               default:
+                  out.println( "ILLEGAL COMMAND" );
+                  out.flush();
          }
       }
    }
 }
-*/

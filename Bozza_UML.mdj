@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFpuoozFSwkyQk="
 					},
-					"name": "server.controller.Server",
+					"name": "server.player.Server",
 					"ownedElements": [
 						{
 							"_type": "UMLPackage",
@@ -338,7 +338,7 @@
 															"top": 165,
 															"width": 284,
 															"height": 13,
-															"text": "(from server.controller.Server)"
+															"text": "(from server.player.Server)"
 														},
 														{
 															"_type": "LabelView",

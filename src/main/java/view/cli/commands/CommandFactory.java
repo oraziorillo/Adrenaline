@@ -1,11 +1,11 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 import static view.cli.Commands.*;
 
 public class CommandFactory {
    private CommandFactory(){}
-   public static CliCommand getCommand(String s, RemoteController controller, boolean gui){
+   public static CliCommand getCommand(String s, RemotePlayer controller, boolean gui){
          switch (s.toLowerCase().trim()){
             case MAP_SHORT: case MAP_LONG: case MAP_EXTENDED:
                return new ChooseMapCommand( controller, gui );

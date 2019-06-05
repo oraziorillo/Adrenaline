@@ -4,7 +4,7 @@ package server.enums;
  * Contains the possible actions an user can perform.
  * Support enum for hand-made socket stubs
  */
-public enum SocketCommandsEnum {
+public enum SocketPlayerEnum {
     CHOOSE_MAP,
     CHOOSE_NUMBER_OF_SKULLS,
     CHOOSE_PC_COLOUR,
@@ -23,7 +23,11 @@ public enum SocketCommandsEnum {
     OK,
     RELOAD,
     PASS,
-    SKIP;
+    SKIP,
+    USE_POWERUP,
+    CHOOSE_POWERUP,
+    REMOVE_UPGRADE,
+    UNDO;
     
     @Override
     public String toString() {

@@ -1,11 +1,11 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 
 import java.io.IOException;
 
 class SkipCommand extends CliCommand {
-   SkipCommand(RemoteController controller, boolean gui) {
+   SkipCommand(RemotePlayer controller, boolean gui) {
       super(controller, gui );
    }
    

@@ -1,11 +1,11 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 
 import java.io.IOException;
 
 class ChooseMapCommand extends CliCommand {
-    ChooseMapCommand(RemoteController controller, boolean gui) {
+    ChooseMapCommand(RemotePlayer controller, boolean gui) {
         super(controller, gui);
     }
 

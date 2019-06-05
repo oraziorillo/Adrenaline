@@ -1,11 +1,11 @@
-package view.cli.conection.commands;
+package view.cli.commands;
 
-import common.RemoteController;
+import common.RemotePlayer;
 import java.io.IOException;
 
 final class ShootCommand extends CliCommand {
 
-    ShootCommand(RemoteController controller, boolean gui) {
+    ShootCommand(RemotePlayer controller, boolean gui) {
         super( controller, gui );
     }
 

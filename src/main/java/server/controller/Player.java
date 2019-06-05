@@ -1,10 +1,11 @@
 package server.controller;
 
-import common.RemoteController;
+import common.RemotePlayer;
+import org.jetbrains.annotations.Contract;
 import server.controller.states.State;
 import server.model.Pc;
-import org.jetbrains.annotations.Contract;
 import server.model.WeaponCard;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import static server.controller.Controller.*;
  * Represents an user out-game.
  * @see Pc for in-game representation
  */
-public class Player extends UnicastRemoteObject implements RemoteController {
+public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     private String username;
     private final UUID uuid;
@@ -218,11 +219,6 @@ public class Player extends UnicastRemoteObject implements RemoteController {
     public synchronized void quit() {
         //gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-
-
-    @Override
-    public boolean isOpened() {
-        return true;
-    }
+    
 }
 
