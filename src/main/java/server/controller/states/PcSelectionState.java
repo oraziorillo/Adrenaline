@@ -53,7 +53,7 @@ public class PcSelectionState extends State {
     @Override
     public State nextState() {
         controller.nextTurn();
-        return new InactiveState(controller, false);
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 
 

@@ -4,16 +4,19 @@ import server.controller.Controller;
 
 public class InactiveState extends State {
 
+    static final int PC_SELECTION_STATE = 0;
+    static final int FIRST_TURN_STATE = 1;
+    static final int START_TURN_STATE = 2;
 
-    private boolean isGameStarted;
+    private int nextState;
 
 
-    InactiveState(Controller controller, boolean isGameStarted) {
+    InactiveState(Controller controller, int nextState) {
         super(controller);
-        this.isGameStarted = isGameStarted;
+        this.nextState = nextState;
     }
 
-
+    @Override
     public boolean isInactive(){
         return true;
     }
@@ -21,9 +24,15 @@ public class InactiveState extends State {
 
     @Override
     public State nextState() {
-        if (isGameStarted)
-            return new StartTurnState(controller);
-        else
-            return new PcSelectionState(controller);
+        switch (nextState){
+            case PC_SELECTION_STATE:
+                return new PcSelectionState(controller);
+            case FIRST_TURN_STATE:
+                return new FirstTurnState(controller);
+            case START_TURN_STATE:
+                return new StartTurnState(controller);
+            default:
+                return this;
+        }
     }
 }

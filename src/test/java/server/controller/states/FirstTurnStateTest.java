@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/*
 @RunWith(MockitoJUnitRunner.class)
 public class FirstTurnStateTest {
    
@@ -21,3 +22,5 @@ public class FirstTurnStateTest {
       assertTrue( tested.nextState() instanceof StartTurnState );
    }
 }
+
+ */

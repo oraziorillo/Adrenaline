@@ -1,10 +1,21 @@
 GENERAL NOTES:
-
 - i return di oggetti devono restituire cloni
 
--stabilire quando chiamare il destination checker in targetSelectionState
+- stabilire quando chiamare il destination checker in targetSelectionState
 
--ricordarsi di aggiungere i target nel shotTargets
+- ricordarsi di aggiungere i target nel shotTargets
+
+
+ARMI:
+- aggiungere boolean needParameters per onda d'urto
+
+- flag chain effect
+
+- gestire meglio upgrade di granade launcher
+
+
+RMI:
+- gestire lato client
 
 
 ROBA DA CONTROLLER
@@ -17,9 +28,7 @@ ROBA DA CONTROLLER
  - considerare di dover rimischiare il deck di ammoTile se finisce
  
 
-
 REGOLE DA IMPLEMENTARE:
-
 - funzione che attribuisce punti dopo una kill (ricordarsi Double kill: - Double kill? If you deal multiple killshots on your turn, you get 1 extra
 point. And you are awesome)
 
@@ -27,18 +36,12 @@ point. And you are awesome)
 
 - Action-hero comment
 
-- granade launcher ha un effetto che non è propriamente asincrono per come li abbiamo pensati noi
 
 
 DOMANDE:
-
-- L'UML viene estratto automaticamente?
-
 - il json va chiuso?
 
-- aggiungere boolean needParameters per onda d'urto
 
-- vedere meglio il tractor beam 
  
  
 

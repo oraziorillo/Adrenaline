@@ -86,6 +86,6 @@ public class ReloadState extends State {
         if (controller.isFinalFrenzy())
             return new ShootPeopleState(controller, true, true);
         controller.nextTurn();
-        return new InactiveState(controller, true);
+        return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

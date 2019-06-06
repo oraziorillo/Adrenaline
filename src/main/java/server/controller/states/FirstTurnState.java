@@ -56,6 +56,6 @@ public class FirstTurnState extends State{
     @Override
     public State nextState() {
         controller.nextTurn();
-        return new InactiveState(controller, true);
+        return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

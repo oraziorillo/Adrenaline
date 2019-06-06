@@ -1,12 +1,9 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import server.controller.Player;
 import server.enums.CardinalDirectionEnum;
 import server.model.Pc;
-import server.model.squares.Square;
 import server.model.WeaponCard;
-import server.enums.PcColourEnum;
 
 /**
  * This class represents a state of a game state diagram.

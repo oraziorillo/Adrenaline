@@ -1,0 +1,16 @@
+package client.cli.commands;
+
+import server.RemotePlayer;
+
+import java.io.IOException;
+
+class SkipCommand extends CliCommand {
+   SkipCommand(RemotePlayer controller, boolean gui) {
+      super(controller, gui );
+   }
+   
+   @Override
+   public void execute() throws IOException {
+      controller.skip();
+   }
+}
