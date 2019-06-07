@@ -1,0 +1,13 @@
+HBox{
+    -fx-background-color: transparent;
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+    -fx-pref-height: 80;
+
+}
+GridPane{
+    -fx-background-color: transparent;
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+    -fx-pref-height: 80;
+}

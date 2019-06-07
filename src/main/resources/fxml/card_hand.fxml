@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.Double?>
+<StackPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.controllers.CardHand" fx:id="mainPane"
+            stylesheets="/css/style.css">
+
+    <fx:define>
+        <Double fx:id="hiddenFraction" fx:value=".62962963"/> <!-- usare .577777778 per mostrare tutta l'immagine-->
+    </fx:define>
+
+    <HBox fx:id="cardBox" spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" alignment="BOTTOM_CENTER" >
+        <ImageView fx:id="card0" preserveRatio="true"/>
+        <ImageView fx:id="card1" preserveRatio="true"/>
+        <ImageView fx:id="card2" preserveRatio="true"/>
+    </HBox>
+
+
+</StackPane>
