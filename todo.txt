@@ -27,6 +27,8 @@ ROBA DA CONTROLLER
 
  - considerare di dover rimischiare il deck di ammoTile se finisce
  
+ - far saltare il turno dopo tot tempo di inattività
+ 
 
 REGOLE DA IMPLEMENTARE:
 - funzione che attribuisce punti dopo una kill (ricordarsi Double kill: - Double kill? If you deal multiple killshots on your turn, you get 1 extra

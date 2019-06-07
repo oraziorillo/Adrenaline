@@ -1,6 +1,5 @@
 package server.controller;
 
-import server.RemotePlayer;
 import org.jetbrains.annotations.Contract;
 import server.controller.states.State;
 import server.model.Pc;
@@ -217,7 +216,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void quit() {
-        //gestire la disconnessione in modo tale da far saltare il turno al giocatore
+        //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
     
 }

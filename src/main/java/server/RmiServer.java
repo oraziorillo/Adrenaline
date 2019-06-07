@@ -5,6 +5,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class RmiServer implements Runnable {
+
     @Override
     public void run() {
 

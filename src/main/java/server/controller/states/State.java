@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 import server.enums.CardinalDirectionEnum;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -16,9 +17,9 @@ public abstract class State {
     State(Controller controller){
         this.controller = controller;
     }
-    
+
     void setTargetableToValidSquares(Pc referencePc) {}
-    
+
     public void selectMap(int n) {}
     
     public void selectNumberOfSkulls(int n) {}
@@ -88,12 +89,4 @@ public abstract class State {
      * @return The next expected state
      */
     public abstract State nextState();
-    
-    /**
-     * @param controller the server.controller of the game creating the state diagram
-     * @return The starting state of the diagram (usually, a setup state)
-     */
-    public static State getFirstState(Controller controller){
-        return new SetupMapState( controller );
-    }
 }

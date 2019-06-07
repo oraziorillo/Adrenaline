@@ -39,14 +39,16 @@ public class LoginSocketListener implements Runnable {
                   out.flush();
                   break;
 
+               /*
                case "join_new_game":
-                  WaitingRoom.getInstance().addPlayer(this.player);
-                  out.println("Entered a game. There are " + (WaitingRoom.getInstance().size() - 1) + " other players");
+                  Lobby.getInstance().addPlayer(this.player);
+                  out.println("Entered a game. There are " + (Lobby.getInstance().size() - 1) + " other players");
                   break;
 
                case "load_game":
                case "save_game":
                   //TODO: permanenza
+                */
 
                default:
                   out.println("ILLEGAL COMMAND");
