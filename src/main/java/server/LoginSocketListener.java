@@ -2,6 +2,7 @@ package server;
 
 
 import server.controller.Player;
+import server.enums.SocketLoginEnum;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,15 +26,17 @@ public class LoginSocketListener implements Runnable {
    @Override
    public void run() {
       while (!client.isClosed()) {
+         SocketLoginEnum cmd = SocketLoginEnum.valueOf( in.next() );
+         System.out.println(cmd);
          try {
 
-            switch (in.next()) {
-               case "register":
+            switch (cmd) {
+               case REGISTER:
                   out.println(LoginController.getInstance().register(in.next()));
                   out.flush();
                   break;
 
-               case "login":
+               case LOGIN:
                   this.player = (Player) LoginController.getInstance().login(UUID.fromString(in.next()));
                   out.println(player.getUsername());
                   out.flush();

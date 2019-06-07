@@ -27,7 +27,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    /**
     * hash map containing as key player's UUID and as value the started game's UUID (if present)
     */
-   private HashMap<UUID, UUID> startedGames;
+   private HashMap<UUID, UUID> startedGames = new HashMap<>();
 
 
    private LoginController() throws RemoteException {
