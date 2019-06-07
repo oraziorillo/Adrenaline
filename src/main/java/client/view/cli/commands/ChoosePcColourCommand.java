@@ -10,6 +10,6 @@ class ChoosePcColourCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        //controller.choosePcColour( inputRequier.askPcColourEnum() );
+        //controller.choosePcColour( inputRequire.askPcColourEnum() );
     }
 }

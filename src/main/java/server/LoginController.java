@@ -96,7 +96,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    void addStartedGame(Lobby lobby){
       if (!lobby.isOld()) {
          UUID gameUUID = lobby.getGameUUID();
-         lobby.getPlayers().forEach(p -> startedGames.put(p.getUuid(), gameUUID));
+         lobby.getPlayers().forEach(p -> startedGames.put(p.getToken(), gameUUID));
          //TODO: sovrascrivere il file
          newLobby = null;
       }

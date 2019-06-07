@@ -10,6 +10,6 @@ class ChooseNumberOfSkullsCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseNumberOfSkulls( inputRequier.requestInt( "Select number of skulls" ) );
+        controller.chooseNumberOfSkulls( inputRequire.requestInt( "Select number of skulls" ) );
     }
 }

@@ -12,7 +12,6 @@ public class SocketLoginController extends AbstractSocketProxy implements Remote
 
    public SocketLoginController() throws IOException {}
 
-
    @Override
    public UUID register(String username) throws IOException {
       out.println( REGISTER );
@@ -23,20 +22,11 @@ public class SocketLoginController extends AbstractSocketProxy implements Remote
 
 
    @Override
-   public RemotePlayer login(UUID fromString) throws IOException {
+   public RemotePlayer login(UUID token) throws IOException {
       out.println( LOGIN );
-      out.println( fromString );
+      out.println( token );
       String username = in.readLine();
-      return new SocketPlayer( username,fromString );
+      return new SocketPlayer( username,token );
    }
 
-   /*
-   @Override
-   public boolean containsPlayer(UUID token) throws IOException {
-      out.println( CONTAINS_PLAYER );
-      out.println( token.toString() );
-      out.flush();
-      return Boolean.getBoolean( in.readLine() );
-   }
-    */
 }

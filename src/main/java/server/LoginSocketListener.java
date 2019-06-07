@@ -28,7 +28,7 @@ public class LoginSocketListener implements Runnable {
          try {
 
             switch (in.next()) {
-               case "register":
+               case "registerWith":
                   out.println(LoginController.getInstance().register(in.next()));
                   out.flush();
                   break;
@@ -46,7 +46,6 @@ public class LoginSocketListener implements Runnable {
                   break;
 
                case "load_game":
-               case "save_game":
                   //TODO: permanenza
                 */
 

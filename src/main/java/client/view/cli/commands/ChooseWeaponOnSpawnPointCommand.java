@@ -10,6 +10,6 @@ public class ChooseWeaponOnSpawnPointCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseWeaponOnSpawnPoint( inputRequier.requestInt( "Insert weapon number" ) );
+        controller.chooseWeaponOnSpawnPoint( inputRequire.requestInt( "Insert weapon number" ) );
     }
 }

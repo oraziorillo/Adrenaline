@@ -10,6 +10,6 @@ public class ChooseWeaponOfMineCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseWeaponOfMine( inputRequier.requestInt( "Insert weapon index" ) );
+        controller.chooseWeaponOfMine( inputRequire.requestInt( "Insert weapon index" ) );
     }
 }
