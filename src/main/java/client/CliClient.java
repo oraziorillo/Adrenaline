@@ -15,7 +15,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class CliClient implements RemoteView {
-   /*
+
 
    //TODO: notifica l'utente quando viene inserito nella partita.
    //TODO: gestisci la risposta al metodo eseguito
@@ -30,7 +30,7 @@ public class CliClient implements RemoteView {
    public void init() {
       initInOut();
    }
-   */
+
 
 
 

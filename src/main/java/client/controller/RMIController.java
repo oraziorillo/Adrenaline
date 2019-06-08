@@ -34,6 +34,7 @@ public class RMIController extends ClientController {
         getView().login_register();
     }
 
+
     @Override
     public UUID registerWith(String username) {
         UUID token = null;
@@ -44,6 +45,7 @@ public class RMIController extends ClientController {
         }
         return token;
     }
+
 
     @Override
     public void login(UUID token) {
@@ -59,7 +61,7 @@ public class RMIController extends ClientController {
 
     @Override
     public void sendMessage(String message) {
-        //TODO
+        if (message.startsWith(":"))
         return;
     }
 
