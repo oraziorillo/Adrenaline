@@ -62,6 +62,8 @@ public abstract class State {
 
     public void selectDirection(CardinalDirectionEnum direction) {}
 
+    public void setHasToRespawn() {}
+
     public boolean skipAction() {
         return false;
     }

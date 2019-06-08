@@ -9,6 +9,8 @@ public class InactiveState extends State {
     static final int START_TURN_STATE = 2;
 
     private int nextState;
+    private boolean hasToRespawn;
+    private boolean attacked;
 
 
     InactiveState(Controller controller, int nextState) {
@@ -22,8 +24,20 @@ public class InactiveState extends State {
     }
 
 
+    public void setHasToRespawn() {
+        this.hasToRespawn = true;
+    }
+
+
+    @Override
+    public void selectPowerUp(int index) {
+        //TODO
+    }
+
     @Override
     public State nextState() {
+        if (hasToRespawn)
+            return new RespawnAfterDeathState(controller);
         switch (nextState){
             case PC_SELECTION_STATE:
                 return new PcSelectionState(controller);

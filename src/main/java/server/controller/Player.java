@@ -67,6 +67,14 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    void hasToRespawn(){
+        if (currState.isInactive()){
+            currState.setHasToRespawn();
+            currState = currState.nextState();
+        }
+    }
+
+
     void setActive() {
         if (currState.isInactive())
             currState = currState.nextState();
@@ -133,7 +141,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void choosePowerUp(int index) {
-        if (index >= 0 && index <= 2)
+        if (index >= 0 && index <= 3)
             currState.selectPowerUp(index);
     }
 
