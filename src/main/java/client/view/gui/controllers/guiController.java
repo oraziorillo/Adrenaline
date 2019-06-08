@@ -2,11 +2,20 @@ package client.view.gui.controllers;
 
 import client.view.gui.model_dtos.PowerUpCardDTO;
 import client.view.gui.model_dtos.WeaponCardDTO;
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import server.controller.RemotePlayer;
 import server.enums.CardinalDirectionEnum;
+
+import java.io.IOException;
 
 public class guiController {
    @FXML private GridPane killShotTrack;
@@ -16,6 +25,8 @@ public class guiController {
    @FXML CardHand<WeaponCardDTO> weaponHandController;
    @FXML CardHand<PowerUpCardDTO> powerUpHandController;
    @FXML HBox underMapButtons;
+   @FXML TopController topController;
+   private RemotePlayer player;
    
    public void initialize(){
       mappaController.setMap( 0 );
@@ -36,4 +47,11 @@ public class guiController {
       }
    }
    
+   public void setPlayer(RemotePlayer player) {
+      this.player = player;
+   }
+   
+   public void setHostServices(HostServices hostServices) {
+      topController.setHostServices( hostServices );
+   }
 }

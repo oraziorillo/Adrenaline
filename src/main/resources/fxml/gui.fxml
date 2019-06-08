@@ -15,7 +15,7 @@
         </HBox>
     </center>
     <top>
-        <fx:include source="top.fxml" BorderPane.alignment="TOP_CENTER"/>
+        <fx:include fx:id="top" source="top.fxml" BorderPane.alignment="TOP_CENTER"/>
     </top>
     <bottom>
         <HBox minHeight="${pc.height}" maxHeight="${pc.height}" prefHeight="${pc.height}" alignment="BOTTOM_CENTER" >

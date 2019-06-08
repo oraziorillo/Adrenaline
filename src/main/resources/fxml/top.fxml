@@ -33,7 +33,7 @@
                 <HBox.margin><Insets topRightBottomLeft="$padding"/></HBox.margin>
                 <Image url="/images/portamazzo_powerup.png" preserveRatio="true" requestedWidth="100"/>
             </ImageView>
-            <Button id="settingsButton" HBox.hgrow="ALWAYS">
+            <Button id="settingsButton" HBox.hgrow="ALWAYS" onMouseClicked="#showSettings">
                     <HBox.margin><Insets topRightBottomLeft="35"/> </HBox.margin>
             </Button>
         </HBox>
