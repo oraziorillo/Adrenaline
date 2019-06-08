@@ -3,12 +3,10 @@ package client.controller;
 import client.AbstractSocketProxy;
 import server.RemoteLoginController;
 import server.controller.RemotePlayer;
-
 import java.io.IOException;
 import java.util.UUID;
 
-import static server.enums.SocketLoginEnum.LOGIN;
-import static server.enums.SocketLoginEnum.REGISTER;
+import static server.enums.SocketLoginEnum.*;
 
 public class SocketLoginController extends AbstractSocketProxy implements RemoteLoginController {
 
@@ -25,21 +23,13 @@ public class SocketLoginController extends AbstractSocketProxy implements Remote
 
 
    @Override
-   public RemotePlayer login(UUID fromString) throws IOException {
+   public RemotePlayer login(UUID token) throws IOException {
       out.println( LOGIN );
       out.println( fromString );
       out.flush();
+      out.println( token );
       String username = in.readLine();
-      return new SocketPlayer( username,fromString );
+      return new SocketPlayer( username,token );
    }
 
-   /*
-   @Override
-   public boolean containsPlayer(UUID token) throws IOException {
-      out.println( CONTAINS_PLAYER );
-      out.println( token.toString() );
-      out.flush();
-      return Boolean.getBoolean( in.readLine() );
-   }
-    */
 }

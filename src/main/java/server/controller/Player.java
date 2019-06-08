@@ -18,17 +18,17 @@ import static server.controller.Controller.*;
 public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     private String username;
-    private final UUID uuid;
+    private final UUID token;
     private transient Pc pc;
     private transient State currState;
     private transient WeaponCard currWeapon;
 
 
     @Contract(pure = true)
-    public Player(String username, UUID uuid) throws RemoteException {
+    public Player(String username, UUID token) throws RemoteException {
         super();
         this.username = username;
-        this.uuid = uuid;
+        this.token = token;
     }
 
 
@@ -37,8 +37,8 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getToken() {
+        return token;
     }
 
 

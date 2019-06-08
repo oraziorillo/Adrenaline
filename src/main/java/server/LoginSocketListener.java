@@ -27,7 +27,6 @@ public class LoginSocketListener implements Runnable {
    public void run() {
       while (!client.isClosed()) {
          SocketLoginEnum cmd = SocketLoginEnum.valueOf( in.next() );
-         System.out.println(cmd);
          try {
 
             switch (cmd) {
@@ -49,7 +48,6 @@ public class LoginSocketListener implements Runnable {
                   break;
 
                case "load_game":
-               case "save_game":
                   //TODO: permanenza
                 */
 

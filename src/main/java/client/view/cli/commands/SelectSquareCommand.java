@@ -11,7 +11,7 @@ class SelectSquareCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseSquare( inputRequier.requestInt( "Insert squere column" ),
-                                inputRequier.requestInt( "Insert squares row" ));
+        controller.chooseSquare( inputRequire.requestInt( "Insert squere column" ),
+                                inputRequire.requestInt( "Insert squares row" ));
     }
 }

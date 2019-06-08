@@ -3,7 +3,7 @@ package client.view;
 /**
  * this interface must be used to require input to the user
  */
-public interface InputRequier {
+public interface InputRequire {
 
     int requestInt(String message);
 

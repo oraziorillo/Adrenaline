@@ -11,6 +11,6 @@ class ChooseMapCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseMap( inputRequier.requestInt( "Insert map code" ) );
+        controller.chooseMap( inputRequire.requestInt( "Insert map code" ) );
     }
 }

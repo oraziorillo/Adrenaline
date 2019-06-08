@@ -1,9 +1,8 @@
 package client.view.gui;
 
-import client.view.InputRequier;
-import server.enums.PcColourEnum;
+import client.view.InputRequire;
 
-public class GuiInputReader implements InputRequier {
+public class GuiInputReader implements InputRequire {
 
     //TODO: write this class when you know how gui works
     @Override

@@ -6,12 +6,15 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 import java.util.UUID;
 
+import static server.enums.SocketLoginEnum.LOGIN;
+import static server.enums.SocketLoginEnum.REGISTER;
 import static server.enums.SocketPlayerEnum.*;
 
 public class SocketPlayer extends AbstractSocketProxy implements RemotePlayer {
+
+    //è utile tenere in memoria username e token??
     private String username;
     private final UUID token;
-    
 
     public SocketPlayer(String username, UUID token) throws IOException {
         super();
