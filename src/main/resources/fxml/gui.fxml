@@ -39,7 +39,7 @@
             <VBox id="deck_box" >
             </VBox>
             <VBox alignment="CENTER_RIGHT" minWidth="${cardHolderRight.height}" prefWidth="${cardHolderRight.height}">
-                <fx:include source="card_holder.fxml"  fx:id="cardHolderRight" />
+                <fx:include source="card_holder.fxml" fx:id="cardHolderRight" />
             </VBox>
         </HBox>
 

@@ -25,7 +25,7 @@ public class SocketLoginController extends AbstractSocketProxy implements Remote
    @Override
    public RemotePlayer login(UUID token) throws IOException {
       out.println( LOGIN );
-      out.println( fromString );
+      out.println( token );
       out.flush();
       out.println( token );
       String username = in.readLine();
