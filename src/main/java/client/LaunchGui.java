@@ -19,6 +19,7 @@ import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Optional;
+
 import java.util.UUID;
 
 public class LaunchGui extends Application {
