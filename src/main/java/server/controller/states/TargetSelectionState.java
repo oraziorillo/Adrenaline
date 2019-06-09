@@ -85,8 +85,10 @@ public class TargetSelectionState extends State {
 
     @Override
     public void selectTarget(Pc targetPc) {
-        if (targetPc.getCurrSquare().isTargetable()) {
+        if (targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
+                if (currEffect.needsOriginalSquare())
+
                 if (currEffect.hasOnlyOneTarget()) {
                     currEffect.getActions().forEach(a -> a.selectPc(targetPc));
                 } else if (currAction.isAdditionalDamage()) {
