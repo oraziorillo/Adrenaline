@@ -4,10 +4,9 @@ import client.AbstractSocketProxy;
 import server.controller.RemotePlayer;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.UUID;
 
-import static server.enums.SocketLoginEnum.LOGIN;
-import static server.enums.SocketLoginEnum.REGISTER;
 import static server.enums.SocketPlayerEnum.*;
 
 public class SocketPlayer extends AbstractSocketProxy implements RemotePlayer {
@@ -16,8 +15,8 @@ public class SocketPlayer extends AbstractSocketProxy implements RemotePlayer {
     private String username;
     private final UUID token;
 
-    public SocketPlayer(String username, UUID token) throws IOException {
-        super();
+    public SocketPlayer(Socket socket,String username, UUID token) throws IOException {
+        super(socket);
         this.username = username;
         this.token = token;
     }
@@ -158,5 +157,6 @@ public class SocketPlayer extends AbstractSocketProxy implements RemotePlayer {
         in.close();
         socket.close();
     }
+    
     
 }
