@@ -1,7 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import server.enums.CardinalDirectionEnum;
+import common.enums.CardinalDirectionEnum;
 import server.model.Effect;
 import server.model.Pc;
 import server.model.PowerUpCard;

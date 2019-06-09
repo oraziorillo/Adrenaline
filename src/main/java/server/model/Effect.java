@@ -3,7 +3,7 @@ package server.model;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
-import server.enums.CardinalDirectionEnum;
+import common.enums.CardinalDirectionEnum;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import java.lang.reflect.Type;

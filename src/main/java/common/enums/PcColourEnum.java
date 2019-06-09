@@ -1,4 +1,4 @@
-package server.enums;
+package common.enums;
 
 /**
  * Enumerates the possible colours of a Pc. Has a method to get the Pc name (Not the Player's username)

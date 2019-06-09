@@ -1,6 +1,6 @@
-package client.view.gui.model_dtos;
+package common.model_dtos;
 
-import server.enums.AmmoEnum;
+import common.enums.AmmoEnum;
 
 public class PowerUpCardDTO extends Card{
    public static final String DEFAULT_NAME = "retro_powerup";

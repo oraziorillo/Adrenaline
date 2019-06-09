@@ -1,4 +1,4 @@
-package client.view.gui.model_dtos;
+package common.model_dtos;
 
 public abstract class Card {
    private static final String IMAGEPATHPREFIX = "/images/";

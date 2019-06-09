@@ -1,8 +1,8 @@
 package server.model;
 
 import com.google.gson.annotations.Expose;
-import server.enums.PcColourEnum;
-import server.enums.SquareColourEnum;
+import common.enums.PcColourEnum;
+import common.enums.SquareColourEnum;
 import server.model.squares.Square;
 import java.util.*;
 

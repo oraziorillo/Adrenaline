@@ -1,13 +1,12 @@
-package client.controller;
+package client.socket_proxies;
 
-import client.AbstractSocketProxy;
-import server.controller.RemotePlayer;
+import common.RemotePlayer;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
 
-import static server.enums.SocketPlayerEnum.*;
+import static common.enums.SocketPlayerEnum.*;
 
 public class SocketPlayer extends AbstractSocketProxy implements RemotePlayer {
 

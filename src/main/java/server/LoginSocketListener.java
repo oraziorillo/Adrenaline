@@ -2,7 +2,7 @@ package server;
 
 
 import server.controller.Player;
-import server.enums.SocketLoginEnum;
+import common.enums.SocketLoginEnum;
 
 import java.io.IOException;
 import java.io.PrintWriter;

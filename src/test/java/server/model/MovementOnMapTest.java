@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 import server.model.deserializers.GameBoardDeserializer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

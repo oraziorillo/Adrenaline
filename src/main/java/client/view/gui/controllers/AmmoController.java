@@ -4,7 +4,7 @@ import client.view.gui.custom_components.RatioGridPane;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import server.enums.AmmoEnum;
+import common.enums.AmmoEnum;
 
 import java.awt.*;
 

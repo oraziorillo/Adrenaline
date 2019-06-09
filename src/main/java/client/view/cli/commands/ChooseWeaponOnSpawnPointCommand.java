@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import server.controller.RemotePlayer;
+import common.RemotePlayer;
 import java.io.IOException;
 
 public class ChooseWeaponOnSpawnPointCommand extends CliCommand {

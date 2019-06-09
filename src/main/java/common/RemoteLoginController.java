@@ -1,6 +1,4 @@
-package server;
-
-import server.controller.RemotePlayer;
+package common;
 
 import java.io.IOException;
 import java.rmi.Remote;

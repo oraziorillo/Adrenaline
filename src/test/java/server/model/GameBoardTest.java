@@ -5,14 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
 import org.junit.Before;
-import server.enums.CardinalDirectionEnum;
+import common.enums.CardinalDirectionEnum;
 import server.model.deserializers.GameBoardDeserializer;
 import org.junit.Test;
 import server.model.squares.Square;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 

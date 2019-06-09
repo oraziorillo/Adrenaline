@@ -1,7 +1,7 @@
 package server.model;
 
-import server.enums.AmmoEnum;
-import server.enums.PcColourEnum;
+import common.enums.AmmoEnum;
+import common.enums.PcColourEnum;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
@@ -179,7 +179,7 @@ public class Pc {
         pcBoard.addDamage(colour, totalDamage);
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFEPOINTS - 2) {
-            //TODO notify server.controller e client
+            //TODO notify server.socket_proxies e client
             //currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
         }
         if (damageIndex > 4)

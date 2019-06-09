@@ -1,6 +1,6 @@
 package client.view.gui.controllers;
 
-import client.view.gui.model_dtos.Card;
+import common.model_dtos.Card;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;

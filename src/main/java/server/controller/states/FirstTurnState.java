@@ -4,7 +4,7 @@ import server.controller.Controller;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
-import server.enums.AmmoEnum;
+import common.enums.AmmoEnum;
 
 /**
  * Spawns the pcs for the first time

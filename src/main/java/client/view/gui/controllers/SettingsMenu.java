@@ -1,15 +1,11 @@
 package client.view.gui.controllers;
 
-import client.GuiClient;
-import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 public class SettingsMenu {
    @FXML

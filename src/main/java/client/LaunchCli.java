@@ -3,7 +3,7 @@ package client;
 import client.view.cli.CliView;
 import client.view.cli.commands.CliCommand;
 import client.view.cli.commands.CommandFactory;
-import server.controller.RemotePlayer;
+import common.RemotePlayer;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;

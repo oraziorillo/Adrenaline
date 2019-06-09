@@ -1,11 +1,11 @@
 package client.view.cli;
 
 import client.ServerListener;
-import client.controller.SocketLoginController;
-import client.view.InputRequire;
+import client.socket_proxies.SocketLoginController;
+import client.view.InputReader;
 import client.view.RemoteView;
-import server.RemoteLoginController;
-import server.controller.RemotePlayer;
+import common.RemoteLoginController;
+import common.RemotePlayer;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -15,7 +15,7 @@ import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class CliView implements RemoteView, InputRequire {
+public class CliView implements RemoteView, InputReader {
 
     private static final String NOPE = "Invalid Command";
 

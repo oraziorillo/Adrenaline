@@ -1,4 +1,4 @@
-package server.enums;
+package common.enums;
 
 public enum SocketLoginEnum {
    REGISTER,

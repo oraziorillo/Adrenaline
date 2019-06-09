@@ -1,7 +1,7 @@
 package server.model;
 
-import server.enums.CardinalDirectionEnum;
-import server.enums.SquareColourEnum;
+import common.enums.CardinalDirectionEnum;
+import common.enums.SquareColourEnum;
 import server.model.squares.AmmoSquare;
 import server.model.squares.Square;
 import org.junit.Before;

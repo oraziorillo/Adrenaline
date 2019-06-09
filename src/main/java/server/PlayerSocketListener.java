@@ -1,7 +1,7 @@
 package server;
 
 import server.controller.Player;
-import server.enums.SocketPlayerEnum;
+import common.enums.SocketPlayerEnum;
 
 import java.io.BufferedReader;
 import java.io.IOException;

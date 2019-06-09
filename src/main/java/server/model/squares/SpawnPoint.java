@@ -1,7 +1,7 @@
 package server.model.squares;
 
 import com.google.gson.annotations.Expose;
-import server.enums.SquareColourEnum;
+import common.enums.SquareColourEnum;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;

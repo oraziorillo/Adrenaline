@@ -2,10 +2,7 @@ package server;
 
 import server.controller.Controller;
 import server.controller.Player;
-import server.enums.PcColourEnum;
 import server.exceptions.PlayerAlreadyLoggedInException;
-import server.model.Game;
-import server.model.Pc;
 
 import javax.swing.Timer;
 import java.io.FileNotFoundException;
@@ -93,7 +90,7 @@ class Lobby {
         try {
             if (!old)
                 this.controller = new Controller(players);
-            //TODO: else this.controller = fromJson
+            //TODO: else this.socket_proxies = fromJson
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

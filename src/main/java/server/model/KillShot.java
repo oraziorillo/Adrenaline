@@ -1,6 +1,6 @@
 package server.model;
 
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 
 /**
  * A single kill marker

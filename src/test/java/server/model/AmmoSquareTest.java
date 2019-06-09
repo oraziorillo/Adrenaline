@@ -1,6 +1,6 @@
 package server.model;
 
-import server.enums.SquareColourEnum;
+import common.enums.SquareColourEnum;
 import server.exceptions.EmptySquareException;
 import server.model.squares.AmmoSquare;
 import org.junit.Before;

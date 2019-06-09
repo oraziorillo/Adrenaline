@@ -1,7 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 import server.model.Pc;
 
 /**

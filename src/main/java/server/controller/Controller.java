@@ -1,6 +1,6 @@
 package server.controller;
 
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;

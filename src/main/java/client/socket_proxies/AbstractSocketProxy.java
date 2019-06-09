@@ -1,4 +1,4 @@
-package client;
+package client.socket_proxies;
 
 import java.io.BufferedReader;
 import java.io.IOException;

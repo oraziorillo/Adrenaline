@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import server.controller.RemotePlayer;
+import common.RemotePlayer;
 import static client.view.cli.CommandsStrings.*;
 
 public class CommandFactory {

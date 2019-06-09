@@ -1,6 +1,6 @@
 package server.model;
 
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 import static server.model.Constants.AMMO_COLOURS_NUMBER;
 import static server.model.Constants.LIFEPOINTS;
 

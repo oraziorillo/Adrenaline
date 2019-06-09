@@ -1,7 +1,8 @@
 package server;
 
+import common.RemoteLoginController;
 import server.controller.Player;
-import server.controller.RemotePlayer;
+import common.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

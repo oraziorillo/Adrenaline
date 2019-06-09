@@ -1,4 +1,4 @@
-package client.view.gui.model_dtos;
+package common.model_dtos;
 
 public class WeaponCardDTO extends Card {
    private static final String DEFAULT_NAME = "retro_arma";

@@ -1,4 +1,4 @@
-package server.enums;
+package common.enums;
 
 import com.google.gson.annotations.SerializedName;
 

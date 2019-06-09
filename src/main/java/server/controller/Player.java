@@ -1,5 +1,6 @@
 package server.controller;
 
+import common.RemotePlayer;
 import org.jetbrains.annotations.Contract;
 import server.controller.states.State;
 import server.model.Pc;

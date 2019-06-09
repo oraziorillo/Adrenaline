@@ -1,21 +1,14 @@
 package client.view.gui.controllers;
 
-import client.view.gui.model_dtos.PowerUpCardDTO;
-import client.view.gui.model_dtos.WeaponCardDTO;
+import common.model_dtos.PowerUpCardDTO;
+import common.model_dtos.WeaponCardDTO;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import server.controller.RemotePlayer;
-import server.enums.CardinalDirectionEnum;
-
-import java.io.IOException;
+import common.RemotePlayer;
+import common.enums.CardinalDirectionEnum;
 
 public class guiController {
    @FXML private GridPane killShotTrack;

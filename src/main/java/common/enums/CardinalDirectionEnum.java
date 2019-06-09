@@ -1,4 +1,4 @@
-package server.enums;
+package common.enums;
 
 /**
  * Enumerates the 4 cardinal directions

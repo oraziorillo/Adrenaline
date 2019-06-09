@@ -1,4 +1,4 @@
-package server.controller;
+package common;
 
 import java.io.IOException;
 import java.rmi.Remote;
