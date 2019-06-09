@@ -23,8 +23,6 @@ ROBA DA CONTROLLER
 
  - considerare l'utilizzo di undo quando è final frenzy and in shootpeopleState seleziona l'arma
 
- - considerare la situazione in cui un giocatore attacca se stesso
-
  - considerare di dover rimischiare il deck di ammoTile se finisce
  
  - far saltare il turno dopo tot tempo di inattività
@@ -34,7 +32,7 @@ REGOLE DA IMPLEMENTARE:
 - funzione che attribuisce punti dopo una kill (ricordarsi Double kill: - Double kill? If you deal multiple killshots on your turn, you get 1 extra
 point. And you are awesome)
 
--"Choose starting player" 
+-"Choose starting player" opzionale
 
 - Action-hero comment
 

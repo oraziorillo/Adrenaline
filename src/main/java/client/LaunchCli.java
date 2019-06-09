@@ -1,6 +1,5 @@
 package client;
 
-import client.controller.ClientController;
 import client.view.cli.CliView;
 
 import java.io.IOException;

@@ -2,11 +2,11 @@ package client.view.gui.controllers;
 
 import client.view.gui.custom_components.RatioGridPane;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import server.enums.AmmoEnum;
 
-import java.awt.*;
 
 public class AmmoController {
    @FXML
