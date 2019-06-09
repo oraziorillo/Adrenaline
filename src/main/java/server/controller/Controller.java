@@ -26,7 +26,7 @@ public class Controller{
     private List<Player> players;
     private Set<PcColourEnum> availablePcColours;
     private Set<Square> squaresToRefill;
-    private List<Player> killedPlayers;
+    private LinkedList<Player> deadPlayers;
 
 
     public Controller(List<Player> players) throws FileNotFoundException {
@@ -60,8 +60,8 @@ public class Controller{
     }
 
 
-    public List<Player> getKilledPlayers() {
-        return killedPlayers;
+    public LinkedList<Player> getDeadPlayers() {
+        return deadPlayers;
     }
 
     public int getCurrPlayerIndex() {
@@ -133,24 +133,25 @@ public class Controller{
 
 
     public void nextTurn() {
-        if (killedPlayers.isEmpty()) {
-            if (currPlayerIndex == players.size() - 1)
-                currPlayerIndex = 0;
-            else
-                currPlayerIndex++;
+        if (deadPlayers.isEmpty()) {
+            increaseCurrPlayerIndex();
             getCurrPlayer().setActive();
         } else {
-            killedPlayers.get(0).hasToRespawn();
+            deadPlayers.get(0).hasToRespawn();
         }
     }
 
+    public void increaseCurrPlayerIndex(){
+        if (currPlayerIndex == players.size() - 1)
+            currPlayerIndex = 0;
+        else
+            currPlayerIndex++;
+    }
 
-    public boolean isBefore(Player playerBefore, Player playerNext){
-        if (players.indexOf(playerBefore) == players.size() - 1 && players.indexOf(playerNext) == 0)
-            return true;
-        if (players.indexOf(playerBefore) + 1 == players.indexOf(playerNext))
-            return true;
-        return false;
+
+    public boolean isNextOnDuty(Player player){
+        return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
+                currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
     }
 
 

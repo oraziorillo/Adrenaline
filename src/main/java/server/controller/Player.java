@@ -68,7 +68,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     void hasToRespawn(){
         if (currState.isInactive()){
-            currState.setHasToRespawn();
+            currState.setHasToRespawn(true);
             currState = currState.nextState();
         }
     }

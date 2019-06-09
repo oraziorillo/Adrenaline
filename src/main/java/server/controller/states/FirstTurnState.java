@@ -21,6 +21,7 @@ public class FirstTurnState extends State{
         this.pcToSpawn.drawPowerUp();
         this.pcToSpawn.drawPowerUp();
     }
+
     
     /**
      * Sets the params for later respawn. See the game manual for the dynamics
@@ -32,6 +33,7 @@ public class FirstTurnState extends State{
             this.powerUpToDropIndex = powerUpToDropIndex;
         }
     }
+
 
     /**
      * Executes the respawn: Puts the pre-given pc on the GenerationSquare of the colour of the card with the given index
@@ -49,6 +51,7 @@ public class FirstTurnState extends State{
         }
         return false;
     }
+
     
     /**
      * @return StartTurnState

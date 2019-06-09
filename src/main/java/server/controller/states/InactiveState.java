@@ -24,8 +24,8 @@ public class InactiveState extends State {
     }
 
 
-    public void setHasToRespawn() {
-        this.hasToRespawn = true;
+    public void setHasToRespawn(boolean hasToRespawn) {
+        this.hasToRespawn = hasToRespawn;
     }
 
 
@@ -37,7 +37,7 @@ public class InactiveState extends State {
     @Override
     public State nextState() {
         if (hasToRespawn)
-            return new RespawnAfterDeathState(controller);
+            return new RespawnState(controller);
         switch (nextState){
             case PC_SELECTION_STATE:
                 return new PcSelectionState(controller);

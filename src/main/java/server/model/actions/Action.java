@@ -1,19 +1,22 @@
 package server.model.actions;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import server.enums.CardinalDirectionEnum;
-import server.model.*;
+import server.model.Pc;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
+
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 
 public abstract class Action {
 
     @Expose private boolean optional;
+    @Expose private boolean parameterized;
     @Expose int maxNumberOfTargets;
     @Expose TargetChecker targetChecker;
     TargetChecker orientedTargetChecker;
@@ -29,6 +32,7 @@ public abstract class Action {
 
     Action (JsonObject jsonAction){
         this.optional = jsonAction.get("optional").getAsBoolean();
+        this.parameterized = jsonAction.get("parameterized").getAsBoolean();
         this.maxNumberOfTargets = jsonAction.get("maxNumberOfTargets").getAsInt();
         this.targetChecker = new EmptyChecker();
 
@@ -69,11 +73,13 @@ public abstract class Action {
         }
     }
 
-
     public boolean isOptional() {
         return optional;
     }
 
+    public boolean isParameterized() {
+        return parameterized;
+    }
 
     public boolean isExplosive() {
         return false;
@@ -98,13 +104,6 @@ public abstract class Action {
     public boolean isExclusiveForOldTargets() {
         return false;
     }
-
-
-    //methods for tests
-    public List<Pc> getTargets(){
-        return targets;
-    }
-    /// end methods for tests
 
 
     public void setTargetSquare(Square s){

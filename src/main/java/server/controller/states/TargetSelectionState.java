@@ -2,12 +2,13 @@ package server.controller.states;
 
 import server.controller.Controller;
 import server.enums.CardinalDirectionEnum;
-import server.model.Pc;
 import server.model.Effect;
-import server.model.actions.Action;
+import server.model.Pc;
 import server.model.PowerUpCard;
+import server.model.actions.Action;
 import server.model.squares.Square;
-import java.util.HashSet;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,12 +20,12 @@ public class TargetSelectionState extends State {
     private List<Effect> effectsToApply;
     private Effect currEffect;
     private Action currAction;
-    private Set<Pc> shotTargets;
+    private List<Pc> shotTargets;
     private Set<Square> targetableSquares;
 
     TargetSelectionState(Controller controller) {
         super(controller);
-        this.shotTargets = new HashSet<>();
+        this.shotTargets = new LinkedList<>();
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
@@ -32,13 +33,13 @@ public class TargetSelectionState extends State {
     }
 
 
-    private boolean hasNext(){
+    private boolean hasNextAction(){
         return actionIndex != currEffect.getActions().size() - 1 ||
                 effectIndex != effectsToApply.size() - 1;
     }
 
 
-    private void next(){
+    private void nextAction(){
         if(actionIndex == currEffect.getActions().size() -1){
             controller.getCurrPc().payAmmo(currEffect.getCost());
             currEffect.execute(controller.getCurrPc());
@@ -48,7 +49,14 @@ public class TargetSelectionState extends State {
         } else
             actionIndex++;
         controller.getGame().setTargetableSquares(targetableSquares, false);
-        setTargetableToValidSquares(controller.getCurrPc());
+        if(!currAction.isParameterized()) {
+            ok();
+            return;
+        }
+        if(controller.getCurrWeapon().isChained())
+            setTargetableToValidSquares(shotTargets.get(shotTargets.size() - 1));
+        else
+            setTargetableToValidSquares(controller.getCurrPc());
         currAction = currEffect.getActionAtIndex(actionIndex);
     }
 
@@ -106,10 +114,10 @@ public class TargetSelectionState extends State {
     @Override
     public boolean skipAction() {
         if (currAction.isOptional()) {
-            if (!hasNext()) {
+            if (!hasNextAction()) {
                 return true;
             }
-            next();
+            nextAction();
         }
         return false;
     }
@@ -120,8 +128,8 @@ public class TargetSelectionState extends State {
         if (currEffect.isOriented() && !directionSelected)
             return false;
         if (currAction.isComplete()) {
-            if (hasNext()) {
-                next();
+            if (hasNextAction()) {
+                nextAction();
                 return false;
             } else {
                 controller.getCurrPc().payAmmo(currEffect.getCost());

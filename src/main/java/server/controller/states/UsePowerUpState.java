@@ -2,9 +2,11 @@ package server.controller.states;
 
 import server.controller.Controller;
 import server.model.Pc;
-import server.model.actions.Action;
 import server.model.PowerUpCard;
+import server.model.actions.Action;
 import server.model.squares.Square;
+
+import java.util.List;
 import java.util.Set;
 
 public class UsePowerUpState extends State {
@@ -13,10 +15,10 @@ public class UsePowerUpState extends State {
     private boolean undo = false;
     private PowerUpCard currPowerUp;
     private Action currAction;
-    private Set<Pc> targetablePcs;
+    private List<Pc> targetablePcs;
     private Set<Square> targetableSquares;
 
-    UsePowerUpState(Controller controller, Set<Pc> targetables) {
+    UsePowerUpState(Controller controller, List<Pc> targetables) {
         super(controller);
         actionIndex = 0;
         this.targetablePcs = targetables;

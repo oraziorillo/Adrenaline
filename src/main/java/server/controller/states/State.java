@@ -1,7 +1,6 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import server.controller.Player;
 import server.enums.CardinalDirectionEnum;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -62,7 +61,7 @@ public abstract class State {
 
     public void selectDirection(CardinalDirectionEnum direction) {}
 
-    public void setHasToRespawn() {}
+    public void setHasToRespawn(boolean hasToRespawn) {}
 
     public boolean skipAction() {
         return false;
