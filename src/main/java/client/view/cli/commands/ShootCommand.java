@@ -5,8 +5,8 @@ import java.io.IOException;
 
 final class ShootCommand extends CliCommand {
 
-    ShootCommand(RemotePlayer controller, boolean gui) {
-        super( controller, gui );
+    ShootCommand(RemotePlayer controller) {
+        super( controller );
     }
 
     @Override

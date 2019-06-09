@@ -5,8 +5,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 class QuitCommand extends CliCommand {
-    QuitCommand(RemotePlayer controller, boolean gui) {
-        super(controller, gui);
+    QuitCommand(RemotePlayer controller) {
+        super(controller );
     }
 
     @Override

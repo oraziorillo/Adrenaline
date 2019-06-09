@@ -5,8 +5,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 class GrabStuffCommand extends CliCommand {
-    GrabStuffCommand(RemotePlayer controller, boolean gui) {
-        super(controller, gui );
+    GrabStuffCommand(RemotePlayer controller) {
+        super(controller );
     }
 
     @Override

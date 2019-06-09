@@ -26,7 +26,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Contract(pure = true)
     public Player(String username, UUID token) throws RemoteException {
-        super();
         this.username = username;
         this.token = token;
     }
@@ -226,6 +225,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void quit() {
         //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
+    
     
 }
 

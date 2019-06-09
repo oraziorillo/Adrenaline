@@ -9,7 +9,7 @@ public class ServerListener implements Runnable {
    private final Socket server;
    private final Scanner in;
    
-   ServerListener(Socket server) {
+   public ServerListener(Socket server) {
       this.server = server;
       try {
          in = new Scanner( server.getInputStream() );
