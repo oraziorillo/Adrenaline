@@ -1,10 +1,10 @@
 package client;
 
-import java.io.IOException;
+import static javafx.application.Application.launch;
 
 public class LaunchGui {
 
-    public static void main(String[] args) throws IOException{
-
+    public static void main(String[] args) {
+        launch(GuiClient.class,args);
     }
 }

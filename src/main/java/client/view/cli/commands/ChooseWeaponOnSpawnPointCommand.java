@@ -4,8 +4,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 public class ChooseWeaponOnSpawnPointCommand extends CliCommand {
-    ChooseWeaponOnSpawnPointCommand(RemotePlayer controller, boolean gui) {
-        super(controller, gui );
+    ChooseWeaponOnSpawnPointCommand(RemotePlayer controller) {
+        super(controller );
     }
 
     @Override

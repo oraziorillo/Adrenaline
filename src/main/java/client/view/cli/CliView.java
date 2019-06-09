@@ -1,9 +1,17 @@
 package client.view.cli;
-import client.controller.ClientController;
-import client.controller.RMIController;
-import client.controller.SocketController;
+
+import client.ServerListener;
+import client.controller.SocketLoginController;
 import client.view.InputRequire;
 import client.view.RemoteView;
+import server.RemoteLoginController;
+import server.controller.RemotePlayer;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.rmi.NotBoundException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -11,7 +19,7 @@ public class CliView implements RemoteView, InputRequire {
 
     private static final String NOPE = "Invalid Command";
 
-    private ClientController controller;
+    private RemoteLoginController controller;
     private Scanner inputFromKeyBoard;
 
     public CliView(){
@@ -36,22 +44,28 @@ public class CliView implements RemoteView, InputRequire {
     }
 
 
-    public void getConnection() {
+    public void setupConnection() throws IOException, NotBoundException {
         String cmd;
+        boolean validCommand;
         do {
-            cmd = requestString("(s)ocket \n (r)mi");
-            if (!cmd.equals("s") && !cmd.equals("r"))
-                System.out.println(NOPE);
-        } while (cmd.equals("s") || cmd.equals("r"));
-
-        if (cmd.equals("s"))
-            controller = new SocketController(this);
-        else
-            controller = new RMIController(this);
+            cmd = requestString( "(s)ocket \n (r)mi" );
+            validCommand = cmd.equals( "s" ) || cmd.equals( "r" );
+            if (!validCommand)
+                System.out.println( NOPE );
+        } while (!validCommand);
+    
+        if (cmd.equals( "s" )) {
+            Socket socket = new Socket("localhost",10000);
+            controller = new SocketLoginController( socket );
+            new Thread(new ServerListener(socket)).start();
+        }else {
+            Registry registry = LocateRegistry.getRegistry( "localhost", 9999 );
+            controller = ( RemoteLoginController ) registry.lookup( "LoginController" );
+        }
     }
 
 
-    public void login_register() {
+    public RemotePlayer login_register() throws IOException {
         UUID token = null;
         System.out.println("Do you have a login token?");
         do {
@@ -70,22 +84,13 @@ public class CliView implements RemoteView, InputRequire {
                         username = inputFromKeyBoard.next();
                         System.out.println(username + System.lineSeparator() + "Are you sure? Retype it to confirm.");
                     } while (!inputFromKeyBoard.next().equals(username));
-                    token = controller.registerWith(username);
+                    token = controller.register(username);
+                    System.out.println("This is your access token. Save it to access next time!");
                     break;
                 default:
                     System.out.println(NOPE);
             }
         } while (token == null);
-        controller.login(token);
-    }
-
-
-    public void listening(){
-        //controller.startMessaging();
-        String message;
-        do {
-            message = inputFromKeyBoard.next();
-            controller.sendMessage(message);
-        } while (!message.startsWith(":q"));
+        return controller.login(token);
     }
 }
