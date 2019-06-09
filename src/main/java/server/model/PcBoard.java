@@ -12,6 +12,8 @@ public class PcBoard {
     private short[] marks;
     private short[] ammo;
     private PcColourEnum[] damageTrack;
+    private int [] pcValue;
+    private int pcValueIndex;
 
     public PcBoard(){
         this.points = 0;
@@ -19,6 +21,8 @@ public class PcBoard {
         this.damageTrackIndex = 0;
         this.marks = new short[5];
         this.ammo = new short[3];
+        this.pcValue = new int[]{8, 6, 4, 2, 1, 1};
+        this.pcValueIndex = 0;
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
         for(int i = 0; i < 3; i++){
             ammo[i] = 1;
@@ -50,9 +54,22 @@ public class PcBoard {
         return damageTrackIndex;
     }
 
+    public int getPcValueIndex() {
+        return pcValueIndex;
+    }
+
+    public int[] getPcValue() {
+        return pcValue;
+    }
 
     public short getMarks(PcColourEnum selectedColour) {
         return marks[selectedColour.ordinal()];
+    }
+
+
+    public void flipBoard(){
+        pcValue = new int[] {2, 1, 1, 1};
+        pcValueIndex = 0;
     }
 
     public void increasePoints(int earnedPoints){
@@ -63,6 +80,10 @@ public class PcBoard {
         numOfDeaths++;
     }
 
+    public void increasePcValueIndex(){
+        if (pcValueIndex != 5)
+            pcValueIndex++;
+    }
 
     public void addDamage(PcColourEnum shooterColour, short numOfDamage){
         while (numOfDamage != 0) {

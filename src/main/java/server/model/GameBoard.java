@@ -95,11 +95,11 @@ public class GameBoard {
      * @param killerColour the colour of the killer
      * @param overkilled se the game manual
      */
-    void killOccured(PcColourEnum killerColour, Boolean overkilled){
+    boolean killOccured(PcColourEnum killerColour, Boolean overkilled){
         killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
         currentKillShotTrackIndex--;
-        if(currentKillShotTrackIndex < 0){
-            //call observer to notify state change in finalFrenzy;
-        }
+        if(currentKillShotTrackIndex < 0)
+            return true;
+        return false;
     }
 }

@@ -15,6 +15,7 @@ public class RespawnState extends State {
     RespawnState(Controller controller) {
         super(controller);
         this.powerUpIndex = -1;
+        controller.getGame().registerDeath(deadPlayer.getPc());
         deadPlayer = controller.getDeadPlayers().poll();
         deadPlayer.getPc().drawPowerUp();
 }

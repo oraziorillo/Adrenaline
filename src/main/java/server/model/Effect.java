@@ -15,7 +15,7 @@ public class Effect {
     @Expose private boolean beyondWalls;
     @Expose private boolean asynchronous;
     @Expose private boolean sameTarget;
-    @Expose private boolean needsOriginalSquare;    //per il rocket laucher
+    @Expose private boolean memorizeTargetSquare;   //per il rocket launcher
     @Expose private short[] cost;
     @Expose private List<Action> actions;
 
@@ -30,7 +30,7 @@ public class Effect {
         this.beyondWalls = jsonEffect.get("beyondWalls").getAsBoolean();
         this.asynchronous = jsonEffect.get("asynchronous").getAsBoolean();
         this.sameTarget = jsonEffect.get("sameTarget").getAsBoolean();
-        this.needsOriginalSquare = jsonEffect.get("needsOriginalSquare").getAsBoolean();
+        this.memorizeTargetSquare = jsonEffect.get("memorizeTargetSquare").getAsBoolean();
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         JsonDeserializer<Action> actionDeserializer = new ActionDeserializer();
@@ -55,8 +55,8 @@ public class Effect {
         return sameTarget;
     }
 
-    public boolean needsOriginalSquare() {
-        return needsOriginalSquare;
+    public boolean memorizeTargetSquare() {
+        return memorizeTargetSquare;
     }
 
     public void assignDirection(CardinalDirectionEnum direction) {
