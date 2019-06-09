@@ -3,7 +3,7 @@ package client.view.cli;
 /**
  * This is a support class containing the possible cli commands
  */
-public abstract class Commands{
+public abstract class CommandsStrings {
     private static final String COMMAND_PREFIX = ":";
     public static final String QUIT_LONG = COMMAND_PREFIX + "quit";
     public static final String QUIT_SHORT = COMMAND_PREFIX + "q";

@@ -5,8 +5,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 class SelectSquareCommand extends CliCommand {
-    SelectSquareCommand(RemotePlayer controller, boolean gui) {
-        super(controller, gui );
+    SelectSquareCommand(RemotePlayer controller) {
+        super(controller );
     }
 
     @Override

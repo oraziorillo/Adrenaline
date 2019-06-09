@@ -4,8 +4,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 public class ChooseWeaponOfMineCommand extends CliCommand {
-    ChooseWeaponOfMineCommand(RemotePlayer controller, boolean gui) {
-        super(controller, gui );
+    ChooseWeaponOfMineCommand(RemotePlayer controller) {
+        super(controller );
     }
 
     @Override

@@ -5,8 +5,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 class ChooseMapCommand extends CliCommand {
-    ChooseMapCommand(RemotePlayer controller, boolean gui) {
-        super(controller, gui);
+    ChooseMapCommand(RemotePlayer controller) {
+        super(controller );
     }
 
     @Override

@@ -6,7 +6,7 @@ package client.view.cli.commands;
 public class UselessCommand extends CliCommand {
     UselessCommand() {
         //Just filling superclass contructor
-        super( null, false);
+        super( null );
     }
 
     /**

@@ -5,8 +5,8 @@ import server.controller.RemotePlayer;
 import java.io.IOException;
 
 class SkipCommand extends CliCommand {
-   SkipCommand(RemotePlayer controller, boolean gui) {
-      super(controller, gui );
+   SkipCommand(RemotePlayer controller) {
+      super(controller );
    }
    
    @Override
