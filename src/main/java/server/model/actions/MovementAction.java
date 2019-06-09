@@ -83,7 +83,7 @@ public class MovementAction extends Action {
 
     @Override
     public boolean isComplete() {
-        return (selfMovement || !targets.isEmpty()) &&
-                targetSquare != null;
+        return !isParameterized() ||
+                ((selfMovement || !targets.isEmpty()) && targetSquare != null);
     }
 }

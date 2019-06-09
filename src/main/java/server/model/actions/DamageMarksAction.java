@@ -29,7 +29,7 @@ public class DamageMarksAction extends Action {
 
     @Override
     public boolean isComplete() {
-        return !targets.isEmpty();
+        return !isParameterized() || !targets.isEmpty();
     }
 
 

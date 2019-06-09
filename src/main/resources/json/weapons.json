@@ -2,6 +2,7 @@
   {
     "name": "Lock Rifle",
     "colour":"BLUE",
+    "chained": false,
     "ammo": [
       2,
       0,
@@ -21,6 +22,7 @@
         "actions": [
            {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 2,
             "marks": 1,
@@ -52,6 +54,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 0,
             "marks": 1,
@@ -73,6 +76,7 @@
   {
     "name": "Machine Gun",
     "colour":"BLUE",
+    "chained": false,
     "ammo": [
       1,
       1,
@@ -88,6 +92,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 1,
             "marks": 0,
@@ -116,6 +121,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 1,
             "marks": 0,
@@ -142,6 +148,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 1,
             "marks": 0,
@@ -158,6 +165,7 @@
           },
           {
             "optional": true,
+            "parameterized": true,
             "isMovement": false,
             "damage": 1,
             "marks": 0,
@@ -179,6 +187,7 @@
   {
     "name": "T.H.O.R.",
     "colour":"BLUE",
+    "chained": false,
     "ammo": [
       1,
       1,
@@ -194,6 +203,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 2,
             "marks": 0,
@@ -221,6 +231,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 1,
             "marks": 0,
@@ -246,6 +257,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 2,
             "marks": 0,
@@ -267,6 +279,7 @@
   {
     "name": "Plasma Gun",
     "colour": "BLUE",
+    "chained": false,
     "ammo": [
       1,
       0,
@@ -282,6 +295,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 2,
             "marks": 0,
@@ -310,6 +324,7 @@
         "actions": [
           {
             "optional": true,
+            "parameterized": true,
             "isMovement": true,
             "maxNumberOfTargets": 1,
             "selfMovement": true,
@@ -336,6 +351,7 @@
         "actions": [
            {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 1,
             "marks": 0,
@@ -357,6 +373,7 @@
   {
     "name": "Whisper",
     "colour": "BLUE",
+    "chained": false,
     "ammo": [
       2,
       1,
@@ -372,6 +389,7 @@
         "actions": [
           {
             "optional": false,
+            "parameterized": true,
             "isMovement": false,
             "damage": 3,
             "marks": 1,

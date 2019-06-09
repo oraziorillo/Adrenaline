@@ -6,10 +6,11 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+
+import javax.swing.text.html.ImageView;
 
 
 public class CardHand <T extends Card>{
@@ -18,7 +19,8 @@ public class CardHand <T extends Card>{
    @FXML
    HBox cardBox;
    @FXML ImageView card0;
-   @FXML ImageView card1;
+   @FXML
+   ImageView card1;
    @FXML ImageView card2;
    private ImageView[] cardsImages;
    private TranslateTransition[] transitions = new TranslateTransition[3];

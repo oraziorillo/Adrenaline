@@ -10,6 +10,7 @@ import static server.enums.SocketLoginEnum.*;
 
 public class SocketLoginController extends AbstractSocketProxy implements RemoteLoginController {
 
+
    public SocketLoginController() throws IOException {}
    
    

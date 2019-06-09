@@ -13,6 +13,7 @@ import java.util.List;
 public class WeaponCard {
     @Expose private String name;
     @Expose private AmmoEnum colour;
+    @Expose private boolean chained;
     @Expose private short[] ammo;
     @Expose private List<Effect> fireModes;
     @Expose private List<Effect> upgrades;
@@ -33,10 +34,11 @@ public class WeaponCard {
      */
     public WeaponCard(JsonObject jsonWeaponCard) {
         this.name = jsonWeaponCard.get("name").getAsString();
-        this.loaded = true;
         this.colour = AmmoEnum.valueOf(jsonWeaponCard.get("colour").getAsString());
+        this.chained = jsonWeaponCard.get("chained").getAsBoolean();
         this.ammo = new short[3];
         this.currentCost = new short[3];
+        this.loaded = true;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
@@ -53,6 +55,9 @@ public class WeaponCard {
         effectsToApply.add(fireModes.get(0));
     }
 
+    public boolean isChained() {
+        return chained;
+    }
 
     public boolean isLoaded(){
         return loaded;

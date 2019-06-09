@@ -16,8 +16,8 @@ public abstract class AbstractSocketProxy {
 
 
    public AbstractSocketProxy() throws IOException {
-      this.socket = new Socket( IP, PORT );
-      out = new PrintWriter( socket.getOutputStream() );
-      in = new BufferedReader( new InputStreamReader( socket.getInputStream() ) );
+      this.socket = new Socket(IP, PORT);
+      out = new PrintWriter(socket.getOutputStream());
+      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
    }
 }

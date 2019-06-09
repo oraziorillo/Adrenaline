@@ -36,11 +36,5 @@ public class PowerUpCard {
         this.selectedAsAmmo = selectedAsAmmo;
     }
 
-
-    //public void useAsAmmo(){
-    //  questo metodo sembra inutile: basta inserire le carte powerup da usare come ammo in WeaponCard
-    //}
-
-    //public abstract void useToRespawn();    anche questo inutile: il server.controller gestisce il resetDamageTrack
 }
 
