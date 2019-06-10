@@ -106,6 +106,11 @@ public abstract class Action {
     }
 
 
+    public boolean needsOldSquare() { return false; }
+
+
+
+
     public void setTargetSquare(Square s){
         this.targetSquare = s;
     }

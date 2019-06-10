@@ -20,6 +20,7 @@ public class TargetSelectionState extends State {
     private List<Effect> effectsToApply;
     private Effect currEffect;
     private Action currAction;
+    private Square oldTargetSquare;
     private List<Pc> shotTargets;
     private Set<Square> targetableSquares;
 
@@ -49,7 +50,9 @@ public class TargetSelectionState extends State {
         } else
             actionIndex++;
         controller.getGame().setTargetableSquares(targetableSquares, false);
-        if(!currAction.isParameterized()) {
+        if (!currAction.isParameterized()) {
+            if (currAction.needsOldSquare())
+                currAction.selectSquare(oldTargetSquare);
             ok();
             return;
         }
@@ -58,6 +61,14 @@ public class TargetSelectionState extends State {
         else
             setTargetableToValidSquares(controller.getCurrPc());
         currAction = currEffect.getActionAtIndex(actionIndex);
+    }
+
+
+    private void setDeadPlayers(){
+        controller.getPlayers().stream().forEach(player -> {
+            if (player.getPc().getDamageTrack()[10] != null)
+                controller.addDeadPlayer(player);
+        });
     }
 
 
@@ -87,8 +98,8 @@ public class TargetSelectionState extends State {
     public void selectTarget(Pc targetPc) {
         if (targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
-                if (currEffect.needsOriginalSquare())
-
+                if (currEffect.memorizeTargetSquare())
+                    oldTargetSquare = targetPc.getCurrSquare();
                 if (currEffect.hasOnlyOneTarget()) {
                     currEffect.getActions().forEach(a -> a.selectPc(targetPc));
                 } else if (currAction.isAdditionalDamage()) {
@@ -138,6 +149,7 @@ public class TargetSelectionState extends State {
                 currEffect.execute(controller.getCurrPc());
                 controller.getCurrWeapon().reset();
                 controller.getGame().setTargetableSquares(targetableSquares, false);
+                setDeadPlayers();
                 return true;
             }
         }
