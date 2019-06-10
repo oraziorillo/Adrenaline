@@ -1,4 +1,4 @@
-package client.view.cli.controller;
+package client.controller;
 
 import common.rmi_interfaces.RemoteLoginController;
 import common.rmi_interfaces.RemotePlayer;

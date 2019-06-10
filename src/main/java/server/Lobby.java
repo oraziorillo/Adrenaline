@@ -90,7 +90,7 @@ class Lobby {
         try {
             if (!old)
                 this.controller = new Controller(players);
-            //TODO: else this.socket_proxies = fromJson
+            //TODO: else this.controller = fromJson
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

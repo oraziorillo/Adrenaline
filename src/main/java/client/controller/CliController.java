@@ -1,11 +1,10 @@
-package client.view.cli.controller;
+package client.controller;
 
-import client.socket.ServerListener;
 import client.socket.proxies.SocketLoginController;
 import client.view.InputReader;
-import client.view.cli.CliInputReader;
 import common.rmi_interfaces.RemoteLoginController;
 import common.rmi_interfaces.RemotePlayer;
+import common.rmi_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,9 +16,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class CliController implements AbstractClientController {
+public class CliController implements AbstractClientController, RemoteView {
    
-   private Scanner inputFromKeyBoard = new Scanner( System.in );
    public static final String NOPE = "Illegal command";
    private final InputReader inputReader;
    
@@ -44,7 +42,6 @@ public class CliController implements AbstractClientController {
       if(socketCommands.contains( cmd )){
          Socket socket = new Socket(HOST,SOCKET_PORT);
          controller = new SocketLoginController( socket );
-         new Thread(new ServerListener(socket)).start();
       }else {  //if the loop has ended, cmd is an rmi command
          Registry registry = LocateRegistry.getRegistry( HOST,RMI_PORT );
          controller = ( RemoteLoginController ) registry.lookup( "LoginController" );
@@ -72,5 +69,10 @@ public class CliController implements AbstractClientController {
          }
       } while (token == null);
       return loginController.login(token);
+   }
+   
+   @Override
+   public void showMessage(String message) {
+      System.out.println(message);
    }
 }

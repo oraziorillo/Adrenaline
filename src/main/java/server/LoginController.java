@@ -4,6 +4,8 @@ import common.rmi_interfaces.RemoteLoginController;
 import server.controller.Player;
 import common.rmi_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
+
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
@@ -61,13 +63,14 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     * @return the interface the remote player should use to play
     */
    @Override
-   public synchronized RemotePlayer login(UUID token) {
+   public synchronized RemotePlayer login(UUID token) throws RemoteException {
+      RemotePlayer player = players.get( token );
       try {
          addToLobby(token);
       } catch (PlayerAlreadyLoggedInException e) {
          //TODO gestire caso
       }
-      return players.get(token);
+      return player;
    }
 
 

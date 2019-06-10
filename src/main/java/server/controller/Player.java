@@ -228,10 +228,16 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void quit() {
         //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-   
-   @Override
-   public void setRemoteView(RemoteView view) {
-      this.remoteView = view;
-   }
+    
+    @Override
+    public void setRemoteView(RemoteView remoteView) throws RemoteException{
+        this.remoteView = remoteView;
+    }
+    
+    @Override
+    public RemoteView getRemoteView() throws RemoteException {
+        return remoteView;
+    }
+    
 }
 
