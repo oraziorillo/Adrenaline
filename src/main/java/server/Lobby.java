@@ -2,10 +2,7 @@ package server;
 
 import server.controller.Controller;
 import server.controller.Player;
-import server.enums.PcColourEnum;
 import server.exceptions.PlayerAlreadyLoggedInException;
-import server.model.Game;
-import server.model.Pc;
 
 import javax.swing.Timer;
 import java.io.FileNotFoundException;

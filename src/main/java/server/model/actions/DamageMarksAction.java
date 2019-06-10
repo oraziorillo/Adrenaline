@@ -14,6 +14,7 @@ public class DamageMarksAction extends Action {
     @Expose private boolean roomExplosive;
     @Expose private boolean additionalDamage;
     @Expose private boolean exclusiveForOldTargets;
+    @Expose private boolean needsOldSquare;    //per il rocket laucher
 
 
     public DamageMarksAction(JsonObject jsonAction) {
@@ -24,6 +25,7 @@ public class DamageMarksAction extends Action {
         this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
         this.additionalDamage = jsonAction.get("additionalDamage").getAsBoolean();
         this.exclusiveForOldTargets = jsonAction.get("exclusiveForOldTargets").getAsBoolean();
+        this.needsOldSquare = jsonAction.get("needsOldSquare").getAsBoolean();
     }
 
 
@@ -62,6 +64,10 @@ public class DamageMarksAction extends Action {
         return exclusiveForOldTargets;
     }
 
+    @Override
+    public boolean needsOldSquare() {
+        return needsOldSquare;
+    }
 
     @Override
     public void selectPc(Pc targetPc) {

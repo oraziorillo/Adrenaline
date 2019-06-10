@@ -36,6 +36,8 @@ point. And you are awesome)
 
 - Action-hero comment
 
+- controllare il numero di powerUp massimi di un utente
+
 
 
 DOMANDE:

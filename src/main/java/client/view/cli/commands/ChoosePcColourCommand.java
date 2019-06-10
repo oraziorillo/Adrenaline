@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import server.controller.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 import java.io.IOException;
 
 class ChoosePcColourCommand extends CliCommand {
@@ -10,6 +10,6 @@ class ChoosePcColourCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        //controller.choosePcColour( inputRequire.askPcColourEnum() );
+        //socket_proxies.choosePcColour( inputRequire.askPcColourEnum() );
     }
 }

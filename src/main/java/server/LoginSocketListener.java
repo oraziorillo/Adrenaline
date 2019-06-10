@@ -1,8 +1,11 @@
 package server;
 
 
+import common.rmi_interfaces.RemotePlayer;
 import server.controller.Player;
-import server.enums.SocketLoginEnum;
+import common.enums.SocketLoginEnum;
+import server.exceptions.PlayerAlreadyLoggedInException;
+import server.socket_proxies.SocketRemoteView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +18,7 @@ public class LoginSocketListener implements Runnable {
    private final Socket client;
    private final Scanner in;
    private final PrintWriter out;
-   private Player player;
+   private LoginController loginController = LoginController.getInstance();
 
    LoginSocketListener(Socket s) throws IOException {
       this.client = s;
@@ -31,14 +34,17 @@ public class LoginSocketListener implements Runnable {
 
             switch (cmd) {
                case REGISTER:
-                  out.println(LoginController.getInstance().register(in.next()));
+                  out.println(loginController.register(in.next()));
                   out.flush();
                   break;
 
                case LOGIN:
-                  this.player = (Player) LoginController.getInstance().login(UUID.fromString(in.next()));
-                  out.println(player.getUsername());
-                  out.flush();
+                  RemotePlayer player = loginController.login( UUID.fromString( in.next() ) );
+                  new Thread( new PlayerSocketListener( client, player ) ).start();
+                  break;
+                  
+               case JOIN_LOBBY:
+                  loginController.joinLobby( UUID.fromString( in.next() ) );
                   break;
 
                /*
@@ -56,7 +62,7 @@ public class LoginSocketListener implements Runnable {
                   out.flush();
             }
 
-         } catch (IOException e) {
+         } catch ( IOException | PlayerAlreadyLoggedInException e) {
             e.printStackTrace();
          }
       }

@@ -1,6 +1,6 @@
 package client.view.cli;
 
-import client.view.InputRequire;
+import client.view.InputReader;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * requires some input to the user, via cli/terminal or other input stream reader
  */
-public class CliInputReader implements InputRequire {
+public class CliInputReader implements InputReader {
     
     private final Scanner in;
     

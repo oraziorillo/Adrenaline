@@ -1,7 +1,8 @@
 package server;
 
-import server.controller.Player;
-import server.enums.SocketPlayerEnum;
+import common.enums.SocketPlayerEnum;
+import common.rmi_interfaces.RemotePlayer;
+import server.socket_proxies.SocketRemoteView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,18 +14,19 @@ public class PlayerSocketListener implements Runnable {
     private final Socket socket;
     private final BufferedReader in;
     private final PrintWriter out;
-    private final Player player;
+    private final RemotePlayer player;
 
     /**
      * Creates a connection listener by an existing socket
      * @param socket the given socket, created by ServerSocket.accept and then already opened
      */
-    PlayerSocketListener(Socket socket, Player player) throws IOException {
+    PlayerSocketListener(Socket socket, RemotePlayer player) throws IOException {
         this.socket = socket;
         this.player = player;
         out = new PrintWriter( socket.getOutputStream() );
         out.flush();
         in = new BufferedReader( new InputStreamReader( socket.getInputStream() ));
+        player.setRemoteView( new SocketRemoteView( socket ) );
     }
     
     /**

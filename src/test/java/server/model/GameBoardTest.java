@@ -4,21 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
+import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
-import server.enums.CardinalDirectionEnum;
-import server.model.GameBoard;
-import server.model.deserializers.GameBoardDeserializer;
 import org.junit.Test;
+import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.Square;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class GameBoardTest {
 

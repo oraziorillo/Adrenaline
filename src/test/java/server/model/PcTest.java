@@ -1,8 +1,7 @@
 package server.model;
 
-import server.enums.AmmoEnum;
-import server.enums.PcColourEnum;
-import server.model.*;
+import common.enums.AmmoEnum;
+import common.enums.PcColourEnum;
 import server.model.squares.AmmoSquare;
 import server.model.squares.SpawnPoint;
 import server.model.squares.Square;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import static junit.framework.TestCase.assertSame;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

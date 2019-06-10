@@ -1,8 +1,8 @@
 package server.model;
 
 import com.google.gson.annotations.Expose;
-import server.enums.PcColourEnum;
-import server.enums.SquareColourEnum;
+import common.enums.PcColourEnum;
+import common.enums.SquareColourEnum;
 import server.model.squares.Square;
 import java.util.*;
 
@@ -95,11 +95,11 @@ public class GameBoard {
      * @param killerColour the colour of the killer
      * @param overkilled se the game manual
      */
-    void killOccured(PcColourEnum killerColour, Boolean overkilled){
+    boolean killOccured(PcColourEnum killerColour, Boolean overkilled){
         killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
         currentKillShotTrackIndex--;
-        if(currentKillShotTrackIndex < 0){
-            //call observer to notify state change in finalFrenzy;
-        }
+        if(currentKillShotTrackIndex < 0)
+            return true;
+        return false;
     }
 }

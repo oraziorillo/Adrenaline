@@ -1,6 +1,6 @@
 package server.model.squares;
 
-import server.enums.SquareColourEnum;
+import common.enums.SquareColourEnum;
 import server.model.AmmoTile;
 import server.model.Deck;
 import server.exceptions.EmptySquareException;

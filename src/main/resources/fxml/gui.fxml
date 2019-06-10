@@ -2,10 +2,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
-<BorderPane fx:controller="client.view.gui.controllers.guiController" xmlns:fx="http://javafx.com/fxml" stylesheets="/css/style.css">
+<BorderPane fx:controller="client.controller.GuiController" xmlns:fx="http://javafx.com/fxml" stylesheets="/css/style.css">
     <center>
         <HBox alignment="CENTER_RIGHT">
-            <VBox alignment="CENTER" HBox.hgrow="SOMETIMES">
+            <VBox alignment="CENTER" HBox.hgrow="SOMETIMES"> <!--Map and buttons-->
                 <fx:include source="mappa.fxml" fx:id="mappa" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS" viewOrder="-1"/>
                 <HBox fx:id="underMapButtons" alignment="TOP_RIGHT" translateY = "-5">
                     <Button text="Apply"/><Button text="Undo"/><Button text="Reload"/><Button text="Pass"/>
@@ -22,7 +22,9 @@
             <fx:include source="pcBoard.fxml" fx:id="pc" viewOrder="-Infinity" />
             <Region HBox.hgrow="ALWAYS"/>
             <fx:include source="card_hand.fxml" fx:id="weaponHand" HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <fx:include source="card_hand.fxml" fx:id="powerUpHand" HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <fx:include source="chat.fxml" />
         </HBox>
     </bottom>

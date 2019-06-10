@@ -3,7 +3,7 @@ package server.model;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
-import server.enums.CardinalDirectionEnum;
+import common.enums.CardinalDirectionEnum;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import java.lang.reflect.Type;
@@ -15,6 +15,7 @@ public class Effect {
     @Expose private boolean beyondWalls;
     @Expose private boolean asynchronous;
     @Expose private boolean sameTarget;
+    @Expose private boolean memorizeTargetSquare;   //per il rocket launcher
     @Expose private short[] cost;
     @Expose private List<Action> actions;
 
@@ -29,6 +30,7 @@ public class Effect {
         this.beyondWalls = jsonEffect.get("beyondWalls").getAsBoolean();
         this.asynchronous = jsonEffect.get("asynchronous").getAsBoolean();
         this.sameTarget = jsonEffect.get("sameTarget").getAsBoolean();
+        this.memorizeTargetSquare = jsonEffect.get("memorizeTargetSquare").getAsBoolean();
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         JsonDeserializer<Action> actionDeserializer = new ActionDeserializer();
@@ -51,6 +53,10 @@ public class Effect {
 
     public boolean hasOnlyOneTarget() {
         return sameTarget;
+    }
+
+    public boolean memorizeTargetSquare() {
+        return memorizeTargetSquare;
     }
 
     public void assignDirection(CardinalDirectionEnum direction) {

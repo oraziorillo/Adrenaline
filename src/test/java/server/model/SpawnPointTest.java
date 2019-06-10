@@ -1,7 +1,7 @@
 package server.model;
 
-import server.enums.AmmoEnum;
-import server.enums.SquareColourEnum;
+import common.enums.AmmoEnum;
+import common.enums.SquareColourEnum;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.Deck;

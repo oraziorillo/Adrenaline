@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import server.enums.CardinalDirectionEnum;
+import common.enums.CardinalDirectionEnum;
 import server.model.Pc;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
@@ -104,6 +104,11 @@ public abstract class Action {
     public boolean isExclusiveForOldTargets() {
         return false;
     }
+
+
+    public boolean needsOldSquare() { return false; }
+
+
 
 
     public void setTargetSquare(Square s){

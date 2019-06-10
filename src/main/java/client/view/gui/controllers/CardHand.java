@@ -1,6 +1,6 @@
 package client.view.gui.controllers;
 
-import client.view.gui.model_dtos.Card;
+import common.model_dtos.Card;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -11,7 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b321e7081de9bec412f1d4920248d2b3acf06e80
 
 public class CardHand <T extends Card>{
    @FXML
@@ -57,7 +60,7 @@ public class CardHand <T extends Card>{
       current.play();
    }
    
-   void setCard(T newCard, int cardIndex){
+   public void setCard(T newCard, int cardIndex){
       ImageView cardImage = cardsImages[cardIndex];
       cards[cardIndex] = newCard;
       cardImage.setImage( new Image( newCard.getImagePath(),true) );

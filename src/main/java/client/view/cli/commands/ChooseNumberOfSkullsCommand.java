@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import server.controller.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 import java.io.IOException;
 
 class ChooseNumberOfSkullsCommand extends CliCommand {

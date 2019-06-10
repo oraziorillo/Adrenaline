@@ -13,8 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.util.Duration;
-import server.enums.AmmoEnum;
-import server.enums.CardinalDirectionEnum;
+import common.enums.AmmoEnum;
+import common.enums.CardinalDirectionEnum;
 
 
 public class CardHolder {

@@ -1,6 +1,6 @@
 package server.model.target_checkers;
 
-import server.enums.CardinalDirectionEnum;
+import common.enums.CardinalDirectionEnum;
 import server.model.squares.Square;
 import java.util.Set;
 

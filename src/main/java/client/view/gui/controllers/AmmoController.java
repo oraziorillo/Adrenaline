@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import server.enums.AmmoEnum;
+import common.enums.AmmoEnum;
 
 
 public class AmmoController {

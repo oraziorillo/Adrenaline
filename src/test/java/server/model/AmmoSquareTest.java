@@ -1,15 +1,14 @@
 package server.model;
 
+import common.enums.SquareColourEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import server.enums.SquareColourEnum;
 import server.exceptions.EmptySquareException;
 import server.model.squares.AmmoSquare;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;

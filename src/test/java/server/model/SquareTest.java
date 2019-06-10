@@ -1,19 +1,14 @@
 package server.model;
 
-import server.enums.CardinalDirectionEnum;
-import server.enums.SquareColourEnum;
-import server.model.AmmoTile;
-import server.model.Deck;
-import server.model.Pc;
+import common.enums.CardinalDirectionEnum;
+import common.enums.SquareColourEnum;
 import server.model.squares.AmmoSquare;
 import server.model.squares.Square;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import java.util.Collection;
 import java.util.HashSet;
-
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;

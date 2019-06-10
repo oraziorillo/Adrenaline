@@ -1,21 +1,27 @@
 package client;
 
-import client.view.cli.CliView;
+import client.controller.AbstractClientController;
+import client.controller.CliController;
+import client.view.InputReader;
+import client.view.cli.CliInputReader;
 import client.view.cli.commands.CliCommand;
 import client.view.cli.commands.CommandFactory;
-import server.controller.RemotePlayer;
+import common.rmi_interfaces.RemoteLoginController;
+import common.rmi_interfaces.RemotePlayer;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
 public class LaunchCli {
 
-    public static void main(String[] args) throws IOException, NotBoundException {
-        CliView view = new CliView();
-        view.setupConnection();
-        RemotePlayer player = view.login_register();
+    public static void main(String[] args) throws IOException, NotBoundException, PlayerAlreadyLoggedInException {
+        InputReader input = new CliInputReader();
+        AbstractClientController clientController = new CliController(input);
+        RemoteLoginController loginController = clientController.getLoginController();
+        RemotePlayer player = clientController.loginRegister( loginController );
         while (true){
-            CliCommand command = CommandFactory.getCommand( view.requestString( "Insert command:"),player );
+            CliCommand command = CommandFactory.getCommand( input.requestString( "Insert command:"),player );
             command.execute();
         }
     }

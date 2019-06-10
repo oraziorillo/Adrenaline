@@ -1,6 +1,6 @@
 package server.controller;
 
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -18,7 +18,6 @@ public class Controller{
     private static final int ACTIONS_PER_TURN = 2;
     private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
 
-    private boolean finalFrenzy = false;
     private Game game;
     private int currPlayerIndex;
     private int lastPlayerIndex; //to set when final frenzy starts
@@ -34,6 +33,7 @@ public class Controller{
         this.game = new Game();
         this.players = players;
         this.squaresToRefill = new HashSet<>();
+        this.deadPlayers = new LinkedList<>();
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.players.addAll(players);
         this.currPlayerIndex = 0;
@@ -41,12 +41,17 @@ public class Controller{
 
 
     public boolean isFinalFrenzy() {
-        return finalFrenzy;
+        return game.isFinalFrenzy();
     }
 
 
     public Game getGame() {
         return game;
+    }
+
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
 
@@ -57,6 +62,11 @@ public class Controller{
 
     public Pc getCurrPc() {
         return players.get(currPlayerIndex).getPc();
+    }
+
+
+    public void addDeadPlayer(Player deadPlayer){
+        deadPlayers.add(deadPlayer);
     }
 
 
@@ -81,11 +91,6 @@ public class Controller{
 
     public Set<Square> getSquaresToRefill(){
         return squaresToRefill;
-    }
-
-
-    public void setFinalFrenzy(boolean booleanValue) {
-        finalFrenzy = booleanValue;
     }
 
 

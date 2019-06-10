@@ -17,10 +17,10 @@ public class Chat {
    @FXML
    private Double MESSAGGI_HEIGHT;
    @FXML
-   public VBox messaggi;
+   private VBox messaggi;
    @FXML
-   public TextField input;
-   public AnchorPane mainPane;
+   private TextField input;
+   private AnchorPane mainPane;
    private Duration duration= new Duration( 300 );
    private ParallelTransition transition;
    private TranslateTransition translate;
@@ -68,12 +68,8 @@ public class Chat {
       }
    }
    
-   private double computeMessageHeight(){
-      double sum = 0;
-      for (Node n: messaggi.getChildren()){
-         Region text = ( Region ) n;
-         sum+=text.getHeight();
-      }
-      return sum;
+   public void shoWMessage(String message){
+      messaggi.getChildren().add( new Label( message ) );
    }
+   
 }

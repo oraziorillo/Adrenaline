@@ -18,7 +18,7 @@ ing-sw-2019-23.iml
 
 **.mp4
 **.mp3
-**.cxf
+main/resources/gimp_files/*
 
 # Cartella per prove varie e mezze idee
 Sandbox/

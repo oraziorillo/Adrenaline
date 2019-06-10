@@ -1,7 +1,7 @@
 package server.model;
 
-import server.enums.AmmoEnum;
-import server.enums.PcColourEnum;
+import common.enums.AmmoEnum;
+import common.enums.PcColourEnum;
 import org.junit.Before;
 import org.junit.Test;
 import server.model.AmmoTile;

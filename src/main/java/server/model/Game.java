@@ -3,8 +3,8 @@ package server.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import server.enums.PcColourEnum;
-import server.enums.SquareColourEnum;
+import common.enums.PcColourEnum;
+import common.enums.SquareColourEnum;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
@@ -19,15 +19,19 @@ import java.util.*;
  */
 public class Game {
     private GameBoard gameBoard;
+    private Set<Pc> pcs;
     private Deck<WeaponCard> weaponsDeck;
     private Deck<PowerUpCard> powerUpsDeck;
     private Deck<AmmoTile> ammoDeck;
+    private boolean finalFrenzy;
 
 
     public Game() throws FileNotFoundException {
+        this.pcs = new HashSet<>();
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
+        this.finalFrenzy = false;
         initDecks();
     }
 
@@ -56,6 +60,13 @@ public class Game {
         gameBoard.initKillShotTrack(numberOfSkulls);
     }
 
+    public boolean isFinalFrenzy() {
+        return finalFrenzy;
+    }
+
+    public void setFinalFrenzy(boolean finalFrenzy) {
+        this.finalFrenzy = finalFrenzy;
+    }
 
     private void initDecks() throws FileNotFoundException {
         initWeaponsDeck();
@@ -109,6 +120,9 @@ public class Game {
         targetableSquares.forEach(s -> s.setTargetable(isTargetable));
     }
 
+    public void addPc(Pc pc) {
+        pcs.add(pc);
+    }
 
     PowerUpCard drawPowerUp(){
         return powerUpsDeck.draw();
@@ -121,6 +135,61 @@ public class Game {
      */
     public void killOccured(PcColourEnum killerColour, Boolean overkilled){
         gameBoard.killOccured(killerColour, overkilled);
+    }
+
+
+    public void registerDeath(Pc deadPc) {
+        scoringPoints(deadPc);
+        scoreOnKillShotTrack(deadPc);
+        if (!isFinalFrenzy())
+            deadPc.getPcBoard().increasePcValueIndex();
+    }
+
+
+    private void scoringPoints(Pc deadPc) {
+        PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
+        int [] pcValue = deadPc.getPcBoard().getPcValue();
+        int pcValueIndex = deadPc.getPcBoard().getPcValueIndex();
+        boolean allPointsAssigned = false;
+        int [] numOfDamages = new int [5];
+        int max;
+
+        //the following instruction assigns the first blood point, only if the board is not flipped
+        if (!isFinalFrenzy())
+            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
+
+        for (PcColourEnum colour: deadPcDamageTrack)
+            numOfDamages[colour.ordinal()]++;
+        while (!allPointsAssigned) {
+            max = 0;
+            int maxIndex = 0;
+            for (int i = 0; i < 5; i++) {
+                if (numOfDamages[i] > max) {
+                    max = numOfDamages[i];
+                    maxIndex = i;
+                }
+            }
+            if (max != 0) {
+                int finalMaxIndex = maxIndex;
+                pcs.stream().filter(pc -> pc.getColour().ordinal() == finalMaxIndex).findFirst().get().increasePoints(pcValue[pcValueIndex]);
+                if (pcValueIndex != pcValue.length - 1)
+                    pcValueIndex++;
+                numOfDamages[finalMaxIndex] = 0;
+            }
+            else
+                allPointsAssigned = true;
+        }
+    }
+
+
+    private void scoreOnKillShotTrack(Pc deadPc) {
+        PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
+        PcColourEnum shooterPcColour = deadPcDamageTrack[10];
+        if (gameBoard.killOccured(shooterPcColour, deadPcDamageTrack[11] != null)) {
+            if (!isFinalFrenzy())
+                setFinalFrenzy(true);
+        }
+        deadPc.flipBoard();
     }
 
 }

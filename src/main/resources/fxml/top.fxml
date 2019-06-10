@@ -23,7 +23,7 @@
                 <Label id="punti" text="0" alignment="TOP_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <GridPane fx:id="killShotTrack" id="KillShotTrack" HBox.hgrow="ALWAYS"/>
+            <HBox fx:id="killShotTrack" id="KillShotTrack" HBox.hgrow="ALWAYS" alignment="CENTER"/>
         </HBox>
         <Region HBox.hgrow="ALWAYS"/>
         <HBox alignment="TOP_RIGHT" spacing="20" HBox.hgrow="ALWAYS">

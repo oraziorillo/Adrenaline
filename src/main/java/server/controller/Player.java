@@ -1,5 +1,7 @@
 package server.controller;
 
+import common.rmi_interfaces.RemotePlayer;
+import common.rmi_interfaces.RemoteView;
 import org.jetbrains.annotations.Contract;
 import server.controller.states.State;
 import server.model.Pc;
@@ -22,6 +24,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     private transient Pc pc;
     private transient State currState;
     private transient WeaponCard currWeapon;
+    private transient RemoteView remoteView;
 
 
     @Contract(pure = true)
@@ -226,6 +229,15 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
     
+    @Override
+    public void setRemoteView(RemoteView remoteView) throws RemoteException{
+        this.remoteView = remoteView;
+    }
+    
+    @Override
+    public RemoteView getRemoteView() throws RemoteException {
+        return remoteView;
+    }
     
 }
 

@@ -2,7 +2,7 @@ package server.controller.states;
 
 import server.controller.Controller;
 import server.controller.Player;
-import server.enums.AmmoEnum;
+import common.enums.AmmoEnum;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
@@ -15,6 +15,7 @@ public class RespawnState extends State {
     RespawnState(Controller controller) {
         super(controller);
         this.powerUpIndex = -1;
+        controller.getGame().registerDeath(deadPlayer.getPc());
         deadPlayer = controller.getDeadPlayers().poll();
         deadPlayer.getPc().drawPowerUp();
 }

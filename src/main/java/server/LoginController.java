@@ -1,8 +1,10 @@
 package server;
 
+import common.rmi_interfaces.RemoteLoginController;
 import server.controller.Player;
-import server.controller.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
@@ -52,25 +54,23 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
       //TODO: sovrascrivi file
       return token;
    }
-
-
+   
+   /**
+    * returns the player with the curresponding token if registered, null else
+    * @param token the token of the player
+    * @return the player if registered, null else
+    * @throws RemoteException IDK, rmi stuff
+    */
+   @Override
+   public synchronized RemotePlayer login(UUID token) throws RemoteException {
+      return players.get( token );
+   }
+   
    /**
     * add the player corresponding to the token to a lobby
     * @param token the unique identifier for a player
-    * @return the interface the remote player should use to play
     */
-   @Override
-   public synchronized RemotePlayer login(UUID token) {
-      try {
-         addToLobby(token);
-      } catch (PlayerAlreadyLoggedInException e) {
-         //TODO gestire caso
-      }
-      return players.get(token);
-   }
-
-
-   private void addToLobby(UUID token) throws PlayerAlreadyLoggedInException {
+   public void joinLobby(UUID token) throws PlayerAlreadyLoggedInException, RemoteException {
       if (players.containsKey(token)) {
          Lobby currLobby;
          //if this player is already present in a started game, add it to the started game
@@ -89,6 +89,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
                newLobby = new Lobby();
             newLobby.addPlayer(players.get(token));
          }
+         players.get( token ).getRemoteView().showMessage( "Connected" );
       }
    }
 

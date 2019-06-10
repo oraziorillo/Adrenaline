@@ -1,6 +1,6 @@
 package server.model;
 
-import server.enums.AmmoEnum;
+import common.enums.AmmoEnum;
 
 /**
  * Represents a power up card

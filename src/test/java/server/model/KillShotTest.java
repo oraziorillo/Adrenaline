@@ -1,6 +1,6 @@
 package server.model;
 
-import server.enums.PcColourEnum;
+import common.enums.PcColourEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
