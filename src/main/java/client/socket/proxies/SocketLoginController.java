@@ -2,6 +2,8 @@ package client.socket.proxies;
 
 import common.rmi_interfaces.RemoteLoginController;
 import common.rmi_interfaces.RemotePlayer;
+import server.exceptions.PlayerAlreadyLoggedInException;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
@@ -29,12 +31,18 @@ public class SocketLoginController extends AbstractSocketProxy implements Remote
 
    @Override
    public RemotePlayer login(UUID token) throws IOException {
+      RemotePlayer player = new SocketPlayer( socket );
       out.println( LOGIN );
       out.println( token );
       out.flush();
-      out.println( token );
-      String username = in.readLine();
-      return new SocketPlayer( socket,username,token );
+      return player;
    }
-
+   
+   @Override
+   public void joinLobby(UUID token) throws IOException, PlayerAlreadyLoggedInException {
+      out.println( JOIN_LOBBY );
+      out.println( token );
+      out.flush();
+   }
+   
 }

@@ -5,8 +5,15 @@ import client.view.InputReader;
 import common.rmi_interfaces.RemoteLoginController;
 import common.rmi_interfaces.RemotePlayer;
 import common.rmi_interfaces.RemoteView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import server.controller.Player;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
@@ -16,10 +23,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class CliController implements AbstractClientController, RemoteView {
+public class CliController implements AbstractClientController, RemoteView, Serializable {
    
-   public static final String NOPE = "Illegal command";
-   private final InputReader inputReader;
+   private static final String NOPE = "Illegal command";
+   private final transient InputReader inputReader;
    
    public CliController( InputReader in) {
       inputReader = in;
@@ -50,7 +57,7 @@ public class CliController implements AbstractClientController, RemoteView {
    }
    
    @Override
-   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException {
+   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException {
       UUID token = null;
       HashSet<String> yesAnswers = new HashSet<>(Arrays.asList( "y","yes" ));
       HashSet<String> noAnswers = new HashSet<>( Arrays.asList( "n","no","nope" ) );
@@ -68,11 +75,14 @@ public class CliController implements AbstractClientController, RemoteView {
             System.out.println( NOPE );
          }
       } while (token == null);
-      return loginController.login(token);
+      RemotePlayer player = loginController.login(token);
+      player.setRemoteView( this );
+      loginController.joinLobby( token );
+      return player;
    }
    
    @Override
    public void showMessage(String message) {
-      System.out.println(message);
+      System.out.println(message);  //TODO: non funziona rmi in nessun modo
    }
 }

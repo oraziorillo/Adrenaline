@@ -1,44 +1,42 @@
 package client.view.gui.controllers;
 
-import client.view.gui.custom_components.RatioButton;
 import javafx.application.HostServices;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static client.view.gui.custom_components.RatioButton.addToLinearGrid;
 
 public class TopController {
    @FXML
    public CardHolder cardHolderController;
    @FXML
-   public GridPane killShotTrack;
+   public HBox killShotTrack;
+   public AnchorPane cardHolder;
    private HostServices hostServices;
    
    public void initialize(){
-      List<RatioButton> buttons = new ArrayList<>();
-      RatioButton current = new RatioButton();
-      current.setBackgroundImage( new Image( "/images/teschio_0.png" ),true );
-      buttons.add( current);
+      double height =100;
+      ImageView skull = new ImageView( new Image( "/images/teschio_0.png",0,height,true, false) );
+      skull.setPreserveRatio( true );
+      killShotTrack.getChildren().add( skull );
       for(int i=1; i<8;i++){
-         current=new RatioButton();
-         current.setBackgroundImage( new Image( "/images/teschio_i.png" ),true );
-         buttons.add( current);
+         skull = new ImageView( new Image( "/images/teschio_i.png",0,height,true, false ) );
+         skull.setPreserveRatio( true );
+         killShotTrack.getChildren().add( skull );
       }
-      current = new RatioButton();
-      current.setBackgroundImage( new Image( "/images/teschio_9.png" ), true);
-      buttons.add( current );
-      addToLinearGrid( buttons,false,killShotTrack );
+      skull = new ImageView( new Image( "/images/teschio_9.png",0,height,true,false ));
+      skull.setPreserveRatio( true );
+      killShotTrack.getChildren().add( skull );
    }
    
    

@@ -4,6 +4,7 @@ package server;
 import common.rmi_interfaces.RemotePlayer;
 import server.controller.Player;
 import common.enums.SocketLoginEnum;
+import server.exceptions.PlayerAlreadyLoggedInException;
 import server.socket_proxies.SocketRemoteView;
 
 import java.io.IOException;
@@ -41,6 +42,10 @@ public class LoginSocketListener implements Runnable {
                   RemotePlayer player = loginController.login( UUID.fromString( in.next() ) );
                   new Thread( new PlayerSocketListener( client, player ) ).start();
                   break;
+                  
+               case JOIN_LOBBY:
+                  loginController.joinLobby( UUID.fromString( in.next() ) );
+                  break;
 
                /*
                case "join_new_game":
@@ -57,7 +62,7 @@ public class LoginSocketListener implements Runnable {
                   out.flush();
             }
 
-         } catch (IOException e) {
+         } catch ( IOException | PlayerAlreadyLoggedInException e) {
             e.printStackTrace();
          }
       }

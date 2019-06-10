@@ -5,6 +5,7 @@ public enum SocketLoginEnum {
    CONTAINS_PLAYER,
    LOGIN,
    ENTER_SAVED_GAME,
-   SAVE_GAME;
+   SAVE_GAME,
+   JOIN_LOBBY;
    
 }

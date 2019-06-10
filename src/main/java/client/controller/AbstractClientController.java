@@ -2,6 +2,7 @@ package client.controller;
 
 import common.rmi_interfaces.RemoteLoginController;
 import common.rmi_interfaces.RemotePlayer;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -11,5 +12,5 @@ public interface AbstractClientController {
    int SOCKET_PORT = 10000;
    int RMI_PORT = 9999;
    RemoteLoginController getLoginController() throws IOException, NotBoundException;
-   RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException;
+   RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException;
 }

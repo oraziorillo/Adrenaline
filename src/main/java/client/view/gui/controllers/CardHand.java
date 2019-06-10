@@ -56,7 +56,7 @@ public class CardHand <T extends Card>{
       current.play();
    }
    
-   void setCard(T newCard, int cardIndex){
+   public void setCard(T newCard, int cardIndex){
       ImageView cardImage = cardsImages[cardIndex];
       cards[cardIndex] = newCard;
       cardImage.setImage( new Image( newCard.getImagePath(),true) );
