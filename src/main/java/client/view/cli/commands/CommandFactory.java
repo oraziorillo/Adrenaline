@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import common.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 import static client.view.cli.CommandsStrings.*;
 
 public class CommandFactory {

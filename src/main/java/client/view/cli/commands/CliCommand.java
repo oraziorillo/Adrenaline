@@ -1,7 +1,7 @@
 package client.view.cli.commands;
 
 import client.view.InputReader;
-import common.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 import client.view.cli.CliInputReader;
 
 import java.io.IOException;

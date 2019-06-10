@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import common.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 import common.enums.CardinalDirectionEnum;
 
 public class guiController {

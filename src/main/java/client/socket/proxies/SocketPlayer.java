@@ -1,6 +1,6 @@
-package client.socket_proxies;
+package client.socket.proxies;
 
-import common.RemotePlayer;
+import common.rmi_interfaces.RemotePlayer;
 
 import java.io.IOException;
 import java.net.Socket;

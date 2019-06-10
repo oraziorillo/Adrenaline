@@ -9,5 +9,4 @@ public interface InputReader {
 
     String requestString(String message);
 
-    //PcColourEnum askPcColourEnum();
 }

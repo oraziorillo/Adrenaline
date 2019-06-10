@@ -18,6 +18,5 @@ public class RmiServer implements Runnable {
             e.printStackTrace();
         }
     }
-    //TODO mettere sul registry anche la classe Player?
 
 }

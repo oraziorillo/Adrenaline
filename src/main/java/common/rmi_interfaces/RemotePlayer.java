@@ -1,4 +1,4 @@
-package common;
+package common.rmi_interfaces;
 
 import java.io.IOException;
 import java.rmi.Remote;

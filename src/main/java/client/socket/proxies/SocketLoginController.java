@@ -1,7 +1,7 @@
-package client.socket_proxies;
+package client.socket.proxies;
 
-import common.RemoteLoginController;
-import common.RemotePlayer;
+import common.rmi_interfaces.RemoteLoginController;
+import common.rmi_interfaces.RemotePlayer;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
