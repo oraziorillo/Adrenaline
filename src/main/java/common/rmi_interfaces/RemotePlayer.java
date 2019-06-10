@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.rmi.Remote;
 
 public interface RemotePlayer extends Remote {
+   
+   void setRemoteView(RemoteView view);
 
     void chooseMap(int n) throws IOException;
 

@@ -3,31 +3,22 @@ package client;
 import client.view.cli.controller.AbstractClientController;
 import client.view.cli.controller.GuiController;
 import client.view.gui.controllers.guiController;
+import common.rmi_interfaces.RemoteLoginController;
+import common.rmi_interfaces.RemotePlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
-import common.rmi_interfaces.RemoteLoginController;
-import common.rmi_interfaces.RemotePlayer;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
-
-import java.util.UUID;
 
 public class LaunchGui extends Application {
     
     private RemoteLoginController loginController;
     private RemotePlayer player;
     private static final boolean COMPLETE = true;
-    public static final String HOST = "localhost";
-    public static final int SOCKET_PORT = 10000;
-    public static final int RMI_PORT = 9999;
     
     public static void main(String[] args) {
         launch( args );
