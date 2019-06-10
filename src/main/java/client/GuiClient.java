@@ -3,7 +3,6 @@ package client;
 import client.controller.SocketLoginController;
 import client.view.gui.controllers.guiController;
 import javafx.application.Application;
-import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +13,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import server.RemoteLoginController;
 import server.controller.RemotePlayer;
-
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;

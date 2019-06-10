@@ -1,9 +1,9 @@
 package server.model;
 
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import server.model.AmmoTile;
 
 import java.util.Arrays;
 

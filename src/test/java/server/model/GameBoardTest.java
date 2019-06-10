@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
 import org.junit.Before;
 import server.enums.CardinalDirectionEnum;
+import server.model.GameBoard;
 import server.model.deserializers.GameBoardDeserializer;
 import org.junit.Test;
 import server.model.squares.Square;

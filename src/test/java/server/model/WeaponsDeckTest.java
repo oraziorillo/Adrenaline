@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import server.model.Deck;
+import server.model.WeaponCard;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import org.junit.Before;

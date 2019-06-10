@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import server.model.Deck;
+import server.model.Game;
 
 import java.util.ArrayList;
 

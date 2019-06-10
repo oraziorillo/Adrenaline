@@ -2,6 +2,9 @@ package server.model;
 
 import server.enums.CardinalDirectionEnum;
 import server.enums.SquareColourEnum;
+import server.model.AmmoTile;
+import server.model.Deck;
+import server.model.Pc;
 import server.model.squares.AmmoSquare;
 import server.model.squares.Square;
 import org.junit.Before;
