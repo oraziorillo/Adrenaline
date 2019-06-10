@@ -27,7 +27,9 @@ public enum SocketPlayerEnum {
     USE_POWERUP,
     CHOOSE_POWERUP,
     REMOVE_UPGRADE,
-    UNDO;
+    UNDO,
+    SET_REMOTE_VIEW,
+    GET_REMOTE_VIEW;
     
     @Override
     public String toString() {
