@@ -37,6 +37,7 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.players.addAll(players);
         this.currPlayerIndex = 0;
+        this.lastPlayerIndex = -1;
     }
 
 
@@ -147,6 +148,9 @@ public class Controller{
         if (deadPlayers.isEmpty()) {
             increaseCurrPlayerIndex();
             getCurrPlayer().setActive();
+            if (currPlayerIndex == lastPlayerIndex)
+                game.computeWinner();
+                //TODO gestire il valore di ritorno del metodo precedente e implementare la fine della partita chiudendo connessioni..
         } else {
             deadPlayers.get(0).hasToRespawn();
         }

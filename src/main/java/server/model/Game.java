@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class represents an ADRENALINE game
@@ -183,8 +184,8 @@ public class Game {
     }
 
     /**
-     * Scpre the death on The KillShotTrack
-     * @param deadPc
+     * Score the death on The KillShotTrack
+     * @param deadPc pc which has received a killshot
      * @return True when the game turns into Final Frenzy mode
      */
     private boolean scoreOnKillShotTrack(Pc deadPc) {
@@ -200,6 +201,47 @@ public class Game {
         return false;
     }
 
+    public List<Pc> computeWinner() {
+        int maxPoints = 0;
+        for (Pc pc: pcs) {
+            if (pc.getPcBoard().getPoints() > maxPoints)
+                maxPoints = pc.getPcBoard().getPoints();
+        }
+        int finalMaxPoints = maxPoints;
+        List<Pc> potentialWinners = pcs.stream().filter(pc -> pc.getPcBoard().getPoints() == finalMaxPoints).collect(Collectors.toList());
+        if (potentialWinners.size() != 1){
+            HashMap<Pc, Integer> points = new HashMap<>();
+            potentialWinners.forEach(pc -> points.put(pc, pointsFromKillShots(pc)));
+            int maxPointsOnTrack = 0;
+            for (Pc pc: points.keySet()) {
+                if (points.get(pc) > maxPointsOnTrack) {
+                    maxPointsOnTrack = points.get(pc);
+                    potentialWinners = new ArrayList<>();
+                    potentialWinners.add(pc);
+                } else if (points.get(pc) == maxPointsOnTrack)
+                    potentialWinners.add(pc);
+            }
+        }
+        return potentialWinners;
+    }
+
+    private Integer pointsFromKillShots(Pc pc){
+        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack());
+    }
+
+
+    private Integer pointsOnKillShotTrack(Pc pc, KillShot[] killShots){
+        int points = 0;
+        PcColourEnum pcColour = pc.getColour();
+        for (KillShot killShot: killShots) {
+            if (killShot.getColour() == pcColour){
+                points++;
+                if(killShot.isOverkilled())
+                    points++;
+            }
+        }
+        return points;
+    }
 }
 
 

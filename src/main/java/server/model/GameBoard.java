@@ -16,6 +16,8 @@ public class GameBoard {
     private List<Square> spawnPoints;
     private KillShot[] killShotTrack;
     private int currentKillShotTrackIndex;
+    private KillShot [] finalFrenzyKillShotTrack;
+    private int finalFrenzyCurrentKillShotTrackIndex;
 
     public GameBoard(int rows, int columns, List<Square> squares, int[] doors) {
         this.rows = rows;
@@ -67,6 +69,20 @@ public class GameBoard {
         this.currentKillShotTrackIndex = numberOfSkulls - 1;
         for(int i = 0; i < numberOfSkulls; i++)
             killShotTrack[i] = new KillShot();
+        this.finalFrenzyKillShotTrack = new KillShot[5];
+        this.finalFrenzyCurrentKillShotTrackIndex = 0;
+        for (int i = 0; i < 5; i++)
+            finalFrenzyKillShotTrack[i] = new KillShot();
+    }
+
+
+    public KillShot[] getFinalFrenzyKillShotTrack() {
+        return finalFrenzyKillShotTrack;
+    }
+
+
+    public KillShot[] getKillShotTrack() {
+        return killShotTrack;
     }
 
 
@@ -88,13 +104,7 @@ public class GameBoard {
         }
         return null;
     }
-    
-    
-    /**
-     *
-     * @param killerColour
-     * @param overkilled
-     */
+
 
     /**
      * Updates the KillshotTrack with the occurred kill
@@ -103,11 +113,16 @@ public class GameBoard {
      * @return True if the game turns into or already is in Final Frenzy mode
      */
     boolean killOccured(PcColourEnum killerColour, Boolean overkilled){
-        killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
-        currentKillShotTrackIndex--;
-        if(currentKillShotTrackIndex < 0)
-            //TODO vedere come registrare le morti sulla killshotTrack durante la final frenzy
+        if (currentKillShotTrackIndex >= 0) {
+            killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
+            currentKillShotTrackIndex--;
+            if (currentKillShotTrackIndex == -1)
+                return true;
+        } else {
+            finalFrenzyKillShotTrack[finalFrenzyCurrentKillShotTrackIndex].killOccured(killerColour, overkilled);
+            finalFrenzyCurrentKillShotTrackIndex++;
             return true;
+        }
         return false;
     }
 }
