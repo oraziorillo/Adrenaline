@@ -7,8 +7,7 @@ import common.enums.CardinalDirectionEnum;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import java.lang.reflect.Type;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Effect {
     @Expose private boolean oriented;
@@ -75,10 +74,12 @@ public class Effect {
         return actions.get(index);
     }
 
-    public void execute(Pc shooter) {
+    public Set<Pc> execute(Pc shooter) {
+        Set<Pc> shotTargets = new HashSet<>();
         for (Action currAction : actions) {
-            currAction.apply(shooter);
+            shotTargets.addAll(currAction.apply(shooter));
         }
+        return shotTargets;
     }
 }
 

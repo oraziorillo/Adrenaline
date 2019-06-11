@@ -5,6 +5,9 @@ import com.google.gson.annotations.Expose;
 import server.model.*;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
+
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DamageMarksAction extends Action {
@@ -73,7 +76,7 @@ public class DamageMarksAction extends Action {
     public void selectPc(Pc targetPc) {
         if(!roomExplosive && !squareExplosive) {
             if (targets.size() == maxNumberOfTargets)
-                targets.removeFirst();
+                targets = new HashSet<>();
             targets.add(targetPc);
         }
     }
@@ -99,7 +102,7 @@ public class DamageMarksAction extends Action {
 
 
     @Override
-    public void apply(Pc shooter) {
+    public Set<Pc> apply(Pc shooter) {
         targets.forEach(pc -> {
             if (damage != 0)
                 pc.takeDamage(shooter.getColour(), damage);
@@ -107,5 +110,6 @@ public class DamageMarksAction extends Action {
                 pc.takeMarks(shooter.getColour(), marks);
         });
         resetAction();
+        return targets;
     }
 }

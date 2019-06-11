@@ -7,12 +7,14 @@ import common.enums.AmmoEnum;
  */
 public class PowerUpCard {
 
+    private String name;
     private boolean selectedAsAmmo;
     private AmmoEnum colour;
     private Effect effect;
 
     public PowerUpCard(AmmoEnum colour){
         //inizializzazione fatta con jSon
+        this.name = "PowerUpName";
         this.colour = colour;
         this.selectedAsAmmo = false;
         //TODO inizializzare l'effect

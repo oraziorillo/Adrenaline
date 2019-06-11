@@ -91,14 +91,22 @@ public class GameBoard {
     
     
     /**
+     *
+     * @param killerColour
+     * @param overkilled
+     */
+
+    /**
      * Updates the KillshotTrack with the occurred kill
      * @param killerColour the colour of the killer
-     * @param overkilled se the game manual
+     * @param overkilled true if the player was overkilled, see the manual
+     * @return True if the game turns into or already is in Final Frenzy mode
      */
     boolean killOccured(PcColourEnum killerColour, Boolean overkilled){
         killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
         currentKillShotTrackIndex--;
         if(currentKillShotTrackIndex < 0)
+            //TODO vedere come registrare le morti sulla killshotTrack durante la final frenzy
             return true;
         return false;
     }

@@ -7,6 +7,10 @@ import com.google.gson.annotations.Expose;
 import server.model.*;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MovementAction extends Action {
@@ -41,9 +45,14 @@ public class MovementAction extends Action {
 
     @Override
     public void selectPc(Pc targetPc) {
+        if (targetPc != null)
+            //in questo modo non è permesso all'utente cambiare il target se è già stato selezionato in un'azione precedente
+            //dovremmo sapere qui se l'azione è stata settata tramite un hasSameTarget
+            return;
         if (!selfMovement) {
+            //if are selected more Pcs than allowed, the target set becomes empty and adds the new Pc
             if (targets.size() == maxNumberOfTargets)
-                targets.removeFirst();
+                targets = new HashSet<>();
             targets.add(targetPc);
         }
     }
@@ -59,7 +68,9 @@ public class MovementAction extends Action {
 
     @Override
     public Set<Square> validDestinations(Square targetSquare) {
-        return destinationChecker.validSquares(targetSquare);
+        if (selfMovement)
+            return targetChecker.validSquares(targetSquare);
+        return destinationChecker.validSquares(new ArrayList<>(targets).get(0).getCurrSquare());
     }
 
 
@@ -71,13 +82,14 @@ public class MovementAction extends Action {
 
 
     @Override
-    public void apply(Pc shooter) {
+    public Set<Pc> apply(Pc shooter) {
         if (selfMovement)
             targets.add(shooter);
         if (!isComplete())
-            return;
-        targets.getFirst().moveTo(targetSquare);
+            return null;
+        new ArrayList<>(targets).get(0).moveTo(targetSquare);
         resetAction();
+        return null;
     }
 
 

@@ -15,10 +15,16 @@ public class RespawnState extends State {
     RespawnState(Controller controller) {
         super(controller);
         this.powerUpIndex = -1;
-        controller.getGame().registerDeath(deadPlayer.getPc());
+        recordDeath();
+    }
+
+    private void recordDeath() {
         deadPlayer = controller.getDeadPlayers().poll();
+        if (controller.getGame().scoreDeath(deadPlayer.getPc(), controller.getDeadPlayers().size() == 1))
+            controller.setLastPlayerIndex(controller.getCurrPlayerIndex());
         deadPlayer.getPc().drawPowerUp();
-}
+    }
+
 
     @Override
     public void selectPowerUp(int index) {
@@ -46,7 +52,7 @@ public class RespawnState extends State {
 
     @Override
     public State nextState() {
-        if (controller.getDeadPlayers().size() == 0 && controller.isNextOnDuty(deadPlayer)) {
+        if (controller.getDeadPlayers().isEmpty() && controller.isNextOnDuty(deadPlayer)) {
             controller.increaseCurrPlayerIndex();
             return new StartTurnState(controller);
         }

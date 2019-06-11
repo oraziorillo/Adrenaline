@@ -52,6 +52,7 @@ public class Game {
         gameBoard.assignProperDeckToEachSquare(weaponsDeck, ammoDeck);
     }
 
+
     /**
      * Inits the KillShotTrack with the given number of skulls
      * @param numberOfSkulls The desired number of skulls
@@ -59,6 +60,7 @@ public class Game {
     public void initKillShotTrack(int numberOfSkulls){
         gameBoard.initKillShotTrack(numberOfSkulls);
     }
+
 
     public boolean isFinalFrenzy() {
         return finalFrenzy;
@@ -120,33 +122,27 @@ public class Game {
         targetableSquares.forEach(s -> s.setTargetable(isTargetable));
     }
 
+
     public void addPc(Pc pc) {
         pcs.add(pc);
     }
+
 
     PowerUpCard drawPowerUp(){
         return powerUpsDeck.draw();
     }
 
-    /**
-     * Marks a kill on the KillShotTrack
-     * @param killerColour the colour of the player who performed the kill
-     * @param overkilled true if the player was overkilled, see the manual
-     */
-    public void killOccured(PcColourEnum killerColour, Boolean overkilled){
-        gameBoard.killOccured(killerColour, overkilled);
-    }
 
-
-    public void registerDeath(Pc deadPc) {
-        scoringPoints(deadPc);
-        scoreOnKillShotTrack(deadPc);
+    public boolean scoreDeath(Pc deadPc, boolean doubleKill) {
+        scoringPoints(deadPc, doubleKill);
+        boolean turnIntoFinalFrenzy = scoreOnKillShotTrack(deadPc);
         if (!isFinalFrenzy())
             deadPc.getPcBoard().increasePcValueIndex();
+        return turnIntoFinalFrenzy;
     }
 
 
-    private void scoringPoints(Pc deadPc) {
+    private void scoringPoints(Pc deadPc, boolean doublekill) {
         PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
         int [] pcValue = deadPc.getPcBoard().getPcValue();
         int pcValueIndex = deadPc.getPcBoard().getPcValueIndex();
@@ -154,10 +150,15 @@ public class Game {
         int [] numOfDamages = new int [5];
         int max;
 
-        //the following instruction assigns the first blood point, only if the board is not flipped
+        //assigns an extra point, only if the current player gets a doubleKill
+        if (doublekill)
+            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[10]).findFirst().get().increasePoints(1);
+
+        //assigns the first blood point, only if the board is not flipped
         if (!isFinalFrenzy())
             pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
 
+        //assign points to each Pc who damaged the deadPc
         for (PcColourEnum colour: deadPcDamageTrack)
             numOfDamages[colour.ordinal()]++;
         while (!allPointsAssigned) {
@@ -181,15 +182,22 @@ public class Game {
         }
     }
 
-
-    private void scoreOnKillShotTrack(Pc deadPc) {
+    /**
+     * Scpre the death on The KillShotTrack
+     * @param deadPc
+     * @return True when the game turns into Final Frenzy mode
+     */
+    private boolean scoreOnKillShotTrack(Pc deadPc) {
         PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
         PcColourEnum shooterPcColour = deadPcDamageTrack[10];
         if (gameBoard.killOccured(shooterPcColour, deadPcDamageTrack[11] != null)) {
-            if (!isFinalFrenzy())
+            deadPc.flipBoard();
+            if (!isFinalFrenzy()) {
                 setFinalFrenzy(true);
+                return true;
+            }
         }
-        deadPc.flipBoard();
+        return false;
     }
 
 }

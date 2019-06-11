@@ -21,7 +21,7 @@ public class TargetSelectionState extends State {
     private Effect currEffect;
     private Action currAction;
     private Square oldTargetSquare;
-    private List<Pc> shotTargets;
+    private LinkedList<Pc> shotTargets;
     private Set<Square> targetableSquares;
 
     TargetSelectionState(Controller controller) {
@@ -43,7 +43,7 @@ public class TargetSelectionState extends State {
     private void nextAction(){
         if(actionIndex == currEffect.getActions().size() -1){
             controller.getCurrPc().payAmmo(currEffect.getCost());
-            currEffect.execute(controller.getCurrPc());
+            shotTargets.addAll(new LinkedList<>(currEffect.execute(controller.getCurrPc())));       //potrebbe essere una lista con duplcati: è un problema?
             effectIndex++;
             actionIndex = 0;
             currEffect = effectsToApply.get(effectIndex);
@@ -51,13 +51,15 @@ public class TargetSelectionState extends State {
             actionIndex++;
         controller.getGame().setTargetableSquares(targetableSquares, false);
         if (!currAction.isParameterized()) {
+            if (currAction.isAdditionalDamage())                //controllare se funziona anche per altri casi......non funziona
+                currAction.selectPc(shotTargets.getLast());
             if (currAction.needsOldSquare())
                 currAction.selectSquare(oldTargetSquare);
             ok();
             return;
         }
         if(controller.getCurrWeapon().isChained())
-            setTargetableToValidSquares(shotTargets.get(shotTargets.size() - 1));
+            setTargetableToValidSquares(shotTargets.getLast());
         else
             setTargetableToValidSquares(controller.getCurrPc());
         currAction = currEffect.getActionAtIndex(actionIndex);
@@ -76,7 +78,7 @@ public class TargetSelectionState extends State {
     void setTargetableToValidSquares(Pc referencePc) {
         if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets()) {
             targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
-            //TODO se targetableSquares è vuota, l'effetto non può essere eseguito
+            //TODO se targetableSquares è vuota o non contiene pc su di essa escluso il currPc, l'effetto non può essere eseguito
             controller.getGame().setTargetableSquares(targetableSquares, true);
         } else {
             //TODO display the list of valid Targets
@@ -132,6 +134,13 @@ public class TargetSelectionState extends State {
             }
             nextAction();
         }
+        return false;
+    }
+
+
+    @Override
+    public boolean undo(){
+        //TODO
         return false;
     }
 

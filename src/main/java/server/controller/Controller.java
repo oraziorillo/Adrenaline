@@ -74,6 +74,7 @@ public class Controller{
         return deadPlayers;
     }
 
+
     public int getCurrPlayerIndex() {
         return currPlayerIndex;
     }
@@ -96,6 +97,11 @@ public class Controller{
 
     public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
+    }
+
+
+    public boolean beforeFirstPlayer(int playerIndex) {
+        return playerIndex > lastPlayerIndex;
     }
 
 
@@ -157,10 +163,5 @@ public class Controller{
     public boolean isNextOnDuty(Player player){
         return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
                 currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
-    }
-
-
-    public boolean beforeFirstPlayer(int playerIndex) {
-        return playerIndex > lastPlayerIndex;
     }
 }
