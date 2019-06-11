@@ -42,6 +42,10 @@ public class MovementAction extends Action {
         }
     }
 
+    @Override
+    public boolean isSelfMovement() {
+        return selfMovement;
+    }
 
     @Override
     public void selectPc(Pc targetPc) {

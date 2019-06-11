@@ -11,6 +11,14 @@ GENERAL NOTES:
 
 - ricordarsi di aggiungere i target nel shotTargets
 
+- gesitre caso in cui l'upgrade non può essere eseguito
+
+- aggiungere timer ai turni
+
+
+CONNESSIONE
+- gestire la disconnessione del player
+
 
 
 OPZIONALI:

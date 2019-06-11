@@ -138,6 +138,9 @@ public abstract class Action {
     public abstract boolean isComplete();
 
 
+    public abstract boolean isSelfMovement();
+
+
     public abstract void selectPc(Pc targetPc);
 
 

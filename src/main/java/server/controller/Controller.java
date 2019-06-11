@@ -20,7 +20,7 @@ public class Controller{
 
     private Game game;
     private int currPlayerIndex;
-    private int lastPlayerIndex; //to set when final frenzy starts
+    private int lastPlayerIndex;
     private int remainingActions;
     private List<Player> players;
     private Set<PcColourEnum> availablePcColours;
