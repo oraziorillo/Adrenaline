@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="client.view.gui.controllers.pc_board.Vita">
+    <ImageView fx:id="background" preserveRatio="true"/>
+    <GridPane>
+        <rowConstraints>
+            <RowConstraints percentHeight="25.3676471"/>
+            <RowConstraints percentHeight="07.3529412"/>
+            <RowConstraints percentHeight="34.1911765"/>
+            <RowConstraints percentHeight="04.4117647"/>
+            <RowConstraints percentHeight="25.3676471"/>
+            <RowConstraints/>
+        </rowConstraints>
+        <columnConstraints>
+            <ColumnConstraints/>
+            <ColumnConstraints percentWidth="17.076326"/>
+            <ColumnConstraints percentWidth="38.0336352"/>
+            <ColumnConstraints percentWidth="09.5730918"/>
+            <ColumnConstraints percentWidth="33.5058215"/>
+            <ColumnConstraints/>
+        </columnConstraints>
+        <Region GridPane.rowSpan="6"/>
+        <Region GridPane.columnIndex="5" GridPane.rowSpan="6"/>
+        <HBox fx:id="marchi_box" GridPane.columnIndex="3" GridPane.columnSpan="2" styleClass="prova"/>
+        <GridPane fx:id="danni" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4" styleClass="prova"/>
+        <GridPane fx:id="morti" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="2" styleClass="prova"/>
+    </GridPane>
+
+</StackPane>

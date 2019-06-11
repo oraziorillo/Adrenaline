@@ -19,7 +19,7 @@
     </top>
     <bottom>
         <HBox minHeight="${pc.height}" maxHeight="${pc.height}" prefHeight="${pc.height}" alignment="BOTTOM_CENTER" >
-            <fx:include source="pcBoard.fxml" fx:id="pc" viewOrder="-Infinity" />
+            <fx:include source="pc_board/pcBoard.fxml" fx:id="pc" viewOrder="-Infinity" />
             <Region HBox.hgrow="ALWAYS"/>
             <fx:include source="card_hand.fxml" fx:id="weaponHand" HBox.hgrow="ALWAYS"/>
             <Region HBox.hgrow="ALWAYS"/>

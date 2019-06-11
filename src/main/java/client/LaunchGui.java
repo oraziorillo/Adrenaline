@@ -2,6 +2,8 @@ package client;
 
 import client.controller.AbstractClientController;
 import client.controller.GuiController;
+import client.view.gui.controllers.weapons.GeneralWeapon;
+import common.model_dtos.WeaponCardDTO;
 import common.rmi_interfaces.RemoteLoginController;
 import common.rmi_interfaces.RemotePlayer;
 import javafx.application.Application;
@@ -37,12 +39,14 @@ public class LaunchGui extends Application {
               e.printStackTrace();
            }
         }
-        FXMLLoader loader = new FXMLLoader( LaunchGui.class.getResource( "/fxml/gui.fxml" ));
+        FXMLLoader loader = new FXMLLoader( LaunchGui.class.getResource( "/fxml/weapons/general_weapon.fxml" ));
         Parent root = loader.load();
-        GuiController controller = loader.getController();
+        GeneralWeapon controller = loader.getController();
+        controller.setWeapon( new WeaponCardDTO("mitragliatrice",1,2) );
+        /*GuiController controller = loader.getController();
         System.out.println(getHostServices());
         controller.setHostServices(getHostServices());
-        controller.setPlayer(player);
+        controller.setPlayer(player);*/
         primaryStage.setTitle( "TITOLO, Orazio pensalo tu" );
         primaryStage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
         primaryStage.setFullScreenExitKeyCombination(new KeyCodeCombination( KeyCode.ESCAPE ));
