@@ -1,6 +1,5 @@
 package client.controller;
 
-import client.controller.AbstractClientController;
 import client.socket.proxies.SocketLoginController;
 import client.view.gui.controllers.*;
 import common.model_dtos.PowerUpCardDTO;
@@ -29,7 +28,7 @@ import java.util.UUID;
 public class GuiController implements RemoteView, AbstractClientController {
    @FXML private GridPane killShotTrack;
    @FXML
-   MapController mappaController;
+   Map mappaController;
    @FXML
    CardHolder cardHolderLeftController;
    @FXML CardHolder cardHolderRightController;
@@ -38,7 +37,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    @FXML CardHand<PowerUpCardDTO> powerUpHandController;
    @FXML HBox underMapButtons;
    @FXML
-   TopController topController;
+   Top topController;
    @FXML
    Chat chatController;
    private RemotePlayer player;
@@ -57,7 +56,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    
    private void test(){
       for(int i=0;i<3;i++) {
-         weaponHandController.setCard( new WeaponCardDTO( "martello_ionico" ), i );
+         weaponHandController.setCard( new WeaponCardDTO( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
    }

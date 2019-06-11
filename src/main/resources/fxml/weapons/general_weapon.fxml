@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="client.view.gui.controllers.weapons.GeneralWeapon" fx:id="mainPane"
+           stylesheets="/css/weapon.css">
+    <ImageView fx:id="background"/>
+    <GridPane>
+        <rowConstraints>
+            <RowConstraints percentHeight="42.2222222"/>
+        </rowConstraints>
+        <GridPane fx:id="contentPane" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS"/>
+    </GridPane>
+</StackPane>

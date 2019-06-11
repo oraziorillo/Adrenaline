@@ -111,7 +111,7 @@ public class CardHolder {
    public void test(){
       setBackgroundColor( AmmoEnum.RED );
       for(ImageView card: cards) {
-         card.setImage( new Image( "/images/martello_ionico.png", true ) );
+         card.setImage( new Image( "/images/weapons/martello_ionico.png", true ) );
       }
    }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import java.lang.Double?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
+      fx:controller="client.view.gui.controllers.pc_board.PcController" stylesheets="/css/pc_board/Pc.css" >
+    <fx:define>
+        <Double fx:id="HEIGHT" fx:value="200"/>
+    </fx:define>
+    <fx:include source="azioni.fxml" fx:id="azioni" viewOrder="-1"/>
+    <HBox fx:id="translating" id="translating" onMouseEntered="#appear" onMouseExited="#disappear" alignment="BOTTOM_LEFT" styleClass="debug">
+        <fx:include source="vita.fxml" fx:id="vita"/>
+        <ImageView fx:id="immagine" preserveRatio="true"><Image url="/images/pc_board/banshee_immagine.png" requestedHeight="$HEIGHT" preserveRatio="true" /></ImageView>
+    </HBox>
+
+
+</HBox>
