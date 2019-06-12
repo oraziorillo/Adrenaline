@@ -1,0 +1,10 @@
+GridPane{
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+}
+
+Button{
+    -fx-max-width: infinity;
+    -fx-max-height: infinity;
+    -fx-opacity: 0;
+}

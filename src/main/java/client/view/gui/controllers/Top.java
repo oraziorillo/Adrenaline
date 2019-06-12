@@ -16,7 +16,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-public class TopController {
+public class Top {
    @FXML
    public CardHolder cardHolderController;
    @FXML

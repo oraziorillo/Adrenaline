@@ -2,6 +2,8 @@ package client;
 
 import client.controller.AbstractClientController;
 import client.controller.GuiController;
+import client.view.gui.controllers.weapons.GeneralWeapon;
+import common.model_dtos.WeaponCardDTO;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
@@ -12,7 +14,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 import server.exceptions.PlayerAlreadyLoggedInException;
-
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
@@ -37,12 +38,14 @@ public class LaunchGui extends Application {
               e.printStackTrace();
            }
         }
-        FXMLLoader loader = new FXMLLoader( LaunchGui.class.getResource( "/fxml/gui.fxml" ));
+        FXMLLoader loader = new FXMLLoader( LaunchGui.class.getResource( "/fxml/weapons/general_weapon.fxml" ));
         Parent root = loader.load();
-        GuiController controller = loader.getController();
+        GeneralWeapon controller = loader.getController();
+        controller.setWeapon( new WeaponCardDTO("mitragliatrice",1,2) );
+        /*GuiController controller = loader.getController();
         System.out.println(getHostServices());
         controller.setHostServices(getHostServices());
-        controller.setPlayer(player);
+        controller.setPlayer(player);*/
         primaryStage.setTitle( "TITOLO, Orazio pensalo tu" );
         primaryStage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
         primaryStage.setFullScreenExitKeyCombination(new KeyCodeCombination( KeyCode.ESCAPE ));

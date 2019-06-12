@@ -9,7 +9,9 @@ import server.model.Pc;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -20,13 +22,13 @@ public abstract class Action {
     @Expose int maxNumberOfTargets;
     @Expose TargetChecker targetChecker;
     TargetChecker orientedTargetChecker;
-    LinkedList<Pc> targets;
+    Set<Pc> targets;
     Square targetSquare;
 
 
     Action(){
         this.maxNumberOfTargets = 1;
-        targets = new LinkedList<>();
+        targets = new HashSet<>();
     }
 
 
@@ -136,6 +138,9 @@ public abstract class Action {
     public abstract boolean isComplete();
 
 
+    public abstract boolean isSelfMovement();
+
+
     public abstract void selectPc(Pc targetPc);
 
 
@@ -145,7 +150,7 @@ public abstract class Action {
     public abstract void resetAction();
 
 
-    public abstract void apply(Pc shooter);
+    public abstract Set<Pc> apply(Pc shooter);
 
 
     /*

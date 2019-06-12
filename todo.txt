@@ -1,17 +1,40 @@
 GENERAL NOTES:
 - i return di oggetti devono restituire cloni
 
+- aggiungere il clone su effectToApply
+
+- aggiungere l'infierire
+
+-gestire l'additional damage exclusive
+
 - stabilire quando chiamare il destination checker in targetSelectionState
 
 - ricordarsi di aggiungere i target nel shotTargets
+
+- gesitre caso in cui l'upgrade non può essere eseguito
+
+- aggiungere timer ai turni
+
+
+CONNESSIONE
+- gestire la disconnessione del player
+
+
+
+OPZIONALI:
+- cambiare i target Checker non avendoli piu come decorator
+
+- fase iniziale di login e play
+
+- migliorare granade launcher
+
 
 
 ARMI:
 - aggiungere boolean needParameters per onda d'urto
 
-- flag chain effect
-
 - gestire meglio upgrade di granade launcher
+
 
 
 RMI:

@@ -8,7 +8,7 @@ import javafx.scene.layout.Priority;
 import common.enums.AmmoEnum;
 
 
-public class AmmoController {
+public class Ammo {
    @FXML
    RatioGridPane grid;
    private static final int MAX_AMMOS_PER_COLOR = 3;

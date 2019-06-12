@@ -13,7 +13,7 @@ public abstract class CliCommand {
 
     CliCommand(RemotePlayer controller){
         this.controller = controller;
-        this.inputReader = new CliInputReader(  );
+        this.inputReader = new CliInputReader( );
     }
 
     public abstract void execute() throws IOException;

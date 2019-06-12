@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 
-public class MapController {
+public class Map {
    @FXML
    RatioGridPane grid;
    @FXML Button button;

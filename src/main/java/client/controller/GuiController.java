@@ -25,11 +25,12 @@ import java.rmi.registry.Registry;
 import java.util.Optional;
 import java.util.UUID;
 
+
 public class GuiController implements RemoteView, AbstractClientController {
    @FXML
    GridPane killShotTrack;
    @FXML
-   MapController mappaController;
+   Map mappaController;
    @FXML
    CardHolder cardHolderLeftController;
    @FXML
@@ -41,7 +42,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    @FXML
    HBox underMapButtons;
    @FXML
-   TopController topController;
+   Top topController;
    @FXML
    Chat chatController;
    private RemotePlayer player;
@@ -61,8 +62,8 @@ public class GuiController implements RemoteView, AbstractClientController {
 
    private void test() {
       for (int i = 0; i < 3; i++) {
-         weaponHandController.setCard(new WeaponCardDTO("martello_ionico"), i);
-         powerUpHandController.setCard(new PowerUpCardDTO(), i);
+         weaponHandController.setCard( new WeaponCardDTO( "martello_ionico", 1, 1 ), i );
+         powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
    }
 
@@ -117,6 +118,7 @@ public class GuiController implements RemoteView, AbstractClientController {
             usernameDialog.setHeaderText(null);
             usernameDialog.setContentText("Insert your username");
             String username = usernameDialog.showAndWait().orElse("username");
+            //TODO:handle username already used exception
             token = loginController.register(username);
             System.out.println("Registrazione");
             return loginController.login(token, this);

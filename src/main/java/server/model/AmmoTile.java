@@ -23,11 +23,11 @@ public class AmmoTile {
         this.hasPowerup = hasPowerup;
     }
 
-    short[] getAmmo() {
+    public short[] getAmmo() {
         return ammo.clone();
     }
 
-    boolean containsPowerup() {
+    public boolean containsPowerup() {
         return hasPowerup;
     }
 

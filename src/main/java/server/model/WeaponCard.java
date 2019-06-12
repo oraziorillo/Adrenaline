@@ -53,6 +53,9 @@ public class WeaponCard {
 
     public void init(){
         effectsToApply.add(fireModes.get(0));
+        currentCost = new short[3];
+        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+            currentCost[i] = ammo[i];
     }
 
     public boolean isChained() {
@@ -155,7 +158,6 @@ public class WeaponCard {
 
     public void reset() {
         effectsToApply.clear();
-        effectsToApply.add(fireModes.get(0));
-        currentCost = new short[3];
+        init();
     }
 }

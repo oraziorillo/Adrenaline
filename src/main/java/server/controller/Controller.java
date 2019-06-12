@@ -20,7 +20,7 @@ public class Controller{
 
     private Game game;
     private int currPlayerIndex;
-    private int lastPlayerIndex; //to set when final frenzy starts
+    private int lastPlayerIndex;
     private int remainingActions;
     private List<Player> players;
     private Set<PcColourEnum> availablePcColours;
@@ -37,6 +37,7 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.players.addAll(players);
         this.currPlayerIndex = 0;
+        this.lastPlayerIndex = -1;
     }
 
 
@@ -74,6 +75,7 @@ public class Controller{
         return deadPlayers;
     }
 
+
     public int getCurrPlayerIndex() {
         return currPlayerIndex;
     }
@@ -96,6 +98,11 @@ public class Controller{
 
     public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
+    }
+
+
+    public boolean beforeFirstPlayer(int playerIndex) {
+        return playerIndex > lastPlayerIndex;
     }
 
 
@@ -141,6 +148,9 @@ public class Controller{
         if (deadPlayers.isEmpty()) {
             increaseCurrPlayerIndex();
             getCurrPlayer().setActive();
+            if (currPlayerIndex == lastPlayerIndex)
+                game.computeWinner();
+                //TODO gestire il valore di ritorno del metodo precedente e implementare la fine della partita chiudendo connessioni..
         } else {
             deadPlayers.get(0).hasToRespawn();
         }
@@ -157,10 +167,5 @@ public class Controller{
     public boolean isNextOnDuty(Player player){
         return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
                 currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
-    }
-
-
-    public boolean beforeFirstPlayer(int playerIndex) {
-        return playerIndex > lastPlayerIndex;
     }
 }

@@ -39,6 +39,10 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    public void setCurrState(State currState) {
+        this.currState = currState;
+    }
+
     WeaponCard getCurrWeapon(){
         return currWeapon;
     }
