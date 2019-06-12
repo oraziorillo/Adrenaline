@@ -192,7 +192,7 @@ public class Pc {
         pcBoard.addDamage(colour, totalDamage);
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFEPOINTS - 2) {
-            //TODO notify server.socket_proxies e client
+            //TODO notify server.socket e client
             //currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
         }
         if (damageIndex > 4)

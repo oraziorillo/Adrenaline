@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import common.rmi_interfaces.RemotePlayer;
+import common.remote_interfaces.RemotePlayer;
 import java.io.IOException;
 
 final class ShootCommand extends CliCommand {

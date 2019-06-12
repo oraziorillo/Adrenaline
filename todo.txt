@@ -41,7 +41,9 @@ point. And you are awesome)
 
 
 DOMANDE:
-- il json va chiuso?
+-dobbiamo usare due porte diverse per socket e rmi?
+
+- non va sonarqube
 
 
  

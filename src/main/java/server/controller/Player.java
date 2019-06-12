@@ -1,8 +1,6 @@
 package server.controller;
 
-import common.rmi_interfaces.RemotePlayer;
-import common.rmi_interfaces.RemoteView;
-import org.jetbrains.annotations.Contract;
+import common.remote_interfaces.RemotePlayer;
 import server.controller.states.State;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -19,23 +17,15 @@ import static server.controller.Controller.*;
  */
 public class Player extends UnicastRemoteObject implements RemotePlayer {
 
-    private String username;
     private final UUID token;
-    private transient Pc pc;
-    private transient State currState;
+    private Pc pc;
+    private State currState;
     private transient WeaponCard currWeapon;
-    private transient RemoteView remoteView;
 
 
-    @Contract(pure = true)
-    public Player(String username, UUID token) throws RemoteException {
-        this.username = username;
+    public Player(UUID token) throws RemoteException {
+        super();
         this.token = token;
-    }
-
-
-    public String getUsername() {
-        return username;
     }
 
 
@@ -51,11 +41,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     WeaponCard getCurrWeapon(){
         return currWeapon;
-    }
-
-
-    void setUsername(String username) {
-        this.username = username;
     }
 
 
@@ -228,16 +213,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void quit() {
         //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-    
-    @Override
-    public void setRemoteView(RemoteView remoteView) throws RemoteException{
-        this.remoteView = remoteView;
-    }
-    
-    @Override
-    public RemoteView getRemoteView() throws RemoteException {
-        return remoteView;
-    }
-    
+
 }
 

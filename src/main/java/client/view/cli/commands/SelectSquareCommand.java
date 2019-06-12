@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import common.rmi_interfaces.RemotePlayer;
+import common.remote_interfaces.RemotePlayer;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ class SelectSquareCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseSquare( inputRequire.requestInt( "Insert squere column" ),
-                                inputRequire.requestInt( "Insert squares row" ));
+        controller.chooseSquare( inputReader.requestInt( "Insert squere column" ),
+                                inputReader.requestInt( "Insert squares row" ));
     }
 }

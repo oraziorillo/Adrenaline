@@ -1,20 +1,20 @@
-package client.socket.listeners;
+package client.controller.socket;
 
 import common.enums.RemoteViewEnum;
-import common.rmi_interfaces.RemoteView;
+import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-import static common.enums.RemoteViewEnum.*;
-
 public class ViewSocketListener implements Runnable {
-   
+
+
    private final Socket server;
    private final Scanner in;
    private final RemoteView view;
-   
+
+
    public ViewSocketListener(Socket server, RemoteView view) {
       this.server = server;
       this.view = view;
@@ -24,15 +24,22 @@ public class ViewSocketListener implements Runnable {
          throw new IllegalStateException("Invalid socket");
       }
    }
+
+
    @Override
    public void run() {
-      while (!server.isClosed()){
-         RemoteViewEnum cmd = RemoteViewEnum.valueOf( in.next() );
-         switch (cmd){
-            case SHOW_MESSAGE:
-               view.showMessage( in.next() );
-               break;
+      try {
+         while (!server.isClosed()){
+            RemoteViewEnum cmd = RemoteViewEnum.valueOf( in.next() );
+            switch (cmd){
+               case ACK:
+                     view.ack( in.next() );
+                  break;
+            }
          }
+      }
+      catch (IOException e) {
+         e.printStackTrace();
       }
    }
 }

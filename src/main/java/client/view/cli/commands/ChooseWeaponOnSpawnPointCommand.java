@@ -1,6 +1,6 @@
 package client.view.cli.commands;
 
-import common.rmi_interfaces.RemotePlayer;
+import common.remote_interfaces.RemotePlayer;
 import java.io.IOException;
 
 public class ChooseWeaponOnSpawnPointCommand extends CliCommand {
@@ -10,6 +10,6 @@ public class ChooseWeaponOnSpawnPointCommand extends CliCommand {
 
     @Override
     public void execute() throws IOException {
-        controller.chooseWeaponOnSpawnPoint( inputRequire.requestInt( "Insert weapon number" ) );
+        controller.chooseWeaponOnSpawnPoint( inputReader.requestInt( "Insert weapon number" ) );
     }
 }

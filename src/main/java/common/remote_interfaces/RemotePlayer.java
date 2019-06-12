@@ -1,10 +1,7 @@
-package common.rmi_interfaces;
-
-import client.controller.CliController;
+package common.remote_interfaces;
 
 import java.io.IOException;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 
 public interface RemotePlayer extends Remote {
 
@@ -49,8 +46,4 @@ public interface RemotePlayer extends Remote {
     void pass() throws IOException;
 
     void quit() throws IOException;
-   
-   void setRemoteView(RemoteView remoteView) throws RemoteException;
-   
-   RemoteView getRemoteView() throws RemoteException;
 }

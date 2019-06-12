@@ -1,8 +1,7 @@
-package server;
+package server.controller.socket;
 
 import common.enums.SocketPlayerEnum;
-import common.rmi_interfaces.RemotePlayer;
-import server.socket_proxies.SocketRemoteView;
+import common.remote_interfaces.RemotePlayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +25,6 @@ public class PlayerSocketListener implements Runnable {
         out = new PrintWriter( socket.getOutputStream() );
         out.flush();
         in = new BufferedReader( new InputStreamReader( socket.getInputStream() ));
-        player.setRemoteView( new SocketRemoteView( socket ) );
     }
     
     /**

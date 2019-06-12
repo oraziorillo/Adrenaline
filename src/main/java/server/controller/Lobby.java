@@ -1,17 +1,17 @@
-package server;
+package server.controller;
 
-import server.controller.Controller;
-import server.controller.Player;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
-import javax.swing.Timer;
+import javax.swing.*;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Pre-game, singleton waiting room. Stores players and starts a game when has enough of them.
  */
-class Lobby {
+public class Lobby {
 
     //TODO: timer preso dal file di config
     private static final int TIME = 1000 * 60 * 3;
@@ -33,8 +33,7 @@ class Lobby {
     }
 
 
-    Lobby(UUID gameUUID) {
-        this.old = true;
+    public Lobby(UUID gameUUID) {
         this.gameUUID = gameUUID;
         this.players = new LinkedList<>();
         this.timer = new Timer(TIME, actionEvent -> startNewGame());
@@ -42,17 +41,12 @@ class Lobby {
     }
 
 
-    boolean isOld() {
-        return old;
-    }
-
-
-    UUID getGameUUID() {
+    public UUID getGameUUID() {
         return gameUUID;
     }
 
 
-    List<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 

@@ -1,13 +1,12 @@
 package client;
 
-import client.controller.AbstractClientController;
 import client.controller.CliController;
 import client.view.InputReader;
 import client.view.cli.CliInputReader;
 import client.view.cli.commands.CliCommand;
 import client.view.cli.commands.CommandFactory;
-import common.rmi_interfaces.RemoteLoginController;
-import common.rmi_interfaces.RemotePlayer;
+import common.remote_interfaces.RemoteLoginController;
+import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class LaunchCli {
 
     public static void main(String[] args) throws IOException, NotBoundException, PlayerAlreadyLoggedInException {
         InputReader input = new CliInputReader();
-        AbstractClientController clientController = new CliController(input);
+        CliController clientController = new CliController(input);
         RemoteLoginController loginController = clientController.getLoginController();
         RemotePlayer player = clientController.loginRegister( loginController );
         while (true){

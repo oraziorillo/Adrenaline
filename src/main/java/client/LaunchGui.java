@@ -2,8 +2,8 @@ package client;
 
 import client.controller.AbstractClientController;
 import client.controller.GuiController;
-import common.rmi_interfaces.RemoteLoginController;
-import common.rmi_interfaces.RemotePlayer;
+import common.remote_interfaces.RemoteLoginController;
+import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

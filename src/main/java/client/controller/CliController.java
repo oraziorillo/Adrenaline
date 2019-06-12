@@ -1,88 +1,91 @@
 package client.controller;
 
-import client.socket.proxies.SocketLoginController;
+import client.controller.socket.LoginControllerSocketProxy;
 import client.view.InputReader;
-import common.rmi_interfaces.RemoteLoginController;
-import common.rmi_interfaces.RemotePlayer;
-import common.rmi_interfaces.RemoteView;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import server.controller.Player;
+import common.remote_interfaces.RemoteLoginController;
+import common.remote_interfaces.RemotePlayer;
+import common.remote_interfaces.RemoteView;
 import server.exceptions.PlayerAlreadyLoggedInException;
-
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.UUID;
 
-public class CliController implements AbstractClientController, RemoteView, Serializable {
-   
-   private static final String NOPE = "Illegal command";
-   private final transient InputReader inputReader;
-   
-   public CliController( InputReader in) {
-      inputReader = in;
-   }
-   
-   @Override
-   public RemoteLoginController getLoginController() throws IOException, NotBoundException {
-      RemoteLoginController controller;
-      String cmd;
-      HashSet<String> socketCommands = new HashSet<>( Arrays.asList( "s","socket" ) );
-      HashSet<String> rmiCommands = new HashSet<>(Arrays.asList( "r","rmi" ));
-      boolean validCommand;
-      do {
-         cmd = inputReader.requestString( "(s)ocket \n (r)mi" ).toLowerCase();
-         validCommand = socketCommands.contains( cmd ) || rmiCommands.contains( cmd );
-         if (!validCommand)
-            System.out.println( NOPE );
-      } while (!validCommand);
-      
-      if(socketCommands.contains( cmd )){
-         Socket socket = new Socket(HOST,SOCKET_PORT);
-         controller = new SocketLoginController( socket );
-      }else {  //if the loop has ended, cmd is an rmi command
-         Registry registry = LocateRegistry.getRegistry( HOST,RMI_PORT );
-         controller = ( RemoteLoginController ) registry.lookup( "LoginController" );
-      }
-      return controller;
-   }
-   
-   @Override
-   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException {
-      UUID token = null;
-      HashSet<String> yesAnswers = new HashSet<>(Arrays.asList( "y","yes" ));
-      HashSet<String> noAnswers = new HashSet<>( Arrays.asList( "n","no","nope" ) );
-      do {
-         String cmd = inputReader.requestString( "Do you have a login token?" ).toLowerCase();
-         if(yesAnswers.contains( cmd )){
-            token = UUID.fromString( inputReader.requestString( "Insert your token" ) );
-         }else if(noAnswers.contains( cmd )){
-            String username;
-            do {
-               username = inputReader.requestString( "Insert an username" );
-            }while (!username.equals( inputReader.requestString( "Are you sure? Retype it to confirm." ) ));
-            token = loginController.register( username );
-         }else {
-            System.out.println( NOPE );
-         }
-      } while (token == null);
-      RemotePlayer player = loginController.login(token);
-      player.setRemoteView( this );
-      loginController.joinLobby( token );
-      return player;
-   }
-   
-   @Override
-   public void showMessage(String message) {
-      System.out.println(message);  //TODO: non funziona rmi in nessun modo
-   }
+public class CliController extends UnicastRemoteObject implements AbstractClientController, RemoteView, Serializable {
+
+
+    private final transient InputReader inputReader;
+
+
+    public CliController(InputReader in) throws RemoteException {
+        super();
+        inputReader = in;
+    }
+
+
+    @Override
+    public RemoteLoginController getLoginController() throws IOException, NotBoundException {
+        RemoteLoginController controller;
+        String cmd;
+        HashSet<String> socketCommands = new HashSet<>(Arrays.asList("s", "socket"));
+        HashSet<String> rmiCommands = new HashSet<>(Arrays.asList("r", "rmi"));
+        boolean validCommand;
+        do {
+            cmd = inputReader.requestString("Choose a connection method:\n - (s)ocket \n - (r)mi").toLowerCase();
+            System.out.println();
+            validCommand = socketCommands.contains(cmd) || rmiCommands.contains(cmd);
+            if (!validCommand)
+                System.out.println("Illegal command");
+        } while (!validCommand);
+
+        if (socketCommands.contains(cmd)) {
+            Socket socket = new Socket(HOST, SOCKET_PORT);
+            controller = new LoginControllerSocketProxy(socket);
+        } else {  //if the loop has ended, cmd is an rmi command
+            Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
+            controller = (RemoteLoginController) registry.lookup("LoginController");
+        }
+        return controller;
+    }
+
+
+    @Override
+    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException {
+        UUID token = null;
+        HashSet<String> yesAnswers = new HashSet<>(Arrays.asList("y", "yes"));
+        HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));
+        do {
+            String cmd = inputReader.requestString("Do you have a login token?").toLowerCase();
+            System.out.println();
+            if (yesAnswers.contains(cmd)) {
+                token = UUID.fromString(inputReader.requestString("Insert your token"));
+            } else if (noAnswers.contains(cmd)) {
+                String username;
+                username = inputReader.requestString("Insert an username");
+                System.out.println();
+                token = loginController.register(username);
+            } else {
+                System.out.println("Illegal command\n");
+            }
+        } while (token == null);
+        RemotePlayer player = loginController.login(token, this);
+        System.out.println("This is your token: " + token + "\n\nUse it to login next time\n");
+        loginController.joinLobby(token);
+        return player;
+    }
+
+
+    @Override
+    public synchronized void ack(String message) {
+        System.out.println(message);
+        System.out.println();
+        //TODO: non funziona rmi in nessun modo
+    }
 }

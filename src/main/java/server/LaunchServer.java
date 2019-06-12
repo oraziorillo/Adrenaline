@@ -1,5 +1,8 @@
 package server;
 
+import server.controller.LoginController;
+import server.controller.socket.LoginSocketListener;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class LaunchServer {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         
         Registry registry = LocateRegistry.createRegistry(9999);
         registry.rebind("LoginController", LoginController.getInstance());

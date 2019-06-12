@@ -11,11 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> b321e7081de9bec412f1d4920248d2b3acf06e80
-
 public class CardHand <T extends Card>{
    @FXML
    StackPane mainPane;
