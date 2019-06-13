@@ -89,9 +89,8 @@ public class DamageMarksAction extends Action {
     @Override
     public void selectPc(Pc targetPc) {
         if(!roomExplosive && !squareExplosive) {
-            if (targets.size() == maxNumberOfTargets)
-                targets = new HashSet<>();
-            targets.add(targetPc);
+            if (targets.size() < maxNumberOfTargets)
+                targets.add(targetPc);
         }
     }
 

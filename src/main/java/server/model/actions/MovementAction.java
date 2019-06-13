@@ -51,22 +51,20 @@ public class MovementAction extends Action {
 
     @Override
     public void selectPc(Pc targetPc) {
-        if (targetPc != null)
-            //in questo modo non è permesso all'utente cambiare il target se è già stato selezionato in un'azione precedente
-            //dovremmo sapere qui se l'azione è stata settata tramite un hasSameTarget
+        if (!targets.isEmpty() && maxNumberOfTargets == 1)
+            //se è già stato selezionato in un'azione precedente avrà come boolean false isParameterized
             return;
         if (!selfMovement) {
             //if are selected more Pcs than allowed, the target set becomes empty and adds the new Pc
-            if (targets.size() == maxNumberOfTargets)
-                targets = new HashSet<>();
-            targets.add(targetPc);
+            if (targets.size() < maxNumberOfTargets)
+                targets.add(targetPc);
         }
     }
 
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if ((!targets.isEmpty() || this.selfMovement) && this.targetSquare == null) {
+        if (this.targetSquare == null) {
             this.targetSquare = targetSquare;
         }
     }
@@ -98,7 +96,7 @@ public class MovementAction extends Action {
             targets.add(shooter);
         if (!isComplete())
             return null;
-        new ArrayList<>(targets).get(0).moveTo(targetSquare);
+        targets.forEach(pc -> pc.moveTo(targetSquare));
         resetAction();
         return null;
     }

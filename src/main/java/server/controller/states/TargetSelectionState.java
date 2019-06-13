@@ -59,6 +59,7 @@ public class TargetSelectionState extends State {
             currEffect = effectsToApply.get(effectIndex);
         } else
             actionIndex++;
+        currAction = currEffect.getActionAtIndex(actionIndex);
         setAction();
     }
 
@@ -81,7 +82,6 @@ public class TargetSelectionState extends State {
         }
         else
             setTargetableToValidSquares(controller.getCurrPc());
-        currAction = currEffect.getActionAtIndex(actionIndex);
     }
 
 
@@ -159,7 +159,7 @@ public class TargetSelectionState extends State {
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
                 if (currEffect.memorizeTargetSquare() && squareToMemorize == null)
                     squareToMemorize = targetPc.getCurrSquare();
-                if (currEffect.hasOnlyOneTarget()) {
+                if (currEffect.hasSameTarget()) {
                     currEffect.getActions().forEach(a -> a.selectPc(targetPc));
                 } else if (currAction.isAdditionalDamage()) {
                     if (currAction.isExclusiveForOldTargets()) {

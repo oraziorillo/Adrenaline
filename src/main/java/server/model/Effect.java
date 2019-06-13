@@ -50,7 +50,7 @@ public class Effect {
         return asynchronous;
     }
 
-    public boolean hasOnlyOneTarget() {
+    public boolean hasSameTarget() {
         return sameTarget;
     }
 

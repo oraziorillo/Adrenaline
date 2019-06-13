@@ -631,7 +631,7 @@
         "oriented": false,
         "beyondWalls": false,
         "asynchronous": false,
-        "sameTarget": false,
+        "sameTarget": true,
         "memorizeTargetSquare": false,
         "cost": [
           0,
@@ -666,24 +666,33 @@
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
-            "damage": 0,
+            "damage": 2,
             "marks": 0,
-            "maxNumberOfTargets": 0,
+            "maxNumberOfTargets": 1,
             "squareExplosive": false,
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
             "targetChecker": [
               {
-                "type": "visible"
-              },
-              {
-                "type": "minDistance",
+                "type": "maxDistance",
                 "minDistance": 1
               }
             ]
           },
-
+          {
+            "optional": false,
+            "parameterized": false,
+            "needsOldSquare": false,
+            "isMovement": true,
+            "linkedChecker": false,
+            "maxNumberOfTargets": 1,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
         ]
       }
     ],
@@ -692,7 +701,7 @@
         "oriented": false,
         "beyondWalls": false,
         "asynchronous": false,
-        "sameTarget": false,
+        "sameTarget": true,
         "memorizeTargetSquare": false,
         "cost": [
           0,
@@ -705,16 +714,30 @@
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
-            "damage": 0,
-            "marks": 1,
-            "maxNumberOfTargets": 1,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 2,
             "squareExplosive": false,
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "maxDistance",
+                "maxDistance": 1
+              }
+            ]
+          },
+          {
+            "optional": false,
+            "parameterized": false,
+            "needsOldSquare": false,
+            "isMovement": true,
+            "linkedChecker": false,
+            "maxNumberOfTargets": 2,
+            "targetChecker": [
+              {
+                "type": ""
               }
             ]
           }
@@ -722,4 +745,252 @@
       }
     ]
   },
+  {
+    "name": "Furnace",
+    "colour":"RED",
+    "chained": false,
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "fireModes": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 4,
+            "squareExplosive": false,
+            "roomExplosive": true,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              },
+              {
+                "type": "differentRoom"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 1,
+            "maxNumberOfTargets": 4,
+            "squareExplosive": true,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 1
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Heatseeker",
+    "colour":"RED",
+    "chained": false,
+    "ammo": [
+      0,
+      2,
+      1
+    ],
+    "fireModes": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 3,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "blindness"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Hellion",
+    "colour":"RED",
+    "chained": false,
+    "ammo": [
+      0,
+      1,
+      1
+    ],
+    "fireModes": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": true,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 1
+              }
+            ]
+          },
+          {
+            "optional": false,
+            "parameterized": false,
+            "needsOldSquare": true,
+            "isMovement": false,
+            "damage": 0,
+            "marks": 1,
+            "maxNumberOfTargets": 4,
+            "squareExplosive": false,
+            "roomExplosive": true,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": true,
+        "cost": [
+          0,
+          1,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 1
+              }
+            ]
+          },
+          {
+            "optional": false,
+            "parameterized": false,
+            "needsOldSquare": true,
+            "isMovement": false,
+            "damage": 0,
+            "marks": 2,
+            "maxNumberOfTargets": 4,
+            "squareExplosive": false,
+            "roomExplosive": true,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 ]
