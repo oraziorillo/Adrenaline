@@ -16,12 +16,14 @@ import java.util.Set;
 public class MovementAction extends Action {
 
     @Expose private boolean selfMovement;
+    @Expose private boolean linkedChecker;          //per il tractor beam
     @Expose private TargetChecker destinationChecker;
 
 
     public MovementAction(JsonObject jsonAction) {
         super(jsonAction);
         this.selfMovement = jsonAction.get("selfMovement").getAsBoolean();
+        this.linkedChecker = jsonAction.get("linkedChecker").getAsBoolean();
 
         JsonArray json = jsonAction.get("destinationChecker").getAsJsonArray();
         for(JsonElement checker : json) {
@@ -49,31 +51,34 @@ public class MovementAction extends Action {
 
     @Override
     public void selectPc(Pc targetPc) {
-        if (targetPc != null)
-            //in questo modo non è permesso all'utente cambiare il target se è già stato selezionato in un'azione precedente
-            //dovremmo sapere qui se l'azione è stata settata tramite un hasSameTarget
+        if (!targets.isEmpty() && maxNumberOfTargets == 1)
+            //se è già stato selezionato in un'azione precedente avrà come boolean false isParameterized
             return;
         if (!selfMovement) {
             //if are selected more Pcs than allowed, the target set becomes empty and adds the new Pc
-            if (targets.size() == maxNumberOfTargets)
-                targets = new HashSet<>();
-            targets.add(targetPc);
+            if (targets.size() < maxNumberOfTargets)
+                targets.add(targetPc);
         }
     }
 
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if (!targets.isEmpty() || this.selfMovement) {
+        if (this.targetSquare == null) {
             this.targetSquare = targetSquare;
         }
     }
 
 
     @Override
-    public Set<Square> validDestinations(Square targetSquare) {
+    public Set<Square> validSquares(Square targetSquare) {
         if (selfMovement)
             return targetChecker.validSquares(targetSquare);
+        else if (linkedChecker){
+            Set<Square> bothCheckers = targetChecker.validSquares(targetSquare);
+            bothCheckers.retainAll(destinationChecker.validSquares(new ArrayList<>(targets).get(0).getCurrSquare()));
+            return bothCheckers;
+        }
         return destinationChecker.validSquares(new ArrayList<>(targets).get(0).getCurrSquare());
     }
 
@@ -91,7 +96,7 @@ public class MovementAction extends Action {
             targets.add(shooter);
         if (!isComplete())
             return null;
-        new ArrayList<>(targets).get(0).moveTo(targetSquare);
+        targets.forEach(pc -> pc.moveTo(targetSquare));
         resetAction();
         return null;
     }

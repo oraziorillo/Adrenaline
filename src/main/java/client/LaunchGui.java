@@ -14,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 import server.exceptions.PlayerAlreadyLoggedInException;
+
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
@@ -34,7 +35,7 @@ public class LaunchGui extends Application {
             loginController = clientController.getLoginController();
            try {
               player = clientController.loginRegister( loginController );
-           } catch ( PlayerAlreadyLoggedInException e ) {
+           } catch (PlayerAlreadyLoggedInException e) {
               e.printStackTrace();
            }
         }

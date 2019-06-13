@@ -20,6 +20,10 @@ public class PowerUpCard {
         //TODO inizializzare l'effect
     }
 
+    public String getName() {
+        return name;
+    }
+
     public boolean isSelectedAsAmmo() {
         return selectedAsAmmo;
     }

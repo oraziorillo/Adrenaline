@@ -3,12 +3,10 @@ package client.controller;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
-
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
 public interface AbstractClientController {
-
 
    String HOST = "localhost";
    int SOCKET_PORT = 10000;

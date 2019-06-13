@@ -19,9 +19,9 @@ public abstract class Action {
 
     @Expose private boolean optional;
     @Expose private boolean parameterized;
+    @Expose private boolean needsOldSquare;    //per il rocket laucher
     @Expose int maxNumberOfTargets;
     @Expose TargetChecker targetChecker;
-    TargetChecker orientedTargetChecker;
     Set<Pc> targets;
     Square targetSquare;
 
@@ -35,6 +35,7 @@ public abstract class Action {
     Action (JsonObject jsonAction){
         this.optional = jsonAction.get("optional").getAsBoolean();
         this.parameterized = jsonAction.get("parameterized").getAsBoolean();
+        this.needsOldSquare = jsonAction.get("needsOldSquare").getAsBoolean();
         this.maxNumberOfTargets = jsonAction.get("maxNumberOfTargets").getAsInt();
         this.targetChecker = new EmptyChecker();
 
@@ -108,9 +109,7 @@ public abstract class Action {
     }
 
 
-    public boolean needsOldSquare() { return false; }
-
-
+    public boolean needsOldSquare() { return needsOldSquare; }
 
 
     public void setTargetSquare(Square s){
@@ -118,21 +117,10 @@ public abstract class Action {
     }
 
 
-    public void setOrientedTargetChecker(CardinalDirectionEnum direction, boolean isBeyondWalls){
-         orientedTargetChecker = isBeyondWalls ? new BeyondWallsStraightLineDecorator(targetChecker, direction)
-                                               : new SimpleStraightLineDecorator(targetChecker, direction);
-    }
+    public void setOrientedTargetChecker(CardinalDirectionEnum direction, boolean isBeyondWalls) {}
 
 
-    public Set<Square> validSquares(Square shooterSquare) {
-        return (orientedTargetChecker == null) ? targetChecker.validSquares(shooterSquare)
-                                               : orientedTargetChecker.validSquares(shooterSquare);
-    }
-
-
-    public Set<Square> validDestinations(Square targetSquare) {
-        return null;
-    }
+    public abstract Set<Square> validSquares(Square shooterSquare);
 
 
     public abstract boolean isComplete();

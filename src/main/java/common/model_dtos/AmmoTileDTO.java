@@ -1,25 +1,35 @@
 package common.model_dtos;
 
-import server.model.AmmoTile;
 
 public class AmmoTileDTO {
 
-    private short[] ammos;
+    private short[] ammo;
     private boolean hasPowerUp;
-    protected String extension = ".png";
+
+    /*protected String extension = ".png";
 
     AmmoTileDTO(AmmoTile ammoTile){
-        this.ammos = ammoTile.getAmmo();
+        this.ammo = ammoTile.getAmmo();
         this.hasPowerUp = ammoTile.containsPowerup();
     }
 
     public String getImagePath() {
         //TODO
         return null;
+    }*/
+
+
+    public void setAmmo(short[] ammo) {
+        this.ammo = ammo;
     }
 
-    public short[] getAmmos() {
-        return ammos;
+    public short[] getAmmo() {
+        return ammo;
+    }
+
+
+    public void setHasPowerUp(boolean hasPowerUp) {
+        this.hasPowerUp = hasPowerUp;
     }
 
 

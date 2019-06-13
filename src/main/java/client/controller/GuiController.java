@@ -3,7 +3,7 @@ package client.controller;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.controllers.*;
 import common.enums.CardinalDirectionEnum;
-import common.model_dtos.PowerUpCardDTO;
+import common.model_dtos.PowerUpCardDTOFirstVersion;
 import common.model_dtos.WeaponCardDTO;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -38,7 +38,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    @FXML
    CardHand<WeaponCardDTO> weaponHandController;
    @FXML
-   CardHand<PowerUpCardDTO> powerUpHandController;
+   CardHand<PowerUpCardDTOFirstVersion> powerUpHandController;
    @FXML
    HBox underMapButtons;
    @FXML
@@ -63,7 +63,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    private void test() {
       for (int i = 0; i < 3; i++) {
          weaponHandController.setCard( new WeaponCardDTO( "martello_ionico", 1, 1 ), i );
-         powerUpHandController.setCard( new PowerUpCardDTO(), i );
+         powerUpHandController.setCard( new PowerUpCardDTOFirstVersion(), i );
       }
    }
 
@@ -104,6 +104,7 @@ public class GuiController implements RemoteView, AbstractClientController {
 
    @Override
    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException {
+      //TODO sdoppiare questa classe
       UUID token = null;
       Alert firstTime = new Alert(
               Alert.AlertType.CONFIRMATION,
@@ -119,12 +120,13 @@ public class GuiController implements RemoteView, AbstractClientController {
             usernameDialog.setContentText("Insert your username");
             String username = usernameDialog.showAndWait().orElse("username");
             //TODO:handle username already used exception
-            token = loginController.register(username);
+            token = loginController.register(username, this);
             System.out.println("Registrazione");
-            return loginController.login(token, this);
+            return loginController.login(token);
          case NO:
             System.out.println("Login");
-            return loginController.login(token, this);
+            //TODO il token è sempre nullo qui
+            return loginController.login(token);
          default:
             System.exit(1);
             return null;

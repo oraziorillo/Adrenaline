@@ -1,6 +1,8 @@
 package server.controller;
 
 import common.enums.PcColourEnum;
+import org.jetbrains.annotations.TestOnly;
+import org.modelmapper.ModelMapper;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -26,6 +28,7 @@ public class Controller{
     private Set<PcColourEnum> availablePcColours;
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
+    private ModelMapper modelMapper;
 
 
     public Controller(List<Player> players) throws FileNotFoundException {
@@ -38,8 +41,8 @@ public class Controller{
         this.players.addAll(players);
         this.currPlayerIndex = 0;
         this.lastPlayerIndex = -1;
+        modelMapper = new ModelMapper();
     }
-
 
     public boolean isFinalFrenzy() {
         return game.isFinalFrenzy();
@@ -95,6 +98,10 @@ public class Controller{
         return squaresToRefill;
     }
 
+
+    public ModelMapper getModelMapper() {
+        return modelMapper;
+    }
 
     public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;

@@ -9,7 +9,6 @@ import server.model.actions.Action;
 import server.model.squares.Square;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class TargetSelectionState extends State {
@@ -21,7 +20,7 @@ public class TargetSelectionState extends State {
     private List<Effect> effectsToApply;
     private Effect currEffect;
     private Action currAction;
-    private Square oldTargetSquare;
+    private Square squareToMemorize;
     private LinkedList<Pc> shotTargets;
     private LinkedList<Pc> targetsShotTwice;    //per la machine gun....
     private Set<Square> targetableSquares;
@@ -60,6 +59,7 @@ public class TargetSelectionState extends State {
             currEffect = effectsToApply.get(effectIndex);
         } else
             actionIndex++;
+        currAction = currEffect.getActionAtIndex(actionIndex);
         setAction();
     }
 
@@ -68,15 +68,20 @@ public class TargetSelectionState extends State {
         controller.getGame().setTargetableSquares(targetableSquares, false);
         if (!currAction.isParameterized()) {
             if (currAction.needsOldSquare())
-                currAction.selectSquare(oldTargetSquare);
+                currAction.selectSquare(squareToMemorize);
+            else
+                currAction.selectSquare(controller.getCurrPc().getCurrSquare());    //tractor beam
             ok();   //qui bisogna aggiungere un nextState??
             return;
         }
-        if(controller.getCurrWeapon().isChained())
-            setTargetableToValidSquares(shotTargets.getLast());
+        if (controller.getCurrWeapon().isChained()) {
+            if (squareToMemorize != null)
+                setTargettableSquares(squareToMemorize);
+            else if (shotTargets != null)
+                setTargetableToValidSquares(shotTargets.getLast());
+        }
         else
             setTargetableToValidSquares(controller.getCurrPc());
-        currAction = currEffect.getActionAtIndex(actionIndex);
     }
 
 
@@ -87,25 +92,28 @@ public class TargetSelectionState extends State {
         });
     }
 
-
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
-        if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets()) {       //questo controllo è da verificare
-            targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
-            if (validateSquares(targetableSquares))
-                controller.getGame().setTargetableSquares(targetableSquares, true);
-            else if (undo())
-                controller.getCurrPlayer().undo();
-            else if (!controller.getCurrWeapon().isChained() && effectIndex != effectsToApply.size() - 1){
-                effectIndex++;
-                actionIndex = 0;
-            }
-            else
-                controller.getCurrPlayer().setCurrState(nextState());
-        } else {
-            //TODO display the list of valid Targets
-        }
+        if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets())       //questo controllo è da verificare
+            setTargettableSquares(referencePc.getCurrSquare());
     }
+
+
+    private void setTargettableSquares(Square square) {
+        targetableSquares = currAction.validSquares(square);
+        if (validateSquares(targetableSquares))
+            controller.getGame().setTargetableSquares(targetableSquares, true);
+        else if (undo())
+            controller.getCurrPlayer().undo();
+        else if (!controller.getCurrWeapon().isChained() && effectIndex != effectsToApply.size() - 1) {
+            // qui possiamo anche fare in modo che l'azione di sparo finisca...
+            effectIndex++;
+            actionIndex = 0;
+        } else
+            controller.getCurrPlayer().setCurrState(nextState());
+            //TODO display the list of valid Targets
+    }
+
 
 
     private boolean validateSquares(Set<Square> targetables){
@@ -129,7 +137,16 @@ public class TargetSelectionState extends State {
     public void selectSquare(int row, int column) {
         Square s = controller.getGame().getSquare(row, column);
         if (s != null && s.isTargetable()) {
-            if ((!currEffect.isOriented() || directionSelected) && s.isTargetable()) {
+            if (controller.getCurrWeapon().isChained() && effectIndex == 0){            //per il vortex
+                for (Effect effect: effectsToApply) {
+                    for (Action action: effect.getActions()) {
+                        action.selectSquare(s);
+                    }
+                }
+                squareToMemorize = s;
+                nextAction();
+            }
+            else if ((!currEffect.isOriented() || directionSelected) && s.isTargetable()) {
                 currAction.selectSquare(s);
             }
         }
@@ -140,9 +157,9 @@ public class TargetSelectionState extends State {
     public void selectTarget(Pc targetPc) {
         if (targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
-                if (currEffect.memorizeTargetSquare())
-                    oldTargetSquare = targetPc.getCurrSquare();
-                if (currEffect.hasOnlyOneTarget()) {
+                if (currEffect.memorizeTargetSquare() && squareToMemorize == null)
+                    squareToMemorize = targetPc.getCurrSquare();
+                if (currEffect.hasSameTarget()) {
                     currEffect.getActions().forEach(a -> a.selectPc(targetPc));
                 } else if (currAction.isAdditionalDamage()) {
                     if (currAction.isExclusiveForOldTargets()) {
@@ -164,6 +181,8 @@ public class TargetSelectionState extends State {
     public void selectDirection(CardinalDirectionEnum direction) {
         if(currEffect.isOriented()) {
             currEffect.assignDirection(direction);
+            controller.getGame().setTargetableSquares(targetableSquares, false);
+            setTargetableToValidSquares(controller.getCurrPc());
             directionSelected = true;
         }
     }
@@ -175,6 +194,7 @@ public class TargetSelectionState extends State {
             if (!hasNextAction()) {
                 return true;
             }
+            //in questo caso potremmo anche fare che termina il turno così non ci sono problemi se ci sono due optional consecutivi
             currAction.resetAction();
             nextAction();
         }

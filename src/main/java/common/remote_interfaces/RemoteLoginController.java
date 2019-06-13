@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface RemoteLoginController extends Remote {
 
-   UUID register(String username, RemoteView view) throws IOException, PlayerAlreadyRegisteredException;
+   UUID register(String username, RemoteView view) throws IOException;
 
    RemotePlayer login(UUID fromString) throws IOException;
    

@@ -6,6 +6,7 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.exceptions.PlayerAlreadyLoggedInException;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
@@ -70,12 +71,12 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
                 String username;
                 username = inputReader.requestString("Insert an username");
                 System.out.println();
-                token = loginController.register(username);
+                token = loginController.register(username, this);
             } else {
                 System.out.println("Illegal command\n");
             }
         } while (token == null);
-        RemotePlayer player = loginController.login(token, this);
+        RemotePlayer player = loginController.login(token);
         System.out.println("This is your token: " + token + "\n\nUse it to login next time\n");
         loginController.joinLobby(token);
         return player;
