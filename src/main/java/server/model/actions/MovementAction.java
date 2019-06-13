@@ -16,12 +16,14 @@ import java.util.Set;
 public class MovementAction extends Action {
 
     @Expose private boolean selfMovement;
+    @Expose private boolean linkedChecker;          //per il tractor beam
     @Expose private TargetChecker destinationChecker;
 
 
     public MovementAction(JsonObject jsonAction) {
         super(jsonAction);
         this.selfMovement = jsonAction.get("selfMovement").getAsBoolean();
+        this.linkedChecker = jsonAction.get("linkedChecker").getAsBoolean();
 
         JsonArray json = jsonAction.get("destinationChecker").getAsJsonArray();
         for(JsonElement checker : json) {
@@ -64,16 +66,21 @@ public class MovementAction extends Action {
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if (!targets.isEmpty() || this.selfMovement) {
+        if ((!targets.isEmpty() || this.selfMovement) && this.targetSquare == null) {
             this.targetSquare = targetSquare;
         }
     }
 
 
     @Override
-    public Set<Square> validDestinations(Square targetSquare) {
+    public Set<Square> validSquares(Square targetSquare) {
         if (selfMovement)
             return targetChecker.validSquares(targetSquare);
+        else if (linkedChecker){
+            Set<Square> bothCheckers = targetChecker.validSquares(targetSquare);
+            bothCheckers.retainAll(destinationChecker.validSquares(new ArrayList<>(targets).get(0).getCurrSquare()));
+            return bothCheckers;
+        }
         return destinationChecker.validSquares(new ArrayList<>(targets).get(0).getCurrSquare());
     }
 

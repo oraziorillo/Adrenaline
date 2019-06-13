@@ -16,6 +16,22 @@ GENERAL NOTES:
 - aggiungere timer ai turni
 
 
+ARMI:
+- tenere conto del numero di targets selezionati con il machine gun
+
+- aggiungere nel player un metodo selectDirection e vedere quando farlo comparire a schermo all'utente
+
+- se l'effetto è orientato, viene chiesto al giocatore di scegliere una direzione
+
+- sledgeHammer non haa effetti orientati
+
+- powerGlove ha settati i boolean needOldSquare e memorizeSquare
+
+- aggiunger nei json gli oriented Target checker nell adamage Actions??
+
+- controllare tutti i controlli effettuati quando isParameterized è false
+
+
 CONNESSIONE
 - gestire la disconnessione del player
 

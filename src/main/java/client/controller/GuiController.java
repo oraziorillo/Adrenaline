@@ -3,7 +3,7 @@ package client.controller;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.controllers.*;
 import common.enums.CardinalDirectionEnum;
-import common.model_dtos.PowerUpCardDTO;
+import common.model_dtos.PowerUpCardDTOFirstVersion;
 import common.model_dtos.WeaponCardDTO;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import server.exceptions.PlayerAlreadyRegisteredException;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -38,7 +39,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    @FXML
    CardHand<WeaponCardDTO> weaponHandController;
    @FXML
-   CardHand<PowerUpCardDTO> powerUpHandController;
+   CardHand<PowerUpCardDTOFirstVersion> powerUpHandController;
    @FXML
    HBox underMapButtons;
    @FXML
@@ -63,7 +64,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    private void test() {
       for (int i = 0; i < 3; i++) {
          weaponHandController.setCard( new WeaponCardDTO( "martello_ionico", 1, 1 ), i );
-         powerUpHandController.setCard( new PowerUpCardDTO(), i );
+         powerUpHandController.setCard( new PowerUpCardDTOFirstVersion(), i );
       }
    }
 
@@ -103,7 +104,7 @@ public class GuiController implements RemoteView, AbstractClientController {
    }
 
    @Override
-   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException {
+   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyRegisteredException, ClassNotFoundException {
       UUID token = null;
       Alert firstTime = new Alert(
               Alert.AlertType.CONFIRMATION,

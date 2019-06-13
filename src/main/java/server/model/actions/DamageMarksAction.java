@@ -2,6 +2,7 @@ package server.model.actions;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import common.enums.CardinalDirectionEnum;
 import server.model.*;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
@@ -17,7 +18,7 @@ public class DamageMarksAction extends Action {
     @Expose private boolean roomExplosive;
     @Expose private boolean additionalDamage;
     @Expose private boolean exclusiveForOldTargets;
-    @Expose private boolean needsOldSquare;    //per il rocket laucher
+    TargetChecker orientedTargetChecker;
 
 
     public DamageMarksAction(JsonObject jsonAction) {
@@ -28,7 +29,6 @@ public class DamageMarksAction extends Action {
         this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
         this.additionalDamage = jsonAction.get("additionalDamage").getAsBoolean();
         this.exclusiveForOldTargets = jsonAction.get("exclusiveForOldTargets").getAsBoolean();
-        this.needsOldSquare = jsonAction.get("needsOldSquare").getAsBoolean();
     }
 
 
@@ -72,10 +72,19 @@ public class DamageMarksAction extends Action {
         return exclusiveForOldTargets;
     }
 
+
     @Override
-    public boolean needsOldSquare() {
-        return needsOldSquare;
+    public void setOrientedTargetChecker(CardinalDirectionEnum direction, boolean isBeyondWalls){
+        orientedTargetChecker = isBeyondWalls ? new BeyondWallsStraightLineDecorator(targetChecker, direction)
+                : new SimpleStraightLineDecorator(targetChecker, direction);
     }
+
+
+    public Set<Square> validSquares(Square shooterSquare) {
+        return (orientedTargetChecker == null) ? targetChecker.validSquares(shooterSquare)
+                : orientedTargetChecker.validSquares(shooterSquare);
+    }
+
 
     @Override
     public void selectPc(Pc targetPc) {
@@ -90,11 +99,11 @@ public class DamageMarksAction extends Action {
     @Override
     public void selectSquare(Square targetSquare) {
         if (squareExplosive) {
-            targetSquare.getPcs().addAll(targets);
+            targets.addAll(targetSquare.getPcs());
         } else if (roomExplosive) {
             TargetChecker t = new SameRoomDecorator(new EmptyChecker());
             Set<Square> room = t.validSquares(targetSquare);
-            room.forEach(s -> s.getPcs().addAll(targets));
+            room.forEach(s -> targets.addAll(s.getPcs()));
         }
     }
 
@@ -108,6 +117,8 @@ public class DamageMarksAction extends Action {
 
     @Override
     public Set<Pc> apply(Pc shooter) {
+        //if shooter has been added to the targets set, it is removed before damage is applied
+        targets.remove(shooter);
         targets.forEach(pc -> {
             if (damage != 0)
                 pc.takeDamage(shooter.getColour(), damage);

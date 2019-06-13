@@ -6,6 +6,8 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.exceptions.PlayerAlreadyLoggedInException;
+import server.exceptions.PlayerAlreadyRegisteredException;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
@@ -57,7 +59,7 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
 
 
     @Override
-    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException {
+    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException, PlayerAlreadyRegisteredException, ClassNotFoundException {
         UUID token = null;
         HashSet<String> yesAnswers = new HashSet<>(Arrays.asList("y", "yes"));
         HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));

@@ -3,6 +3,7 @@ package client.controller;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
+import server.exceptions.PlayerAlreadyRegisteredException;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -18,5 +19,5 @@ public interface AbstractClientController {
    RemoteLoginController getLoginController() throws IOException, NotBoundException;
 
 
-   RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException;
+   RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException, PlayerAlreadyRegisteredException, ClassNotFoundException;
 }
