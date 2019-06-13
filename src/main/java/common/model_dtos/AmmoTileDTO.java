@@ -15,6 +15,7 @@ public class AmmoTileDTO {
 
     public String getImagePath() {
         //TODO
+        return null;
     }
 
     public short[] getAmmos() {

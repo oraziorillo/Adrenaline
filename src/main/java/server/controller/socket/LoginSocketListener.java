@@ -32,12 +32,12 @@ public class LoginSocketListener implements Runnable {
 
                 switch (cmd) {
                     case REGISTER:
-                        out.println(loginController.register(in.next()));
+                        out.println(loginController.register(in.next(), new RemoteViewSocketProxy(client)));
                         out.flush();
                         break;
 
                     case LOGIN:
-                        RemotePlayer player = loginController.login(UUID.fromString(in.next()), new RemoteViewSocketProxy(client));
+                        RemotePlayer player = loginController.login(UUID.fromString(in.next()));
                         new Thread(new PlayerSocketListener(client, player)).start();
                         break;
 
