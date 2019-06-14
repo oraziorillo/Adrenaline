@@ -157,21 +157,34 @@ public class TargetSelectionState extends State {
     public void selectTarget(Pc targetPc) {
         if (targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
-                if (currEffect.memorizeTargetSquare() && squareToMemorize == null)
+                if (currEffect.memorizeTargetSquare() && squareToMemorize == null) {
                     squareToMemorize = targetPc.getCurrSquare();
+                    if (controller.getCurrWeapon().isChained()) {           //per il rocket launcher
+                        for (Effect effect : effectsToApply) {
+                            for (Action action : effect.getActions()) {
+                                if (action.isExplosive())
+                                    action.selectSquare(targetPc.getCurrSquare());
+                            }
+                        }
+                    }
+                }
                 if (currEffect.hasSameTarget()) {
                     currEffect.getActions().forEach(a -> a.selectPc(targetPc));
                 } else if (currAction.isAdditionalDamage()) {
                     if (currAction.isExclusiveForOldTargets()) {
-                        if (targetsShotTwice.contains(targetPc))
+                        if (targetsShotTwice.contains(targetPc)) {
                             currAction.selectPc(targetPc);
-                    } else if (shotTargets.contains(targetPc))
+                        }
+                    } else if (shotTargets.contains(targetPc)) {
                         currAction.selectPc(targetPc);
+                    }
                 } else if (currAction.isExclusiveForOldTargets()) {
-                    if (!shotTargets.contains(targetPc))
+                    if (!shotTargets.contains(targetPc)) {
                         currAction.selectPc(targetPc);
-                } else
+                    }
+                } else {
                     currAction.selectPc(targetPc);
+                }
             }
         }
     }

@@ -17,11 +17,17 @@ GENERAL NOTES:
 
 
 ARMI:
+
+- aggiungere destination Checker alle action di movement dei json dove non presenti
+
+- gesitre l'ordine in cui vengono selezionati gli upgrade che, per certe armi devono avere un'ordine preciso (rocket launcher)
 - tenere conto del numero di targets selezionati con il machine gun
 
-- aggiungere nel player un metodo selectDirection e vedere quando farlo comparire a schermo all'utente
+- aggiungere nel player un metodo selectDirection e vedere quando farlo comparire a schermo all'utente................
 
 - se l'effetto è orientato, viene chiesto al giocatore di scegliere una direzione
+
+-dubbio sull'utilizzo concreto di asincrono
 
 - sledgeHammer non haa effetti orientati
 

@@ -157,6 +157,11 @@ public class WeaponCard {
 
 
     public void reset() {
+        for (Effect effect: effectsToApply) {
+            for (Action action: effect.getActions()) {
+                action.resetAction();
+            }
+        }
         effectsToApply.clear();
         init();
     }

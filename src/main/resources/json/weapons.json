@@ -33,6 +33,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -67,6 +68,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -111,6 +113,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -141,6 +144,7 @@
             "roomExplosive": false,
             "additionalDamage": true,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": ""
@@ -168,7 +172,8 @@
             "squareExplosive": false,
             "roomExplosive": false,
             "additionalDamage": true,
-            "exclusiveForOldTargets": true,           //attenti qui
+            "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": ""
@@ -187,6 +192,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": ""
@@ -226,6 +232,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -255,6 +262,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -282,6 +290,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -321,6 +330,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -340,13 +350,13 @@
         ],
         "actions": [
           {
-            "optional": true,
+            "optional": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
+            "selfMovement": true,
             "linkedChecker": false,
             "maxNumberOfTargets": 1,
-            "selfMovement": true,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -380,6 +390,7 @@
             "roomExplosive": false,
             "additionalDamage": true,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": ""
@@ -419,6 +430,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -458,11 +470,12 @@
             "isMovement": false,
             "damage": 1,
             "marks": 0,
-            "maxNumberOfTargets": 4,    //questo parametro non conta quando è explosive
+            "maxNumberOfTargets": 5,
             "squareExplosive": true,
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -486,11 +499,12 @@
             "isMovement": false,
             "damage": 2,
             "marks": 0,
-            "maxNumberOfTargets": 4,    //questo parametro non conta quando è explosive
+            "maxNumberOfTargets": 5,
             "squareExplosive": true,
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -536,6 +550,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistanceFromVisible",
@@ -548,6 +563,7 @@
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
+            "selfMovement": false,
             "linkedChecker": true,
             "maxNumberOfTargets": 1,
             "targetChecker": [
@@ -588,6 +604,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -600,6 +617,7 @@
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": true,
+            "selfMovement": false,
             "linkedChecker": false,
             "maxNumberOfTargets": 1,
             "targetChecker": [
@@ -651,6 +669,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -673,6 +692,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -685,6 +705,7 @@
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": true,
+            "selfMovement": false,
             "linkedChecker": false,
             "maxNumberOfTargets": 1,
             "targetChecker": [
@@ -721,6 +742,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -733,6 +755,7 @@
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": true,
+            "selfMovement": false,
             "linkedChecker": false,
             "maxNumberOfTargets": 2,
             "targetChecker": [
@@ -774,11 +797,12 @@
             "isMovement": false,
             "damage": 1,
             "marks": 0,
-            "maxNumberOfTargets": 4,
+            "maxNumberOfTargets": 5,
             "squareExplosive": false,
             "roomExplosive": true,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -809,11 +833,12 @@
             "isMovement": false,
             "damage": 1,
             "marks": 1,
-            "maxNumberOfTargets": 4,
+            "maxNumberOfTargets": 5,
             "squareExplosive": true,
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "maxDistance",
@@ -863,6 +888,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "blindness"
@@ -907,6 +933,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -924,11 +951,12 @@
             "isMovement": false,
             "damage": 0,
             "marks": 1,
-            "maxNumberOfTargets": 4,
-            "squareExplosive": false,
-            "roomExplosive": true,
+            "maxNumberOfTargets": 5,
+            "squareExplosive": true,
+            "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": ""
@@ -961,6 +989,7 @@
             "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": "visible"
@@ -978,14 +1007,559 @@
             "isMovement": false,
             "damage": 0,
             "marks": 2,
-            "maxNumberOfTargets": 4,
-            "squareExplosive": false,
-            "roomExplosive": true,
+            "maxNumberOfTargets": 5,
+            "squareExplosive": true,
+            "roomExplosive": false,
             "additionalDamage": false,
             "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
                 "type": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Flamethrower",
+    "colour":"RED",
+    "chained": false,
+    "ammo": [
+      0,
+      1,
+      0
+    ],
+    "fireModes": [
+      {
+        "oriented": true,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 2,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": true,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 2
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "oriented": true,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          2
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 5,
+            "squareExplosive": true,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 1
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 1
+              }
+            ]
+          },
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 5,
+            "squareExplosive": true,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 2
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Grenade Launcher",
+    "colour":"RED",
+    "chained": false,
+    "ammo": [
+      0,
+      1,
+      0
+    ],
+    "fireModes": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": true,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          },
+          {
+            "optional": true,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": true,
+            "selfMovement": false,
+            "linkedChecker": false,
+            "maxNumberOfTargets": 1,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ],
+            "destinationChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 1
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": true,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          1,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 5,
+            "squareExplosive": true,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Rocket Launcher",
+    "colour":"RED",
+    "chained": true,
+    "ammo": [
+      0,
+      2,
+      0
+    ],
+    "fireModes": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": true,
+        "memorizeTargetSquare": true,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "visible"
+              },
+              {
+                "type": "minDistance",
+                "minDistance": 1
+              }
+            ]
+          },
+          {
+            "optional": true,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": true,
+            "selfMovement": false,
+            "linkedChecker": false,
+            "maxNumberOfTargets": 1,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ],
+            "destinationChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 1
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": true,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          1,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": true,
+            "selfMovement": true,
+            "linkedChecker": false,
+            "maxNumberOfTargets": 1,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 2
+              }
+            ],
+            "destinationChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          1
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": false,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 1,
+            "marks": 0,
+            "maxNumberOfTargets": 5,
+            "squareExplosive": true,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Railgun",
+    "colour":"YELLOW",
+    "chained": false,
+    "ammo": [
+      1,
+      0,
+      2
+    ],
+    "fireModes": [
+      {
+        "oriented": true,
+        "beyondWalls": true,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 3,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "oriented": true,
+        "beyondWalls": true,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 2,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cyberblade",
+    "colour":"YELLOW",
+    "chained": true,
+    "ammo": [
+      0,
+      1,
+      1
+    ],
+    "fireModes": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": false,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "upgrades": [
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": true,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          0
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": true,
+            "selfMovement": true,
+            "linkedChecker": false,
+            "maxNumberOfTargets": 1,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 1
+              }
+            ],
+            "destinationChecker": [
+              {
+                "type": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "oriented": false,
+        "beyondWalls": false,
+        "asynchronous": false,
+        "sameTarget": false,
+        "memorizeTargetSquare": false,
+        "cost": [
+          0,
+          0,
+          1
+        ],
+        "actions": [
+          {
+            "optional": false,
+            "parameterized": true,
+            "needsOldSquare": false,
+            "isMovement": false,
+            "damage": 2,
+            "marks": 0,
+            "maxNumberOfTargets": 1,
+            "squareExplosive": false,
+            "roomExplosive": false,
+            "additionalDamage": false,
+            "exclusiveForOldTargets": true,
+            "targetsOnDifferentSquares": false,
+            "targetChecker": [
+              {
+                "type": "maxDistance",
+                "maxDistance": 0
               }
             ]
           }
