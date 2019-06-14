@@ -32,8 +32,8 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public UUID getToken() {
         return token;
     }
-
-
+    
+    
     public Pc getPc() {
         return pc;
     }
