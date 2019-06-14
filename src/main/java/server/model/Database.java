@@ -27,38 +27,63 @@ public class Database {
     private HashMap<UUID, Lobby> lobbiesByGameID = new HashMap<>();
 
 
-    private Database() throws IOException, ClassNotFoundException {
+    private Database() {
 
-        try (FileInputStream fis = new FileInputStream("/db/incompleteGamesByUUID")) {
-            
-            ObjectInputStream ois = new ObjectInputStream(fis);
-
-            incompleteGamesByPlayerToken = (HashMap<UUID, UUID>) ois.readObject();
-
-            ois.close();
+        try {
+            try (FileInputStream fis = new FileInputStream( "db/incompleteGamesByUUID" )) {
+        
+                ObjectInputStream ois = new ObjectInputStream( fis );
+        
+                incompleteGamesByPlayerToken = ( HashMap<UUID, UUID> ) ois.readObject();
+        
+                ois.close();
+            } catch ( FileNotFoundException e ) {
+                new File( "db" ).mkdir();
+                File f = new File( "db" + File.separator + "incompleteGamesByUUID" );
+                ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( f ) );
+                incompleteGamesByPlayerToken = new HashMap<>();
+                oos.writeObject( incompleteGamesByPlayerToken );
+            }
+    
+            try (FileInputStream fis = new FileInputStream( "db/playersByToken" )) {
+        
+                ObjectInputStream ois = new ObjectInputStream( fis );
+        
+                playersByToken = ( HashMap<UUID, Player> ) ois.readObject();
+        
+                ois.close();
+            } catch ( FileNotFoundException e ) {
+                new File( "db" ).mkdir();
+                File f = new File( "db" + File.separator + "playersByToken" );
+                ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( f ) );
+                incompleteGamesByPlayerToken = new HashMap<>();
+                oos.writeObject( incompleteGamesByPlayerToken );
+            }
+    
+    
+            try (FileInputStream fis = new FileInputStream( "db/userNamesByToken" )) {
+        
+                ObjectInputStream ois = new ObjectInputStream( fis );
+        
+                userNamesByToken = ( HashMap<UUID, String> ) ois.readObject();
+        
+                ois.close();
+            } catch ( FileNotFoundException e ) {
+                new File( "db" ).mkdir();
+                File f = new File( "db" + File.separator + "userNamesByToken" );
+                ObjectOutputStream oos = new ObjectOutputStream( new FileOutputStream( f ) );
+                incompleteGamesByPlayerToken = new HashMap<>();
+                oos.writeObject( incompleteGamesByPlayerToken );
+            }
+        }catch ( ClassNotFoundException | IOException impossible ){
+            impossible.printStackTrace();
+            throw new IllegalStateException( "Something very bad happened in Database constructor" );
         }
-
-        try (FileInputStream fis = new FileInputStream("/db/playersByToken")) {
-
-            ObjectInputStream ois = new ObjectInputStream(fis);
-
-            playersByToken = (HashMap<UUID, Player>) ois.readObject();
-
-            ois.close();
-        }
-
-        try (FileInputStream fis = new FileInputStream("/db/userNamesByToken")) {
-
-            ObjectInputStream ois = new ObjectInputStream(fis);
-
-            userNamesByToken = (HashMap<UUID, String>) ois.readObject();
-
-            ois.close();
-        }
+        
     }
 
 
-    public static Database getInstance() throws IOException, ClassNotFoundException {
+    public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
         }
@@ -144,7 +169,7 @@ public class Database {
         switch (file) {
 
             case(INCOMPLETE_GAMES):
-                try (FileOutputStream fos = new FileOutputStream("/db/incompleteGamesByUUID")) {
+                try (FileOutputStream fos = new FileOutputStream("db/incompleteGamesByUUID")) {
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(incompleteGamesByPlayerToken);
                     oos.close();
@@ -152,7 +177,7 @@ public class Database {
                 break;
 
             case (PLAYERS):
-                try (FileOutputStream fos = new FileOutputStream("/db/playersByToken")) {
+                try (FileOutputStream fos = new FileOutputStream("db/playersByToken")) {
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(playersByToken);
                     oos.close();
@@ -160,7 +185,7 @@ public class Database {
                 break;
 
             case USER_NAMES:
-                try (FileOutputStream fos = new FileOutputStream("/db/userNamesByToken")) {
+                try (FileOutputStream fos = new FileOutputStream("db/userNamesByToken")) {
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(userNamesByToken);
                     oos.close();
