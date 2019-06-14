@@ -16,8 +16,7 @@ public class RemoteViewSocketProxy extends AbstractSocketProxy implements Remote
    
    @Override
    public void ack(String message) {
-      out.println(ACK);
-      out.println( message );
+      out.println(ACK + "," + message);
       out.flush();
    }
 }

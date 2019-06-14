@@ -28,19 +28,18 @@ public class ViewSocketListener implements Runnable {
 
    @Override
    public void run() {
-      try {
-         while (!server.isClosed()){
-            RemoteViewEnum cmd = RemoteViewEnum.valueOf( in.next() );
-            switch (cmd){
-               case ACK:
-                     view.ack( in.next() );
-                  break;
-            }
-         }
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
+       while (!server.isClosed()){
+          RemoteViewEnum cmd = RemoteViewEnum.valueOf( in.next() );
+          switch (cmd){
+             case ACK:
+                try {
+                   view.ack( in.next() );
+                } catch ( IOException e ) {
+                   e.printStackTrace();
+                }
+                break;
+          }
+       }
    }
 }
 

@@ -24,19 +24,17 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
 
    
    @Override
-   public UUID register(String username, RemoteView view) throws IOException {
-      out.println( REGISTER );
-      out.println( username );
+   public UUID register(String username) throws IOException {
+      out.println( REGISTER + "," +username);
       out.flush();
       return UUID.fromString( in.readLine() );
    }
 
 
    @Override
-   public RemotePlayer login(UUID token) throws IOException {
+   public RemotePlayer login(UUID token, RemoteView view) throws IOException {
       RemotePlayer player = new PlayerSocketProxy( socket );
-      out.println( LOGIN );
-      out.println( token );
+      out.println( LOGIN +"," +token );
       out.flush();
       return player;
    }
@@ -44,8 +42,7 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
 
    @Override
    public void joinLobby(UUID token) {
-      out.println( JOIN_LOBBY );
-      out.println( token );
+      out.println( JOIN_LOBBY +"," +token );
       out.flush();
    }
 }
