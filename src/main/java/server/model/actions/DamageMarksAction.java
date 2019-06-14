@@ -10,6 +10,7 @@ import server.model.target_checkers.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DamageMarksAction extends Action {
     @Expose private short damage;
@@ -18,6 +19,7 @@ public class DamageMarksAction extends Action {
     @Expose private boolean roomExplosive;
     @Expose private boolean additionalDamage;
     @Expose private boolean exclusiveForOldTargets;
+    @Expose private boolean targetsOnDifferentSquares;
     TargetChecker orientedTargetChecker;
 
 
@@ -29,6 +31,7 @@ public class DamageMarksAction extends Action {
         this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
         this.additionalDamage = jsonAction.get("additionalDamage").getAsBoolean();
         this.exclusiveForOldTargets = jsonAction.get("exclusiveForOldTargets").getAsBoolean();
+        this.targetsOnDifferentSquares = jsonAction.get("targetsOnDifferentSquares").getAsBoolean();
     }
 
 
@@ -89,26 +92,36 @@ public class DamageMarksAction extends Action {
     @Override
     public void selectPc(Pc targetPc) {
         if(!roomExplosive && !squareExplosive) {
-            if (targets.size() < maxNumberOfTargets)
+            if (targets.size() < maxNumberOfTargets){
+                if (targetsOnDifferentSquares){
+                    if (targets.stream().filter(pc -> pc.getCurrSquare() == targetPc.getCurrSquare()).collect(Collectors.toList()).isEmpty())
+                        targets.add(targetPc);
+                }
                 targets.add(targetPc);
+            }
         }
     }
 
 
     @Override
     public void selectSquare(Square targetSquare) {
-        if (squareExplosive) {
-            targets.addAll(targetSquare.getPcs());
-        } else if (roomExplosive) {
-            TargetChecker t = new SameRoomDecorator(new EmptyChecker());
-            Set<Square> room = t.validSquares(targetSquare);
-            room.forEach(s -> targets.addAll(s.getPcs()));
+        if (this.targetSquare == null) {
+            if (squareExplosive) {
+                this.targetSquare = targetSquare;
+                targets.addAll(targetSquare.getPcs());
+            } else if (roomExplosive) {
+                this.targetSquare = targetSquare;
+                TargetChecker t = new SameRoomDecorator(new EmptyChecker());
+                Set<Square> room = t.validSquares(targetSquare);
+                room.forEach(s -> targets.addAll(s.getPcs()));
+            }
         }
     }
 
 
     @Override
     public void resetAction() {
+        targetSquare = null;
         targets.clear();
         orientedTargetChecker = null;
     }
@@ -124,7 +137,6 @@ public class DamageMarksAction extends Action {
             if (marks != 0)
                 pc.takeMarks(shooter.getColour(), marks);
         });
-        resetAction();
         return targets;
     }
 }

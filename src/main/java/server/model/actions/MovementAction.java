@@ -97,7 +97,6 @@ public class MovementAction extends Action {
         if (!isComplete())
             return null;
         targets.forEach(pc -> pc.moveTo(targetSquare));
-        resetAction();
         return null;
     }
 
