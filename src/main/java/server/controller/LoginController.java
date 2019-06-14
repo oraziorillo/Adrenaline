@@ -3,9 +3,10 @@ package server.controller;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
+import server.controller.states.InactiveState;
 import server.exceptions.PlayerAlreadyLoggedInException;
-import server.exceptions.PlayerAlreadyRegisteredException;
 import server.model.Database;
+
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -16,13 +17,14 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
 
    private static LoginController instance;
 
-   private Database database = null;//Database.getInstance();
+   private Database database;
 
    private Lobby newLobby;
 
 
    private LoginController() throws IOException, ClassNotFoundException {
       super();
+      database = Database.getInstance();
    }
 
 
@@ -54,6 +56,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     */
    @Override
    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
+      Player player = database.getPlayer( token );
       view.ack("Logging in as @" + database.getUsername(token));
       database.registerView(token, view);
       return database.getPlayer(token);
@@ -78,11 +81,6 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
                newLobby = new Lobby();
             newLobby.addPlayer(database.getPlayer(token));
          }
-      }
-      try {
-         database.getView( token ).ack( "Joined game" );
-      } catch ( IOException e ) {   //If player is unreachable, kick him
-         database.getPlayer( token ).quit();
       }
    }
 }
