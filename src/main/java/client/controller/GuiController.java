@@ -17,7 +17,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import server.exceptions.PlayerAlreadyRegisteredException;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;

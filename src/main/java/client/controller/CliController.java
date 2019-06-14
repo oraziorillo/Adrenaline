@@ -71,12 +71,12 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
                 String username;
                 username = inputReader.requestString("Insert an username");
                 System.out.println();
-                token = loginController.register(username, this);
+                token = loginController.register(username);
             } else {
                 System.out.println("Illegal command\n");
             }
         } while (token == null);
-        RemotePlayer player = loginController.login(token);
+        RemotePlayer player = loginController.login(token,this);
         System.out.println("This is your token: " + token + "\n\nUse it to login next time\n");
         loginController.joinLobby(token);
         return player;

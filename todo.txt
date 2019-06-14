@@ -35,6 +35,8 @@ ARMI:
 CONNESSIONE
 - gestire la disconnessione del player
 
+- mettere il player inactive finchè il gioco non parte (aka finchè è in lobby)
+
 
 
 OPZIONALI:

@@ -16,5 +16,5 @@ public interface AbstractClientController {
    RemoteLoginController getLoginController() throws IOException, NotBoundException;
 
 
-   RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException;
+   RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException, ClassNotFoundException;
 }

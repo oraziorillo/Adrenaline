@@ -22,7 +22,7 @@ public class CustomizedModelMapperTest {
         short [] ammo = new short[] {1,1,0};
         AmmoTile ammoTile = new AmmoTile(ammo, true);
         AmmoTileDTO ammoTileDTO = modelMapper.map(ammoTile, AmmoTileDTO.class);
-        assertArrayEquals(ammo, ammoTileDTO.getAmmo());
+        assertArrayEquals(ammo, ammoTileDTO.getAmmos());
         assertTrue(ammoTileDTO.hasPowerUp());
     }
 

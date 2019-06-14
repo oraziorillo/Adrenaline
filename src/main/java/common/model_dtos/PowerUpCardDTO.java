@@ -2,12 +2,21 @@ package common.model_dtos;
 
 import common.enums.AmmoEnum;
 
-public class PowerUpCardDTO {
-
+public class PowerUpCardDTO extends Card{
+    
+    private static final String DEFAULT_NAME = "retro_powerup";
     private String name;
     private AmmoEnum colour;
-
-
+    
+    public PowerUpCardDTO(String name, AmmoEnum color) {
+        super( name );
+        this.colour=color;
+    }
+    
+    public PowerUpCardDTO(){
+        this(DEFAULT_NAME,AmmoEnum.RED);
+    }
+    
     public String getName() {
         return name;
     }
@@ -22,5 +31,10 @@ public class PowerUpCardDTO {
 
     public void setColour(AmmoEnum colour) {
         this.colour = colour;
+    }
+    
+    @Override
+    public boolean isDefaultCard() {
+        return name.equals( DEFAULT_NAME );
     }
 }

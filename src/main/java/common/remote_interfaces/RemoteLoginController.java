@@ -1,7 +1,6 @@
 package common.remote_interfaces;
 
 import server.exceptions.PlayerAlreadyLoggedInException;
-import server.exceptions.PlayerAlreadyRegisteredException;
 
 import java.io.IOException;
 import java.rmi.Remote;
