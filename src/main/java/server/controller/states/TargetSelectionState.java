@@ -32,7 +32,7 @@ public class TargetSelectionState extends State {
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
-        setTargetableToValidSquares(controller.getCurrPc());
+        setAction();
     }
 
 
@@ -44,22 +44,31 @@ public class TargetSelectionState extends State {
 
     private void nextAction(){
         if(actionIndex == currEffect.getActions().size() -1){
-            controller.getCurrPc().payAmmo(currEffect.getCost());
-
-            LinkedList<Pc> justShotPc = new LinkedList<>(currEffect.execute(controller.getCurrPc()));
-            for (Pc pc: justShotPc) {
-                if (shotTargets.contains(pc))
-                    targetsShotTwice.add(pc);
-                else
-                    shotTargets.add(pc);
-            }
-
-            effectIndex++;
-            actionIndex = 0;
-            currEffect = effectsToApply.get(effectIndex);
-        } else
+            nextEffect();
+        } else {
             actionIndex++;
+            currAction = currEffect.getActionAtIndex(actionIndex);
+            setAction();
+        }
+    }
+
+
+    private void nextEffect() {
+        controller.getCurrPc().payAmmo(currEffect.getCost());
+
+        LinkedList<Pc> justShotPc = new LinkedList<>(currEffect.execute(controller.getCurrPc()));
+        for (Pc pc: justShotPc) {
+            if (shotTargets.contains(pc))
+                targetsShotTwice.add(pc);
+            else
+                shotTargets.add(pc);
+        }
+
+        effectIndex++;
+        actionIndex = 0;
+        currEffect = effectsToApply.get(effectIndex);
         currAction = currEffect.getActionAtIndex(actionIndex);
+
         setAction();
     }
 
@@ -69,8 +78,13 @@ public class TargetSelectionState extends State {
         if (!currAction.isParameterized()) {
             if (currAction.needsOldSquare())
                 currAction.selectSquare(squareToMemorize);
+            else if (controller.getCurrWeapon().isChained()) {          //per la shockWave
+                for (Square square : currAction.validSquares(controller.getCurrPc().getCurrSquare())) {
+                    square.getPcs().forEach(pc -> currAction.selectPc(pc));
+                }
+            }
             else
-                currAction.selectSquare(controller.getCurrPc().getCurrSquare());    //tractor beam
+                currAction.selectSquare(controller.getCurrPc().getCurrSquare());    //tractor beam  e electroscyte
             ok();   //qui bisogna aggiungere un nextState??
             return;
         }
@@ -92,6 +106,7 @@ public class TargetSelectionState extends State {
         });
     }
 
+
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
         if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets())       //questo controllo è da verificare
@@ -106,9 +121,10 @@ public class TargetSelectionState extends State {
         else if (undo())
             controller.getCurrPlayer().undo();
         else if (!controller.getCurrWeapon().isChained() && effectIndex != effectsToApply.size() - 1) {
-            // qui possiamo anche fare in modo che l'azione di sparo finisca...
-            effectIndex++;
-            actionIndex = 0;
+            if (currAction.isOptional())
+                skipAction();
+            else
+                nextEffect();       //da rivedere
         } else
             controller.getCurrPlayer().setCurrState(nextState());
             //TODO display the list of valid Targets
@@ -204,11 +220,16 @@ public class TargetSelectionState extends State {
     @Override
     public boolean skipAction() {
         if (currAction.isOptional()) {
+            if (currAction.isNecessaryForNextAction()){
+                if (effectIndex == effectsToApply.size() - 1)
+                    return true;
+                else
+                    nextEffect();
+                return false;
+            }
             if (!hasNextAction()) {
                 return true;
             }
-            //in questo caso potremmo anche fare che termina il turno così non ci sono problemi se ci sono due optional consecutivi
-            currAction.resetAction();
             nextAction();
         }
         return false;
@@ -218,8 +239,6 @@ public class TargetSelectionState extends State {
     @Override
     public boolean undo(){
         if (controller.getCurrWeapon().getEffectsToApply().get(0) == currEffect){
-            for (Action action: currEffect.getActions())
-                action.resetAction();
             controller.getCurrWeapon().reset();
             undo = true;
             return true;

@@ -18,6 +18,7 @@ import java.util.Set;
 public abstract class Action {
 
     @Expose private boolean optional;
+    @Expose private boolean necessaryForNextAction;
     @Expose private boolean parameterized;
     @Expose private boolean needsOldSquare;    //per il rocket laucher
     @Expose int maxNumberOfTargets;
@@ -34,6 +35,7 @@ public abstract class Action {
 
     Action (JsonObject jsonAction){
         this.optional = jsonAction.get("optional").getAsBoolean();
+        this.necessaryForNextAction = jsonAction.get("necessaryForNextAction").getAsBoolean();
         this.parameterized = jsonAction.get("parameterized").getAsBoolean();
         this.needsOldSquare = jsonAction.get("needsOldSquare").getAsBoolean();
         this.maxNumberOfTargets = jsonAction.get("maxNumberOfTargets").getAsInt();
@@ -80,9 +82,15 @@ public abstract class Action {
         return optional;
     }
 
+
+    public boolean isNecessaryForNextAction() {
+        return necessaryForNextAction;
+    }
+
     public boolean isParameterized() {
         return parameterized;
     }
+
 
     public boolean isExplosive() {
         return false;
