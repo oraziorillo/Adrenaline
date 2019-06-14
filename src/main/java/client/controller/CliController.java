@@ -39,7 +39,7 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
         HashSet<String> rmiCommands = new HashSet<>(Arrays.asList("r", "rmi"));
         boolean validCommand;
         do {
-            cmd = inputReader.requestString("Choose a connection method:\n - (s)ocket \n - (r)mi").toLowerCase();
+            cmd = inputReader.requestString("Choose a connection method:"+System.lineSeparator()+" - (s)ocket"+System.lineSeparator()+" - (r)mi").toLowerCase();
             System.out.println();
             validCommand = socketCommands.contains(cmd) || rmiCommands.contains(cmd);
             if (!validCommand)
@@ -58,7 +58,7 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
 
 
     @Override
-    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException {
+    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException, ClassNotFoundException {
         UUID token = null;
         HashSet<String> yesAnswers = new HashSet<>(Arrays.asList("y", "yes"));
         HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));

@@ -29,7 +29,7 @@ public class LaunchGui extends Application {
     }
     
     @Override
-    public void start(Stage primaryStage) throws IOException, NotBoundException {
+    public void start(Stage primaryStage) throws IOException, NotBoundException, ClassNotFoundException {
         AbstractClientController clientController = new GuiController();
         if(COMPLETE) {
             loginController = clientController.getLoginController();

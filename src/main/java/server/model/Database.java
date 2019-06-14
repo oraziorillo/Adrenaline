@@ -27,38 +27,38 @@ public class Database {
     private HashMap<UUID, Lobby> lobbiesByGameID = new HashMap<>();
 
 
-    private Database() throws IOException {
+    private Database() throws IOException, ClassNotFoundException {
 
-        try (FileInputStream fis = new FileInputStream("src/main/resources/database/incompleteGamesByUUID")) {
+        try (FileInputStream fis = new FileInputStream("/db/incompleteGamesByUUID")) {
+            
             ObjectInputStream ois = new ObjectInputStream(fis);
+
             incompleteGamesByPlayerToken = (HashMap<UUID, UUID>) ois.readObject();
+
             ois.close();
-        } catch (ClassNotFoundException e) {
-            incompleteGamesByPlayerToken = new HashMap<>();
-            overwrite(INCOMPLETE_GAMES);
         }
 
-        try (FileInputStream fis = new FileInputStream("src/main/resources/database/playersByToken")) {
+        try (FileInputStream fis = new FileInputStream("/db/playersByToken")) {
+
             ObjectInputStream ois = new ObjectInputStream(fis);
+
             playersByToken = (HashMap<UUID, Player>) ois.readObject();
+
             ois.close();
-        } catch (ClassNotFoundException e) {
-            playersByToken = new HashMap<>();
-            overwrite(PLAYERS);
         }
 
-        try (FileInputStream fis = new FileInputStream("src/main/resources/database/userNamesByToken")) {
+        try (FileInputStream fis = new FileInputStream("/db/userNamesByToken")) {
+
             ObjectInputStream ois = new ObjectInputStream(fis);
+
             userNamesByToken = (HashMap<UUID, String>) ois.readObject();
+
             ois.close();
-        } catch (ClassNotFoundException e) {
-            userNamesByToken = new HashMap<>();
-            overwrite(USER_NAMES);
         }
     }
 
 
-    public static Database getInstance() throws IOException {
+    public static Database getInstance() throws IOException, ClassNotFoundException {
         if (instance == null) {
             instance = new Database();
         }
@@ -78,35 +78,6 @@ public class Database {
 
     public boolean hasAGameToFinish(UUID token) {
         return incompleteGamesByPlayerToken.containsKey(token);
-    }
-
-
-    public String getUsername(UUID token) {
-        return userNamesByToken.get(token);
-    }
-
-
-    public Player getPlayer(UUID token) {
-        return playersByToken.get(token);
-    }
-
-
-    public RemoteView getView(UUID token) {
-        return viewsByToken.get(token);
-    }
-
-
-    public Lobby getLobby(UUID token) {
-        UUID incompleteGameID = incompleteGamesByPlayerToken.get(token);
-        if (lobbiesByGameID.containsKey(incompleteGameID))
-            //if the lobby is still active return it
-            return lobbiesByGameID.get(incompleteGameID);
-        else {
-            //if the server had crushed and the lobby was gone create a new one
-            Lobby newLobby = new Lobby(incompleteGameID);
-            lobbiesByGameID.put(incompleteGameID, newLobby);
-            return newLobby;
-        }
     }
 
 
@@ -141,13 +112,39 @@ public class Database {
     }
 
 
+    public String getUsername(UUID token) {
+        return userNamesByToken.get(token);
+    }
+
+
+    public Player getPlayer(UUID token) {
+        return playersByToken.get(token);
+    }
+    
+    public RemoteView getView(UUID token) {
+        return viewsByToken.get( token );
+    }
+    
+    public Lobby getLobby(UUID token) {
+        UUID incompleteGameID = incompleteGamesByPlayerToken.get(token);
+        if (lobbiesByGameID.containsKey(incompleteGameID))
+            //if the lobby is still active return it
+            return lobbiesByGameID.get(incompleteGameID);
+        else {
+            //if the server had crushed and the lobby was gone create a new one
+            Lobby newLobby = new Lobby(incompleteGameID);
+            lobbiesByGameID.put(incompleteGameID, newLobby);
+            return newLobby;
+        }
+    }
+
 
     private void overwrite(int file) throws IOException {
 
         switch (file) {
 
             case(INCOMPLETE_GAMES):
-                try (FileOutputStream fos = new FileOutputStream("src/main/resources/database/incompleteGamesByUUID")) {
+                try (FileOutputStream fos = new FileOutputStream("/db/incompleteGamesByUUID")) {
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(incompleteGamesByPlayerToken);
                     oos.close();
@@ -155,7 +152,7 @@ public class Database {
                 break;
 
             case (PLAYERS):
-                try (FileOutputStream fos = new FileOutputStream("src/main/resources/database/playersByToken")) {
+                try (FileOutputStream fos = new FileOutputStream("/db/playersByToken")) {
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(playersByToken);
                     oos.close();
@@ -163,7 +160,7 @@ public class Database {
                 break;
 
             case USER_NAMES:
-                try (FileOutputStream fos = new FileOutputStream("src/main/resources/database/userNamesByToken")) {
+                try (FileOutputStream fos = new FileOutputStream("/db/userNamesByToken")) {
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     oos.writeObject(userNamesByToken);
                     oos.close();

@@ -14,7 +14,7 @@ import java.rmi.NotBoundException;
 
 public class LaunchCli {
 
-    public static void main(String[] args) throws IOException, NotBoundException, PlayerAlreadyLoggedInException {
+    public static void main(String[] args) throws IOException, NotBoundException, PlayerAlreadyLoggedInException, ClassNotFoundException {
         InputReader input = new CliInputReader();
         CliController clientController = new CliController(input);
         RemoteLoginController loginController = clientController.getLoginController();

@@ -18,7 +18,7 @@ public class LoginSocketListener implements Runnable {
     private final PrintWriter out;
     private LoginController loginController = LoginController.getInstance();
 
-    public LoginSocketListener(Socket s) throws IOException {
+    public LoginSocketListener(Socket s) throws IOException, ClassNotFoundException {
         this.client = s;
         this.in = new Scanner(s.getInputStream());
         this.out = new PrintWriter(s.getOutputStream());
