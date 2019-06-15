@@ -6,7 +6,7 @@ import common.remote_interfaces.RemoteView;
 import java.io.IOException;
 import java.net.Socket;
 
-import static common.enums.RemoteViewEnum.*;
+import static common.enums.interfaces_names.RemoteViewEnum.*;
 
 public class RemoteViewSocketProxy extends AbstractSocketProxy implements RemoteView {
    

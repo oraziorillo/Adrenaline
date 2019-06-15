@@ -1,6 +1,6 @@
 package server.controller.socket;
 
-import common.enums.SocketLoginEnum;
+import common.enums.interfaces_names.SocketLoginEnum;
 import common.remote_interfaces.RemotePlayer;
 import server.controller.LoginController;
 import server.exceptions.PlayerAlreadyLoggedInException;

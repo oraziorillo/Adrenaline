@@ -1,7 +1,7 @@
 package server.controller.socket;
 
-import common.enums.SocketLoginEnum;
-import common.enums.SocketPlayerEnum;
+import common.enums.interfaces_names.SocketLoginEnum;
+import common.enums.interfaces_names.SocketPlayerEnum;
 import common.remote_interfaces.RemotePlayer;
 import server.controller.LoginController;
 import server.exceptions.PlayerAlreadyLoggedInException;
@@ -30,9 +30,6 @@ public class ServerSocketHandler implements Runnable {
     public void run() {
         while (!socket.isClosed()){
             String[] args = in.next().split( "," );
-    
-            for(String s: args) System.out.println(s);//for debug
-            
             try{
                 handleLoginController( args );
                 handlePlayerController( args );
@@ -58,7 +55,7 @@ public class ServerSocketHandler implements Runnable {
     private void handleLoginController(String[] args) throws IOException {
         switch (SocketLoginEnum.valueOf( args[0] )) {
             case REGISTER:
-                out.println( loginController.register( args[1] ) );
+                out.println( loginController.register( args[1] ));
                 out.flush();
                 break;
             case LOGIN:

@@ -1,6 +1,6 @@
 package server.controller.socket;
 
-import common.enums.SocketPlayerEnum;
+import common.enums.interfaces_names.SocketPlayerEnum;
 import common.remote_interfaces.RemotePlayer;
 
 import java.io.BufferedReader;

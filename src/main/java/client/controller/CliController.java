@@ -1,5 +1,6 @@
 package client.controller;
 
+import client.controller.socket.ClientSocketHandler;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.InputReader;
 import common.remote_interfaces.RemoteLoginController;
@@ -48,7 +49,7 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
 
         if (socketCommands.contains(cmd)) {
             Socket socket = new Socket(HOST, SOCKET_PORT);
-            controller = new LoginControllerSocketProxy(socket);
+            controller = new ClientSocketHandler(socket);
         } else {  //if the loop has ended, cmd is an rmi command
             Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
             controller = (RemoteLoginController) registry.lookup("LoginController");

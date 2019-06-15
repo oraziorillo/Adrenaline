@@ -1,4 +1,4 @@
-package common.enums;
+package common.enums.interfaces_names;
 
 import java.util.Arrays;
 import java.util.HashSet;
