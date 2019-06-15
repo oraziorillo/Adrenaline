@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import org.jetbrains.annotations.TestOnly;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
@@ -46,7 +47,7 @@ public class Game {
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
+        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
         JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
         gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
 
