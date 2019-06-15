@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class Lobby {
 
     //TODO: timer preso dal file di config
-    private static final int TIME = 1000 * 60 * 3;
+    private static final int TIME = Math.toIntExact( TimeUnit.MINUTES.toMillis( 3 ) );
 
     private Controller controller;
 
@@ -72,12 +72,13 @@ public class Lobby {
             player.quit();
             removePlayer( player );
         }
-        ackAllPlayersExcept( getAllUsernames() );
-        if (players.size() >= 3) {
+        for(String s:getAllUsernames()){
+            ackAllPlayersExcept( s );
+        }
+        if (players.size() >= 3 && players.size() <5) {
             timer.start();
             ackAllPlayersExcept( players.size()+" players has joined! The game will start in "+ TimeUnit.MILLISECONDS.toMinutes( timer.getDelay() )+" minutes" );
-        }
-        if (players.size() == 5) {
+        }else if (players.size() == 5) {
             timer.stop();
             startNewGame();
             ackAllPlayersExcept( players.size()+" players has joined! Game is starting!" );
@@ -121,12 +122,13 @@ public class Lobby {
         }
     }
     
-    private String getAllUsernames(){
-        StringBuilder usernames = new StringBuilder("Players in the room:").append( System.lineSeparator() );
+    private List<String> getAllUsernames(){
+        ArrayList<String> result = new ArrayList<>();
+        result.add( "Players in the room:" );
         for(Player p: players){
-            usernames.append( "@"+database.getUsername( p.getToken() )+System.lineSeparator() );
+            result.add( "@"+database.getUsername( p.getToken() ) );
         }
-        return usernames.toString();
+        return result;
     }
     
 }
