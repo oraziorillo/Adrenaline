@@ -16,6 +16,10 @@ GENERAL NOTES:
 - aggiungere timer ai turni
 
 
+REGOLE:
+- un giocatore può usare il powerUp asincrono più volte se viene attaccato con effetti diversi??
+
+
 ARMI:
 
 - aggiungere destination Checker alle action di movement dei json dove non presenti

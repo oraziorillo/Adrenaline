@@ -63,6 +63,8 @@ public abstract class State {
 
     public void setHasToRespawn(boolean hasToRespawn) {}
 
+    public void hasBeenAttacked(int playerIndex) {}
+
     public boolean skipAction() {
         return false;
     }
@@ -90,4 +92,5 @@ public abstract class State {
      * @return The next expected state
      */
     public abstract State nextState();
+
 }

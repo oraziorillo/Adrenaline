@@ -1,6 +1,11 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
+import server.model.Effect;
+import server.model.Pc;
+import server.model.PowerUpCard;
+import server.model.actions.Action;
 
 public class InactiveState extends State {
 
@@ -11,6 +16,8 @@ public class InactiveState extends State {
     private int nextState;
     private boolean hasToRespawn;
     private boolean attacked;
+    private Pc attackingPc;
+    private Player attackedPlayer;
 
 
     InactiveState(Controller controller, int nextState) {
@@ -30,8 +37,26 @@ public class InactiveState extends State {
 
 
     @Override
+    public void hasBeenAttacked(int playerIndex){
+        attacked = true;
+        attackingPc = controller.getCurrPc();
+        attackedPlayer = controller.getPlayers().get(playerIndex);
+        //TODO mandare messaggio al giocatore per chiedergli se vuole usare il powerUp che applica il marchio
+    }
+
+    @Override
     public void selectPowerUp(int index) {
-        //TODO
+        if (attacked){
+            PowerUpCard powerUpCard = attackedPlayer.getPc().getPowerUpCard(index);
+            if (powerUpCard.getEffect().isAsynchronous()){
+                Effect effect = powerUpCard.getEffect();
+                Action action = effect.getActions().get(0);
+                action.selectPc(attackingPc);
+                action.apply(attackedPlayer.getPc());
+                attackedPlayer.getPc().discardPowerUp(powerUpCard);
+                attacked = false;
+            }
+        }
     }
 
     @Override

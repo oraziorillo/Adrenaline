@@ -2,6 +2,7 @@ package server.controller.states;
 
 import server.controller.Controller;
 import common.enums.CardinalDirectionEnum;
+import server.controller.Player;
 import server.model.Effect;
 import server.model.Pc;
 import server.model.PowerUpCard;
@@ -57,13 +58,24 @@ public class TargetSelectionState extends State {
         controller.getCurrPc().payAmmo(currEffect.getCost());
 
         LinkedList<Pc> justShotPc = new LinkedList<>(currEffect.execute(controller.getCurrPc()));
-        for (Pc pc: justShotPc) {
-            if (shotTargets.contains(pc))
-                targetsShotTwice.add(pc);
-            else
-                shotTargets.add(pc);
-        }
+        if (!justShotPc.isEmpty()) {
+            List<Player> players = controller.getPlayers();
+            for (Pc pc: justShotPc) {
+                players.forEach(player -> {
+                    if (player.getPc() == pc){
+                        player.setAttacked(players.indexOf(pc));
+                        //TODO qui dovremmo notificare tutti i player attaccati per il powerUp
+                    }
+                });
+            }
 
+            for (Pc pc : justShotPc) {
+                if (shotTargets.contains(pc))
+                    targetsShotTwice.add(pc);
+                else
+                    shotTargets.add(pc);
+            }
+        }
         effectIndex++;
         actionIndex = 0;
         currEffect = effectsToApply.get(effectIndex);
