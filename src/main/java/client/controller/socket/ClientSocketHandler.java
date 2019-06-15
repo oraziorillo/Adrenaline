@@ -63,7 +63,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     //LoginController
     @Override
-    public synchronized UUID register(String username) throws IOException {
+    public synchronized UUID register(String username, RemoteView view) throws IOException {
         out.println( REGISTER.toString() + "," + username );
         out.flush();
         return UUID.fromString( in.readLine() );
@@ -71,7 +71,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     
     @Override
-    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
+    public synchronized RemotePlayer login(UUID token) {
         out.println( LOGIN.toString() + "," + token );
         out.flush();
         return instance;

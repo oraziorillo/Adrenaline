@@ -36,6 +36,7 @@ public class Game {
         initDecks();
     }
 
+
     /**
      * Loads a map given the index
      * @param numberOfMap the index of the map
@@ -67,9 +68,11 @@ public class Game {
         return finalFrenzy;
     }
 
+
     public void setFinalFrenzy(boolean finalFrenzy) {
         this.finalFrenzy = finalFrenzy;
     }
+
 
     private void initDecks() throws FileNotFoundException {
         initWeaponsDeck();
@@ -116,6 +119,7 @@ public class Game {
     public Deck<WeaponCard> getWeaponsDeck() {
         return weaponsDeck;
     }
+
 
     public void setTargetableSquares(Set<Square> targetableSquares, boolean isTargetable){
         if (targetableSquares.isEmpty())
@@ -201,6 +205,7 @@ public class Game {
         return false;
     }
 
+
     public List<Pc> computeWinner() {
         int maxPoints = 0;
         for (Pc pc: pcs) {
@@ -224,6 +229,7 @@ public class Game {
         }
         return potentialWinners;
     }
+
 
     private Integer pointsFromKillShots(Pc pc){
         return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack());

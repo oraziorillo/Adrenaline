@@ -18,7 +18,7 @@ public class LoginSocketListener implements Runnable {
     private final PrintWriter out;
     private LoginController loginController = LoginController.getInstance();
 
-    public LoginSocketListener(Socket s) throws IOException, ClassNotFoundException {
+    public LoginSocketListener(Socket s) throws IOException {
         this.client = s;
         this.in = new Scanner(s.getInputStream());
         this.out = new PrintWriter(s.getOutputStream());
@@ -32,12 +32,12 @@ public class LoginSocketListener implements Runnable {
 
                 switch (cmd) {
                     case REGISTER:
-                        out.println(loginController.register(in.next()));
+                        out.println(loginController.register(in.next(), new RemoteViewSocketProxy(client)));
                         out.flush();
                         break;
 
                     case LOGIN:
-                        RemotePlayer player = loginController.login(UUID.fromString(in.next()), new RemoteViewSocketProxy(client));
+                        RemotePlayer player = loginController.login(UUID.fromString(in.next()));
                         new Thread(new PlayerSocketListener(client, player)).start();
                         break;
 

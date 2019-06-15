@@ -9,6 +9,7 @@ public class CustomizedModelMapper {
 
     private ModelMapper modelMapper;
 
+
     public CustomizedModelMapper(){
         modelMapper = new ModelMapper();
         initModelMapper();
@@ -16,15 +17,13 @@ public class CustomizedModelMapper {
 
 
     private void initModelMapper(){
-        confiugureAmmoTile();
+        configureAmmoTile();
     }
 
 
-    private void confiugureAmmoTile(){
+    private void configureAmmoTile(){
         TypeMap<AmmoTile, AmmoTileDTO> typeMap = modelMapper.createTypeMap(AmmoTile.class, AmmoTileDTO.class);
-        typeMap.addMappings(mapper -> {
-            //mapper.map(src -> src.containsPowerup(), AmmoTileDTO::setHasPowerUp);
-        });
+        //TODO:typeMap.addMappings(mapper -> mapper.map(AmmoTile::containsPowerup, AmmoTileDTO::setHasPowerUp));
     }
 
 

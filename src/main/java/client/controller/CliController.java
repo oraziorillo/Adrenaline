@@ -58,25 +58,25 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
 
 
     @Override
-    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException, ClassNotFoundException {
+    public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, PlayerAlreadyLoggedInException {
         UUID token = null;
         HashSet<String> yesAnswers = new HashSet<>(Arrays.asList("y", "yes"));
         HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));
-        do {
+        while (token == null) {
             String cmd = inputReader.requestString("Do you have a login token?").toLowerCase();
             System.out.println();
             if (yesAnswers.contains(cmd)) {
                 token = UUID.fromString(inputReader.requestString("Insert your token"));
+                System.out.println();
             } else if (noAnswers.contains(cmd)) {
                 String username;
                 username = inputReader.requestString("Insert an username");
-                System.out.println();
-                token = loginController.register(username);
+                token = loginController.register(username, this);
             } else {
                 System.out.println("Illegal command\n");
             }
-        } while (token == null);
-        RemotePlayer player = loginController.login(token,this);
+        }
+        RemotePlayer player = loginController.login(token);
         System.out.println("This is your token: " + token + "\n\nUse it to login next time\n");
         loginController.joinLobby(token);
         return player;
@@ -85,8 +85,6 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
 
     @Override
     public synchronized void ack(String message) {
-        System.out.println(message);
-        System.out.println();
-        //TODO: non funziona rmi in nessun modo
+        System.out.println(message + "\n");
     }
 }

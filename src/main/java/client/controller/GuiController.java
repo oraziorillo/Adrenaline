@@ -17,7 +17,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
@@ -103,7 +102,8 @@ public class GuiController implements RemoteView, AbstractClientController {
    }
 
    @Override
-   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException, ClassNotFoundException {
+   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException {
+      //TODO sdoppiare questa classe
       UUID token = null;
       Alert firstTime = new Alert(
               Alert.AlertType.CONFIRMATION,
@@ -119,12 +119,13 @@ public class GuiController implements RemoteView, AbstractClientController {
             usernameDialog.setContentText("Insert your username");
             String username = usernameDialog.showAndWait().orElse("username");
             //TODO:handle username already used exception
-            token = loginController.register(username);
+            token = loginController.register(username, this);
             System.out.println("Registrazione");
-            return loginController.login(token, this);
+            return loginController.login(token);
          case NO:
             System.out.println("Login");
-            return loginController.login(token, this);
+            //TODO il token è sempre nullo qui
+            return loginController.login(token);
          default:
             System.exit(1);
             return null;
