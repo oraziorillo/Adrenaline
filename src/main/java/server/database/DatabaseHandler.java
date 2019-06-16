@@ -8,6 +8,7 @@ import common.remote_interfaces.RemoteView;
 import server.controller.Lobby;
 import server.controller.Player;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,7 +54,12 @@ public class DatabaseHandler {
             gameInfoByUUID = gson.fromJson(reader, type);
             reader.close();
 
-        } catch (IOException e) {
+            if (tokensByUserName == null || playerInfoByToken == null || gameInfoByUUID == null)
+                resetData();
+
+        } catch (FileNotFoundException e) {
+            resetData();
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -179,8 +185,9 @@ public class DatabaseHandler {
         }
     }
 
+
     //to use in case you want to clear data
-    private void clearData(){
+    private void resetData(){
         tokensByUserName = new HashMap<>();
         overwrite(TOKENS_BY_USER_NAME);
         playerInfoByToken = new HashMap<>();
