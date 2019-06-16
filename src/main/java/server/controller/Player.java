@@ -73,6 +73,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    public void setAttacked(int playerIndex){
+        currState.hasBeenAttacked(playerIndex);
+    }
+
+
     @Override
     public synchronized void chooseMap(int n) {
         if (n >= FIRST_MAP && n <= LAST_MAP)
