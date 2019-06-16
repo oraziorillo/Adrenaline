@@ -7,7 +7,6 @@ import server.model.Pc;
 import server.model.WeaponCard;
 import server.model.squares.Square;
 
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ public class Controller{
     private ModelMapper modelMapper;
 
 
-    public Controller(List<Player> players) throws FileNotFoundException {
+    public Controller(List<Player> players) {
         super();
         this.game = new Game();
         this.players = players;

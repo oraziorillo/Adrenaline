@@ -1,10 +1,10 @@
 package server.controller;
 
+import com.google.gson.annotations.Expose;
 import server.exceptions.PlayerAlreadyLoggedInException;
-import server.model.Database;
+import server.database.DatabaseHandler;
 
 import javax.swing.Timer;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -17,13 +17,11 @@ public class Lobby {
     //TODO: timer preso dal file di config
     private static final int TIME = Math.toIntExact( TimeUnit.MINUTES.toMillis( 3 ) );
 
-    private Controller controller;
-
-    private boolean old;
-    private UUID gameUUID;
+    @Expose private Controller controller;
+    @Expose private UUID gameUUID;
     private List<Player> players;
     private Timer timer;
-    private Database database = Database.getInstance();
+    private DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
 
 
     Lobby() {
@@ -63,16 +61,17 @@ public class Lobby {
     void addPlayer(Player player) throws PlayerAlreadyLoggedInException {
         if (players.contains(player))
             throw new PlayerAlreadyLoggedInException();
-        ackAllPlayersExcept( "Say hello to @"+ database.getUsername(player.getToken()) + System.lineSeparator()+System.lineSeparator() +
-                "There are "+players.size()+" players in this lobby now" );
+        ackAllPlayersExcept("Say hello to @" + databaseHandler.getUsername(player.getToken()) + System.lineSeparator() + System.lineSeparator() +
+                "There are " + players.size() + " players in this lobby now");
         players.add(player);
         try {
-            database.getView( player.getToken() ).ack( "Joined a lobby. There are "+players.size()+" players in this room" );
-        } catch ( IOException e ) {
+            databaseHandler.getView(player.getToken()).ack("Joined a lobby. There are " + players.size() + " players in this room");
+        } catch (IOException e) {
             player.quit();
-            removePlayer( player );
+            removePlayer(player);
         }
-        for(String s:getAllUsernames()){
+
+        for(String s : getAllUsernames()){
             ackAllPlayersExcept( s );
         }
         if (players.size() >= 3 && players.size() <5) {
@@ -81,52 +80,49 @@ public class Lobby {
         }else if (players.size() == 5) {
             timer.stop();
             startNewGame();
-            ackAllPlayersExcept( players.size()+" players has joined! Game is starting!" );
+            ackAllPlayersExcept(players.size() + " players has joined! Game is starting!");
         }
     }
 
 
     void removePlayer(Player player) {
         players.remove(player);
-        ackAllPlayersExcept( "@"+database.getUsername( player.getToken() )+" has disconnected. BOOOOO!"+System.lineSeparator()+getAllUsernames());
-        if(players.size()<3) {
+        ackAllPlayersExcept("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!" + System.lineSeparator() + getAllUsernames());
+        if (players.size() < 3) {
             timer.stop();
-            ackAllPlayersExcept( TimeUnit.MILLISECONDS.toSeconds( timer.getDelay() )+" seconds and the game would have started. Now we have to start again."+System.lineSeparator()+
-                    "Blame @"+database.getUsername( player.getToken() )+" for this!");
+            ackAllPlayersExcept(TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds and the game would have started. Now we have to start again." + System.lineSeparator() +
+                    "Blame @" + databaseHandler.getUsername(player.getToken()) + " for this!");
         }
     }
 
 
     private void startNewGame() {
-        try {
-            if (!old)
-                this.controller = new Controller(players);
-            //TODO: else this.controller = fromJson
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.controller = new Controller(players);
+        //TODO: else this.controller = fromJson
     }
-    
-    private void ackAllPlayersExcept(String message, Player... excluded){
+
+
+    private void ackAllPlayersExcept(String message, Player... excluded) {
         Collection<Player> excludedColl = Arrays.asList(excluded);
-        for(Player p1:players){
-            if(!excludedColl.contains( p1 )){
+        for (Player p1 : players) {
+            if (!excludedColl.contains(p1)) {
                 try {
-                    database.getView( p1.getToken() ).ack( message );
-                } catch ( IOException e ) {
+                    databaseHandler.getView(p1.getToken()).ack(message);
+                } catch (IOException e) {
                     p1.quit();
-                    removePlayer( p1 );
-                    
+                    removePlayer(p1);
+
                 }
             }
         }
     }
-    
+
+
     private List<String> getAllUsernames(){
         ArrayList<String> result = new ArrayList<>();
         result.add( "Players in the room:" );
         for(Player p: players){
-            result.add( "@"+database.getUsername( p.getToken() ) );
+            result.add( "@"+ databaseHandler.getUsername( p.getToken() ) );
         }
         return result;
     }

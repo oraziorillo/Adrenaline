@@ -59,29 +59,36 @@ public class Pc {
         return colour;
     }
 
+
     public WeaponCard[] getWeapons() {
         return weapons;
     }
+
 
     public PcColourEnum[] getDamageTrack() {
         return pcBoard.getDamageTrack();
     }
 
+
     public int getAdrenaline() {
         return adrenaline;
     }
+
 
     public short[] getAmmo() {
         return this.pcBoard.getAmmo();
     }
 
+
     public PcBoard getPcBoard() {
         return pcBoard;
     }
 
+
     public void increasePoints(int earnedPoints){
         pcBoard.increasePoints(earnedPoints);
     }
+
 
     public void flipBoard(){
         pcBoard.flipBoard();
@@ -222,8 +229,8 @@ public class Pc {
     public boolean hasEnoughAmmo(short[] ammo) {
         short[] pcAmmo = pcBoard.getAmmo().clone();
         powerUps.stream().filter(PowerUpCard::isSelectedAsAmmo).forEach(p -> pcAmmo[p.getColour().ordinal()]++);
-        for (AmmoEnum colour : AmmoEnum.values()) {
-            if (pcAmmo[colour.ordinal()] < ammo[colour.ordinal()])
+        for (AmmoEnum ammoColour : AmmoEnum.values()) {
+            if (pcAmmo[ammoColour.ordinal()] < ammo[ammoColour.ordinal()])
                 return false;
         }
         return true;

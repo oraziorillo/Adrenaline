@@ -1,5 +1,6 @@
 package server.controller;
 
+import com.google.gson.annotations.Expose;
 import common.remote_interfaces.RemotePlayer;
 import server.controller.states.State;
 import server.model.Pc;
@@ -17,9 +18,9 @@ import static server.controller.Controller.*;
  */
 public class Player extends UnicastRemoteObject implements RemotePlayer {
 
-    private final UUID token;
-    private Pc pc;
-    private State currState;
+    @Expose private final UUID token;
+    @Expose private Pc pc;
+    @Expose private State currState;
     private transient WeaponCard currWeapon;
 
 

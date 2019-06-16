@@ -128,7 +128,7 @@
     ],
     "upgrades": [
       {
-        "sameTarget": false,       //questo non dovrebbe essere false??
+        "sameTarget": false,
         "cost": [
           0,
           0,
@@ -186,8 +186,12 @@
             ]
           },
           {
+<<<<<<< HEAD
+            "optional": true,
+=======
             "optional": true,           //da valutare
             "necessaryForNextAction": false,
+>>>>>>> 4a8fb7cb4ce4baa03792555bfea75b09e3bc2867
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,

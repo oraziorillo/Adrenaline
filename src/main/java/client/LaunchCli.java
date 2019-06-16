@@ -8,19 +8,18 @@ import client.view.cli.commands.CommandFactory;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
-
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
 public class LaunchCli {
 
-    public static void main(String[] args) throws IOException, NotBoundException, PlayerAlreadyLoggedInException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, NotBoundException, PlayerAlreadyLoggedInException{
         InputReader input = new CliInputReader();
         CliController clientController = new CliController(input);
         RemoteLoginController loginController = clientController.getLoginController();
-        RemotePlayer player = clientController.loginRegister( loginController );
-        while (true){
-            CliCommand command = CommandFactory.getCommand( input.requestString( "Insert command:"),player );
+        RemotePlayer player = clientController.loginRegister(loginController);
+        while (true) {
+            CliCommand command = CommandFactory.getCommand(input.requestString("Insert command:"), player);
             command.execute();
         }
     }

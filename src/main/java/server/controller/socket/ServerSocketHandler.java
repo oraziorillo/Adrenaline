@@ -18,14 +18,14 @@ public class ServerSocketHandler implements Runnable {
     private final Scanner in;
     private LoginController loginController;
     private RemotePlayer player;
-    
+
     public ServerSocketHandler(Socket socket) throws IOException, ClassNotFoundException {
         this.socket = socket;
-        this.out = new PrintWriter( socket.getOutputStream() );
-        this.in = new Scanner( socket.getInputStream() );
+        this.out = new PrintWriter(socket.getOutputStream());
+        this.in = new Scanner(socket.getInputStream());
         loginController = LoginController.getInstance();
     }
-    
+
     @Override
     public void run() {
         while (!socket.isClosed()){
@@ -38,60 +38,64 @@ public class ServerSocketHandler implements Runnable {
                     socket.close();
                     out.close();
                     in.close();
-                    if(player!=null) player.quit();
-                } catch ( IOException ignored ) {}
-            } catch ( IllegalArgumentException ignored ){} //only one of the "handle..." method will not throw it
-            
+                    if (player != null) player.quit();
+                } catch (IOException ignored) {
+                }
+            } catch (IllegalArgumentException ignored) {
+            } //only one of the "handle..." method will not throw it
+
         }
     }
-    
+
     /**
      * Parser for login controller methods
+     *
      * @param args the strings sent by the client
-     * @throws IOException if user is unreachable
+     * @throws IOException              if user is unreachable
      * @throws IllegalArgumentException if the method name (args[0]) is not in SocketLoginEnum
      * @see SocketLoginEnum
      */
     private void handleLoginController(String[] args) throws IOException {
-        switch (SocketLoginEnum.valueOf( args[0] )) {
+        switch (SocketLoginEnum.valueOf(args[0])) {
             case REGISTER:
-                out.println( loginController.register( args[1] ));
+                out.println(loginController.register(args[1], new RemoteViewSocketProxy(socket)));
                 out.flush();
                 break;
             case LOGIN:
-                this.player = loginController.login( UUID.fromString( args[1] ), new RemoteViewSocketProxy( socket ) );
+                this.player = loginController.login(UUID.fromString(args[1]));
                 break;
             case JOIN_LOBBY:
                 try {
-                    loginController.joinLobby( UUID.fromString( args[1] ) );
-                } catch ( PlayerAlreadyLoggedInException e ) {
+                    loginController.joinLobby(UUID.fromString(args[1]));
+                } catch (PlayerAlreadyLoggedInException e) {
                     e.printStackTrace(); //TODO
                 }
                 break;
             //TODO: incompleta
         }
     }
-    
+
     /**
      * Parser for RemotePlayer methods
+     *
      * @param args the strings to parse
-     * @throws IOException if client is unreachable
+     * @throws IOException              if client is unreachable
      * @throws IllegalArgumentException if the method name (args[0]) is not in SocketPlayerEnum
      * @see SocketPlayerEnum
      */
     private void handlePlayerController(String[] args) throws IOException {
         int argInt;
-        switch (SocketPlayerEnum.valueOf( args[0] )) {
+        switch (SocketPlayerEnum.valueOf(args[0])) {
             case CHOOSE_MAP:
-                argInt = Integer.parseInt( args[1] );
-                player.chooseMap( argInt );
+                argInt = Integer.parseInt(args[1]);
+                player.chooseMap(argInt);
                 break;
             case CHOOSE_NUMBER_OF_SKULLS:
-                argInt = Integer.parseInt( args[1] );
-                player.chooseNumberOfSkulls( argInt );
+                argInt = Integer.parseInt(args[1]);
+                player.chooseNumberOfSkulls(argInt);
                 break;
             case CHOOSE_PC_COLOUR:
-                player.choosePcColour( args[1] );
+                player.choosePcColour(args[1]);
                 break;
             case RUN_AROUND:
                 player.runAround();
@@ -103,17 +107,17 @@ public class ServerSocketHandler implements Runnable {
                 player.shootPeople();
                 break;
             case SELECT_SQUARE:
-                argInt = Integer.parseInt( args[1] );
-                int argInt2 = Integer.parseInt( args[2] );
-                player.chooseSquare( argInt, argInt2 );
+                argInt = Integer.parseInt(args[1]);
+                int argInt2 = Integer.parseInt(args[2]);
+                player.chooseSquare(argInt, argInt2);
                 break;
             case GRAB_WEAPON:
-                argInt = Integer.parseInt( args[1] );
-                player.chooseWeaponOnSpawnPoint( argInt );
+                argInt = Integer.parseInt(args[1]);
+                player.chooseWeaponOnSpawnPoint(argInt);
                 break;
             case CHOOSE_WEAPON:
-                argInt = Integer.parseInt( args[1] );
-                player.chooseWeaponOfMine( argInt );
+                argInt = Integer.parseInt(args[1]);
+                player.chooseWeaponOfMine(argInt);
                 break;
             case QUIT:
                 player.quit();
@@ -125,8 +129,8 @@ public class ServerSocketHandler implements Runnable {
                 player.upgrade();
                 break;
             case CHOOSE_ASYNCH_EFFECT_ORDER:
-                boolean beforeBasicEffect = Boolean.getBoolean( args[1] );
-                player.chooseAsynchronousEffectOrder( beforeBasicEffect );
+                boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
+                player.chooseAsynchronousEffectOrder(beforeBasicEffect);
                 break;
             case OK:
                 player.ok();

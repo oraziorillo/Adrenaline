@@ -61,6 +61,8 @@ ARMI:
 
 - gestire meglio upgrade di granade launcher
 
+- nell'upgrade di machinegun le actions non sono entrambe optional
+
 
 
 RMI:
