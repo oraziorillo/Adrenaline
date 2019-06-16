@@ -1,6 +1,6 @@
 package client.controller.socket;
 
-import common.enums.RemoteViewEnum;
+import common.enums.interfaces_names.RemoteViewEnum;
 import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;

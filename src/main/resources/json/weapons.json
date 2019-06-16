@@ -23,6 +23,7 @@
         "actions": [
            {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -58,6 +59,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -103,6 +105,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -134,6 +137,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -163,6 +167,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -181,7 +186,12 @@
             ]
           },
           {
+<<<<<<< HEAD
             "optional": true,
+=======
+            "optional": true,           //da valutare
+            "necessaryForNextAction": false,
+>>>>>>> 4a8fb7cb4ce4baa03792555bfea75b09e3bc2867
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -222,6 +232,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -252,6 +263,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -280,6 +292,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -320,6 +333,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -351,6 +365,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -380,6 +395,7 @@
         "actions": [
            {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -420,6 +436,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -465,6 +482,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": false,
@@ -494,6 +512,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -514,7 +533,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Tractor Beam",
@@ -540,6 +560,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -560,6 +581,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -594,6 +616,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -614,6 +637,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": true,
@@ -633,7 +657,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Vortex Cannon",
@@ -659,6 +684,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -682,6 +708,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -696,12 +723,13 @@
             "targetChecker": [
               {
                 "type": "maxDistance",
-                "minDistance": 1
+                "maxDistance": 1
               }
             ]
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": true,
@@ -709,6 +737,11 @@
             "linkedChecker": false,
             "maxNumberOfTargets": 1,
             "targetChecker": [
+              {
+                "type": ""
+              }
+            ],
+            "destinationChecker": [
               {
                 "type": ""
               }
@@ -732,6 +765,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -752,6 +786,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": true,
@@ -759,6 +794,11 @@
             "linkedChecker": false,
             "maxNumberOfTargets": 2,
             "targetChecker": [
+              {
+                "type": ""
+              }
+            ],
+            "destinationChecker": [
               {
                 "type": ""
               }
@@ -792,6 +832,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -828,6 +869,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -852,7 +894,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Heatseeker",
@@ -878,6 +921,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -897,7 +941,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Hellion",
@@ -923,6 +968,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -946,6 +992,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": true,
             "isMovement": false,
@@ -979,6 +1026,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1002,6 +1050,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": true,
             "isMovement": false,
@@ -1021,7 +1070,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Flamethrower",
@@ -1047,6 +1097,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1085,6 +1136,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1109,6 +1161,7 @@
           },
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1133,7 +1186,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Grenade Launcher",
@@ -1159,6 +1213,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1178,6 +1233,7 @@
           },
           {
             "optional": true,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -1214,6 +1270,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1259,6 +1316,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1282,6 +1340,7 @@
           },
           {
             "optional": true,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -1318,6 +1377,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -1352,6 +1412,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": false,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1397,6 +1458,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1430,6 +1492,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1449,7 +1512,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Cyberblade",
@@ -1475,6 +1539,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1511,6 +1576,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -1545,6 +1611,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1591,6 +1658,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1624,6 +1692,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1643,7 +1712,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Shotgun",
@@ -1669,6 +1739,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1689,6 +1760,7 @@
           },
           {
             "optional": true,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": true,
@@ -1723,6 +1795,7 @@
         "actions": [
           {
             "optional": false,
+            "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
@@ -1747,7 +1820,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Power Glove",
@@ -1932,7 +2006,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "Shockwave",
@@ -2022,7 +2097,8 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   },
   {
     "name": "SledgeHammer",
@@ -2128,6 +2204,7 @@
           }
         ]
       }
-    ]
+    ],
+    "upgrades": []
   }
 ]

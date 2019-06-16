@@ -2,8 +2,6 @@ package server.controller.states;
 
 import server.controller.Controller;
 
-import java.io.FileNotFoundException;
-
 import static server.controller.Controller.FIRST_MAP;
 import static server.controller.Controller.LAST_MAP;
 
@@ -40,11 +38,7 @@ public class SetupMapState extends State{
     @Override
     public boolean ok() {
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
-            try {
-                controller.getGame().initMap(mapIndex);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            controller.getGame().initMap(mapIndex);
             return true;
         }
         return false;

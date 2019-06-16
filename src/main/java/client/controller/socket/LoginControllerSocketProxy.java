@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
 
-import static common.enums.SocketLoginEnum.*;
+import static common.enums.interfaces_names.SocketLoginEnum.*;
 
 public class LoginControllerSocketProxy extends AbstractSocketProxy implements RemoteLoginController {
 

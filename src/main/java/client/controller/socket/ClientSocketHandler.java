@@ -1,5 +1,6 @@
 package client.controller.socket;
 
+import common.enums.interfaces_names.RemoteViewEnum;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
@@ -9,56 +10,43 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static common.enums.SocketLoginEnum.*;
-import static common.enums.SocketPlayerEnum.*;
+import static common.enums.interfaces_names.SocketLoginEnum.*;
+import static common.enums.interfaces_names.SocketPlayerEnum.*;
 
 public class ClientSocketHandler implements Runnable, RemoteLoginController, RemotePlayer {
-    private static Socket socket;
-    private static ClientSocketHandler instance;
-    private boolean running = false;
-    private static PrintWriter out;
-    private static BufferedReader in;
-    private static ReadWriteLock lock = new ReentrantReadWriteLock();
+    private Socket socket;
+    private PrintWriter out;
+    private BufferedReader in;
+    private RemoteView view;
     
-    private ClientSocketHandler(Socket socket) throws IOException {
-        if(!running) {
-            ClientSocketHandler.socket = socket;
-            out = new PrintWriter( socket.getOutputStream() );
-            in = new BufferedReader( new InputStreamReader( socket.getInputStream() ) );
-        }
-        ClientSocketHandler.instance=this;
-    }
-    
-    public ClientSocketHandler getInstance(Socket socket) throws IOException {
-        if(instance==null){
-            return new ClientSocketHandler( socket );
-        }else {
-            if(!running) {
-                ClientSocketHandler.socket = socket;
-                out = new PrintWriter( socket.getOutputStream() );
-                in = new BufferedReader( new InputStreamReader( socket.getInputStream() ) );
-            }
-            return ClientSocketHandler.instance;
-        }
-    }
-    
-    public ClientSocketHandler getInstance(String host, int port) throws IOException {
-        return getInstance(new Socket(host,port));
+    public ClientSocketHandler(Socket socket) throws IOException {
+        this.socket = socket;
+        out = new PrintWriter( socket.getOutputStream() );
+        in = new BufferedReader( new InputStreamReader( socket.getInputStream() ) );
     }
     
     @Override
     public void run() {
-        if(!running) {
-            running = true;
-            while (!socket.isClosed()) {
-        
+        while (!socket.isClosed()) {
+            try {
+                String[] args = in.readLine().split( "," );
+                parseRemoteView( args );
+            }catch ( IOException | NullPointerException e ){ //NPE is thrown when socket is closed in the middle of the while body
+                //TODO: manage disconnection
             }
-            running = false;
         }
+    }
+    
+    private void parseRemoteView(String[] args) throws IOException {
+        try {
+            switch (RemoteViewEnum.valueOf( args[0] )) {
+                case ACK:
+                    view.ack( args[1] );
+            }
+        }catch ( IllegalArgumentException ignored ){}//Other kinds of messages
     }
     
     //LoginController
@@ -72,9 +60,10 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public synchronized RemotePlayer login(UUID token) {
+        new Thread( this ).start();
         out.println( LOGIN.toString() + "," + token );
         out.flush();
-        return instance;
+        return this;
     }
     
     

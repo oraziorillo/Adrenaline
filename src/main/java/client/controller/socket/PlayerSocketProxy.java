@@ -5,7 +5,7 @@ import common.remote_interfaces.RemotePlayer;
 import java.io.IOException;
 import java.net.Socket;
 
-import static common.enums.SocketPlayerEnum.*;
+import static common.enums.interfaces_names.SocketPlayerEnum.*;
 
 public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlayer {
 

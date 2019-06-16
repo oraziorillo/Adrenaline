@@ -1,7 +1,6 @@
 package client.view.cli.commands;
 
-import common.enums.SocketLoginEnum;
-import common.enums.SocketPlayerEnum;
+import common.enums.interfaces_names.SocketPlayerEnum;
 import common.remote_interfaces.RemotePlayer;
 
 public class CommandFactory {

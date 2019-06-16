@@ -1,5 +1,6 @@
 package common.enums;
 
+import common.enums.interfaces_names.SocketPlayerEnum;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotEquals;
