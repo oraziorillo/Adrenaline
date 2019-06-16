@@ -32,7 +32,7 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
 
 
    @Override
-   public RemotePlayer login(UUID token) throws IOException {
+   public RemotePlayer login(UUID token,RemoteView view) throws IOException {
       RemotePlayer player = new PlayerSocketProxy( socket );
       out.println( LOGIN +"," +token );
       out.flush();

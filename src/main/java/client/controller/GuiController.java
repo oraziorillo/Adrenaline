@@ -121,11 +121,11 @@ public class GuiController implements RemoteView, AbstractClientController {
             //TODO:handle username already used exception
             token = loginController.register(username, this);
             System.out.println("Registrazione");
-            return loginController.login(token);
+            return loginController.login(token,this);
          case NO:
             System.out.println("Login");
             //TODO il token è sempre nullo qui
-            return loginController.login(token);
+            return loginController.login(token,this);
          default:
             System.exit(1);
             return null;

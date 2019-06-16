@@ -3,6 +3,7 @@ package server.controller.socket;
 import common.enums.interfaces_names.SocketLoginEnum;
 import common.enums.interfaces_names.SocketPlayerEnum;
 import common.remote_interfaces.RemotePlayer;
+import common.remote_interfaces.RemoteView;
 import server.controller.LoginController;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
@@ -18,12 +19,14 @@ public class ServerSocketHandler implements Runnable {
     private final Scanner in;
     private LoginController loginController;
     private RemotePlayer player;
+    private RemoteView view;
 
     public ServerSocketHandler(Socket socket) throws IOException, ClassNotFoundException {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
         this.in = new Scanner(socket.getInputStream());
         loginController = LoginController.getInstance();
+        view = new RemoteViewSocketProxy( socket );
     }
 
     @Override
@@ -58,11 +61,11 @@ public class ServerSocketHandler implements Runnable {
     private void handleLoginController(String[] args) throws IOException {
         switch (SocketLoginEnum.valueOf(args[0])) {
             case REGISTER:
-                out.println(loginController.register(args[1], new RemoteViewSocketProxy(socket)));
+                out.println(loginController.register(args[1],view));
                 out.flush();
                 break;
             case LOGIN:
-                this.player = loginController.login(UUID.fromString(args[1]));
+                this.player = loginController.login(UUID.fromString(args[1]),view);
                 break;
             case JOIN_LOBBY:
                 try {

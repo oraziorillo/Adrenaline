@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static common.enums.interfaces_names.SocketLoginEnum.*;
 import static common.enums.interfaces_names.SocketPlayerEnum.*;
@@ -51,19 +53,22 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     //LoginController
     @Override
-    public synchronized UUID register(String username, RemoteView view) throws IOException {
+    public synchronized UUID register(String username,RemoteView view) throws IOException {
         out.println( REGISTER.toString() + "," + username );
         out.flush();
-        return UUID.fromString( in.readLine() );
+        String stringToken = in.readLine();
+        return (stringToken == null ? null : UUID.fromString( stringToken ));
     }
     
     
     @Override
-    public synchronized RemotePlayer login(UUID token) {
+    public synchronized RemotePlayer login(UUID token, RemoteView view) {
+        this.view = view;
         new Thread( this ).start();
         out.println( LOGIN.toString() + "," + token );
         out.flush();
         return this;
+        
     }
     
     
