@@ -37,7 +37,7 @@ public class LoginSocketListener implements Runnable {
                         break;
 
                     case LOGIN:
-                        RemotePlayer player = loginController.login(UUID.fromString(in.next()));
+                        RemotePlayer player = loginController.login(UUID.fromString(in.next()),null);
                         new Thread(new PlayerSocketListener(client, player)).start();
                         break;
 

@@ -3,10 +3,8 @@ package server.controller;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
-import server.exceptions.PlayerAlreadyLoggedInException;
 import server.database.DatabaseHandler;
-import server.exceptions.PlayerAlreadyRegisteredException;
-import server.model.Database;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -44,7 +42,6 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
       }
       UUID token = UUID.randomUUID();
       databaseHandler.registerPlayer(token, username, new Player(token));
-      databaseHandler.registerView(token, view);
       return token;
    }
 
@@ -57,8 +54,9 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     * @throws RemoteException IDK, rmi stuff
     */
    @Override
-   public synchronized RemotePlayer login(UUID token) throws IOException {
-      databaseHandler.getView(token).ack("Logging in as @" + databaseHandler.getUsername(token));
+   public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
+      view.ack("Logging in as @" + databaseHandler.getUsername(token));
+      databaseHandler.registerView( token,view );
       return databaseHandler.getPlayer(token);
    }
 

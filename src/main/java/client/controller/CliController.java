@@ -77,7 +77,7 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
                 System.out.println("Illegal command\n");
             }
         }
-        RemotePlayer player = loginController.login(token);
+        RemotePlayer player = loginController.login(token,this);
         System.out.println("This is your token: " + token + "\n\nUse it to login next time\n");
         loginController.joinLobby(token);
         return player;

@@ -54,6 +54,8 @@ OPZIONALI:
 
 - migliorare granade launcher
 
+- usare logger
+
 
 
 ARMI:

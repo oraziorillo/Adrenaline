@@ -24,14 +24,14 @@ public class ClientSocketHandlerTest {
     
     @Test
     public void registerReturnsUUIDWithServerOnAndNewUsername() throws IOException {
-        UUID returned = tested.register( "username" );
+        UUID returned = tested.register( "username",null );
         assertNotNull( returned );
     }
     
     @Test
     public void registerReturnsNullWithInUseUsername() throws IOException {
-        UUID first = tested.register( "username" );
-        UUID second = tested.register( "username" );
+        UUID first = tested.register( "username",null );
+        UUID second = tested.register( "username" ,null);
         assertNull( second );
     }
 }

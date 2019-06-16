@@ -23,7 +23,6 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     private PrintWriter out;
     private BufferedReader in;
     private RemoteView view;
-    private ReadWriteLock lock = new ReentrantReadWriteLock();
     
     public ClientSocketHandler(Socket socket) throws IOException {
         this.socket = socket;
@@ -35,13 +34,10 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     public void run() {
         while (!socket.isClosed()) {
             try {
-                lock.readLock().lock();
                 String[] args = in.readLine().split( "," );
                 parseRemoteView( args );
             }catch ( IOException | NullPointerException e ){ //NPE is thrown when socket is closed in the middle of the while body
                 //TODO: manage disconnection
-            }finally {
-                lock.readLock().unlock();
             }
         }
     }
@@ -57,45 +53,29 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     //LoginController
     @Override
-    public synchronized UUID register(String username) throws IOException {
-        try {
-            lock.readLock().lock();
-            lock.writeLock().lock();
-            out.println( REGISTER.toString() + "," + username );
-            out.flush();
-            String stringToken = in.readLine();
-            return (stringToken == null ? null : UUID.fromString( stringToken ));
-        }finally {
-            lock.readLock().unlock();
-            lock.writeLock().unlock();
-        }
+    public synchronized UUID register(String username,RemoteView view) throws IOException {
+        out.println( REGISTER.toString() + "," + username );
+        out.flush();
+        String stringToken = in.readLine();
+        return (stringToken == null ? null : UUID.fromString( stringToken ));
     }
     
     
     @Override
-    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
-        try {
-            lock.writeLock().lock();
-            this.view = view;
-            new Thread( this ).start();
-            out.println( LOGIN.toString() + "," + token );
-            out.flush();
-            return this;
-        }finally {
-            lock.readLock().unlock();
-        }
+    public synchronized RemotePlayer login(UUID token, RemoteView view) {
+        this.view = view;
+        new Thread( this ).start();
+        out.println( LOGIN.toString() + "," + token );
+        out.flush();
+        return this;
+        
     }
     
     
     @Override
     public synchronized void joinLobby(UUID token) {
-        try{
-            lock.writeLock().lock();
-            out.println( JOIN_LOBBY.toString() + "," + token );
-            out.flush();
-        }finally {
-            lock.writeLock().unlock();
-        }
+        out.println( JOIN_LOBBY.toString() + "," + token );
+        out.flush();
     }
     
     //Player
