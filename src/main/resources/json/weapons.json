@@ -166,7 +166,7 @@
         ],
         "actions": [
           {
-            "optional": false,
+            "optional": true,
             "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
@@ -186,12 +186,8 @@
             ]
           },
           {
-<<<<<<< HEAD
             "optional": true,
-=======
-            "optional": true,           //da valutare
             "necessaryForNextAction": false,
->>>>>>> 4a8fb7cb4ce4baa03792555bfea75b09e3bc2867
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,

@@ -29,11 +29,11 @@ public interface RemotePlayer extends Remote {
 
     void switchFireMode() throws IOException;
 
-    void upgrade() throws IOException;
-
-    void removeUpgrade() throws IOException;
+    void chooseUpgrade(int index) throws IOException;
 
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
+
+    void chooseDirection(int cardinalDirectionIndex) throws IOException;
 
     void skip() throws IOException;
 

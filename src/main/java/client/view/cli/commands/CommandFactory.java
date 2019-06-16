@@ -57,6 +57,9 @@ public class CommandFactory {
          case SWITCH_FIREMODE:
             return new SwitchFireModeCommand(controller);
 
+         case CHOOSE_UPGRADE:
+            return new ChooseUpgradeCommand(controller);
+
          case RELOAD:
             return new ReloadCommand(controller);
 

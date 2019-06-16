@@ -14,7 +14,7 @@ public class SetupWeaponState extends State {
     private boolean undo;
     private boolean waiting;
     private int fireModeIndex;
-    private int upgradeIndex;
+    private int asynchronousUpgradeIndex;
 
     SetupWeaponState(Controller controller) {
         super(controller);
@@ -44,12 +44,12 @@ public class SetupWeaponState extends State {
     }
    
    /**
-    * Attaches the next selectable upgrade to weapon, if it's not waiting for an AsynchronousUpgrade selection
+    * Attaches the next selectable selectUpgrade to weapon, if it's not waiting for an AsynchronousUpgrade selection
     * @param weapon a WeaponCard
     * @see Effect
     */
     @Override
-    public void upgrade(WeaponCard weapon) {
+    public void selectUpgrade(WeaponCard weapon, int upgradeIndex) {
         if (!waiting) {
             List<Effect> upgrades = weapon.getUpgrades();
             if (upgradeIndex < upgrades.size()) {
@@ -59,23 +59,13 @@ public class SetupWeaponState extends State {
                         weapon.addUpgrade(upgradeIndex);
                     } else {
                         waiting = true;
+                        asynchronousUpgradeIndex = upgradeIndex;
                     }
-                    upgradeIndex++;
                 }
             }
         }
     }
-   
-   /**
-    * Removes only the last added upgrade from the weapon
-    * @param weapon a weaponCard
-    */
-    @Override
-    public void removeUpgrade(WeaponCard weapon){
-        if (!waiting && upgradeIndex != 0) {
-            weapon.removeUpgrade(--upgradeIndex);
-        }
-    }
+
    
    /**
     * If waiting for an asynchronous effect, sets it t be performed before every other action of the weapon or after them
@@ -87,9 +77,9 @@ public class SetupWeaponState extends State {
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect){
         if (waiting) {
             if (beforeBasicEffect) {
-                weapon.pushFirstUpgrade(upgradeIndex);
+                weapon.pushFirstUpgrade(asynchronousUpgradeIndex);
             } else {
-                weapon.addUpgrade(upgradeIndex);
+                weapon.addUpgrade(asynchronousUpgradeIndex);
             }
             waiting = false;
         }
