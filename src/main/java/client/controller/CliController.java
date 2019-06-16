@@ -63,18 +63,19 @@ public class CliController extends UnicastRemoteObject implements AbstractClient
         UUID token = null;
         HashSet<String> yesAnswers = new HashSet<>(Arrays.asList("y", "yes"));
         HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));
+        String cmd;
+        do{
+            cmd = inputReader.requestString("Do you have a login token?"+System.lineSeparator()).toLowerCase();
+        }while (!yesAnswers.contains( cmd ) && ! noAnswers.contains( cmd ));
+        boolean wantRegister = noAnswers.contains( cmd );
         while (token == null) {
-            String cmd = inputReader.requestString("Do you have a login token?").toLowerCase();
-            System.out.println();
-            if (yesAnswers.contains(cmd)) {
-                token = UUID.fromString(inputReader.requestString("Insert your token"));
-                System.out.println();
-            } else if (noAnswers.contains(cmd)) {
+            if (wantRegister) {
                 String username;
                 username = inputReader.requestString("Insert an username");
                 token = loginController.register(username, this);
             } else {
-                System.out.println("Illegal command\n");
+                token = UUID.fromString(inputReader.requestString("Insert your token"));
+                System.out.println();
             }
         }
         RemotePlayer player = loginController.login(token,this);
