@@ -5,6 +5,7 @@ import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.InactiveState;
 import server.exceptions.PlayerAlreadyLoggedInException;
+import server.exceptions.PlayerAlreadyRegisteredException;
 import server.model.Database;
 
 import java.io.IOException;
