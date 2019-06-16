@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static server.database.FileEnum.*;
@@ -55,10 +56,10 @@ public class DatabaseHandler {
             reader.close();
 
             if (tokensByUserName == null || playerInfoByToken == null || gameInfoByUUID == null)
-                resetData();
+                resetAllData();
 
         } catch (FileNotFoundException e) {
-            resetData();
+            resetFile(Objects.requireNonNull(fromPath(e.getMessage().substring(0, e.getMessage().indexOf(' ')))));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -187,7 +188,7 @@ public class DatabaseHandler {
 
 
     //to use in case you want to clear data
-    private void resetData(){
+    private void resetAllData(){
         tokensByUserName = new HashMap<>();
         overwrite(TOKENS_BY_USER_NAME);
         playerInfoByToken = new HashMap<>();
@@ -195,4 +196,22 @@ public class DatabaseHandler {
         gameInfoByUUID = new HashMap<>();
         overwrite(GAME_INFO_BY_UUID);
     }
+
+    private void resetFile(FileEnum file) {
+        switch (file) {
+            case TOKENS_BY_USER_NAME:
+                tokensByUserName = new HashMap<>();
+                break;
+            case PLAYER_INFO_BY_TOKEN:
+                playerInfoByToken = new HashMap<>();
+                break;
+            case GAME_INFO_BY_UUID:
+                gameInfoByUUID = new HashMap<>();
+                break;
+            default:
+                break;
+        }
+        overwrite(file);
+    }
+
 }
