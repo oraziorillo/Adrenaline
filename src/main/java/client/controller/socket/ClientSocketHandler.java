@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static common.enums.interfaces_names.SocketLoginEnum.*;
@@ -23,6 +26,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     private PrintWriter out;
     private BufferedReader in;
     private RemoteView view;
+    private BlockingQueue<String[]> buffer = new PriorityBlockingQueue<>( 10, (a1, a2) -> a1[0].compareToIgnoreCase( a2[0] ) );
     
     public ClientSocketHandler(Socket socket) throws IOException {
         this.socket = socket;
@@ -33,31 +37,46 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     @Override
     public void run() {
         while (!socket.isClosed()) {
+            String[] args = null;
             try {
-                String[] args = in.readLine().split( "," );
+                args = in.readLine().split( "," );
                 parseRemoteView( args );
-            }catch ( IOException | NullPointerException e ){ //NPE is thrown when socket is closed in the middle of the while body
-                //TODO: manage disconnection
+            }catch ( IllegalArgumentException notAViewMethod ){
+                buffer.add( args );
+            } catch ( IOException e ) {
+                try {
+                    quit();
+                    socket.close();
+                    out.close();
+                    in.close();
+                } catch ( IOException ex ) {
+                    ex.printStackTrace();
+                }
             }
+    
         }
     }
     
     private void parseRemoteView(String[] args) throws IOException {
-        try {
-            switch (RemoteViewEnum.valueOf( args[0] )) {
-                case ACK:
-                    view.ack( args[1] );
-            }
-        }catch ( IllegalArgumentException ignored ){}//Other kinds of messages
+        switch (RemoteViewEnum.valueOf( args[0] )) {
+            case ACK:
+                view.ack( args[1] );
+        }
     }
     
     //LoginController
     @Override
     public synchronized UUID register(String username,RemoteView view) throws IOException {
+        this.view = view;
         out.println( REGISTER.toString() + "," + username );
         out.flush();
-        String stringToken = in.readLine();
-        return (stringToken == null ? null : UUID.fromString( stringToken ));
+        String stringToken;
+        try {
+            stringToken = buffer.take()[0];
+            return UUID.fromString( stringToken );
+        } catch ( InterruptedException | IllegalArgumentException invalidToken ) {
+            return null;
+        }
     }
     
     
