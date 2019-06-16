@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static server.database.FileEnum.*;
@@ -31,42 +30,52 @@ public class DatabaseHandler {
 
     private DatabaseHandler() {
 
-        try {
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
+        initFromFile(TOKENS_BY_USER_NAME, gson);
+        initFromFile(PLAYER_INFO_BY_TOKEN, gson);
+        initFromFile(GAME_INFO_BY_UUID, gson);
+    }
+
+
+    private void initFromFile(FileEnum file, Gson gson) {
+
+        try (JsonReader reader = new JsonReader(new FileReader(file.getFilePath()))) {
             Type type;
-            JsonReader reader;
-            Gson gson = new GsonBuilder()
-                    .serializeNulls()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
-
-            type = new TypeToken<HashMap<String, UUID>>() {}.getType();
-            reader = new JsonReader(new FileReader(TOKENS_BY_USER_NAME.getFilePath()));
-            tokensByUserName = gson.fromJson(reader, type);
-            reader.close();
-
-            type = new TypeToken<HashMap<UUID, PlayerInfo>>() {}.getType();
-            reader = new JsonReader(new FileReader(PLAYER_INFO_BY_TOKEN.getFilePath()));
-            playerInfoByToken = gson.fromJson(reader, type);
-            reader.close();
-
-            type = new TypeToken<HashMap<UUID, GameInfo>>() {}.getType();
-            reader = new JsonReader(new FileReader(GAME_INFO_BY_UUID.getFilePath()));
-            gameInfoByUUID = gson.fromJson(reader, type);
-            reader.close();
-
-            if (tokensByUserName == null || playerInfoByToken == null || gameInfoByUUID == null)
-                resetAllData();
-
+            switch (file) {
+                case TOKENS_BY_USER_NAME:
+                    type = new TypeToken<HashMap<String, UUID>>() {}.getType();
+                    tokensByUserName = gson.fromJson(reader, type);
+                    if (tokensByUserName == null)
+                        resetFile(TOKENS_BY_USER_NAME);
+                    break;
+                case PLAYER_INFO_BY_TOKEN:
+                    type = new TypeToken<HashMap<UUID, PlayerInfo>>() {}.getType();
+                    playerInfoByToken = gson.fromJson(reader, type);
+                    if (playerInfoByToken == null)
+                        resetFile(PLAYER_INFO_BY_TOKEN);
+                    break;
+                case GAME_INFO_BY_UUID:
+                    type = new TypeToken<HashMap<UUID, GameInfo>>() {}.getType();
+                    gameInfoByUUID = gson.fromJson(reader, type);
+                    if (gameInfoByUUID == null)
+                        resetFile(GAME_INFO_BY_UUID);
+                    break;
+                default:
+                    break;
+            }
         } catch (FileNotFoundException e) {
-            resetFile(Objects.requireNonNull(fromPath(e.getMessage().substring(0, e.getMessage().indexOf(' ')))));
-        } catch (IOException e){
+            resetFile(file);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static DatabaseHandler getInstance() {
+        public static DatabaseHandler getInstance() {
         if (instance == null) {
             instance = new DatabaseHandler();
         }
