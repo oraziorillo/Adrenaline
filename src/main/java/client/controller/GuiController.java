@@ -1,6 +1,6 @@
 package client.controller;
 
-import client.controller.socket.LoginControllerSocketProxy;
+import client.controller.socket.ClientSocketHandler;
 import client.view.gui.controllers.*;
 import common.enums.CardinalDirectionEnum;
 import common.model_dtos.PowerUpCardDTO;
@@ -18,6 +18,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import java.io.IOException;
+import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -95,7 +96,7 @@ public class GuiController implements RemoteView, AbstractClientController {
             break;
          case "socket":
          default:
-            loginController = new LoginControllerSocketProxy(HOST, SOCKET_PORT);
+            loginController = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT));
             break;
       }
       return loginController;
