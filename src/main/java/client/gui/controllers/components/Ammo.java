@@ -1,4 +1,4 @@
-package client.gui.controllers;
+package client.gui.controllers.components;
 
 import client.gui.custom_components.RatioGridPane;
 import javafx.fxml.FXML;

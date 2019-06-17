@@ -62,11 +62,11 @@ public class PlayerSocketListener implements Runnable {
                         int argInt2 = Integer.parseInt( in.readLine() );
                         player.chooseSquare( argInt, argInt2 );
                         break;
-                    case GRAB_WEAPON:
+                    case GRAB_WEAPON_ON_SPAWNPOINT:
                         argInt = Integer.parseInt( in.readLine() );
                         player.chooseWeaponOnSpawnPoint( argInt );
                         break;
-                    case CHOOSE_WEAPON:
+                    case CHOOSE_WEAPON_OF_MINE:
                         argInt = Integer.parseInt( in.readLine() );
                         player.chooseWeaponOfMine( argInt );
                         break;

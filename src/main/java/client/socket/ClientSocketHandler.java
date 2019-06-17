@@ -13,10 +13,6 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static common.enums.interfaces_names.SocketLoginEnum.*;
 import static common.enums.interfaces_names.SocketPlayerEnum.*;
@@ -162,14 +158,14 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void chooseWeaponOnSpawnPoint(int n) {
-        out.println( GRAB_WEAPON + "," + n );
+        out.println( GRAB_WEAPON_ON_SPAWNPOINT + "," + n );
         out.flush();
     }
     
     
     @Override
     public void chooseWeaponOfMine(int n) {
-        out.println( CHOOSE_WEAPON + "," + n );
+        out.println( CHOOSE_WEAPON_OF_MINE + "," + n );
         out.flush();
     }
     

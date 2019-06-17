@@ -1,4 +1,4 @@
-package client.gui.controllers;
+package client.gui.controllers.components;
 
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;

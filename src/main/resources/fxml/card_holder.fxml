@@ -6,7 +6,7 @@
 <?import javafx.beans.property.DoubleProperty?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="client.gui.controllers.CardHolder" fx:id="mainPane" stylesheets="/css/card_holder.css" viewOrder="-Infinity" >
+            fx:controller="client.gui.controllers.components.card_spaces.CardHolder" fx:id="mainPane" stylesheets="/css/card_holder.css" viewOrder="-Infinity" >
 
     <fx:define>
         <Double fx:id="WEAPON_WIDTH" fx:value="112"/>

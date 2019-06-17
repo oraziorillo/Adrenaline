@@ -1,4 +1,4 @@
-package client.gui.controllers.weapons;
+package client.gui.controllers.components.weapons;
 
 import common.model_dtos.WeaponCardDTO;
 import javafx.fxml.FXML;

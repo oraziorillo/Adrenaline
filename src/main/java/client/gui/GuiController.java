@@ -1,138 +1,37 @@
 package client.gui;
 
 import client.AbstractClientController;
-import client.socket.ClientSocketHandler;
-import client.gui.controllers.*;
-import common.enums.CardinalDirectionEnum;
-import common.model_dtos.PowerUpCardDTO;
-import common.model_dtos.WeaponCardDTO;
-import common.remote_interfaces.RemoteLoginController;
-import common.remote_interfaces.RemotePlayer;
-import javafx.application.HostServices;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import client.gui.controllers.MainGui;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.rmi.NotBoundException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.Optional;
-import java.util.UUID;
-
-/*
-public class GuiController implements AbstractClientController {
-   @FXML
-   GridPane killShotTrack;
-   @FXML
-   Map mappaController;
-   @FXML
-   CardHolder cardHolderLeftController;
-   @FXML
-   CardHolder cardHolderRightController;
-   @FXML
-   CardHand<WeaponCardDTO> weaponHandController;
-   @FXML
-   CardHand<PowerUpCardDTO> powerUpHandController;
-   @FXML
-   HBox underMapButtons;
-   @FXML
-   Top topController;
-   @FXML
-   Chat chatController;
-   private RemotePlayer player;
-
-
-   public void initialize() {
-      mappaController.setMap(0);
-      cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
-      cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
-      for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
-         Node n = underMapButtons.getChildren().get(i);
-         n.setTranslateX(2 * (size - i));
-         n.setViewOrder(i);
-      }
-      test();
-   }
-
-   private void test() {
-      for (int i = 0; i < 3; i++) {
-         weaponHandController.setCard( new WeaponCardDTO( "martello_ionico", 1, 1 ), i );
-         powerUpHandController.setCard( new PowerUpCardDTO(), i );
-      }
-   }
-
-   public void setPlayer(RemotePlayer player) {
-      this.player = player;
-   }
-
-   public void setHostServices(HostServices hostServices) {
-      topController.setHostServices(hostServices);
-   }
-
-   @Override
-   public void ack(String message) {
-      if(chatController!=null){
-         chatController.shoWMessage(message);
-      }else {
-         System.out.println(message);
-      }
-   }
-
-   @Override
-   public RemoteLoginController getLoginController() throws IOException, NotBoundException {
-      RemoteLoginController loginController;
-      Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?\nI suggest it, cause rmi is just 2 lines of code", new ButtonType("Socket"), new ButtonType("Rmi"));
-      rmiOrSocket.setHeaderText(null);
-      rmiOrSocket.setTitle("Select connection");
-      Optional<ButtonType> resonse = rmiOrSocket.showAndWait();
-      switch (resonse.get().getText().toLowerCase()) {
-         case "rmi":
-            Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
-            loginController = (RemoteLoginController) registry.lookup("LoginController");
-            break;
-         case "socket":
-         default:
-            ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT));
-            loginController = handler;
-            new Thread( handler ).start();
-            break;
-      }
-      return loginController;
-   }
-
-   @Override
-   public RemotePlayer loginRegister(RemoteLoginController loginController) throws IOException {
-      UUID token = null;
-      Alert firstTime = new Alert(
-              Alert.AlertType.CONFIRMATION,
-              "is this your first time?",
-              new ButtonType("Login", ButtonBar.ButtonData.NO),
-              new ButtonType("Register", ButtonBar.ButtonData.YES)
-      );
-      switch (firstTime.showAndWait().get().getButtonData()) {
-         case YES:
-            TextInputDialog usernameDialog = new TextInputDialog();
-            usernameDialog.setTitle("Username");
-            usernameDialog.setHeaderText(null);
-            usernameDialog.setContentText("Insert your username");
-            String username = usernameDialog.showAndWait().orElse("username");
-            token = loginController.register(username, this);
-            System.out.println("Registrazione");
-            return loginController.login(token,this);
-         case NO:
-            System.out.println("Login");
-            return loginController.login(token,this);
-         default:
-            System.exit(1);
-            return null;
-      }
-   }
+public class GuiController extends AbstractClientController {
+    
+    public GuiController() {
+        super( new PopUpGuiView() );
+    }
+    
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/gui.fxml" ));
+        Parent root = loader.load();
+        MainGui inGameView = loader.getController();
+        
+        this.view = inGameView;
+    
+        inGameView.setHostServices(getHostServices());
+        inGameView.setPlayer(player);
+    
+        stage.setTitle( "TITOLO, Orazio pensalo tu" );
+        stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
+        stage.setFullScreenExitKeyCombination(new KeyCodeCombination( KeyCode.ESCAPE ));
+        stage.maximizedProperty().addListener( (observableValue, aBoolean, t1) ->  stage.setFullScreen( t1 ) );
+        stage.setScene( new Scene( root ) );
+        stage.show();
+    
+    }
 }
-*/

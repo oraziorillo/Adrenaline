@@ -1,6 +1,5 @@
 package client.cli.commands;
 
-import client.cli.commands.*;
 import common.enums.interfaces_names.SocketPlayerEnum;
 import common.remote_interfaces.RemotePlayer;
 
@@ -49,10 +48,10 @@ public class CommandFactory {
          case CHOOSE_POWERUP:
             return new ChoosePowerUpCommand(controller);
       
-         case GRAB_WEAPON:
+         case GRAB_WEAPON_ON_SPAWNPOINT:
             return new ChooseWeaponOnSpawnPointCommand(controller);
       
-         case CHOOSE_WEAPON:
+         case CHOOSE_WEAPON_OF_MINE:
             return new ChooseWeaponOfMineCommand(controller);
 
          case SWITCH_FIREMODE:

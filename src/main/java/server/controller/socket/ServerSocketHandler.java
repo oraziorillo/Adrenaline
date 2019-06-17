@@ -114,11 +114,11 @@ public class ServerSocketHandler implements Runnable {
                 int argInt2 = Integer.parseInt(args[2]);
                 player.chooseSquare(argInt, argInt2);
                 break;
-            case GRAB_WEAPON:
+            case GRAB_WEAPON_ON_SPAWNPOINT:
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOnSpawnPoint(argInt);
                 break;
-            case CHOOSE_WEAPON:
+            case CHOOSE_WEAPON_OF_MINE:
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOfMine(argInt);
                 break;

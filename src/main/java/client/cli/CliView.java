@@ -2,13 +2,9 @@ package client.cli;
 
 import client.ClientView;
 import client.InputReader;
-import client.cli.commands.CliCommand;
-import client.cli.commands.CommandFactory;
 import client.socket.ClientSocketHandler;
 import common.enums.ConnectionsEnum;
 import common.remote_interfaces.RemoteLoginController;
-import common.remote_interfaces.RemotePlayer;
-import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -21,7 +17,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
-class CliView extends UnicastRemoteObject implements ClientView, RemoteView {
+class CliView extends UnicastRemoteObject implements ClientView {
     private transient InputReader inputReader = new CliInputReader();
     
     protected CliView() throws RemoteException {
@@ -71,7 +67,7 @@ class CliView extends UnicastRemoteObject implements ClientView, RemoteView {
     }
     
     @Override
-    public String acquireUnregisteredUsername() {
+    public String acquireUsername() {
         return inputReader.requestString("Insert an username");
     }
     
@@ -96,7 +92,4 @@ class CliView extends UnicastRemoteObject implements ClientView, RemoteView {
         System.out.println(message);
     }
     
-    public CliCommand getCommand(RemotePlayer player) {
-        return CommandFactory.getCommand( inputReader.requestString( "Insert command: " ),player );
-    }
 }

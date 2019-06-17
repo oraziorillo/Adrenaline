@@ -1,5 +1,7 @@
-package client.gui.controllers;
+package client.gui.controllers.components;
 
+import client.gui.controllers.dialogs.SettingsMenu;
+import client.gui.controllers.components.card_spaces.CardHolder;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

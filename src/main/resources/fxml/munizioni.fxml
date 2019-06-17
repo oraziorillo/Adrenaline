@@ -3,7 +3,7 @@
 <?import client.gui.custom_components.RatioGridPane?>
 <RatioGridPane xmlns="http://javafx.com/javafx"
                xmlns:fx="http://javafx.com/fxml"
-               fx:controller="client.gui.controllers.Ammo"
+               fx:controller="client.gui.controllers.components.Ammo"
                fx:id="grid" id="grid"
                stylesheets="/css/munizioni.css">
 

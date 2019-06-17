@@ -1,4 +1,4 @@
-package client.gui.controllers.pc_board;
+package client.gui.controllers.components.pc_board;
 
 import common.enums.PcColourEnum;
 import javafx.animation.TranslateTransition;

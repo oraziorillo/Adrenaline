@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
 <StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml" fx:controller="client.gui.controllers.CardHand" fx:id="mainPane"
+           xmlns:fx="http://javafx.com/fxml" fx:controller="client.gui.controllers.components.card_spaces.CardHand" fx:id="mainPane"
            stylesheets="/css/style.css">
 
     <fx:define>
