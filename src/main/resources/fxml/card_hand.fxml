@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
 <StackPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.controllers.CardHand" fx:id="mainPane"
-            stylesheets="/css/style.css">
+           xmlns:fx="http://javafx.com/fxml" fx:controller="client.gui.controllers.CardHand" fx:id="mainPane"
+           stylesheets="/css/style.css">
 
     <fx:define>
         <Double fx:id="hiddenFraction" fx:value=".62962963"/> <!-- usare .577777778 per mostrare tutta l'immagine-->

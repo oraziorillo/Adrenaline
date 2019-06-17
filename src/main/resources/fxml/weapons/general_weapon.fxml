@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="client.view.gui.controllers.weapons.GeneralWeapon" fx:id="mainPane"
+           fx:controller="client.gui.controllers.weapons.GeneralWeapon" fx:id="mainPane"
            stylesheets="/css/weapon.css">
     <ImageView fx:id="background"/>
     <GridPane>

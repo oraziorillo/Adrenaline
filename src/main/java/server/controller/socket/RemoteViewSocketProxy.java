@@ -1,6 +1,6 @@
 package server.controller.socket;
 
-import client.controller.socket.AbstractSocketProxy;
+import client.socket.AbstractSocketProxy;
 import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;

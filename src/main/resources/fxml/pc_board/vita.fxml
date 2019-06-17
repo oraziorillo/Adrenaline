@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="client.view.gui.controllers.pc_board.Vita">
+           fx:controller="client.gui.controllers.pc_board.Vita">
     <ImageView fx:id="background" preserveRatio="true"/>
     <GridPane>
         <rowConstraints>

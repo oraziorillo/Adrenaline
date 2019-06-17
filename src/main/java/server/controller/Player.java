@@ -3,6 +3,7 @@ package server.controller;
 import com.google.gson.annotations.Expose;
 import common.remote_interfaces.RemotePlayer;
 import server.controller.states.State;
+import server.database.DatabaseHandler;
 import server.model.Pc;
 import server.model.WeaponCard;
 
@@ -223,6 +224,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void quit() {
         //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-
+    
+    @Override
+    public boolean isConnected() throws RemoteException{
+        return true;
+    }
+    
 }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import client.view.gui.custom_components.RatioGridPane?>
+<?import client.gui.custom_components.RatioGridPane?>
 <RatioGridPane xmlns="http://javafx.com/javafx"
                xmlns:fx="http://javafx.com/fxml"
-               fx:controller="client.view.gui.controllers.Ammo"
+               fx:controller="client.gui.controllers.Ammo"
                fx:id="grid" id="grid"
                stylesheets="/css/munizioni.css">
 
