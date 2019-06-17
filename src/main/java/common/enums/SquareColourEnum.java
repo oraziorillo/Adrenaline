@@ -17,5 +17,5 @@ public enum SquareColourEnum {
     @SerializedName("WHITE")
     WHITE,
     @SerializedName("VIOLET")
-    VIOLET;
+    VIOLET
 }

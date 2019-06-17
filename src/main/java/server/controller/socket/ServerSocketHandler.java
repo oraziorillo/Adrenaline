@@ -128,9 +128,9 @@ public class ServerSocketHandler implements Runnable {
             case SWITCH_FIREMODE:
                 player.switchFireMode();
                 break;
-            case UPGRADE:
-                player.upgrade();
-                break;
+            //TODO case UPGRADE:
+            //    player.upgrade();
+            //    break;
             case CHOOSE_ASYNCH_EFFECT_ORDER:
                 boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
