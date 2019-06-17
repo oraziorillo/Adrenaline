@@ -23,6 +23,11 @@ public class AmmoTileDTO {
     }
 
 
+
+    public void setHasPowerUp(boolean hasPowerUp) {
+        this.hasPowerUp = hasPowerUp;
+    }
+
     public boolean hasPowerUp() {
         return hasPowerUp;
     }

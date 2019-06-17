@@ -166,7 +166,7 @@
         ],
         "actions": [
           {
-            "optional": false,
+            "optional": true,
             "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,

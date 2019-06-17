@@ -21,15 +21,16 @@ public enum SocketPlayerEnum {
     CHOOSE_WEAPON_OF_MINE("cw"),
     QUIT(":quit",":q"),
     SWITCH_FIREMODE("sf","switch","switch firemode"),
-    UPGRADE("upgrade","u"),
+    CHOOSE_UPGRADE("selectUpgrade","u"),
     CHOOSE_ASYNCH_EFFECT_ORDER("asynch","ca"),
+    CHOOSE_DIRECTION("choose direction", "choose dir"),
     OK("ok"),
     RELOAD("re","reload"),
     PASS("p","pass"),
     SKIP("skip"),
     USE_POWERUP("pw","powerup"),
     CHOOSE_POWERUP("ch","choose powerup"),
-    REMOVE_UPGRADE("ru","remove upgrade"),
+    REMOVE_UPGRADE("ru","remove selectUpgrade"),
     UNDO("undo"),
     SET_REMOTE_VIEW,//These 2 are not called directly by the user
     GET_REMOTE_VIEW;

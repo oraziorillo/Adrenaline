@@ -1,6 +1,7 @@
 package server.controller;
 
 import com.google.gson.annotations.Expose;
+import common.enums.CardinalDirectionEnum;
 import common.remote_interfaces.RemotePlayer;
 import server.controller.states.State;
 import server.database.DatabaseHandler;
@@ -166,21 +167,24 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
 
     @Override
-    public synchronized void upgrade() {
-        if(!currWeapon.getUpgrades().isEmpty())
-            currState.upgrade(currWeapon);
-    }
-
-
-    @Override
-    public synchronized void removeUpgrade() {
-        currState.removeUpgrade(currWeapon);
+    public synchronized void chooseUpgrade(int index) {
+        if(index > -1 && index < currWeapon.getUpgrades().size())
+            currState.selectUpgrade(currWeapon, index);
     }
 
 
     @Override
     public synchronized void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
         currState.setAsynchronousEffectOrder(currWeapon, beforeBasicEffect);
+    }
+
+
+    @Override
+    public synchronized void chooseDirection(int cardinalDirectionIndex){
+        for (CardinalDirectionEnum cardinalDirection: CardinalDirectionEnum.values()) {
+            if (cardinalDirection.ordinal() == cardinalDirectionIndex)
+                currState.selectDirection(cardinalDirection);
+        }
     }
 
 

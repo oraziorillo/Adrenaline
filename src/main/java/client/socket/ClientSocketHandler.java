@@ -178,15 +178,8 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     
     @Override
-    public void upgrade() {
-        out.println( UPGRADE );
-        out.flush();
-    }
-    
-    
-    @Override
-    public void removeUpgrade() {
-        out.println( REMOVE_UPGRADE );
+    public void chooseUpgrade(int index) {
+        out.println( CHOOSE_UPGRADE + "," + index);
         out.flush();
     }
     
@@ -194,6 +187,13 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     @Override
     public void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
         out.println( CHOOSE_ASYNCH_EFFECT_ORDER + "," + beforeBasicEffect);
+        out.flush();
+    }
+
+
+    @Override
+    public void chooseDirection(int index) {
+        out.println( CHOOSE_DIRECTION + "," + index);
         out.flush();
     }
     

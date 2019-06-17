@@ -39,7 +39,7 @@ public class GeneralWeapon {
       effect++;
       for (int upgrade = 0; upgrade<weapon.getUpgrades();upgrade++){
          Button upgradeButton = new Button();
-         //upgradeButton.setText( "upgrade "+upgrade);
+         //upgradeButton.setText( "selectUpgrade "+selectUpgrade);
          upgradeButton.setBackground( null );
          upgradeButton.setMaxHeight( Double.MAX_VALUE );
          upgradeButton.setMaxWidth( Double.MAX_VALUE );
