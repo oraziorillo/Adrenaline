@@ -24,14 +24,16 @@ public class GuiController extends AbstractClientController {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/gui.fxml" ));
         Parent root = loader.load();
         MainGui inGameView = loader.getController();
-        
-        this.view = inGameView;
     
-        /*TODO: swap views
+        loginController.setRemoteView( inGameView, player.getToken() );
         ClientView oldView = this.view;
+        this.view = inGameView;
         for(String s: oldView.getPendingAcks()){
             this.view.ack( s );
         }
+    
+        /*TODO: swap views
+        
         oldView = null; //Don't know if necessary, is to make oldView garbage-collected
          */
     

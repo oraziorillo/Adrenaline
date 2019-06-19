@@ -81,5 +81,10 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
          }
       }
    }
+   
+   @Override
+   public void setRemoteView(RemoteView view, UUID token) throws IOException {
+      databaseHandler.registerView( token,view );
+   }
 }
 
