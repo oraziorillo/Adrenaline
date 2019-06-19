@@ -4,10 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static javafx.application.Platform.runLater;
 
@@ -16,8 +13,9 @@ public class PopUpGuiView extends GuiView {
     /**
      * contains every alert displayed by this and still not closed
      */
-    private final ArrayList<String> pendingAcks = new ArrayList<>();
-    private final HashSet<Alert> visibleAlerts = new HashSet<>();
+    private final PriorityQueue<String> pendingAcks = new PriorityQueue<>();
+    private final PriorityQueue<Alert> visibleAlerts = new PriorityQueue<>();
+    //TODO: usa una coda che permetta di rimuovere un oggetto a caso dato il riferimento
     
     public PopUpGuiView() throws RemoteException {
     }

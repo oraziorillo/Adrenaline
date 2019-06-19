@@ -73,7 +73,7 @@ public class MainGui extends GuiView {
    
    @Override
    public void ack(String message) {
-      chatController.shoWMessage( message );
+      chatController.showServerMessage( message );
       chatController.appear();
    }
    
