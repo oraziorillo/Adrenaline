@@ -24,7 +24,7 @@ class CliView extends UnicastRemoteObject implements ClientView {
     }
     
     @Override
-    public RemoteLoginController aquireConnection(){
+    public RemoteLoginController acquireConnection(){
         ConnectionsEnum cmd = null;
         do {
             try {

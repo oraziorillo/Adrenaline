@@ -9,9 +9,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 
+import java.rmi.RemoteException;
+
 public class GuiController extends AbstractClientController {
     
-    public GuiController() {
+    public GuiController() throws RemoteException {
         super( new PopUpGuiView() );
     }
     

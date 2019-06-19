@@ -155,9 +155,7 @@ public class TargetSelectionState extends State {
         Set<Pc> validTargets = new HashSet<>();
         for (Square s: squaresWithPcs)
             validTargets.addAll(s.getPcs());
-        if (validTargets.isEmpty() || validTargets.size() == 1 && validTargets.contains(controller.getCurrPc()))
-            return false;
-        return true;
+        return !validTargets.isEmpty() && (validTargets.size() != 1 || !validTargets.contains( controller.getCurrPc() ));
     }
 
 

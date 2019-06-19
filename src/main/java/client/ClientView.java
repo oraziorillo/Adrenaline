@@ -11,7 +11,7 @@ public interface ClientView extends RemoteView {
     int SOCKET_PORT = 10000;
     int RMI_PORT = 9999;
     
-    RemoteLoginController aquireConnection() throws RemoteException;
+    RemoteLoginController acquireConnection() throws RemoteException;
     
     boolean wantsRegister() throws RemoteException;
     

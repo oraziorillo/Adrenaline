@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 
 public class MainGui extends GuiView {
@@ -38,6 +39,9 @@ public class MainGui extends GuiView {
    Top topController;
    @FXML
    Chat chatController;
+   
+   public MainGui() throws RemoteException {
+   }
    
    
    public void initialize() {
