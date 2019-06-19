@@ -17,6 +17,8 @@ GENERAL NOTES:
 
 - gestire le carte scoperte
 
+- cambiare gestione ack pre-gioco (i messaggi vengono troncati)
+
 
 REGOLE:
 - un giocatore può usare il powerUp asincrono più volte se viene attaccato con effetti diversi??
@@ -68,11 +70,6 @@ ARMI:
 - gestire meglio upgrade di granade launcher
 
 - nell'upgrade di machinegun le actions non sono entrambe optional
-
-
-
-RMI:
-- gestire lato client
 
 
 ROBA DA CONTROLLER
