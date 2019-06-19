@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="client.gui.controllers.dialogs.SettingsMenu" fx:id="mainPane"
+          fx:controller="client.gui.javafx_controllers.dialogs.SettingsMenu" fx:id="mainPane"
           prefHeight="400.0" prefWidth="600.0" stylesheets="/css/style.css" styleClass="debug">
 
     <Button text="Resume" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.halignment="CENTER" onMouseClicked="#resumeClicked"/>

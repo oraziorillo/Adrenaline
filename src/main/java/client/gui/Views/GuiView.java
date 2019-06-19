@@ -1,4 +1,4 @@
-package client.gui;
+package client.gui.Views;
 
 import client.ClientView;
 import client.socket.ClientSocketHandler;
@@ -13,7 +13,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 

@@ -1,7 +1,9 @@
-package client.gui;
+package client.gui.controllers;
 
 import client.AbstractClientController;
-import client.gui.controllers.MainGui;
+import client.ClientView;
+import client.gui.Views.PopUpGuiView;
+import client.gui.javafx_controllers.MainGui;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,10 +27,18 @@ public class GuiController extends AbstractClientController {
         
         this.view = inGameView;
     
+        /*TODO: swap views
+        ClientView oldView = this.view;
+        for(String s: oldView.getPendingAcks()){
+            this.view.ack( s );
+        }
+        oldView = null; //Don't know if necessary, is to make oldView garbage-collected
+         */
+    
         inGameView.setHostServices(getHostServices());
         inGameView.setPlayer(player);
     
-        stage.setTitle( "TITOLO, Orazio pensalo tu" );
+        stage.setTitle( "ADRENALINA" );
         stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
         stage.setFullScreenExitKeyCombination(new KeyCodeCombination( KeyCode.ESCAPE ));
         stage.maximizedProperty().addListener( (observableValue, aBoolean, t1) ->  stage.setFullScreen( t1 ) );

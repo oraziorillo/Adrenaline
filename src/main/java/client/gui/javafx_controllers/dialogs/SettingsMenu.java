@@ -1,4 +1,4 @@
-package client.gui.controllers.dialogs;
+package client.gui.javafx_controllers.dialogs;
 
 import javafx.application.HostServices;
 import javafx.fxml.FXML;

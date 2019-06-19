@@ -1,4 +1,4 @@
-package client.gui.controllers.components;
+package client.gui.javafx_controllers.components;
 
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -18,6 +18,7 @@ public class Chat {
    private VBox messaggi;
    @FXML
    private TextField input;
+   @FXML
    private AnchorPane mainPane;
    private Duration duration= new Duration( 300 );
    private ParallelTransition transition;
@@ -26,7 +27,6 @@ public class Chat {
    private boolean isOpened  = true;
    
    public void initialize(){
-      test();
       translate = new TranslateTransition( duration,messaggi );
       scale = new ScaleTransition( duration,messaggi );
       transition = new ParallelTransition( scale,translate );
