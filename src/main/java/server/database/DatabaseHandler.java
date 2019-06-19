@@ -7,7 +7,6 @@ import com.google.gson.stream.JsonReader;
 import common.remote_interfaces.RemoteView;
 import server.controller.Lobby;
 import server.controller.Player;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
