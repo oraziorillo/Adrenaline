@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import client.view.gui.custom_components.RatioGridPane?>
+<?import client.gui.custom_components.RatioGridPane?>
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="client.view.gui.controllers.Map" stylesheets="/css/mappa.css" alignment="BOTTOM_RIGHT">
+           fx:controller="client.gui.controllers.components.Map" stylesheets="/css/mappa.css" alignment="BOTTOM_RIGHT">
         <RatioGridPane ratio="0.75" fx:id="grid" id="grid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.halignment="RIGHT" />
 </StackPane>

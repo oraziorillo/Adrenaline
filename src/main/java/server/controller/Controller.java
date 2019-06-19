@@ -102,6 +102,7 @@ public class Controller{
         return modelMapper;
     }
 
+
     public void setLastPlayerIndex(int index) {
         lastPlayerIndex = index;
     }

@@ -23,7 +23,7 @@ public class CustomizedModelMapper {
 
     private void configureAmmoTile(){
         TypeMap<AmmoTile, AmmoTileDTO> typeMap = modelMapper.createTypeMap(AmmoTile.class, AmmoTileDTO.class);
-        //TODO:typeMap.addMappings(mapper -> mapper.map(AmmoTile::containsPowerup, AmmoTileDTO::setHasPowerUp));
+        typeMap.addMappings(mapper -> mapper.map(AmmoTile::containsPowerup, AmmoTileDTO::setHasPowerUp));
     }
 
 

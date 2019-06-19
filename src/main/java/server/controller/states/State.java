@@ -51,9 +51,7 @@ public abstract class State {
 
     public void switchFireMode(WeaponCard weapon) {}
 
-    public void upgrade(WeaponCard weapon) {}
-
-    public void removeUpgrade(WeaponCard weapon) {}
+    public void selectUpgrade(WeaponCard weapon, int index) {}
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
 

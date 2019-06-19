@@ -2,6 +2,7 @@ package common.remote_interfaces;
 
 import java.io.IOException;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface RemotePlayer extends Remote {
 
@@ -29,11 +30,11 @@ public interface RemotePlayer extends Remote {
 
     void switchFireMode() throws IOException;
 
-    void upgrade() throws IOException;
-
-    void removeUpgrade() throws IOException;
+    void chooseUpgrade(int index) throws IOException;
 
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
+
+    void chooseDirection(int cardinalDirectionIndex) throws IOException;
 
     void skip() throws IOException;
 
@@ -46,4 +47,7 @@ public interface RemotePlayer extends Remote {
     void pass() throws IOException;
 
     void quit() throws IOException;
+    
+    boolean isConnected() throws RemoteException;
+    
 }

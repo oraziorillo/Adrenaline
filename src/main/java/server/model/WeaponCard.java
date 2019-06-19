@@ -116,12 +116,18 @@ public class WeaponCard {
     }
 
     public void addUpgrade(int index) {
-        Effect eff;
-        if(upgrades.size() > index) {
-            eff = upgrades.get(index);
+        if (upgrades.size() > index && !effectsToApply.contains(upgrades.get(index))) {
+            Effect eff = upgrades.get(index);
             for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
                 currentCost[i] += eff.getCost()[i];
-            this.effectsToApply.add(eff);
+
+            //if a following selectUpgrade is already present, the current one is added before
+            if (index == 0 && !eff.isAsynchronous() && upgrades.size() > 1 && effectsToApply.contains(upgrades.get(index + 1))) {
+                int upgradeIndex = effectsToApply.indexOf(upgrades.get(index + 1));
+                this.effectsToApply.add(upgradeIndex, eff);
+            } else {
+                this.effectsToApply.add(eff);
+            }
         } else {
             throw new IllegalArgumentException();
         }

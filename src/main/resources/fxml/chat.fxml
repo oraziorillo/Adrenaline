@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-        xmlns:fx="http://javafx.com/fxml"
-        fx:controller="client.view.gui.controllers.Chat" stylesheets="/css/chat.css"
-        fx:id="mainPane" onMouseExited="#disappear">
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="client.gui.controllers.components.Chat" stylesheets="/css/chat.css"
+            fx:id="mainPane" onMouseExited="#disappear">
     <fx:define>
         <Double fx:id="MESSAGGI_HEIGHT" fx:value="800"/>
     </fx:define>

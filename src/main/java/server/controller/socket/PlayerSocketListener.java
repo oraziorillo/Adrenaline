@@ -62,11 +62,11 @@ public class PlayerSocketListener implements Runnable {
                         int argInt2 = Integer.parseInt( in.readLine() );
                         player.chooseSquare( argInt, argInt2 );
                         break;
-                    case GRAB_WEAPON:
+                    case GRAB_WEAPON_ON_SPAWNPOINT:
                         argInt = Integer.parseInt( in.readLine() );
                         player.chooseWeaponOnSpawnPoint( argInt );
                         break;
-                    case CHOOSE_WEAPON:
+                    case CHOOSE_WEAPON_OF_MINE:
                         argInt = Integer.parseInt( in.readLine() );
                         player.chooseWeaponOfMine( argInt );
                         break;
@@ -76,9 +76,9 @@ public class PlayerSocketListener implements Runnable {
                     case SWITCH_FIREMODE:
                         player.switchFireMode();
                         break;
-                    case UPGRADE:
-                        player.upgrade();
-                        break;
+                    //TODO: case UPGRADE:
+                    //    player.upgrade();
+                    //    break;
                     case CHOOSE_ASYNCH_EFFECT_ORDER:
                         boolean beforeBasicEffect = Boolean.getBoolean( in.readLine() );
                         player.chooseAsynchronousEffectOrder( beforeBasicEffect );
