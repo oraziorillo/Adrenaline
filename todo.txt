@@ -3,47 +3,35 @@ GENERAL NOTES:
 
 - aggiungere il clone su effectToApply
 
-- aggiungere l'infierire
-
--gestire l'additional damage exclusive
-
-- stabilire quando chiamare il destination checker in targetSelectionState
-
-- ricordarsi di aggiungere i target nel shotTargets
-
 - gesitre caso in cui l'upgrade non può essere eseguito
 
 - aggiungere timer ai turni
 
 - gestire le carte scoperte
 
-- cambiare gestione ack pre-gioco (i messaggi vengono troncati)
+- aggiungere la possibilità di poter scegliere il power up targeting scope più volte
 
-- nella pcBoard numofdeaths e pcvalue danno info ridondanti
+- cambiare il costruttore di ammoTile in modo da fargli prendere solo l'array di ammo e poi setta da solo il contains powerUp
+
+- valutare se nei DTO servono gli indici degli array
+
+- cambiare gestione ack pre-gioco (i messaggi vengono troncati)
 
 
 REGOLE:
+
 - un giocatore può usare il powerUp asincrono più volte se viene attaccato con effetti diversi??
 
 
 ARMI:
 
-- aggiungere destination Checker alle action di movement dei json dove non presenti
-
-- gesitre l'ordine in cui vengono selezionati gli upgrade che, per certe armi devono avere un'ordine preciso (rocket launcher)
 - tenere conto del numero di targets selezionati con il machine gun
 
 - aggiungere nel player un metodo selectDirection e vedere quando farlo comparire a schermo all'utente................
 
-- se l'effetto è orientato, viene chiesto al giocatore di scegliere una direzione
-
--dubbio sull'utilizzo concreto di asincrono
-
-- sledgeHammer non haa effetti orientati
+- sledgeHammer non ha effetti orientati
 
 - powerGlove ha settati i boolean needOldSquare e memorizeSquare
-
-- aggiunger nei json gli oriented Target checker nell adamage Actions??
 
 - controllare tutti i controlli effettuati quando isParameterized è false
 
@@ -65,15 +53,6 @@ OPZIONALI:
 - mettere singleton le classi di controllo della view
 
 
-
-ARMI:
-- aggiungere boolean needParameters per onda d'urto
-
-- gestire meglio upgrade di granade launcher
-
-- nell'upgrade di machinegun le actions non sono entrambe optional
-
-
 ROBA DA CONTROLLER
  - quando la lista di target validi è vuota viene chiamato next state e bisogna ricordarsi che bisogna controllare la lista dei powerup del current player.
 
@@ -85,8 +64,6 @@ ROBA DA CONTROLLER
  
 
 REGOLE DA IMPLEMENTARE:
-- funzione che attribuisce punti dopo una kill (ricordarsi Double kill: - Double kill? If you deal multiple killshots on your turn, you get 1 extra
-point. And you are awesome)
 
 -"Choose starting player" opzionale
 
