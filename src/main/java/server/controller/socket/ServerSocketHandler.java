@@ -109,7 +109,7 @@ public class ServerSocketHandler implements Runnable {
             case SHOOT_PEOPLE:
                 player.shootPeople();
                 break;
-            case SELECT_SQUARE:
+            case CHOOSE_SQUARE:
                 argInt = Integer.parseInt(args[1]);
                 int argInt2 = Integer.parseInt(args[2]);
                 player.chooseSquare(argInt, argInt2);
