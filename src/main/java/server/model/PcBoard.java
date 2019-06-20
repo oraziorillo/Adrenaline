@@ -7,22 +7,18 @@ import static server.model.Constants.LIFEPOINTS;
 public class PcBoard {
 
     private short points;
-    private short numOfDeaths;
     private short damageTrackIndex;
     private short[] marks;
     private short[] ammo;
     private PcColourEnum[] damageTrack;
     private int [] pcValue;
-    private int pcValueIndex;
+    private int numOfDeaths;
 
     public PcBoard(){
-        this.points = 0;
-        this.numOfDeaths = 0;
-        this.damageTrackIndex = 0;
         this.marks = new short[5];
         this.ammo = new short[3];
         this.pcValue = new int[]{8, 6, 4, 2, 1, 1};
-        this.pcValueIndex = 0;
+        this.numOfDeaths = 0;
         this.damageTrack = new PcColourEnum[LIFEPOINTS];
         for(int i = 0; i < 3; i++){
             ammo[i] = 1;
@@ -32,11 +28,6 @@ public class PcBoard {
 
     public short getPoints() {
         return points;
-    }
-
-
-    public short getNumOfDeaths() {
-        return numOfDeaths;
     }
 
 
@@ -54,8 +45,8 @@ public class PcBoard {
         return damageTrackIndex;
     }
 
-    public int getPcValueIndex() {
-        return pcValueIndex;
+    public int getNumOfDeaths() {
+        return numOfDeaths;
     }
 
     public int[] getPcValue() {
@@ -69,20 +60,17 @@ public class PcBoard {
 
     public void flipBoard(){
         pcValue = new int[] {2, 1, 1, 1};
-        pcValueIndex = 0;
+        numOfDeaths = 0;
     }
 
     public void increasePoints(int earnedPoints){
         this.points += earnedPoints;
     }
 
-    public void increaseNumberOfDeaths(){
-        numOfDeaths++;
-    }
 
-    public void increasePcValueIndex(){
-        if (pcValueIndex != 5)
-            pcValueIndex++;
+    public void increaseNumOfDeaths(){
+        if (numOfDeaths != 5)
+            numOfDeaths++;
     }
 
     public void addDamage(PcColourEnum shooterColour, short numOfDamage){

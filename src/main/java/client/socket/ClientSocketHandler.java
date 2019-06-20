@@ -144,7 +144,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void chooseSquare(int x, int y) {
-        out.println( SELECT_SQUARE + "," + x + "," + y );
+        out.println( CHOOSE_SQUARE + "," + x + "," + y );
         out.flush();
     }
     

@@ -27,7 +27,6 @@ public class Pc {
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
         this.colour = colour;
-        this.adrenaline = 0;
         this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
@@ -213,7 +212,6 @@ public class Pc {
         if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
         }
-        pcBoard.increaseNumberOfDeaths();
         pcBoard.resetDamageTrack();
         this.adrenaline = 0;
         this.currSquare = t;

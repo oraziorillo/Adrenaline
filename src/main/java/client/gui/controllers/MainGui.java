@@ -8,7 +8,7 @@ import client.gui.controllers.components.card_spaces.CardHand;
 import client.gui.controllers.components.card_spaces.CardHolder;
 import common.enums.CardinalDirectionEnum;
 import common.model_dtos.PowerUpCardDTO;
-import common.model_dtos.WeaponCardDTO;
+import common.model_dtos.WeaponCardDTOFirstVersion;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class MainGui extends GuiView {
    @FXML
    CardHolder cardHolderRightController;
    @FXML
-   CardHand<WeaponCardDTO> weaponHandController;
+   CardHand<WeaponCardDTOFirstVersion> weaponHandController;
    @FXML
    CardHand<PowerUpCardDTO> powerUpHandController;
    @FXML
@@ -54,7 +54,7 @@ public class MainGui extends GuiView {
 
    private void test() {
       for (int i = 0; i < 3; i++) {
-         weaponHandController.setCard( new WeaponCardDTO( "martello_ionico", 1, 1 ), i );
+         weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
    }

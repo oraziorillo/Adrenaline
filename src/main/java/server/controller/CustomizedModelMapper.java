@@ -1,9 +1,22 @@
 package server.controller;
 
+import common.enums.PcColourEnum;
 import common.model_dtos.AmmoTileDTO;
+import common.model_dtos.SquareDTO;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.modelmapper.convention.MatchingStrategies;
 import server.model.AmmoTile;
+import server.model.Pc;
+import server.model.squares.AmmoSquare;
+import server.model.squares.SpawnPoint;
+
+
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 public class CustomizedModelMapper {
 
@@ -12,14 +25,20 @@ public class CustomizedModelMapper {
 
     public CustomizedModelMapper(){
         modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         initModelMapper();
     }
 
 
     private void initModelMapper(){
         configureAmmoTile();
+        configureSquare();
     }
 
+
+    public ModelMapper getModelMapper() {
+        return modelMapper;
+    }
 
     private void configureAmmoTile(){
         TypeMap<AmmoTile, AmmoTileDTO> typeMap = modelMapper.createTypeMap(AmmoTile.class, AmmoTileDTO.class);
@@ -27,7 +46,13 @@ public class CustomizedModelMapper {
     }
 
 
-    public ModelMapper getModelMapper() {
-        return modelMapper;
+    private void configureSquare() {
+        Converter<Set<Pc>, Set<PcColourEnum>> toPcColour = ctx -> ctx.getSource() == null ? null : ctx.getSource().stream().map(Pc::getColour).collect(Collectors.toSet());
+        TypeMap<SpawnPoint, SquareDTO> typeMapSpawnPoint = modelMapper.createTypeMap(SpawnPoint.class, SquareDTO.class);
+        TypeMap<AmmoSquare, SquareDTO> typeMapAmmoSquare = modelMapper.createTypeMap(AmmoSquare.class, SquareDTO.class);
+        typeMapSpawnPoint.addMappings(mapper -> mapper.using(toPcColour).map(SpawnPoint::getPcs, SquareDTO::setPcs));
+        typeMapAmmoSquare.addMappings(mapper -> mapper.using(toPcColour).map(AmmoSquare::getPcs, SquareDTO::setPcs));
+        //typeMap.addMappings(mapper -> mapper)
     }
+
 }

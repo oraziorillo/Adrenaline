@@ -154,7 +154,7 @@ public class Game {
         scoringPoints(deadPc, doubleKill);
         boolean turnIntoFinalFrenzy = scoreOnKillShotTrack(deadPc);
         if (!isFinalFrenzy())
-            deadPc.getPcBoard().increasePcValueIndex();
+            deadPc.getPcBoard().increaseNumOfDeaths();
         return turnIntoFinalFrenzy;
     }
 
@@ -162,22 +162,28 @@ public class Game {
     private void scoringPoints(Pc deadPc, boolean doublekill) {
         PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
         int [] pcValue = deadPc.getPcBoard().getPcValue();
-        int pcValueIndex = deadPc.getPcBoard().getPcValueIndex();
+        int pcValueIndex = 0;
         boolean allPointsAssigned = false;
         int [] numOfDamages = new int [5];
         int max;
 
+        if (!isFinalFrenzy()) {
+            pcValueIndex = deadPc.getPcBoard().getNumOfDeaths();
+
+            //assigns the first blood point, only if the board is not flipped
+            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
+        }
         //assigns an extra point, only if the current player gets a doubleKill
         if (doublekill)
             pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[10]).findFirst().get().increasePoints(1);
 
-        //assigns the first blood point, only if the board is not flipped
-        if (!isFinalFrenzy())
-            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
-
         //assign points to each Pc who damaged the deadPc
-        for (PcColourEnum colour: deadPcDamageTrack)
-            numOfDamages[colour.ordinal()]++;
+        for (PcColourEnum colour: deadPcDamageTrack) {
+            if (colour != null)
+                numOfDamages[colour.ordinal()]++;
+            else
+                break;
+        }
         while (!allPointsAssigned) {
             max = 0;
             int maxIndex = 0;
@@ -192,6 +198,8 @@ public class Game {
                 pcs.stream().filter(pc -> pc.getColour().ordinal() == finalMaxIndex).findFirst().get().increasePoints(pcValue[pcValueIndex]);
                 if (pcValueIndex != pcValue.length - 1)
                     pcValueIndex++;
+                else
+                    allPointsAssigned = true;
                 numOfDamages[finalMaxIndex] = 0;
             }
             else
@@ -219,6 +227,9 @@ public class Game {
 
 
     public List<Pc> computeWinner() {
+        for (Pc pc: pcs) {
+            scoringPoints(pc, false);
+        }
         int maxPoints = 0;
         for (Pc pc: pcs) {
             if (pc.getPcBoard().getPoints() > maxPoints)
@@ -244,7 +255,7 @@ public class Game {
 
 
     private Integer pointsFromKillShots(Pc pc){
-        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack());
+        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getFinalFrenzyKillShotTrack());
     }
 
 

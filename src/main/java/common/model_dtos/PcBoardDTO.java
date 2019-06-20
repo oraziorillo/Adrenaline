@@ -5,22 +5,13 @@ import common.enums.PcColourEnum;
 public class PcBoardDTO {
 
     private short points;
-    private short numOfDeaths;
     private short damageTrackIndex;
     private short[] marks;
     private short[] ammo;
     private PcColourEnum[] damageTrack;
     private int [] pcValue;
-    private int pcValueIndex;
+    private int numOfDeaths;
 
-
-    public short getNumOfDeaths() {
-        return numOfDeaths;
-    }
-
-    public void setNumOfDeaths(short numOfDeaths) {
-        this.numOfDeaths = numOfDeaths;
-    }
 
     public short getDamageTrackIndex() {
         return damageTrackIndex;
@@ -62,12 +53,12 @@ public class PcBoardDTO {
         this.pcValue = pcValue;
     }
 
-    public int getPcValueIndex() {
-        return pcValueIndex;
+    public int getNumOfDeaths() {
+        return numOfDeaths;
     }
 
-    public void setPcValueIndex(int pcValueIndex) {
-        this.pcValueIndex = pcValueIndex;
+    public void setNumOfDeaths(int numOfDeaths) {
+        this.numOfDeaths = numOfDeaths;
     }
 
     public short getPoints() {

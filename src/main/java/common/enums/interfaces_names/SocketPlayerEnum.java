@@ -9,18 +9,19 @@ import java.util.Set;
  * Support enum for hand-made socket stubs
  */
 public enum SocketPlayerEnum {
-    CHOOSE_MAP(":m",":map",":choose map"),
-    CHOOSE_NUMBER_OF_SKULLS( ":sk", ":skulls", ":choose number of skulls" ),
-    CHOOSE_PC_COLOUR(":choose colour",":colour",":col"),
-    SHOW_COMMENT(":c",":comment"),
+    CHOOSE_MAP("m","map","choose map"),
+    CHOOSE_NUMBER_OF_SKULLS( "sk", "skulls", "choose number of skulls" ),
+    CHOOSE_PC_COLOUR("choose colour","colour","col"),
+    SHOW_COMMENT("c","comment"),
     RUN_AROUND("run","r"),
     GRAB_STUFF("grab stuff","gs"),
     SHOOT_PEOPLE("shoot", "s"),
-    SELECT_SQUARE("ss","select square"),
+    USE_POWERUP("pw","powerup"),
+    CHOOSE_SQUARE("ss","select square"),
     GRAB_WEAPON_ON_SPAWNPOINT("grab weapon","gw","choose weapon"),
     CHOOSE_WEAPON_OF_MINE("cw"),
-    QUIT(":quit",":q"),
     SWITCH_FIREMODE("sf","switch","switch firemode"),
+    CHOOSE_POWERUP("ch","choose powerup"),
     CHOOSE_UPGRADE("selectUpgrade","u"),
     CHOOSE_ASYNCH_EFFECT_ORDER("asynch","ca"),
     CHOOSE_DIRECTION("choose direction", "choose dir"),
@@ -28,10 +29,8 @@ public enum SocketPlayerEnum {
     RELOAD("re","reload"),
     PASS("p","pass"),
     SKIP("skip"),
-    USE_POWERUP("pw","powerup"),
-    CHOOSE_POWERUP("ch","choose powerup"),
-    REMOVE_UPGRADE("ru","remove selectUpgrade"),
     UNDO("undo"),
+    QUIT("quit","q"),
     SET_REMOTE_VIEW,//These 2 are not called directly by the user
     GET_REMOTE_VIEW;
     

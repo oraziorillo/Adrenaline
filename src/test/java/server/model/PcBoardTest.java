@@ -19,12 +19,6 @@ public class PcBoardTest {
     }
 
     @Test
-    public void increaseNumberOfDeathsWorksFine(){
-        tested.increaseNumberOfDeaths();
-        assertTrue(tested.getNumOfDeaths() == 1);
-    }
-
-    @Test
     public void increasePointsWorksFine() {
         tested.increasePoints(10);
         assertTrue(tested.getPoints() == 10);

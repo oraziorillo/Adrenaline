@@ -17,6 +17,8 @@ GENERAL NOTES:
 
 - gestire le carte scoperte
 
+- nella pcBoard numofdeaths e pcvalue danno info ridondanti
+
 
 REGOLE:
 - un giocatore può usare il powerUp asincrono più volte se viene attaccato con effetti diversi??
