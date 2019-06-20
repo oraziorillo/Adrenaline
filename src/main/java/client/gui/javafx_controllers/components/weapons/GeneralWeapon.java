@@ -23,7 +23,6 @@ public class GeneralWeapon {
    
    @FXML
    public void setWeapon(WeaponCardDTOFirstVersion weapon){
-      System.out.println(weapon.getImagePath());
       background.setImage( new Image( weapon.getImagePath(),true ) );
       int effect;
       for(effect=0;effect<weapon.getBasicEffects();effect++){

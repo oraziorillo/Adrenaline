@@ -68,9 +68,10 @@ public class Chat {
    }
    
    public synchronized void showServerMessage(String message){
-      Label added = new Label(message);
-      added.setTextFill( Color.RED );
-      messaggi.getChildren().add( added );
+      Label visibleText = new Label(message);
+      visibleText.setWrapText( true );
+      visibleText.setTextFill( Color.RED );
+      messaggi.getChildren().add( visibleText );
    }
    
    public synchronized void showUserMessage(String message){
