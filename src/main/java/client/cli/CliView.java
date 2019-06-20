@@ -14,6 +14,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ class CliView extends UnicastRemoteObject implements ClientView {
     }
     
     @Override
-    public RemoteLoginController aquireConnection(){
+    public RemoteLoginController acquireConnection(){
         ConnectionsEnum cmd = null;
         do {
             try {
@@ -85,6 +86,15 @@ class CliView extends UnicastRemoteObject implements ClientView {
     public void displayErrorAndExit(String msg) {
         inputReader.requestString( msg + System.lineSeparator() + "Press enter to exit." );
         System.exit( 1 );
+    }
+    
+    /**
+     * Cause every message is immediatly displayed in the cli, no acks are pending
+     * @return an empty Collection
+     */
+    @Override
+    public Collection<String> getPendingAcks() {
+        return new HashSet<>();
     }
     
     @Override

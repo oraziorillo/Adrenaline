@@ -1,4 +1,4 @@
-package client.gui;
+package client.gui.Views;
 
 import client.ClientView;
 import client.socket.ClientSocketHandler;
@@ -9,16 +9,20 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashSet;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class GuiView implements ClientView {
+public abstract class GuiView extends UnicastRemoteObject implements ClientView {
+    
+    protected GuiView() throws RemoteException {
+    }
     
     @Override
-    public RemoteLoginController aquireConnection() {
+    public RemoteLoginController acquireConnection() {
         RemoteLoginController loginController;
         Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?\nI suggest it, cause rmi is just 2 lines of code", new ButtonType("Socket"), new ButtonType("Rmi"));
         rmiOrSocket.setHeaderText(null);

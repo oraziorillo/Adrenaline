@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -23,6 +24,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     private BufferedReader in;
     private RemoteView view;
     private BlockingQueue<String[]> buffer = new PriorityBlockingQueue<>( 10, (a1, a2) -> a1[0].compareToIgnoreCase( a2[0] ) );
+    private UUID token;
     
     public ClientSocketHandler(Socket socket) throws IOException {
         this.socket = socket;
@@ -77,9 +79,11 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     @Override
     public synchronized RemotePlayer login(UUID token, RemoteView view) {
         this.view = view;
+        this.token = token;
         new Thread( this ).start();
         out.println( LOGIN.toString() + "," + token );
         out.flush();
+        //TODO: check if the login was successful
         return this;
         
     }
@@ -89,6 +93,11 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     public synchronized void joinLobby(UUID token) {
         out.println( JOIN_LOBBY.toString() + "," + token );
         out.flush();
+    }
+    
+    @Override
+    public void setRemoteView(RemoteView view, UUID token) throws IOException {
+        this.view = view;
     }
     
     //Player
@@ -246,5 +255,10 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     @Override
     public boolean isConnected() {
         return !socket.isClosed();
+    }
+    
+    @Override
+    public UUID getToken() throws RemoteException {
+        return this.token;
     }
 }

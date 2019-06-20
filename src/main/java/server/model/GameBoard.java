@@ -116,13 +116,11 @@ public class GameBoard {
         if (currentKillShotTrackIndex >= 0) {
             killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
             currentKillShotTrackIndex--;
-            if (currentKillShotTrackIndex == -1)
-                return true;
+            return currentKillShotTrackIndex == -1;
         } else {
             finalFrenzyKillShotTrack[finalFrenzyCurrentKillShotTrackIndex].killOccured(killerColour, overkilled);
             finalFrenzyCurrentKillShotTrackIndex++;
             return true;
         }
-        return false;
     }
 }

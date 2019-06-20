@@ -234,5 +234,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         return true;
     }
     
+    
 }
 

@@ -2,7 +2,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
-<BorderPane fx:controller="client.gui.controllers.MainGui" xmlns:fx="http://javafx.com/fxml" stylesheets="/css/style.css">
+<BorderPane fx:controller="client.gui.javafx_controllers.MainGui" xmlns:fx="http://javafx.com/fxml" stylesheets="/css/style.css">
     <center>
         <HBox alignment="CENTER_RIGHT">
             <VBox alignment="CENTER" HBox.hgrow="SOMETIMES"> <!--Map and buttons-->
@@ -25,7 +25,7 @@
             <Region HBox.hgrow="ALWAYS"/>
             <fx:include source="card_hand.fxml" fx:id="powerUpHand" HBox.hgrow="ALWAYS"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <fx:include source="chat.fxml" />
+            <fx:include source="chat.fxml" fx:id="chat"/>
         </HBox>
     </bottom>
     <left>

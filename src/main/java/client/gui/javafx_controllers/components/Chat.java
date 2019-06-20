@@ -1,4 +1,4 @@
-package client.gui.controllers.components;
+package client.gui.javafx_controllers.components;
 
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class Chat {
@@ -18,6 +19,7 @@ public class Chat {
    private VBox messaggi;
    @FXML
    private TextField input;
+   @FXML
    private AnchorPane mainPane;
    private Duration duration= new Duration( 300 );
    private ParallelTransition transition;
@@ -26,7 +28,6 @@ public class Chat {
    private boolean isOpened  = true;
    
    public void initialize(){
-      test();
       translate = new TranslateTransition( duration,messaggi );
       scale = new ScaleTransition( duration,messaggi );
       transition = new ParallelTransition( scale,translate );
@@ -66,8 +67,23 @@ public class Chat {
       }
    }
    
-   public void shoWMessage(String message){
-      messaggi.getChildren().add( new Label( message ) );
+   public synchronized void showServerMessage(String message){
+      Label added = new Label(message);
+      added.setTextFill( Color.RED );
+      messaggi.getChildren().add( added );
+   }
+   
+   public synchronized void showUserMessage(String message){
+      Label added = new Label(message);
+      added.setTextFill( Color.WHITE );
+      messaggi.getChildren().add( added );
+   }
+   
+   @FXML
+   private synchronized void sendInput(){
+      showUserMessage( input.getText() );
+      //TODO: actually send the message
+      input.clear();
    }
    
 }
