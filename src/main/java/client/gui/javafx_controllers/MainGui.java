@@ -1,11 +1,11 @@
-package client.gui.controllers;
+package client.gui.javafx_controllers;
 
-import client.gui.GuiView;
-import client.gui.controllers.components.Chat;
-import client.gui.controllers.components.Map;
-import client.gui.controllers.components.Top;
-import client.gui.controllers.components.card_spaces.CardHand;
-import client.gui.controllers.components.card_spaces.CardHolder;
+import client.gui.Views.GuiView;
+import client.gui.javafx_controllers.components.Chat;
+import client.gui.javafx_controllers.components.Map;
+import client.gui.javafx_controllers.components.Top;
+import client.gui.javafx_controllers.components.card_spaces.CardHand;
+import client.gui.javafx_controllers.components.card_spaces.CardHolder;
 import common.enums.CardinalDirectionEnum;
 import common.model_dtos.PowerUpCardDTO;
 import common.model_dtos.WeaponCardDTOFirstVersion;
@@ -16,7 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.HashSet;
 
 
 public class MainGui extends GuiView {
@@ -38,6 +40,9 @@ public class MainGui extends GuiView {
    Top topController;
    @FXML
    Chat chatController;
+   
+   public MainGui() throws RemoteException {
+   }
    
    
    public void initialize() {
@@ -67,8 +72,17 @@ public class MainGui extends GuiView {
    }
    
    @Override
-   public void ack(String message) throws IOException {
-      chatController.shoWMessage( message );
+   public void ack(String message) {
+      chatController.showServerMessage( message );
       chatController.appear();
+   }
+   
+   /**
+    * Cause every message is immediatly displayed in the chat, no acks are pending
+    * @return an empty Collection
+    */
+   @Override
+   public Collection<String> getPendingAcks() {
+      return new HashSet<>();
    }
 }

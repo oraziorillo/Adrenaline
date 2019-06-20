@@ -4,6 +4,7 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
 
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.UUID;
 
 public interface ClientView extends RemoteView {
@@ -11,7 +12,7 @@ public interface ClientView extends RemoteView {
     int SOCKET_PORT = 10000;
     int RMI_PORT = 9999;
     
-    RemoteLoginController aquireConnection() throws RemoteException;
+    RemoteLoginController acquireConnection() throws RemoteException;
     
     boolean wantsRegister() throws RemoteException;
     
@@ -22,4 +23,6 @@ public interface ClientView extends RemoteView {
     String requestString(String message) throws RemoteException;
     
     void displayErrorAndExit(String msg) throws RemoteException;
+    
+    Collection<String> getPendingAcks() throws RemoteException;
 }

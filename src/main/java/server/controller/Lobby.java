@@ -71,9 +71,7 @@ public class Lobby {
             removePlayer(player);
         }
 
-        for(String s : getAllUsernames()){
-            ackAllPlayersExcept( s );
-        }
+        ackAllPlayersExcept( getAllUsernames() );
         if (players.size() >= 3 && players.size() <5) {
             timer.start();
             ackAllPlayersExcept( players.size()+" players has joined! The game will start in "+ TimeUnit.MILLISECONDS.toMinutes( timer.getDelay() )+" minutes" );
@@ -118,13 +116,13 @@ public class Lobby {
     }
 
 
-    private List<String> getAllUsernames(){
-        ArrayList<String> result = new ArrayList<>();
-        result.add( "Players in the room:" );
+    private String getAllUsernames(){
+        StringBuilder result = new StringBuilder("Players in the room:");
+        String at = System.lineSeparator()+"@";
         for(Player p: players){
-            result.add( "@"+ databaseHandler.getUsername( p.getToken() ) );
+            result.append( at+ databaseHandler.getUsername( p.getToken() ) );
         }
-        return result;
+        return result.toString();
     }
     
 }

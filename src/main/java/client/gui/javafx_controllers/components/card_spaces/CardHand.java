@@ -1,4 +1,4 @@
-package client.gui.controllers.components.card_spaces;
+package client.gui.javafx_controllers.components.card_spaces;
 
 import common.model_dtos.Card;
 import javafx.animation.Transition;

@@ -11,7 +11,6 @@ import java.util.UUID;
 
 public abstract class AbstractClientController extends Application {
     
-    
     protected transient ClientView view;
     protected transient RemoteLoginController loginController;
     protected transient RemotePlayer player;
@@ -20,7 +19,7 @@ public abstract class AbstractClientController extends Application {
         this.view = view;
         try {
             UUID token;
-            this.loginController = view.aquireConnection();
+            this.loginController = view.acquireConnection();
             boolean wantsRegister = view.wantsRegister();
             if (wantsRegister) {
                 do {
@@ -35,17 +34,18 @@ public abstract class AbstractClientController extends Application {
                     tmpPlayer = loginController.login( token, view );
                 } while (tmpPlayer == null);
                 player = tmpPlayer;
-                loginController.joinLobby( token );
             }
+            loginController.joinLobby( token );
         }catch ( IOException serverUnreachable ){
             try{
-                view.displayErrorAndExit( "Server unreachable" );
                 serverUnreachable.printStackTrace();
+                view.displayErrorAndExit( "Server unreachable" );
             }catch ( RemoteException ignored ){
                 throw new IllegalStateException( "View should be local" );
             }
             
         } catch ( PlayerAlreadyLoggedInException e ) {
+            e.printStackTrace();
             //TODO
         }
     }

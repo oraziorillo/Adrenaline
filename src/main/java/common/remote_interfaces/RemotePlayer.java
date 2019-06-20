@@ -3,6 +3,7 @@ package common.remote_interfaces;
 import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.UUID;
 
 public interface RemotePlayer extends Remote {
 
@@ -49,5 +50,7 @@ public interface RemotePlayer extends Remote {
     void quit() throws IOException;
     
     boolean isConnected() throws RemoteException;
+    
+    UUID getToken() throws RemoteException;
     
 }

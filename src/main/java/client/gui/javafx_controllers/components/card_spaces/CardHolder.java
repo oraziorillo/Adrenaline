@@ -1,4 +1,4 @@
-package client.gui.controllers.components.card_spaces;
+package client.gui.javafx_controllers.components.card_spaces;
 
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
