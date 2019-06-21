@@ -56,7 +56,11 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     private void parseRemoteView(String[] args) throws IOException {
         switch (RemoteViewEnum.valueOf( args[0] )) {
             case ACK:
-                view.ack( args[1] );
+                StringBuilder builder = new StringBuilder(  );
+                for(String s: Arrays.copyOfRange( args,1,args.length )){
+                    builder.append( s + System.lineSeparator() );
+                }
+                view.ack( builder.toString() );
         }
     }
     
