@@ -138,7 +138,7 @@ public class Game {
 
             reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
             ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, AmmoTile.class);
-
+            ammoTiles.forEach(ammoTile -> ammoTile.setHasPowerUp());
             ammoTiles.forEach(a -> ammoDeck.add(a));
         } catch (FileNotFoundException e) {
             e.printStackTrace();

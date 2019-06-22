@@ -23,7 +23,6 @@ public class AmmoTile {
         Gson gson = gsonBuilder.create();
 
         this.ammo = gson.fromJson(jsonAmmoTile.get("ammo"), short[].class);
-        setHasPowerUp(ammo);
     }
 
 
@@ -37,9 +36,8 @@ public class AmmoTile {
 
     /**
      * given the number of ammos, it sets the boolean in the right way according to the rules
-     * @param ammo
      */
-    private void setHasPowerUp(short[] ammo) {
+    public void setHasPowerUp() {
         short sum = 0;
         for (short s : ammo) {
             if (s > 2)
