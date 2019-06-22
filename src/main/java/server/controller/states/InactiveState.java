@@ -48,9 +48,8 @@ public class InactiveState extends State {
     public void selectPowerUp(int index) {
         if (attacked){
             PowerUpCard powerUpCard = attackedPlayer.getPc().getPowerUpCard(index);
-            if (powerUpCard.getEffect().isAsynchronous()){
-                Effect effect = powerUpCard.getEffect();
-                Action action = effect.getActions().get(0);
+            if (!powerUpCard.getAction().isParameterized()){
+                Action action = powerUpCard.getAction();
                 action.selectPc(attackingPc);
                 action.apply(attackedPlayer.getPc());
                 attackedPlayer.getPc().discardPowerUp(powerUpCard);

@@ -11,7 +11,6 @@ import java.util.Set;
 
 public class UsePowerUpState extends State {
 
-    private final int actionIndex;
     private boolean undo = false;
     private PowerUpCard currPowerUp;
     private Action currAction;
@@ -20,7 +19,6 @@ public class UsePowerUpState extends State {
 
     UsePowerUpState(Controller controller, List<Pc> targetables) {
         super(controller);
-        actionIndex = 0;
         this.targetablePcs = targetables;
     }
 
@@ -31,8 +29,8 @@ public class UsePowerUpState extends State {
         Action powerUpAction;
         try {
             powerUp = controller.getCurrPc().getPowerUpCard(index);
-            powerUpAction = powerUp.getEffect().getActionAtIndex(actionIndex);
-            if (!powerUp.getEffect().isAsynchronous()) {
+            powerUpAction = powerUp.getAction();
+            if (powerUp.getAction().isParameterized()) {
                 currPowerUp = powerUp;
                 currAction = powerUpAction;
                 if (!currAction.isAdditionalDamage())
@@ -91,7 +89,7 @@ public class UsePowerUpState extends State {
     @Override
     public boolean ok() {
         if (currAction.isComplete()) {
-            currPowerUp.useEffect(controller.getCurrPc());
+            currPowerUp.useAction(controller.getCurrPc());
             controller.getCurrPc().discardPowerUp(currPowerUp);
             //TODO bisogna aggiungere il pagamento dell'ammocard nel caso del mirino
             return true;

@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
         <sonar.host.url> http://localhost:9000/ </sonar.host.url>
-        <token>775df25b66cb9e92933b153ad9e8480e15329b29</token>
+        <token>6d9baa94629237283fb0412e6cc29ebf7da98707</token>
         <junit.jupiter.version>5.4.1</junit.jupiter.version>
     </properties>
 

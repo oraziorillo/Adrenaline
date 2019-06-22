@@ -109,7 +109,22 @@ public class Game {
 
 
     private void initPowerUpsDeck(){
-        //TODO
+        try {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+            Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+            Type powerUpType = new TypeToken<ArrayList<PowerUpCard>>() {
+            }.getType();
+            JsonReader reader = null;
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
+            ArrayList<PowerUpCard> powerUps = customGson.fromJson(reader, powerUpType);
+
+            powerUps.forEach(p -> powerUpsDeck.add(p));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
