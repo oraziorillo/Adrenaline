@@ -1,5 +1,8 @@
 package server.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import java.util.Arrays;
 
 /**
@@ -7,21 +10,22 @@ import java.util.Arrays;
  */
 public class AmmoTile {
 
-    private final short[] ammo;
-    private final boolean hasPowerup;
+    private short[] ammo;
+    private boolean hasPowerup;
 
     /**
-     * Constructor
-     * @param ammo every field must be non-negative. Sum must be 3 if hasPowerup==false, 2 otherwise
-     * @param hasPowerup for 2ammos-1powerup cards
+     * Constructor initializing the AmmoTile reading from Json
+     * @param jsonAmmoTile contains the specific ammos for the tile
      */
-    AmmoTile(short[] ammo, boolean hasPowerup) {
-        if (!validParameters(ammo, hasPowerup)) {
-            throw new IllegalArgumentException("Illegal AmmoTile");
-        }
-        this.ammo = ammo;
-        this.hasPowerup = hasPowerup;
+    AmmoTile(JsonObject jsonAmmoTile) {
+        this.ammo = new short[3];
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+
+        this.ammo = gson.fromJson(jsonAmmoTile.get("ammo"), short[].class);
+        setHasPowerUp(ammo);
     }
+
 
     public short[] getAmmo() {
         return ammo.clone();
@@ -32,28 +36,22 @@ public class AmmoTile {
     }
 
     /**
-     * Checks if a card of given parameters could exist
-     *
-     * @param ammo an array of ammunition
-     * @param hasPowerup true iif the card has a powerup inside
-     * @return false if some value of ammo is negative, or if the sum of all the elements of ammo (+1 if hasPowerup=true) is not equal to AMMO_COLOURS_NUMBER. true otherwise.
+     * given the number of ammos, it sets the boolean in the right way according to the rules
+     * @param ammo
      */
-
-    static boolean validParameters(short[] ammo, boolean hasPowerup) {
-        short t = 0;
-        //Save in t the sum of the elements in ammo
+    private void setHasPowerUp(short[] ammo) {
+        short sum = 0;
         for (short s : ammo) {
-            //if any element is negative the parameters are invalid
-            if (s < 0) {
-                return false;
-            }
-            t += s;
+            if (s > 2)
+                throw new IllegalArgumentException();
+            sum += s;
         }
-        //powerup counts as an ammo
-        if (hasPowerup) {
-            t++;
-        }
-        return t == Constants.AMMO_COLOURS_NUMBER;
+        if (sum == 3)
+            this.hasPowerup = false;
+        else if (sum == 2)
+            this.hasPowerup = true;
+        else
+            throw new IllegalArgumentException();
     }
     
     @Override

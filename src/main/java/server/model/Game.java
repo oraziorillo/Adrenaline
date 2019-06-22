@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
 import server.model.actions.Action;
@@ -129,7 +130,19 @@ public class Game {
 
 
     private void initAmmoDeck(){
-        //TODO
+        try {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            JsonReader reader = null;
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
+            ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, AmmoTile.class);
+
+            ammoTiles.forEach(a -> ammoDeck.add(a));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 

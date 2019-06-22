@@ -35,6 +35,8 @@ ARMI:
 
 - controllare tutti i controlli effettuati quando isParameterized è false
 
+- rimettere a posto il test di ammoTile
+
 
 CONNESSIONE
 - gestire la disconnessione del player

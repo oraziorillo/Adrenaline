@@ -44,11 +44,6 @@ public class PowerUpCard {
         return selectedAsAmmo;
     }
 
-    public void setColour(AmmoEnum colour){
-        if (colour == null)
-            this.colour = colour;
-    }
-
     public AmmoEnum getColour(){ return this.colour; }
 
     public Action getAction() {

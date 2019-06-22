@@ -130,7 +130,9 @@ public class PcTest {
         PowerUpCard powerUp = Mockito.mock(PowerUpCard.class);
         when(game.drawPowerUp()).thenReturn(powerUp);
         short [] ammo = new short []{1,1,0};
-        AmmoTile ammoTile = new AmmoTile(ammo, true);
+        AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
+        when(ammoTile.getAmmo()).thenReturn(ammo);
+        when(ammoTile.containsPowerup()).thenReturn(true);
         assertEquals(0, tested.getPowerUps().size());
         tested.addAmmo(ammoTile);
         assertEquals(2, tested.getAmmo()[0]);
