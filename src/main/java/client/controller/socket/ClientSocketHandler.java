@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -56,7 +57,11 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     private void parseRemoteView(String[] args) throws IOException {
         switch (RemoteViewEnum.valueOf( args[0] )) {
             case ACK:
-                view.ack( args[1] );
+                StringBuilder builder = new StringBuilder(  );
+                for(String s: Arrays.copyOfRange( args,1,args.length )){
+                    builder.append( s + System.lineSeparator() );
+                }
+                view.ack( builder.toString() );
         }
     }
     
@@ -153,7 +158,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void chooseSquare(int x, int y) {
-        out.println( SELECT_SQUARE + "," + x + "," + y );
+        out.println( CHOOSE_SQUARE + "," + x + "," + y );
         out.flush();
     }
     

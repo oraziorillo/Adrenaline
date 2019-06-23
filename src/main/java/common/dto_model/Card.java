@@ -10,7 +10,7 @@ public abstract class Card {
       return IMAGE_PATH_PREFIX;
    }
 
-   Card(String name){
+   public Card(String name){
       if(name.contains( "\\." )){
          String[] splitted = name.split( "\\." );
          extension = "."+ splitted[1];

@@ -1,6 +1,7 @@
 package server.controller.socket;
 
 import client.controller.socket.AbstractSocketProxy;
+import common.remote_interfaces.ModelChangeListener;
 import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
@@ -16,7 +17,13 @@ public class RemoteViewSocketProxy extends AbstractSocketProxy implements Remote
    
    @Override
    public void ack(String message) {
-      out.println(ACK + "," + message);
+      out.println(ACK + "," + message.replaceAll( System.lineSeparator(),"," ));
       out.flush();
+   }
+
+   @Override
+   public ModelChangeListener getListener() {
+      //TODO
+      return null;
    }
 }

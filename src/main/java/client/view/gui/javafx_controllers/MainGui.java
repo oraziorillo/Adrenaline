@@ -6,9 +6,13 @@ import client.view.gui.javafx_controllers.components.Map;
 import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
+import common.dto_model.PcBoardDTO;
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.WeaponCardDTO;
 import common.enums.CardinalDirectionEnum;
+import common.enums.PcColourEnum;
+import common.model_dtos.WeaponCardDTOFirstVersion;
+import common.remote_interfaces.ModelChangeListener;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
@@ -31,7 +35,7 @@ public class MainGui extends GuiView {
    @FXML
    CardHolder cardHolderRightController;
    @FXML
-   CardHand<WeaponCardDTO> weaponHandController;
+   CardHand<WeaponCardDTOFirstVersion> weaponHandController;
    @FXML
    CardHand<PowerUpCardDTO> powerUpHandController;
    @FXML
@@ -59,8 +63,8 @@ public class MainGui extends GuiView {
 
    private void test() {
       for (int i = 0; i < 3; i++) {
-         weaponHandController.setCard(new WeaponCardDTO("martello_ionico", 1, 1), i);
-         powerUpHandController.setCard(new PowerUpCardDTO(), i);
+         weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
+         powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
    }
 
@@ -77,6 +81,11 @@ public class MainGui extends GuiView {
       chatController.appear();
    }
 
+   @Override
+   public ModelChangeListener getListener() {
+      return null;
+   }
+
    /**
     * Cause every message is immediatly displayed in the chat, no acks are pending
     *
@@ -85,5 +94,65 @@ public class MainGui extends GuiView {
    @Override
    public Collection<String> getPendingAcks() {
       return new HashSet<>();
+   }
+
+   @Override
+   public void onSquareTargetableChange(int row, int col, boolean newValue) {
+
+   }
+
+   @Override
+   public void onMovement(PcColourEnum pc, int oldRow, int oldCol, int newRow, int newCol) {
+
+   }
+
+   @Override
+   public void onWeaponCollect(PcColourEnum pc, int droppedWeapon, int grabbedWeapon) {
+
+   }
+
+   @Override
+   public void onAmmoCollect(PcColourEnum pc) {
+
+   }
+
+   @Override
+   public void onDrawPowerUp(PcColourEnum pc, int newIndex) {
+
+   }
+
+   @Override
+   public void onDiscardPowerUp(PcColourEnum pc, int oldIndex) {
+
+   }
+
+   @Override
+   public void onPcBoardChange(PcBoardDTO newPcBoard) {
+
+   }
+
+   @Override
+   public void onRefill(int typeOfDeck, int row, int col) {
+
+   }
+
+   @Override
+   public void onKill(PcColourEnum shooter, PcColourEnum killed, boolean isOverkill) {
+
+   }
+
+   @Override
+   public void onSpawn(PcColourEnum pc, int newRow, int newCol) {
+
+   }
+
+   @Override
+   public void onAdrenaline(int level) {
+
+   }
+
+   @Override
+   public void onFinalFrenzy() {
+
    }
 }

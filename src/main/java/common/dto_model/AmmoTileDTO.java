@@ -4,12 +4,12 @@ import server.model.AmmoTile;
 
 public class AmmoTileDTO {
 
-    private short[] ammos;
+    private short[] ammo;
     private boolean hasPowerUp;
     protected String extension = ".png";
 
     AmmoTileDTO(AmmoTile ammoTile){
-        this.ammos = ammoTile.getAmmo();
+        this.ammo = ammoTile.getAmmo();
         this.hasPowerUp = ammoTile.containsPowerUp();
     }
 
@@ -18,8 +18,8 @@ public class AmmoTileDTO {
         return "Ciao";
     }
 
-    public short[] getAmmos() {
-        return ammos;
+    public short[] getAmmo() {
+        return ammo;
     }
 
 
@@ -30,5 +30,17 @@ public class AmmoTileDTO {
 
     public boolean hasPowerUp() {
         return hasPowerUp;
+    }
+
+    public void setAmmo(short[] ammo) {
+        this.ammo = ammo;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 }

@@ -4,8 +4,10 @@ import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 public class PcBoardTest {
 
@@ -14,12 +16,6 @@ public class PcBoardTest {
     @Before
     public void setupTest() {
         tested = new PcBoard();
-    }
-
-    @Test
-    public void increaseNumberOfDeathsWorksFine(){
-        tested.increaseNumberOfDeaths();
-        assertTrue(tested.getNumOfDeaths() == 1);
     }
 
     @Test
@@ -49,13 +45,19 @@ public class PcBoardTest {
     @Test
     public void addAmmoWorksFineAndNeverSetsForEachColourMoreThanThreeAmmos() {
         short [] firstAmmo = new short[]{2,1,0};
-        AmmoTile ammoTile = new AmmoTile(firstAmmo, false);
+        AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
+        when(ammoTile.getAmmo()).thenReturn(firstAmmo);
+        //TODO aggiustare
+        // when(ammoTile.containsPowerup()).thenReturn(false);
         tested.addAmmo(ammoTile);
         assertTrue(tested.getAmmo()[AmmoEnum.BLUE.ordinal()] == 3);
         assertTrue(tested.getAmmo()[AmmoEnum.RED.ordinal()] == 2);
         assertTrue(tested.getAmmo()[AmmoEnum.YELLOW.ordinal()] == 1);
         short [] secondAmmo = new short[]{2,1,0};
-        AmmoTile ammoTile1 = new AmmoTile(secondAmmo, false);
+        AmmoTile ammoTile1 = Mockito.mock(AmmoTile.class);
+        when(ammoTile.getAmmo()).thenReturn(secondAmmo);
+        //TODO aggiustare
+        // when(ammoTile.containsPowerup()).thenReturn(false);
         assertTrue(tested.getAmmo()[AmmoEnum.BLUE.ordinal()] == 3);
     }
 

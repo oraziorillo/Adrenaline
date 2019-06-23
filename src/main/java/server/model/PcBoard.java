@@ -13,13 +13,12 @@ class PcBoard {
     private List<ModelChangeListener> listeners;
 
     private short points;
-    private short numOfDeaths;
     private short damageTrackIndex;
     private short[] marks;
     private short[] ammo;
     private PcColourEnum[] damageTrack;
     private int [] pcValue;
-    private int pcValueIndex;
+    private int numOfDeaths;
 
     PcBoard(){
         this.points = 0;
@@ -27,7 +26,6 @@ class PcBoard {
         this.damageTrackIndex = 0;
         this.marks = new short[5];
         this.pcValue = PC_VALUES;
-        this.pcValueIndex = 0;
         this.damageTrack = new PcColourEnum[LIFE_POINTS];
         this.ammo = new short[AMMO_COLOURS_NUMBER];
         this.listeners = new LinkedList<>();
@@ -46,7 +44,7 @@ class PcBoard {
     }
 
 
-    short getNumOfDeaths() {
+    int getNumOfDeaths() {
         return numOfDeaths;
     }
 
@@ -66,11 +64,6 @@ class PcBoard {
     }
 
 
-    int getPcValueIndex() {
-        return pcValueIndex;
-    }
-
-
     int[] getPcValue() {
         return pcValue;
     }
@@ -83,7 +76,7 @@ class PcBoard {
 
     void flipBoard(){
         pcValue = FINAL_FRENZY_PC_VALUES;
-        pcValueIndex = 0;
+        numOfDeaths = 0;
     }
 
 
@@ -96,16 +89,11 @@ class PcBoard {
 
 
     void increaseNumberOfDeaths(){
-        numOfDeaths++;
+        if (numOfDeaths != 5)
+            numOfDeaths++;
 
         //notify listeners
         listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
-    }
-
-
-    void increasePcValueIndex(){
-        if (pcValueIndex != 5)
-            pcValueIndex++;
     }
 
 

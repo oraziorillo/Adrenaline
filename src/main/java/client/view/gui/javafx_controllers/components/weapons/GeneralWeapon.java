@@ -1,6 +1,6 @@
 package client.view.gui.javafx_controllers.components.weapons;
 
-import common.dto_model.WeaponCardDTO;
+import common.model_dtos.WeaponCardDTOFirstVersion;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -22,8 +22,7 @@ public class GeneralWeapon {
    }
    
    @FXML
-   public void setWeapon(WeaponCardDTO weapon){
-      System.out.println(weapon.getImagePath());
+   public void setWeapon(WeaponCardDTOFirstVersion weapon){
       background.setImage( new Image( weapon.getImagePath(),true ) );
       int effect;
       for(effect=0;effect<weapon.getBasicEffects();effect++){

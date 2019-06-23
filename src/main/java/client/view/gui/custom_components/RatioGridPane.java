@@ -8,6 +8,11 @@ public class RatioGridPane extends GridPane {
    public DoubleProperty ratio = new SimpleDoubleProperty( 1 );
    
    public RatioGridPane(){
+      this(1);
+   }
+   
+   public RatioGridPane(double ratio){
+      this.setRatio( ratio );
    }
    
    @Override
@@ -32,6 +37,7 @@ public class RatioGridPane extends GridPane {
    
    public void setRatio(double ratio) {
       this.ratio.set( ratio );
+      
    }
    
    public void setRatio(double width, double height){
@@ -48,5 +54,20 @@ public class RatioGridPane extends GridPane {
    
    private double calcHeight(double width){
       return width*ratio.get();
+   }
+   
+   private void adjustSizes(){
+      if(calcHeight( getMaxWidth() ) > getMaxHeight()){  //adjust max size and pref size (prefsize=maxsize)
+         setMaxWidth( calcWidth( getMaxHeight() ) );
+         setPrefWidth( calcWidth( getMaxHeight() ) );
+      }else {
+         setMaxHeight( calcHeight( getMaxWidth() ) );
+         setPrefHeight( calcHeight( getMaxWidth() ) );
+      }
+      if(calcHeight( getMinWidth() ) > getMinHeight()){  //adjust min size
+         setMinWidth( calcWidth( getMinHeight() ) );
+      }else {
+         setMinHeight( calcHeight( getMinHeight() ) );
+      }
    }
 }

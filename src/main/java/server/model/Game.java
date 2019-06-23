@@ -108,7 +108,7 @@ public class Game {
 
             Type weaponsType = new TypeToken<ArrayList<WeaponCard>>() {
             }.getType();
-            JsonReader reader = null;
+            JsonReader reader;
 
             reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
             ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
@@ -124,12 +124,41 @@ public class Game {
 
 
     private void initPowerUpsDeck(){
-        //TODO
+        try {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+            Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+            Type powerUpType = new TypeToken<ArrayList<PowerUpCard>>() {
+            }.getType();
+            JsonReader reader;
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
+            ArrayList<PowerUpCard> powerUps = customGson.fromJson(reader, powerUpType);
+
+            powerUps.forEach(p -> powerUpsDeck.add(p));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void initAmmoDeck(){
-        //TODO
+        try {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+
+            Type ammoTileType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
+            JsonReader reader;
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
+            ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileType);
+            ammoTiles.forEach(AmmoTile::setHasPowerUp);
+            
+            ammoTiles.forEach(a -> ammoDeck.add(a));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -170,7 +199,7 @@ public class Game {
         scoringPoints(deadPc, doubleKill);
         boolean turnIntoFinalFrenzy = scoreOnKillShotTrack(deadPc);
         if (!isFinalFrenzy())
-            deadPc.getPcBoard().increasePcValueIndex();
+            deadPc.getPcBoard().increaseNumberOfDeaths();
         return turnIntoFinalFrenzy;
     }
 
@@ -178,22 +207,28 @@ public class Game {
     private void scoringPoints(Pc deadPc, boolean doublekill) {
         PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
         int [] pcValue = deadPc.getPcBoard().getPcValue();
-        int pcValueIndex = deadPc.getPcBoard().getPcValueIndex();
+        int pcValueIndex = 0;
         boolean allPointsAssigned = false;
         int [] numOfDamages = new int [5];
         int max;
 
+        if (!isFinalFrenzy()) {
+            pcValueIndex = deadPc.getPcBoard().getNumOfDeaths();
+
+            //assigns the first blood point, only if the board is not flipped
+            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
+        }
         //assigns an extra point, only if the current player gets a doubleKill
         if (doublekill)
             pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[10]).findFirst().get().increasePoints(1);
 
-        //assigns the first blood point, only if the board is not flipped
-        if (!isFinalFrenzy())
-            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
-
         //assign points to each Pc who damaged the deadPc
-        for (PcColourEnum colour: deadPcDamageTrack)
-            numOfDamages[colour.ordinal()]++;
+        for (PcColourEnum colour: deadPcDamageTrack) {
+            if (colour != null)
+                numOfDamages[colour.ordinal()]++;
+            else
+                break;
+        }
         while (!allPointsAssigned) {
             max = 0;
             int maxIndex = 0;
@@ -208,6 +243,8 @@ public class Game {
                 pcs.stream().filter(pc -> pc.getColour().ordinal() == finalMaxIndex).findFirst().get().increasePoints(pcValue[pcValueIndex]);
                 if (pcValueIndex != pcValue.length - 1)
                     pcValueIndex++;
+                else
+                    allPointsAssigned = true;
                 numOfDamages[finalMaxIndex] = 0;
             }
             else
@@ -235,6 +272,9 @@ public class Game {
 
 
     public List<Pc> computeWinner() {
+        for (Pc pc: pcs) {
+            scoringPoints(pc, false);
+        }
         int maxPoints = 0;
         for (Pc pc: pcs) {
             if (pc.getPcBoard().getPoints() > maxPoints)
@@ -260,7 +300,7 @@ public class Game {
 
 
     private Integer pointsFromKillShots(Pc pc){
-        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack());
+        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getFinalFrenzyKillShotTrack());
     }
 
 

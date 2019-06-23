@@ -244,7 +244,6 @@ public class Pc {
         if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
         }
-        pcBoard.increaseNumberOfDeaths();
         pcBoard.resetDamageTrack();
         this.adrenaline = 0;
         this.currSquare = t;

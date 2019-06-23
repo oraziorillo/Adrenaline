@@ -17,7 +17,8 @@ public class CliController extends AbstractClientController  {
     public void start(Stage stage) throws Exception {
         try{
             String cmd = view.requestString( "Insert command" );
-            CommandParser.executeCommand( cmd.split( " " ),player,view );
+            String[] commands = cmd.split( " " );
+            CommandParser.executeCommand( commands, player, view );
         } catch ( IOException serverUnreachable ) {
             try{view.error( "Server unreachable" );}catch ( RemoteException ignored ){}
         }catch ( IllegalArgumentException unsupportedCommand ){

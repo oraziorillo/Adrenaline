@@ -57,7 +57,7 @@ public class PlayerSocketListener implements Runnable {
                     case SHOOT_PEOPLE:
                         player.shootPeople();
                         break;
-                    case SELECT_SQUARE:
+                    case CHOOSE_SQUARE:
                         argInt = Integer.parseInt( in.readLine() );
                         int argInt2 = Integer.parseInt( in.readLine() );
                         player.chooseSquare( argInt, argInt2 );

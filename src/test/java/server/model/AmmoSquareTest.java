@@ -34,7 +34,7 @@ public class AmmoSquareTest {
     public void setup() {
         Mockito.when(deck.draw()).thenReturn(card1).thenReturn(card2);
         tested = new AmmoSquare(row, coloumn,SquareColourEnum.BLUE);
-        tested.init(null, deck);
+        tested.init(null, deck, null);
     }
 
     @Test

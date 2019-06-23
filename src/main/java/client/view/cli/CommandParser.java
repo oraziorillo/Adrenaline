@@ -29,7 +29,7 @@ public abstract class CommandParser {
             case USE_POWER_UP:
                 player.usePowerUp();
                 break;
-            case SELECT_SQUARE:
+            case CHOOSE_SQUARE:
                 player.chooseSquare( Integer.parseInt( commands[1] ), Integer.parseInt( commands[1] ) );
                 break;
             case CHOOSE_POWER_UP:
