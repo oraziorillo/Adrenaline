@@ -65,6 +65,7 @@ public class AmmoTile {
         AmmoTile casted = (AmmoTile) obj;
         return Arrays.equals(this.ammo, casted.ammo) && (this.hasPowerUp == casted.hasPowerUp);
     }
+
 }
 
 

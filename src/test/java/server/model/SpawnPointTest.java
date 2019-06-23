@@ -36,7 +36,7 @@ public class SpawnPointTest {
        deck = Mockito.mock(Deck.class);
        when( deck.draw() ).thenReturn( card0 ).thenReturn( card1 ).thenReturn( card2 );
        tested = new SpawnPoint(x, y, colour);
-       tested.init(deck, null);
+       tested.init(deck, null, null);
        pc = Mockito.mock(Pc.class);
    }
 

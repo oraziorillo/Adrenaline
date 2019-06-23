@@ -1,4 +1,4 @@
-package common.model_dtos;
+package common.dto_model;
 
 import common.enums.PcColourEnum;
 

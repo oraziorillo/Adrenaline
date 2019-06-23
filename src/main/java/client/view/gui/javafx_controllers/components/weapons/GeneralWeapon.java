@@ -1,6 +1,6 @@
 package client.view.gui.javafx_controllers.components.weapons;
 
-import common.model_dtos.WeaponCardDTOFirstVersion;
+import common.dto_model.WeaponCardDTOFirstVersion;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;

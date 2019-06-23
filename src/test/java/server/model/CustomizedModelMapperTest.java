@@ -1,5 +1,6 @@
 package server.model;
 
+import common.dto_model.AmmoTileDTO;
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;
 import common.enums.PcColourEnum;
@@ -8,10 +9,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
+import server.model.squares.AmmoSquare;
 import server.model.squares.SpawnPoint;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class CustomizedModelMapperTest {
@@ -26,7 +27,7 @@ public class CustomizedModelMapperTest {
         short[] ammo = new short[]{1, 2, 0};
         AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(ammo);
-        when(ammoTile.containsPowerup()).thenReturn(false);
+        when(ammoTile.containsPowerUp()).thenReturn(false);
         AmmoTileDTO ammoTileDTO = modelMapper.map(ammoTile, AmmoTileDTO.class);
         System.out.println("{ " + ammoTileDTO.getAmmo()[0] + ", " + ammoTileDTO.getAmmo()[1] + ", "  + ammoTileDTO.getAmmo()[2] + " }");
     }
@@ -47,7 +48,7 @@ public class CustomizedModelMapperTest {
         when( pc1.getColour()).thenReturn( PcColourEnum.BLUE);
         when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
         SpawnPoint spawnPoint = new SpawnPoint(2, 2, SquareColourEnum.RED);
-        spawnPoint.assignDeck(deck, null);
+        spawnPoint.init(deck, null, null);
         spawnPoint.addPc(pc1); spawnPoint.addPc(pc2);
         spawnPoint.setTargetable(true);
         SquareDTO squareDTO = modelMapper.map(spawnPoint, SquareDTO.class);
@@ -63,27 +64,27 @@ public class CustomizedModelMapperTest {
     }
 
 
-//    @Test
-//    public void modelMapperWorksFineFromAmmoSquareToSquareDTO() {
-//        short[] ammo = new short[]{1, 2, 0};
-//        AmmoTile ammoTile = new AmmoTile(ammo, false);
-//        AmmoSquare ammoSquare = new AmmoSquare(1, 2, SquareColourEnum.GREEN);
-//        Deck<AmmoTile> deck = Mockito.mock(Deck.class);
-//        Pc pc1 = Mockito.mock( Pc.class);
-//        Pc pc2 = Mockito.mock( Pc.class);
-//        when(deck.draw()).thenReturn(ammoTile);
-//        when( pc1.getColour()).thenReturn( PcColourEnum.BLUE);
-//        when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
-//        ammoSquare.assignDeck(null, deck);
-//        ammoSquare.addPc(pc1); ammoSquare.addPc(pc2);
-//        ammoSquare.refill();
-//        SquareDTO squareDTO = modelMapper.map(ammoSquare, SquareDTO.class);
-//        assertFalse(squareDTO.isTargetable());
-//        assertArrayEquals(squareDTO.getAmmoTile().getAmmo(), ammo);
-//        assertEquals(squareDTO.getPcs().size(), ammoSquare.getPcs().size());
-//        assertTrue(squareDTO.getPcs().contains(PcColourEnum.BLUE));
-//        assertTrue(squareDTO.getPcs().contains(PcColourEnum.YELLOW));
-//    }
+    @Test
+    public void modelMapperWorksFineFromAmmoSquareToSquareDTO() {
+        short[] ammo = new short[]{1, 2, 0};
+        AmmoTile ammoTile = new AmmoTile(ammo, false);
+        AmmoSquare ammoSquare = new AmmoSquare(1, 2, SquareColourEnum.GREEN);
+        Deck<AmmoTile> deck = Mockito.mock(Deck.class);
+        Pc pc1 = Mockito.mock( Pc.class);
+        Pc pc2 = Mockito.mock( Pc.class);
+        when(deck.draw()).thenReturn(ammoTile);
+        when( pc1.getColour()).thenReturn( PcColourEnum.BLUE);
+        when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
+        ammoSquare.init(null, deck, null);
+        ammoSquare.addPc(pc1); ammoSquare.addPc(pc2);
+        ammoSquare.refill();
+        SquareDTO squareDTO = modelMapper.map(ammoSquare, SquareDTO.class);
+        assertFalse(squareDTO.isTargetable());
+        assertArrayEquals(squareDTO.getAmmoTile().getAmmo(), ammo);
+        assertEquals(squareDTO.getPcs().size(), ammoSquare.getPcs().size());
+        assertTrue(squareDTO.getPcs().contains(PcColourEnum.BLUE));
+        assertTrue(squareDTO.getPcs().contains(PcColourEnum.YELLOW));
+    }
 
     @Test
     public void modelMapperWorksFineOnWeaponCard(){
