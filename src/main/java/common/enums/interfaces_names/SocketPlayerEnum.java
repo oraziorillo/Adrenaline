@@ -46,7 +46,7 @@ public enum SocketPlayerEnum {
                 return e;
             }
         }
-        throw new IllegalArgumentException( s+"is not a recognised command" );
+        throw new IllegalArgumentException( s + " is not a recognised command" );
     }
     
     public Set<String> getCliStrings() {

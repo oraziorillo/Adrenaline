@@ -96,7 +96,7 @@ public class Game {
 
             Type weaponsType = new TypeToken<ArrayList<WeaponCard>>() {
             }.getType();
-            JsonReader reader = null;
+            JsonReader reader;
 
             reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
             ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
@@ -117,7 +117,7 @@ public class Game {
 
             Type powerUpType = new TypeToken<ArrayList<PowerUpCard>>() {
             }.getType();
-            JsonReader reader = null;
+            JsonReader reader;
 
             reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
             ArrayList<PowerUpCard> powerUps = customGson.fromJson(reader, powerUpType);
@@ -134,11 +134,13 @@ public class Game {
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
 
-            JsonReader reader = null;
+            Type ammoTileType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
+            JsonReader reader;
 
             reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
-            ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, AmmoTile.class);
-            ammoTiles.forEach(ammoTile -> ammoTile.setHasPowerUp());
+            ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileType);
+            ammoTiles.forEach(AmmoTile::setHasPowerUp);
+            
             ammoTiles.forEach(a -> ammoDeck.add(a));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
