@@ -21,12 +21,12 @@ public class ServerSocketHandler implements Runnable {
     private RemotePlayer player;
     private RemoteView view;
 
-    public ServerSocketHandler(Socket socket) throws IOException, ClassNotFoundException {
+    public ServerSocketHandler(Socket socket) throws IOException {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
         this.in = new Scanner(socket.getInputStream());
-        loginController = LoginController.getInstance();
-        view = new RemoteViewSocketProxy( socket );
+        this.loginController = LoginController.getInstance();
+        this.view = new RemoteViewSocketProxy( socket );
     }
 
     @Override

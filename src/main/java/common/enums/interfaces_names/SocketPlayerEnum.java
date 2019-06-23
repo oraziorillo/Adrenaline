@@ -28,8 +28,8 @@ public enum SocketPlayerEnum {
     RELOAD("re","reload"),
     PASS("p","pass"),
     SKIP("skip"),
-    USE_POWERUP("pw","powerup"),
-    CHOOSE_POWERUP("ch","choose powerup"),
+    USE_POWER_UP("pw","powerup"),
+    CHOOSE_POWER_UP("ch","choose powerup"),
     REMOVE_UPGRADE("ru","remove selectUpgrade"),
     UNDO("undo"),
     SET_REMOTE_VIEW,//These 2 are not called directly by the user

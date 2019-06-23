@@ -1,6 +1,6 @@
 package server.controller;
 
-import common.model_dtos.AmmoTileDTO;
+import common.dto_model.AmmoTileDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import server.model.AmmoTile;
@@ -23,7 +23,7 @@ public class CustomizedModelMapper {
 
     private void configureAmmoTile(){
         TypeMap<AmmoTile, AmmoTileDTO> typeMap = modelMapper.createTypeMap(AmmoTile.class, AmmoTileDTO.class);
-        typeMap.addMappings(mapper -> mapper.map(AmmoTile::containsPowerup, AmmoTileDTO::setHasPowerUp));
+        typeMap.addMappings(mapper -> mapper.map(AmmoTile::containsPowerUp, AmmoTileDTO::setHasPowerUp));
     }
 
 

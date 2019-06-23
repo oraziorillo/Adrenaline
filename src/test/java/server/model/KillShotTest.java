@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-import server.model.KillShot;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,7 +28,7 @@ public class KillShotTest {
 
     @Test
     public void killMethodWorksFineWhenNotOverkilled() {
-        tested.killOccured( charColour, false );
+        tested.killOccurred( charColour, false );
         assertFalse( tested.isOverkilled() );
         assertSame( tested.getColour(), charColour );
         assertFalse( tested.isSkulled() );
@@ -37,7 +36,7 @@ public class KillShotTest {
     
     @Test
     public void killMethodWorksFineWhenOverkilled() {
-        tested.killOccured( charColour, false );
+        tested.killOccurred( charColour, false );
         assertFalse( tested.isOverkilled() );
         assertSame( tested.getColour(), charColour );
         assertFalse( tested.isSkulled() );
@@ -46,9 +45,9 @@ public class KillShotTest {
     @Test
     public void throwsExceptionIfKilled2Times() {
         KillShot tested = new KillShot();
-        tested.killOccured(charColour, true);
+        tested.killOccurred(charColour, true);
         assertThrows( IllegalStateException.class, () -> {
-            tested.killOccured(charColour, true);
+            tested.killOccurred(charColour, true);
         });
     }
 }

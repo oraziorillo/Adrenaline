@@ -3,6 +3,7 @@ package server.model;
 import com.google.gson.annotations.Expose;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import common.remote_interfaces.ModelChangeListener;
 import server.model.squares.Square;
 import java.util.*;
 
@@ -55,8 +56,14 @@ public class GameBoard {
     }
 
 
-    void assignProperDeckToEachSquare(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
-        squares.forEach(s -> s.assignDeck(weaponsDeck, ammoDeck));
+    /**
+     * assigns the proper deck to each square and the list of listeners
+     * @param weaponsDeck deck of weapons
+     * @param ammoDeck deck of ammoTile
+     * @param listeners list of listeners for changes
+     */
+    void initSquares(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners) {
+        squares.forEach(s -> s.init(weaponsDeck, ammoDeck, listeners));
     }
 
     
@@ -107,18 +114,18 @@ public class GameBoard {
 
 
     /**
-     * Updates the KillshotTrack with the occurred kill
+     * Updates the KillShotTrack with the occurred kill
      * @param killerColour the colour of the killer
      * @param overkilled true if the player was overkilled, see the manual
      * @return True if the game turns into or already is in Final Frenzy mode
      */
-    boolean killOccured(PcColourEnum killerColour, Boolean overkilled){
+    boolean killOccurred(PcColourEnum killerColour, Boolean overkilled){
         if (currentKillShotTrackIndex >= 0) {
-            killShotTrack[currentKillShotTrackIndex].killOccured(killerColour, overkilled);
+            killShotTrack[currentKillShotTrackIndex].killOccurred(killerColour, overkilled);
             currentKillShotTrackIndex--;
             return currentKillShotTrackIndex == -1;
         } else {
-            finalFrenzyKillShotTrack[finalFrenzyCurrentKillShotTrackIndex].killOccured(killerColour, overkilled);
+            finalFrenzyKillShotTrack[finalFrenzyCurrentKillShotTrackIndex].killOccurred(killerColour, overkilled);
             finalFrenzyCurrentKillShotTrackIndex++;
             return true;
         }

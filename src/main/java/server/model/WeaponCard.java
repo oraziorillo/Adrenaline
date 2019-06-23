@@ -10,6 +10,8 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
+import static common.Constants.AMMO_COLOURS_NUMBER;
+
 public class WeaponCard {
     @Expose private String name;
     @Expose private AmmoEnum colour;
@@ -25,7 +27,7 @@ public class WeaponCard {
     WeaponCard(){
         this.loaded = true;
         this.effectsToApply = new LinkedList<>();
-        this.currentCost = new short[3];
+        this.currentCost = new short[AMMO_COLOURS_NUMBER];
     }
 
     /**
@@ -36,8 +38,7 @@ public class WeaponCard {
         this.name = jsonWeaponCard.get("name").getAsString();
         this.colour = AmmoEnum.valueOf(jsonWeaponCard.get("colour").getAsString());
         this.chained = jsonWeaponCard.get("chained").getAsBoolean();
-        this.ammo = new short[3];
-        this.currentCost = new short[3];
+        this.currentCost = new short[AMMO_COLOURS_NUMBER];
         this.loaded = true;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -52,10 +53,7 @@ public class WeaponCard {
     }
 
     public void init(){
-        effectsToApply.add(fireModes.get(0));
-        currentCost = new short[3];
-        for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
-            currentCost[i] = ammo[i];
+        selectFireMode(0);
     }
 
     public boolean isChained() {
@@ -103,11 +101,12 @@ public class WeaponCard {
         if(fireModes.size() > index) {
             eff = fireModes.get(index);
             //if effectsToApply isn't composed only by asynchronous moves, reset it
-            if (!effectsToApply.stream().map(Effect::isAsynchronous).reduce(true, (a, b) -> a && b)) {
+            if (!effectsToApply.isEmpty() &&
+                    !effectsToApply.stream().map(Effect::isAsynchronous).reduce(true, (a, b) -> a && b)) {
                 this.effectsToApply = new LinkedList<>();
-                this.currentCost = new short[3];
+                this.currentCost = new short[AMMO_COLOURS_NUMBER];
             }
-            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+            for (int i = 0; i < AMMO_COLOURS_NUMBER; i++)
                 currentCost[i] += eff.getCost()[i];
             this.effectsToApply.add(eff);
         } else {
@@ -118,7 +117,7 @@ public class WeaponCard {
     public void addUpgrade(int index) {
         if (upgrades.size() > index && !effectsToApply.contains(upgrades.get(index))) {
             Effect eff = upgrades.get(index);
-            for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+            for (int i = 0; i < AMMO_COLOURS_NUMBER; i++)
                 currentCost[i] += eff.getCost()[i];
 
             //if a following selectUpgrade is already present, the current one is added before
@@ -137,7 +136,7 @@ public class WeaponCard {
         if(upgrades.size() > index) {
             Effect eff = upgrades.get(index);
             if (eff.isAsynchronous()) {
-                for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                for (int i = 0; i < AMMO_COLOURS_NUMBER; i++)
                     currentCost[i] += eff.getCost()[i];
                 this.effectsToApply.addFirst(eff);
             }
@@ -152,7 +151,7 @@ public class WeaponCard {
         if(upgrades.size() > index) {
             eff = upgrades.get(index);
             if (effectsToApply.remove(eff)) {
-                for (int i = 0; i < Constants.AMMO_COLOURS_NUMBER; i++)
+                for (int i = 0; i < AMMO_COLOURS_NUMBER; i++)
                     currentCost[i] -= eff.getCost()[i];
                 effectsToApply.remove(eff);
             }

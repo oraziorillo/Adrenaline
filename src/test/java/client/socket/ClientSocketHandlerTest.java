@@ -1,31 +1,16 @@
 package client.socket;
 
-import common.remote_interfaces.RemoteView;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import server.LaunchServer;
-
-import java.io.IOException;
-import java.net.Socket;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-
+/*
 @RunWith(MockitoJUnitRunner.class)
 public class ClientSocketHandlerTest {
-    
+
     private Thread server;
     private ClientSocketHandler tested;
     @Mock private RemoteView view;
     
     
     @Before
-    public void setUp() throws IOException, ClassNotFoundException {
+    public void setUp() throws IOException {
         server = new Thread( ()-> {
             try {
                 LaunchServer.main( null );
@@ -53,4 +38,6 @@ public class ClientSocketHandlerTest {
         UUID second = tested.register( "username" ,view);
         assertNull( second );
     }
+
 }
+     */

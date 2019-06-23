@@ -1,8 +1,9 @@
 package server.controller;
 
 import com.google.gson.annotations.Expose;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import javax.swing.Timer;
 import java.io.IOException;
@@ -96,6 +97,8 @@ public class Lobby {
 
     private void startNewGame() {
         this.controller = new Controller(players);
+
+        players.forEach(p -> p.setCurrState(new SetupMapState(controller)));
         //TODO: else this.controller = fromJson
     }
 

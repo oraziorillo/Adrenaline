@@ -2,19 +2,23 @@ package server.model;
 
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
+import common.remote_interfaces.ModelChangeListener;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import static server.model.Constants.LIFEPOINTS;
-import static server.model.Constants.MAX_WEAPONS_IN_HAND;
+import static common.Constants.*;
 
 /**
  * Represents a player in-game
  */
 public class Pc {
+
+    private List<ModelChangeListener> listeners;
+
     private final Game currGame;
     private final PcColourEnum colour;
     private PcBoard pcBoard;
@@ -27,11 +31,10 @@ public class Pc {
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
         this.colour = colour;
-        this.adrenaline = 0;
         this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
-        game.addPc(this);
+        this.listeners = new LinkedList<>();
     }
 
 
@@ -46,7 +49,7 @@ public class Pc {
 
 
     public boolean hasMaxPowerUpNumber() {
-        return powerUps.size() == 3;
+        return powerUps.size() == MAX_POWER_UPS_IN_HAND;
     }
 
 
@@ -113,7 +116,7 @@ public class Pc {
 
 
     public WeaponCard weaponAtIndex(int index) {
-        if (index < 0 || index > 3) {
+        if (index < 0 || index > MAX_WEAPONS_IN_HAND) {
             throw new ArrayIndexOutOfBoundsException("This index is not valid");
         }
         return weapons[index];
@@ -127,9 +130,16 @@ public class Pc {
         if (s == null) {
             throw new IllegalArgumentException("Invalid square");
         }
+
+        int oldRow = currSquare.getRow();
+        int oldCol = currSquare.getCol();
+
         this.currSquare.removePc(this);
         this.currSquare = s;
         this.currSquare.addPc(this);
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onMovement(colour, oldRow, oldCol, currSquare.getRow(), currSquare.getCol()));
     }
 
 
@@ -137,15 +147,23 @@ public class Pc {
         PowerUpCard powerUpToDraw = currGame.drawPowerUp();
         if (powerUpToDraw != null)
             powerUps.add(powerUpToDraw);
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onDrawPowerUp(colour, powerUps.indexOf(powerUpToDraw)));
     }
 
 
     public void discardPowerUp(PowerUpCard p) {
+        int oldIndex;
         if (powerUps.contains(p)) {
+             oldIndex = powerUps.indexOf(p);
             powerUps.remove(p);
         } else {
             throw new IllegalArgumentException("You don't have this powerUp");
         }
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onDiscardPowerUp(colour, oldIndex));
     }
     
     /**
@@ -161,7 +179,7 @@ public class Pc {
 
     public void addAmmo(AmmoTile ammo) {
         pcBoard.addAmmo(ammo);
-        if (ammo.containsPowerup() && powerUps.size() < 3)
+        if (ammo.containsPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
             drawPowerUp();
     }
 
@@ -174,7 +192,7 @@ public class Pc {
         if (index != -1)
             weapons[index] = weapon;
         else {
-            for(int i = 0; i < 3; i++){
+            for(int i = 0; i < MAX_WEAPONS_IN_HAND; i++){
                 if (weapons[i] == null){
                     weapons[i] = weapon;
                     break;
@@ -191,21 +209,34 @@ public class Pc {
     }
 
 
-    public void takeDamage(PcColourEnum colour, short damages) {
-        if (this.colour == colour)
+    public void takeDamage(PcColourEnum shooterColour, short damages) {
+        if (this.colour == shooterColour)
             return;
         short totalDamage;
-        totalDamage = (short) (pcBoard.getMarks(colour) + damages);
-        pcBoard.addDamage(colour, totalDamage);
+        totalDamage = (short) (pcBoard.getMarks(shooterColour) + damages);
+        pcBoard.addDamage(shooterColour, totalDamage);
         int damageIndex = pcBoard.getDamageTrackIndex();
-        if (damageIndex >= LIFEPOINTS - 2) {
-            //TODO notify server.socket e client
-            //currGame.killOccured(this.colour, damageIndex == (LIFEPOINTS - 1));
+        if (damageIndex >= LIFE_POINTS - 2) {
+            boolean overkill = damageIndex == (LIFE_POINTS - 1);
+            currGame.killOccurred(this.colour, overkill);
+
+            //notify listeners
+            listeners.parallelStream().forEach(l -> l.onKill(shooterColour, this.colour, overkill));
         }
-        if (damageIndex > 4)
+
+        boolean adrenalineUp = false;
+
+        if (damageIndex > 4 && adrenaline < 2) {
             adrenaline = 2;
-        else if (damageIndex > 1)
+            adrenalineUp = true;
+        } else if (damageIndex > 1 && adrenaline < 1) {
             adrenaline = 1;
+            adrenalineUp = true;
+        }
+
+        if (adrenalineUp)
+            //notify listeners
+            listeners.parallelStream().forEach(l -> l.onAdrenaline(adrenaline));
     }
 
 
@@ -218,6 +249,9 @@ public class Pc {
         this.adrenaline = 0;
         this.currSquare = t;
         currSquare.addPc(this);
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onSpawn(colour, t.getRow(), t.getCol()));
     }
 
 
@@ -250,6 +284,12 @@ public class Pc {
         });
         powerUps.removeAll(powerUpToDiscard);
         return true;
+    }
+
+
+    public void addModelChangeListener(ModelChangeListener listener) {
+        listeners.add(listener);
+        pcBoard.addModelChangeListener(listener);
     }
 }
 

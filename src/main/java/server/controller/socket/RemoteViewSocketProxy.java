@@ -1,16 +1,16 @@
 package server.controller.socket;
 
-import client.socket.AbstractSocketProxy;
+import client.controller.socket.AbstractSocketProxy;
 import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
 
-import static common.enums.interfaces_names.RemoteViewEnum.*;
+import static common.enums.interfaces_names.RemoteViewEnum.ACK;
 
 public class RemoteViewSocketProxy extends AbstractSocketProxy implements RemoteView {
    
-   public RemoteViewSocketProxy(Socket socket) throws IOException {
+   RemoteViewSocketProxy(Socket socket) throws IOException {
       super( socket );
    }
    

@@ -1,0 +1,20 @@
+{
+  "9b7b9316-297e-418d-a1f0-cec024500516": {
+    "username": "Orazio",
+    "player": {
+      "token": "9b7b9316-297e-418d-a1f0-cec024500516",
+      "pc": null,
+      "currState": null
+    },
+    "incompleteGameID": null
+  },
+  "5f6db33c-3beb-449e-98a9-bbfb4d4cbc31": {
+    "username": "orazio",
+    "player": {
+      "token": "5f6db33c-3beb-449e-98a9-bbfb4d4cbc31",
+      "pc": null,
+      "currState": null
+    },
+    "incompleteGameID": null
+  }
+}

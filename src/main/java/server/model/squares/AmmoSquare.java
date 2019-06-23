@@ -1,11 +1,16 @@
 package server.model.squares;
 
 import common.enums.SquareColourEnum;
+import common.remote_interfaces.ModelChangeListener;
+import server.exceptions.EmptySquareException;
 import server.model.AmmoTile;
 import server.model.Deck;
-import server.exceptions.EmptySquareException;
 import server.model.Pc;
 import server.model.WeaponCard;
+
+import java.util.List;
+
+import static common.Constants.AMMO_DECK;
 
 /**
  * A square containing an AmmoTile
@@ -27,7 +32,8 @@ public class AmmoSquare extends Square {
 
 
     @Override
-    public void assignDeck(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+    public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners) {
+        this.listeners = listeners;
         this.ammoDeck = ammoDeck;
         ammoTile = this.ammoDeck.draw();
     }
@@ -37,6 +43,13 @@ public class AmmoSquare extends Square {
     public boolean isEmpty(){
         return ammoTile == null;
     }
+
+
+    @Override
+    public boolean isSpawnPoint() {
+        return false;
+    }
+
 
     public AmmoTile getAmmoTile() {
         return ammoTile;
@@ -54,6 +67,9 @@ public class AmmoSquare extends Square {
             throw new EmptySquareException();
         currPc.addAmmo(ammoTile);
         ammoTile = null;
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onAmmoCollect(currPc.getColour()));
     }
 
     
@@ -64,10 +80,9 @@ public class AmmoSquare extends Square {
         if(ammoTile == null) {
             ammoTile = ammoDeck.draw();
         }
-    }
-    
-    @Override
-    public boolean isSpawnPoint() {
-        return false;
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onRefill(AMMO_DECK, getRow(), getCol()));
     }
 }
+

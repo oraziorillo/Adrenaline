@@ -1,7 +1,8 @@
 package server.controller;
 
 import common.enums.PcColourEnum;
-import org.modelmapper.ModelMapper;
+import common.remote_interfaces.ModelChangeListener;
+import server.database.DatabaseHandler;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -10,14 +11,10 @@ import server.model.squares.Square;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Controller{
+import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
+import static common.Constants.ACTIONS_PER_TURN;
 
-    public static final int FIRST_MAP = 1;
-    public static final int LAST_MAP = 4;
-    public static final int MIN_KILL_SHOT_TRACK_SIZE = 5;
-    public static final int MAX_KILL_SHOT_TRACK_SIZE = 8;
-    private static final int ACTIONS_PER_TURN = 2;
-    private static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
+public class Controller{
 
     private Game game;
     private int currPlayerIndex;
@@ -27,20 +24,22 @@ public class Controller{
     private Set<PcColourEnum> availablePcColours;
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
-    private ModelMapper modelMapper;
 
 
     public Controller(List<Player> players) {
         super();
-        this.game = new Game();
+        this.game = Game.getGame();
         this.players = players;
         this.squaresToRefill = new HashSet<>();
         this.deadPlayers = new LinkedList<>();
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
-        this.players.addAll(players);
-        this.currPlayerIndex = 0;
         this.lastPlayerIndex = -1;
-        modelMapper = new ModelMapper();
+        players.forEach(p -> {
+            ModelChangeListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
+            p.getPc().addModelChangeListener(listener);
+            game.addPc(p.getPc());
+            game.addModelChangeListener(listener);
+        });
     }
 
     public boolean isFinalFrenzy() {
@@ -98,9 +97,6 @@ public class Controller{
     }
 
 
-    public ModelMapper getModelMapper() {
-        return modelMapper;
-    }
 
 
     public void setLastPlayerIndex(int index) {

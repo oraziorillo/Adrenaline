@@ -2,8 +2,8 @@ package server.controller.states;
 
 import server.controller.Controller;
 
-import static server.controller.Controller.FIRST_MAP;
-import static server.controller.Controller.LAST_MAP;
+import static common.Constants.FIRST_MAP;
+import static common.Constants.LAST_MAP;
 
 /**
  * State to init the map

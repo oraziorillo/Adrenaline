@@ -2,12 +2,18 @@ package server.model.squares;
 
 import com.google.gson.annotations.Expose;
 import common.enums.SquareColourEnum;
+import common.remote_interfaces.ModelChangeListener;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;
 import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
+
+import java.util.List;
+
+import static common.Constants.CARDS_ON_SPAWN_POINT;
+import static common.Constants.WEAPONS_DECK;
 
 public class SpawnPoint extends Square {
 
@@ -30,10 +36,11 @@ public class SpawnPoint extends Square {
 
 
     @Override
-    public void assignDeck(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+    public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners) {
+        this.listeners = listeners;
         this.weaponsDeck = weaponsDeck;
-        weapons = new WeaponCard[3];
-        for (int i = 0; i < 3; i++)
+        weapons = new WeaponCard[CARDS_ON_SPAWN_POINT];
+        for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++)
             weapons[i] = weaponsDeck.draw();
     }
 
@@ -63,7 +70,7 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
-        if (weaponToGrabIndex >= 0 && weaponToGrabIndex < 3 && weapons[weaponToGrabIndex] != null)
+        if (weaponToGrabIndex >= 0 && weaponToGrabIndex < CARDS_ON_SPAWN_POINT && weapons[weaponToGrabIndex] != null)
             this.weaponToGrabIndex = weaponToGrabIndex;
         else
             throw new NullPointerException("You have to choose a weapon to grab");
@@ -72,7 +79,7 @@ public class SpawnPoint extends Square {
 
     @Override
     public void setWeaponToDropIndex(int weaponToDropIndex) {
-        if (weaponToDropIndex >= 0 && weaponToDropIndex < 3)
+        if (weaponToDropIndex >= 0 && weaponToDropIndex < CARDS_ON_SPAWN_POINT)
             this.weaponToDropIndex = weaponToDropIndex;
     }
 
@@ -92,10 +99,10 @@ public class SpawnPoint extends Square {
 
     /**
      * Adds the pre-selected weapon to the given player, unless
-     * 1. this square is not empty
-     * 2. the pre-selected weapon index is not negative
-     * 3. the weapon slot on that index is not empty
-     * 4. the given pc already has the max weapon number and didn't select a weapon to drop (drop index <0)
+     * 1. this square is empty
+     * 2. the pre-selected weapon index is negative
+     * 3. the weapon slot on that index is empty
+     * 4. the given pc already has the max weapon number and didn't select a weapon to drop
      * @param currPc the pc collecting from this tile
      * @throws EmptySquareException if no weapon is available
      * @throws NotEnoughAmmoException if the player cannot pay the half-recharge cost
@@ -127,7 +134,12 @@ public class SpawnPoint extends Square {
         short[] cost = weaponToGrab.getAmmo();
         cost[weaponToGrab.getColour().ordinal()]--;
         currPc.payAmmo(cost);
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onWeaponCollect(currPc.getColour(), weaponToDropIndex, weaponToGrabIndex));
+
         resetWeaponIndexes();
+        
     }
 
 
@@ -137,6 +149,9 @@ public class SpawnPoint extends Square {
                 weapons[i] = weaponsDeck.draw();
             }
         }
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onRefill(WEAPONS_DECK, getRow(), getCol()));
     }
 
 }

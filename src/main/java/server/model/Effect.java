@@ -9,6 +9,8 @@ import server.model.deserializers.ActionDeserializer;
 import java.lang.reflect.Type;
 import java.util.*;
 
+import static common.Constants.AMMO_COLOURS_NUMBER;
+
 public class Effect {
     @Expose private boolean oriented;
     @Expose private boolean beyondWalls;
@@ -24,7 +26,7 @@ public class Effect {
      * @param jsonEffect JsonObject representing a weapon effect
      */
     public Effect(JsonObject jsonEffect) {
-        this.cost = new short[3];
+        this.cost = new short[AMMO_COLOURS_NUMBER];
         this.oriented = jsonEffect.get("oriented").getAsBoolean();
         this.beyondWalls = jsonEffect.get("beyondWalls").getAsBoolean();
         this.asynchronous = jsonEffect.get("asynchronous").getAsBoolean();

@@ -6,7 +6,7 @@
 <?import java.lang.Double?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
-      fx:controller="client.gui.javafx_controllers.components.pc_board.PcController" stylesheets="/css/pc_board/Pc.css" >
+      fx:controller="client.view.gui.javafx_controllers.components.pc_board.PcController" stylesheets="/css/pc_board/Pc.css" >
     <fx:define>
         <Double fx:id="HEIGHT" fx:value="200"/>
     </fx:define>

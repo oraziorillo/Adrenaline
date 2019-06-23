@@ -1,8 +1,9 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import static server.controller.Controller.MAX_KILL_SHOT_TRACK_SIZE;
-import static server.controller.Controller.MIN_KILL_SHOT_TRACK_SIZE;
+
+import static common.Constants.MAX_KILL_SHOT_TRACK_SIZE;
+import static common.Constants.MIN_KILL_SHOT_TRACK_SIZE;
 
 /**
  * State to Set up the KillshotTrack

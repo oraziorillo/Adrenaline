@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
 import common.remote_interfaces.RemotePlayer;
 import server.controller.states.State;
-import server.database.DatabaseHandler;
 import server.model.Pc;
 import server.model.WeaponCard;
 
@@ -12,7 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
-import static server.controller.Controller.*;
+import static common.Constants.*;
 
 /**
  * Represents an user out-game.

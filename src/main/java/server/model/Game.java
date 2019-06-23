@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import common.remote_interfaces.ModelChangeListener;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
  * This class represents an ADRENALINE game
  */
 public class Game {
+
+    private List<ModelChangeListener> listeners;
+
     private GameBoard gameBoard;
     private Set<Pc> pcs;
     private Deck<WeaponCard> weaponsDeck;
@@ -30,13 +34,19 @@ public class Game {
     private boolean finalFrenzy;
 
 
-    public Game() {
+    private Game() {
         this.pcs = new HashSet<>();
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
-        this.finalFrenzy = false;
-        initDecks();
+        this.listeners = new LinkedList<>();
+    }
+
+
+    public static Game getGame(){
+        Game game = new Game();
+        game.initDecks();
+        return game;
     }
 
 
@@ -54,7 +64,7 @@ public class Game {
             JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
             gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
 
-            gameBoard.assignProperDeckToEachSquare(weaponsDeck, ammoDeck);
+            gameBoard.initSquares(weaponsDeck, ammoDeck, listeners);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -77,6 +87,9 @@ public class Game {
 
     public void setFinalFrenzy(boolean finalFrenzy) {
         this.finalFrenzy = finalFrenzy;
+
+        //notify listeners
+        listeners.parallelStream().forEach(ModelChangeListener::onFinalFrenzy);
     }
 
 
@@ -100,8 +113,10 @@ public class Game {
             reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
             ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
 
-            weapons.forEach(w -> weaponsDeck.add(w));
-            weaponsDeck.getCards().forEach(WeaponCard::init);
+            weapons.forEach(w -> {
+                w.init();
+                weaponsDeck.add(w);
+            });
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -128,11 +143,6 @@ public class Game {
     }
 
 
-    public Deck<WeaponCard> getWeaponsDeck() {
-        return weaponsDeck;
-    }
-
-
     public void setTargetableSquares(Set<Square> targetableSquares, boolean isTargetable){
         if (targetableSquares.isEmpty())
             return;
@@ -140,8 +150,14 @@ public class Game {
     }
 
 
+    public void addModelChangeListener(ModelChangeListener listener) {
+        listeners.add(listener);
+
+    }
+
+
     public void addPc(Pc pc) {
-        pcs.add(pc);
+        this.pcs.add(pc);
     }
 
 
@@ -207,7 +223,7 @@ public class Game {
     private boolean scoreOnKillShotTrack(Pc deadPc) {
         PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
         PcColourEnum shooterPcColour = deadPcDamageTrack[10];
-        if (gameBoard.killOccured(shooterPcColour, deadPcDamageTrack[11] != null)) {
+        if (gameBoard.killOccurred(shooterPcColour, deadPcDamageTrack[11] != null)) {
             deadPc.flipBoard();
             if (!isFinalFrenzy()) {
                 setFinalFrenzy(true);
@@ -259,6 +275,10 @@ public class Game {
             }
         }
         return points;
+    }
+
+    void killOccurred(PcColourEnum killerColour, boolean overkilled) {
+        gameBoard.killOccurred(killerColour, overkilled);
     }
 }
 

@@ -3,19 +3,21 @@ package server.model.squares;
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
+import common.remote_interfaces.ModelChangeListener;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;
 import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Square {
+
+    List<ModelChangeListener> listeners;
+
     @Expose private int row;
     @Expose private int col;
     @Expose private SquareColourEnum colour;
@@ -54,13 +56,16 @@ public abstract class Square {
         return targetable;
     }
 
+
     public boolean isMarked() {
         return marked;
     }
 
+
     public void setMarked(boolean marked) {
         this.marked = marked;
     }
+
 
     public SquareColourEnum getColour() {
         return colour;
@@ -79,6 +84,9 @@ public abstract class Square {
 
     public void setTargetable(boolean targetable){
         this.targetable = targetable;
+
+        //notify listeners
+        listeners.parallelStream().forEach(l -> l.onSquareTargetableChange(row, col, targetable));
     }
 
 
@@ -91,6 +99,12 @@ public abstract class Square {
     public void resetWeaponIndexes(){}
 
 
+    /**
+     * Used to grab a weapon or ammo from this square
+     * @param currPc the pc who wants to collect the object
+     * @throws EmptySquareException if there are no objects on this square
+     * @throws NotEnoughAmmoException if the currPc has not enough ammo to pick a weapon
+     */
     public abstract void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException;
 
     /**
@@ -229,7 +243,7 @@ public abstract class Square {
     }
 
 
-    public abstract void assignDeck(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck);
+    public abstract void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners);
 
 
     public abstract boolean isEmpty();
@@ -239,7 +253,5 @@ public abstract class Square {
 
 
     public abstract void refill();
-
-
 }
 

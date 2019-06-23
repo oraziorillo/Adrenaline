@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
         <sonar.host.url> http://localhost:9000/ </sonar.host.url>
-        <token>775df25b66cb9e92933b153ad9e8480e15329b29</token>
+        <token>12123ac401174aced3ee61ce6d0c150d4ab8b52a</token>
         <junit.jupiter.version>5.4.1</junit.jupiter.version>
     </properties>
 
@@ -128,7 +128,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.2</version>
                 <configuration>
-                    <mainClass>client.gui.LaunchGui</mainClass>
+                    <mainClass>client.LaunchGui</mainClass>
                 </configuration>
             </plugin>
         </plugins>

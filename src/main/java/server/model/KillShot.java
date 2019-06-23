@@ -10,21 +10,21 @@ public class KillShot {
     private boolean skulled;
     private boolean overkilled;
 
-    public KillShot(){
+    KillShot(){
         colour = null;
         skulled = true;
         overkilled = false;
     }
 
-    public boolean isSkulled() {
+    boolean isSkulled() {
         return skulled;
     }
 
-    public boolean isOverkilled() {
+    boolean isOverkilled() {
         return overkilled;
     }
 
-    public PcColourEnum getColour() {
+    PcColourEnum getColour() {
         return colour;
     }
     
@@ -33,7 +33,7 @@ public class KillShot {
      * @param killerColour colour of the killer
      * @param overkill see the game anual
      */
-    public void killOccured(PcColourEnum killerColour, boolean overkill) {
+    void killOccurred(PcColourEnum killerColour, boolean overkill) {
         if (skulled) {
             this.colour = killerColour;
             this.overkilled = overkill;

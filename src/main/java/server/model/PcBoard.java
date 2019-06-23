@@ -1,10 +1,16 @@
 package server.model;
 
 import common.enums.PcColourEnum;
-import static server.model.Constants.AMMO_COLOURS_NUMBER;
-import static server.model.Constants.LIFEPOINTS;
+import common.remote_interfaces.ModelChangeListener;
 
-public class PcBoard {
+import java.util.LinkedList;
+import java.util.List;
+
+import static common.Constants.*;
+
+class PcBoard {
+
+    private List<ModelChangeListener> listeners;
 
     private short points;
     private short numOfDeaths;
@@ -15,106 +21,133 @@ public class PcBoard {
     private int [] pcValue;
     private int pcValueIndex;
 
-    public PcBoard(){
+    PcBoard(){
         this.points = 0;
         this.numOfDeaths = 0;
         this.damageTrackIndex = 0;
         this.marks = new short[5];
-        this.ammo = new short[3];
-        this.pcValue = new int[]{8, 6, 4, 2, 1, 1};
+        this.pcValue = PC_VALUES;
         this.pcValueIndex = 0;
-        this.damageTrack = new PcColourEnum[LIFEPOINTS];
-        for(int i = 0; i < 3; i++){
+        this.damageTrack = new PcColourEnum[LIFE_POINTS];
+        this.ammo = new short[AMMO_COLOURS_NUMBER];
+        this.listeners = new LinkedList<>();
+    }
+
+
+    void init(){
+        for(int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             ammo[i] = 1;
         }
     }
 
 
-    public short getPoints() {
+    short getPoints() {
         return points;
     }
 
 
-    public short getNumOfDeaths() {
+    short getNumOfDeaths() {
         return numOfDeaths;
     }
 
 
-    public short[] getAmmo() {
+    short[] getAmmo() {
         return ammo;
     }
 
 
-    public PcColourEnum[] getDamageTrack() {
+    PcColourEnum[] getDamageTrack() {
         return damageTrack;
     }
 
 
-    public short getDamageTrackIndex() {
+    short getDamageTrackIndex() {
         return damageTrackIndex;
     }
 
-    public int getPcValueIndex() {
+
+    int getPcValueIndex() {
         return pcValueIndex;
     }
 
-    public int[] getPcValue() {
+
+    int[] getPcValue() {
         return pcValue;
     }
 
-    public short getMarks(PcColourEnum selectedColour) {
+
+    short getMarks(PcColourEnum selectedColour) {
         return marks[selectedColour.ordinal()];
     }
 
 
-    public void flipBoard(){
-        pcValue = new int[] {2, 1, 1, 1};
+    void flipBoard(){
+        pcValue = FINAL_FRENZY_PC_VALUES;
         pcValueIndex = 0;
     }
 
-    public void increasePoints(int earnedPoints){
+
+    void increasePoints(int earnedPoints){
         this.points += earnedPoints;
+
+        //notify listeners
+        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
     }
 
-    public void increaseNumberOfDeaths(){
+
+    void increaseNumberOfDeaths(){
         numOfDeaths++;
+
+        //notify listeners
+        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
     }
 
-    public void increasePcValueIndex(){
+
+    void increasePcValueIndex(){
         if (pcValueIndex != 5)
             pcValueIndex++;
     }
 
-    public void addDamage(PcColourEnum shooterColour, short numOfDamage){
+
+    void addDamage(PcColourEnum shooterColour, short numOfDamage){
         while (numOfDamage != 0) {
-            if (damageTrackIndex == LIFEPOINTS)
+            if (damageTrackIndex == LIFE_POINTS)
                 break;
             damageTrack[damageTrackIndex] = shooterColour;
             damageTrackIndex++;
             numOfDamage--;
         }
+
+        //notify listeners
+        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
     }
 
 
-    public void addMarks(PcColourEnum shooterColour, short numOfMarks) {
-        if (marks[shooterColour.ordinal()] + numOfMarks > 3)
-            marks[shooterColour.ordinal()] = 3;
+    void addMarks(PcColourEnum shooterColour, short numOfMarks) {
+        if (marks[shooterColour.ordinal()] + numOfMarks > MAX_NUMBER_OF_MARKS_PER_COLOUR)
+            marks[shooterColour.ordinal()] = MAX_NUMBER_OF_MARKS_PER_COLOUR;
         else
             marks[shooterColour.ordinal()] += numOfMarks;
+
+        //notify listeners
+        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
     }
 
 
-    public void addAmmo(AmmoTile ammoTile) {
+    void addAmmo(AmmoTile ammoTile) {
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++) {
             this.ammo[i] += ammoTile.getAmmo()[i];
-            if (ammo[i] > 3)
-                ammo[i] = 3;
+            if (ammo[i] > MAX_AMMO_PER_COLOUR)
+                ammo[i] = MAX_AMMO_PER_COLOUR;
         }
+
+        //notify listeners
+        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
     }
 
 
-    public boolean hasAtLeastOneAmmo() {
-        for (int i = 0; i < 3; i++){
+    boolean hasAtLeastOneAmmo() {
+        for (int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             if(ammo[i] > 0)
                 return true;
         }
@@ -126,8 +159,8 @@ public class PcBoard {
      * @param ammo some ammos
      * @return ammo, where every succesfully payed ammo has been removed (so it will be a "not payed" array)
      */
-    public short[] payAmmo(short[] ammo) {
-        for (int i = 0; i < 3; i++){
+    short[] payAmmo(short[] ammo) {
+        for (int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             if (this.ammo[i] >= ammo[i]){
                 this.ammo[i] -= ammo[i];
                 ammo[i] = 0;
@@ -136,13 +169,21 @@ public class PcBoard {
                 this.ammo[i] = 0;
             }
         }
+
+        //notify listeners
+        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+
         return ammo;
     }
 
 
-    public void resetDamageTrack(){
+    void resetDamageTrack(){
         damageTrackIndex = 0;
-        damageTrack = new PcColourEnum[LIFEPOINTS];
+        damageTrack = new PcColourEnum[LIFE_POINTS];
     }
 
+
+    void addModelChangeListener(ModelChangeListener listener) {
+        listeners.add(listener);
+    }
 }
