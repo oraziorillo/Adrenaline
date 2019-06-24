@@ -71,7 +71,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView, Proper
     
     @Override
     public String acquireUsername() {
-        return inputReader.requestString("Insert an username");
+        return inputReader.requestString("Insert a username");
     }
     
     @Override

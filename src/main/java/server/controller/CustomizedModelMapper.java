@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class CustomizedModelMapper {
 
-    private ModelMapper modelMapper;
+    private static ModelMapper modelMapper;
 
 
     public CustomizedModelMapper(){
@@ -38,6 +38,7 @@ public class CustomizedModelMapper {
         return modelMapper;
     }
 
+
     private void configureAmmoTile(){
         TypeMap<AmmoTile, AmmoTileDTO> typeMap = modelMapper.createTypeMap(AmmoTile.class, AmmoTileDTO.class);
         typeMap.addMappings(mapper -> mapper.map(AmmoTile::containsPowerUp, AmmoTileDTO::setHasPowerUp));
@@ -46,11 +47,12 @@ public class CustomizedModelMapper {
 
     private void configureSquare() {
         Converter<Set<Pc>, Set<PcColourEnum>> toPcColour = ctx -> ctx.getSource() == null ? null : ctx.getSource().stream().map(Pc::getColour).collect(Collectors.toSet());
+
         TypeMap<SpawnPoint, SquareDTO> typeMapSpawnPoint = modelMapper.createTypeMap(SpawnPoint.class, SquareDTO.class);
         TypeMap<AmmoSquare, SquareDTO> typeMapAmmoSquare = modelMapper.createTypeMap(AmmoSquare.class, SquareDTO.class);
+
         typeMapSpawnPoint.addMappings(mapper -> mapper.using(toPcColour).map(SpawnPoint::getPcs, SquareDTO::setPcs));
         typeMapAmmoSquare.addMappings(mapper -> mapper.using(toPcColour).map(AmmoSquare::getPcs, SquareDTO::setPcs));
-        //typeMap.addMappings(mapper -> mapper)
     }
 
 }

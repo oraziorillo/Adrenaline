@@ -18,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -90,4 +92,16 @@ public class MainGui extends GuiView {
       return new HashSet<>();
    }
 
+
+
+   //TODO i seguenti due metodi sono stati inseriti solo per non avere errore
+   @Override
+   public PropertyChangeListener getListener() {
+      return null;
+   }
+
+   @Override
+   public void propertyChange(PropertyChangeEvent evt) {
+
+   }
 }
