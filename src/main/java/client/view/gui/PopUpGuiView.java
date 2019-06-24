@@ -1,11 +1,10 @@
 package client.view.gui;
 
-import common.dto_model.PcBoardDTO;
-import common.enums.PcColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,11 +49,6 @@ public class PopUpGuiView extends GuiView {
     }
 
     @Override
-    public ModelChangeListener getListener() {
-        return this;
-    }
-
-    @Override
     public synchronized Collection<String> getPendingAcks() {
         Collection<String> returned = new HashSet<>();
         for(Alert a:visibleAlerts){
@@ -64,63 +58,15 @@ public class PopUpGuiView extends GuiView {
         return returned;
     }
 
-    @Override
-    public void onSquareTargetableChange(int row, int col, boolean newValue) {
 
+    @Override
+    public PropertyChangeListener getListener() {
+        return this;
     }
 
-    @Override
-    public void onMovement(PcColourEnum pc, int oldRow, int oldCol, int newRow, int newCol) {
-
-    }
 
     @Override
-    public void onWeaponCollect(PcColourEnum pc, int droppedWeapon, int grabbedWeapon) {
-
-    }
-
-    @Override
-    public void onAmmoCollect(PcColourEnum pc) {
-
-    }
-
-    @Override
-    public void onDrawPowerUp(PcColourEnum pc, int newIndex) {
-
-    }
-
-    @Override
-    public void onDiscardPowerUp(PcColourEnum pc, int oldIndex) {
-
-    }
-
-    @Override
-    public void onPcBoardChange(PcBoardDTO newPcBoard) {
-
-    }
-
-    @Override
-    public void onRefill(int typeOfDeck, int row, int col) {
-
-    }
-
-    @Override
-    public void onKill(PcColourEnum shooter, PcColourEnum killed, boolean isOverkill) {
-
-    }
-
-    @Override
-    public void onSpawn(PcColourEnum pc, int newRow, int newCol) {
-
-    }
-
-    @Override
-    public void onAdrenaline(int level) {
-
-    }
-
-    @Override
-    public void onFinalFrenzy() {
+    public void propertyChange(PropertyChangeEvent evt) {
 
     }
 }

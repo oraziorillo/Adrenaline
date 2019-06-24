@@ -1,13 +1,12 @@
 package client.view;
 
-import common.remote_interfaces.ModelChangeListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.UUID;
 
-public interface AbstractView extends RemoteView, ModelChangeListener {
+public interface AbstractView extends RemoteView {
     String HOST = "localhost";
     int SOCKET_PORT = 10000;
     int RMI_PORT = 9999;

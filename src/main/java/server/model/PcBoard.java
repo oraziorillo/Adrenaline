@@ -1,16 +1,20 @@
 package server.model;
 
+import common.dto_model.PcBoardDTO;
 import common.enums.PcColourEnum;
-import common.remote_interfaces.ModelChangeListener;
+import org.modelmapper.ModelMapper;
+import server.controller.CustomizedModelMapper;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import static common.Constants.*;
 
 class PcBoard {
 
-    private List<ModelChangeListener> listeners;
+    private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
+
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     private short points;
     private short damageTrackIndex;
@@ -28,7 +32,6 @@ class PcBoard {
         this.pcValue = PC_VALUES;
         this.damageTrack = new PcColourEnum[LIFE_POINTS];
         this.ammo = new short[AMMO_COLOURS_NUMBER];
-        this.listeners = new LinkedList<>();
     }
 
 
@@ -81,23 +84,33 @@ class PcBoard {
 
 
     void increasePoints(int earnedPoints){
+
+        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
+
         this.points += earnedPoints;
 
+
         //notify listeners
-        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+        changes.firePropertyChange(INCREASE_POINTS, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void increaseNumberOfDeaths(){
+
+        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
+
         if (numOfDeaths != 5)
             numOfDeaths++;
 
         //notify listeners
-        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+        changes.firePropertyChange(INCREASE_NUMBER_OF_DEATHS, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void addDamage(PcColourEnum shooterColour, short numOfDamage){
+
+        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
+
         while (numOfDamage != 0) {
             if (damageTrackIndex == LIFE_POINTS)
                 break;
@@ -106,23 +119,28 @@ class PcBoard {
             numOfDamage--;
         }
 
-        //notify listeners
-        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+        changes.firePropertyChange(ADD_DAMAGE, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void addMarks(PcColourEnum shooterColour, short numOfMarks) {
+
+        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
+
         if (marks[shooterColour.ordinal()] + numOfMarks > MAX_NUMBER_OF_MARKS_PER_COLOUR)
             marks[shooterColour.ordinal()] = MAX_NUMBER_OF_MARKS_PER_COLOUR;
         else
             marks[shooterColour.ordinal()] += numOfMarks;
 
         //notify listeners
-        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+        changes.firePropertyChange(ADD_MARKS, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void addAmmo(AmmoTile ammoTile) {
+
+        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
+
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++) {
             this.ammo[i] += ammoTile.getAmmo()[i];
             if (ammo[i] > MAX_AMMO_PER_COLOUR)
@@ -130,7 +148,7 @@ class PcBoard {
         }
 
         //notify listeners
-        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+        changes.firePropertyChange(ADD_AMMO, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
@@ -148,6 +166,9 @@ class PcBoard {
      * @return ammo, where every succesfully payed ammo has been removed (so it will be a "not payed" array)
      */
     short[] payAmmo(short[] ammo) {
+
+        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
+
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             if (this.ammo[i] >= ammo[i]){
                 this.ammo[i] -= ammo[i];
@@ -159,7 +180,7 @@ class PcBoard {
         }
 
         //notify listeners
-        listeners.parallelStream()/*.forEach(l -> l.onPcBoardChange(*costruire un dto di pcBoard*))*/;
+        changes.firePropertyChange(PAY_AMMO, old, modelMapper.map(this, PcBoardDTO.class));
 
         return ammo;
     }
@@ -171,7 +192,7 @@ class PcBoard {
     }
 
 
-    void addModelChangeListener(ModelChangeListener listener) {
-        listeners.add(listener);
+    void addPropertyChangeListener(PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(listener);
     }
 }

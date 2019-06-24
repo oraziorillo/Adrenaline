@@ -1,13 +1,17 @@
 package server.model;
 
+import common.dto_model.PcDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
-import common.remote_interfaces.ModelChangeListener;
+import org.modelmapper.ModelMapper;
+import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static common.Constants.*;
@@ -17,7 +21,9 @@ import static common.Constants.*;
  */
 public class Pc {
 
-    private List<ModelChangeListener> listeners;
+    private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
+
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     private final Game currGame;
     private final PcColourEnum colour;
@@ -34,7 +40,6 @@ public class Pc {
         this.pcBoard = new PcBoard();
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
-        this.listeners = new LinkedList<>();
     }
 
 
@@ -127,33 +132,40 @@ public class Pc {
      * @param s the new square
      */
     public void moveTo(Square s) {
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         if (s == null) {
             throw new IllegalArgumentException("Invalid square");
         }
-
-        int oldRow = currSquare.getRow();
-        int oldCol = currSquare.getCol();
 
         this.currSquare.removePc(this);
         this.currSquare = s;
         this.currSquare.addPc(this);
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onMovement(colour, oldRow, oldCol, currSquare.getRow(), currSquare.getCol()));
+        changes.firePropertyChange(MOVE_TO, old, modelMapper.map(this, PcDTO.class));
     }
 
 
     public void drawPowerUp(){
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         PowerUpCard powerUpToDraw = currGame.drawPowerUp();
         if (powerUpToDraw != null)
             powerUps.add(powerUpToDraw);
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onDrawPowerUp(colour, powerUps.indexOf(powerUpToDraw)));
+        //notify listeners
+        changes.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
     }
 
 
     public void discardPowerUp(PowerUpCard p) {
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         int oldIndex;
         if (powerUps.contains(p)) {
              oldIndex = powerUps.indexOf(p);
@@ -163,7 +175,7 @@ public class Pc {
         }
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onDiscardPowerUp(colour, oldIndex));
+        changes.firePropertyChange(DISCARD_POWER_UP, old, modelMapper.map(this, PcDTO.class));
     }
     
     /**
@@ -210,6 +222,9 @@ public class Pc {
 
 
     public void takeDamage(PcColourEnum shooterColour, short damages) {
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         if (this.colour == shooterColour)
             return;
         short totalDamage;
@@ -220,8 +235,8 @@ public class Pc {
             boolean overkill = damageIndex == (LIFE_POINTS - 1);
             currGame.killOccurred(this.colour, overkill);
 
-            //notify listeners
-            listeners.parallelStream().forEach(l -> l.onKill(shooterColour, this.colour, overkill));
+            //notify death
+            changes.firePropertyChange(KILL_OCCURRED, old, modelMapper.map(this, PcDTO.class));
         }
 
         boolean adrenalineUp = false;
@@ -235,12 +250,15 @@ public class Pc {
         }
 
         if (adrenalineUp)
-            //notify listeners
-            listeners.parallelStream().forEach(l -> l.onAdrenaline(adrenaline));
+            //notify adrenaline up
+            changes.firePropertyChange(ADRENALINE_UP, old, modelMapper.map(this, PcDTO.class));
     }
 
 
     public void spawn(Square t) {
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
         }
@@ -250,7 +268,7 @@ public class Pc {
         currSquare.addPc(this);
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onSpawn(colour, t.getRow(), t.getCol()));
+        changes.firePropertyChange(SPAWN, old, modelMapper.map(this, PcDTO.class));
     }
 
 
@@ -286,9 +304,9 @@ public class Pc {
     }
 
 
-    public void addModelChangeListener(ModelChangeListener listener) {
-        listeners.add(listener);
-        pcBoard.addModelChangeListener(listener);
+    void addPropertyChangeListener(PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(listener);
+        pcBoard.addPropertyChangeListener(listener);
     }
 }
 

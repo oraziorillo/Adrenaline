@@ -1,8 +1,9 @@
 package server.model.squares;
 
 import com.google.gson.annotations.Expose;
+import common.dto_model.PcDTO;
+import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;
@@ -10,10 +11,7 @@ import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
 
-import java.util.List;
-
-import static common.Constants.CARDS_ON_SPAWN_POINT;
-import static common.Constants.WEAPONS_DECK;
+import static common.Constants.*;
 
 public class SpawnPoint extends Square {
 
@@ -36,8 +34,7 @@ public class SpawnPoint extends Square {
 
 
     @Override
-    public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners) {
-        this.listeners = listeners;
+    public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.weaponsDeck = weaponsDeck;
         weapons = new WeaponCard[CARDS_ON_SPAWN_POINT];
         for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++)
@@ -109,6 +106,9 @@ public class SpawnPoint extends Square {
      */
     @Override
     public void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException {
+
+        SquareDTO old = modelMapper.map(this, SquareDTO.class);
+
         if (isEmpty())
             throw new EmptySquareException();
         if (weaponToGrabIndex < 0)
@@ -136,7 +136,7 @@ public class SpawnPoint extends Square {
         currPc.payAmmo(cost);
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onWeaponCollect(currPc.getColour(), weaponToDropIndex, weaponToGrabIndex));
+        changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
 
         resetWeaponIndexes();
         
@@ -144,6 +144,9 @@ public class SpawnPoint extends Square {
 
 
     public void refill() {
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         for (int i = 0; i < weapons.length; i++) {
             if (weapons[i] == null && weaponsDeck.size() > 0) {
                 weapons[i] = weaponsDeck.draw();
@@ -151,7 +154,7 @@ public class SpawnPoint extends Square {
         }
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onRefill(WEAPONS_DECK, getRow(), getCol()));
+        changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
     }
 
 }

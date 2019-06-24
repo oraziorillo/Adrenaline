@@ -3,12 +3,11 @@ package client.view.cli;
 import client.controller.socket.ClientSocketHandler;
 import client.view.AbstractView;
 import client.view.InputReader;
-import common.dto_model.PcBoardDTO;
 import common.enums.ConnectionsEnum;
-import common.enums.PcColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import common.remote_interfaces.RemoteLoginController;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
@@ -21,7 +20,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class CliView extends UnicastRemoteObject implements AbstractView {
+public class CliView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
     private transient InputReader inputReader = new CliInputReader();
     
     public CliView() throws RemoteException {
@@ -106,67 +105,12 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
     }
 
     @Override
-    public ModelChangeListener getListener() {
+    public PropertyChangeListener getListener() {
         return this;
     }
 
     @Override
-    public void onSquareTargetableChange(int row, int col, boolean newValue) {
-
-    }
-
-    @Override
-    public void onMovement(PcColourEnum pc, int oldRow, int oldCol, int newRow, int newCol) {
-
-    }
-
-    @Override
-    public void onWeaponCollect(PcColourEnum pc, int droppedWeapon, int grabbedWeapon) {
-
-    }
-
-    @Override
-    public void onAmmoCollect(PcColourEnum pc) {
-
-    }
-
-    @Override
-    public void onDrawPowerUp(PcColourEnum pc, int newIndex) {
-
-    }
-
-    @Override
-    public void onDiscardPowerUp(PcColourEnum pc, int oldIndex) {
-
-    }
-
-    @Override
-    public void onPcBoardChange(PcBoardDTO newPcBoard) {
-
-    }
-
-    @Override
-    public void onRefill(int typeOfDeck, int row, int col) {
-
-    }
-
-    @Override
-    public void onKill(PcColourEnum shooter, PcColourEnum killed, boolean isOverkill) {
-
-    }
-
-    @Override
-    public void onSpawn(PcColourEnum pc, int newRow, int newCol) {
-
-    }
-
-    @Override
-    public void onAdrenaline(int level) {
-
-    }
-
-    @Override
-    public void onFinalFrenzy() {
+    public void propertyChange(PropertyChangeEvent evt) {
 
     }
 }

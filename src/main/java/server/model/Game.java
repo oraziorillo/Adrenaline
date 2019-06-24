@@ -7,24 +7,27 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.Square;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static common.Constants.FINAL_FRENZY;
+
 /**
  * This class represents an ADRENALINE game
  */
 public class Game {
 
-    private List<ModelChangeListener> listeners;
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     private GameBoard gameBoard;
     private Set<Pc> pcs;
@@ -39,7 +42,6 @@ public class Game {
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
-        this.listeners = new LinkedList<>();
     }
 
 
@@ -64,7 +66,7 @@ public class Game {
             JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
             gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
 
-            gameBoard.initSquares(weaponsDeck, ammoDeck, listeners);
+            gameBoard.initSquares(weaponsDeck, ammoDeck);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -86,10 +88,11 @@ public class Game {
 
 
     public void setFinalFrenzy(boolean finalFrenzy) {
+
         this.finalFrenzy = finalFrenzy;
 
         //notify listeners
-        listeners.parallelStream().forEach(ModelChangeListener::onFinalFrenzy);
+        changes.firePropertyChange(FINAL_FRENZY, !finalFrenzy, finalFrenzy);
     }
 
 
@@ -176,12 +179,6 @@ public class Game {
         if (targetableSquares.isEmpty())
             return;
         targetableSquares.forEach(s -> s.setTargetable(isTargetable));
-    }
-
-
-    public void addModelChangeListener(ModelChangeListener listener) {
-        listeners.add(listener);
-
     }
 
 
@@ -320,6 +317,14 @@ public class Game {
     void killOccurred(PcColourEnum killerColour, boolean overkilled) {
         gameBoard.killOccurred(killerColour, overkilled);
     }
+
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(listener);
+        gameBoard.addPropertyChangeListener(listener);
+        pcs.forEach(pc -> pc.addPropertyChangeListener(listener));
+    }
+
 }
 
 

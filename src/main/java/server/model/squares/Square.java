@@ -1,9 +1,11 @@
 package server.model.squares;
 
 import com.google.gson.annotations.Expose;
+import common.dto_model.SquareDTO;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
-import common.remote_interfaces.ModelChangeListener;
+import org.modelmapper.ModelMapper;
+import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;
@@ -11,12 +13,21 @@ import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
 
-import java.util.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static common.Constants.SET_TARGETABLE;
 
 public abstract class Square {
 
-    List<ModelChangeListener> listeners;
+    ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
+
+    PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     @Expose private int row;
     @Expose private int col;
@@ -83,10 +94,13 @@ public abstract class Square {
 
 
     public void setTargetable(boolean targetable){
+
+        SquareDTO old = modelMapper.map(this, SquareDTO.class);
+
         this.targetable = targetable;
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onSquareTargetableChange(row, col, targetable));
+        changes.firePropertyChange(SET_TARGETABLE, old, modelMapper.map(this, SquareDTO.class));
     }
 
 
@@ -243,7 +257,12 @@ public abstract class Square {
     }
 
 
-    public abstract void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners);
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(listener);
+    }
+
+
+    public abstract void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck);
 
 
     public abstract boolean isEmpty();

@@ -6,6 +6,7 @@ import common.remote_interfaces.RemoteLoginController;
 import javafx.concurrent.Task;
 import javafx.scene.control.*;
 
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
@@ -16,7 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class GuiView extends UnicastRemoteObject implements AbstractView {
+public abstract class GuiView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
 
     protected GuiView() throws RemoteException {
     }

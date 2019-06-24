@@ -1,13 +1,13 @@
 package server.controller;
 
 import common.enums.PcColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import server.database.DatabaseHandler;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
 import server.model.squares.Square;
 
+import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,13 +34,18 @@ public class Controller{
         this.deadPlayers = new LinkedList<>();
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
+        initGame();
+    }
+
+
+    private void initGame(){
         players.forEach(p -> {
-            ModelChangeListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
-            p.getPc().addModelChangeListener(listener);
+            PropertyChangeListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
             game.addPc(p.getPc());
-            game.addModelChangeListener(listener);
+            game.addPropertyChangeListener(listener);
         });
     }
+
 
     public boolean isFinalFrenzy() {
         return game.isFinalFrenzy();

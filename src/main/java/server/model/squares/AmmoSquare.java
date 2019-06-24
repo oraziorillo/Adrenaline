@@ -1,16 +1,16 @@
 package server.model.squares;
 
+import common.dto_model.PcDTO;
+import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import server.exceptions.EmptySquareException;
 import server.model.AmmoTile;
 import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
 
-import java.util.List;
-
-import static common.Constants.AMMO_DECK;
+import static common.Constants.COLLECT;
+import static common.Constants.REFILL;
 
 /**
  * A square containing an AmmoTile
@@ -32,8 +32,7 @@ public class AmmoSquare extends Square {
 
 
     @Override
-    public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners) {
-        this.listeners = listeners;
+    public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.ammoDeck = ammoDeck;
         ammoTile = this.ammoDeck.draw();
     }
@@ -63,13 +62,16 @@ public class AmmoSquare extends Square {
      */
     @Override
     public void collect(Pc currPc) throws EmptySquareException {
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         if (isEmpty())
             throw new EmptySquareException();
         currPc.addAmmo(ammoTile);
         ammoTile = null;
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onAmmoCollect(currPc.getColour()));
+        changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
     }
 
     
@@ -77,12 +79,15 @@ public class AmmoSquare extends Square {
      * If not present, loads a card
      */
     public void refill(){
+
+        PcDTO old = modelMapper.map(this, PcDTO.class);
+
         if(ammoTile == null) {
             ammoTile = ammoDeck.draw();
         }
 
         //notify listeners
-        listeners.parallelStream().forEach(l -> l.onRefill(AMMO_DECK, getRow(), getCol()));
+        changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
     }
 }
 

@@ -3,9 +3,13 @@ package server.model;
 import com.google.gson.annotations.Expose;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
-import common.remote_interfaces.ModelChangeListener;
 import server.model.squares.Square;
-import java.util.*;
+
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Support class for game that handles the map and the kill shot track
@@ -57,10 +61,9 @@ public class GameBoard {
      * assigns the proper deck to each square and the list of listeners
      * @param weaponsDeck deck of weapons
      * @param ammoDeck deck of ammoTile
-     * @param listeners list of listeners for changes
      */
-    void initSquares(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck, List<ModelChangeListener> listeners) {
-        squares.forEach(s -> s.init(weaponsDeck, ammoDeck, listeners));
+    void initSquares(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
+        squares.forEach(s -> s.init(weaponsDeck, ammoDeck));
     }
 
     
@@ -111,5 +114,10 @@ public class GameBoard {
      */
     boolean killOccurred(PcColourEnum killerColour, Boolean overkilled){
         return killShotTrack.killOccured(killerColour,overkilled);
+    }
+
+
+    void addPropertyChangeListener(PropertyChangeListener listener) {
+        squares.forEach(s -> s.addPropertyChangeListener(listener));
     }
 }
