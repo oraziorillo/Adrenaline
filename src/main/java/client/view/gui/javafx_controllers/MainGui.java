@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import server.model.squares.Square;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -67,13 +68,16 @@ public class MainGui extends GuiView {
          weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
-      PcDTO dto1= new PcDTO();
-      SquareDTO square1 = new SquareDTO();
-      square1.setRow( 2 );
-      square1.setCol( 1 );
-      dto1.setCurrSquare( square1 );
-      dto1.setColour( PcColourEnum.BLUE );
-      pcDTOS.put( dto1.getColour(),dto1 );
+      PcDTO[] dtos = new PcDTO[5];
+      for(int i=0;i<PcColourEnum.values().length;i++){
+         SquareDTO s=new SquareDTO();
+         s.setRow( 1 );
+         s.setCol( 3 );
+         PcDTO pc = new PcDTO();
+         pc.setColour( PcColourEnum.values()[i] );
+         pc.setCurrSquare( s );
+         pcDTOS.put( PcColourEnum.values()[i],pc );
+      }
    }
    
    //Button methods
@@ -152,6 +156,12 @@ public class MainGui extends GuiView {
    
    @Override
    public void propertyChange(PropertyChangeEvent evt) {
-   
+      switch (evt.getPropertyName()){
+         case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN://Eventi Pc
+            PcDTO pc = ( PcDTO ) evt.getNewValue();
+            pcDTOS.put( pc.getColour(),pc );
+            //TODO: mostra ciò che riguarda le carte
+            break;
+      }
    }
 }

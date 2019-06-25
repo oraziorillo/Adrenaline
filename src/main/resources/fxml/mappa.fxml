@@ -5,7 +5,5 @@
 <GridPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="client.view.gui.javafx_controllers.components.Map" stylesheets="/css/mappa.css" alignment="BOTTOM_RIGHT"
-          fx:id="grid" id="grid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.halignment="RIGHT"
-        padding="10" vgap="10">
-
+          fx:id="grid" id="grid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.halignment="RIGHT">
 </GridPane>
