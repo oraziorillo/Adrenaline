@@ -6,11 +6,17 @@ import client.view.gui.javafx_controllers.components.Map;
 import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
+import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
+import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTOFirstVersion;
 import common.enums.CardinalDirectionEnum;
+import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -24,26 +30,20 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static common.Constants.*;
+
 
 public class MainGui extends GuiView {
-   @FXML
-   GridPane killShotTrack;
-   @FXML
-   Map mapController;
-   @FXML
-   CardHolder cardHolderLeftController;
-   @FXML
-   CardHolder cardHolderRightController;
-   @FXML
-   CardHand<WeaponCardDTOFirstVersion> weaponHandController;
-   @FXML
-   CardHand<PowerUpCardDTO> powerUpHandController;
-   @FXML
-   HBox underMapButtons;
-   @FXML
-   Top topController;
-   @FXML
-   Chat chatController;
+   @FXML private transient GridPane killShotTrack;
+   @FXML private transient Map mapController;
+   @FXML private transient CardHolder cardHolderLeftController;
+   @FXML private transient CardHolder cardHolderRightController;
+   @FXML private transient CardHand<WeaponCardDTOFirstVersion> weaponHandController;
+   @FXML private transient CardHand<PowerUpCardDTO> powerUpHandController;
+   @FXML private transient HBox underMapButtons;
+   @FXML private transient Top topController;
+   @FXML private transient Chat chatController;
+   private transient ObservableMap<PcColourEnum,PcDTO> pcDTOS = FXCollections.observableHashMap();
    
    public MainGui() throws RemoteException {
    }
@@ -51,6 +51,7 @@ public class MainGui extends GuiView {
    
    public void initialize() {
       mapController.setMap(0);
+      pcDTOS.addListener( mapController );
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
@@ -66,6 +67,13 @@ public class MainGui extends GuiView {
          weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
+      PcDTO dto1= new PcDTO();
+      SquareDTO square1 = new SquareDTO();
+      square1.setRow( 2 );
+      square1.setCol( 1 );
+      dto1.setCurrSquare( square1 );
+      dto1.setColour( PcColourEnum.BLUE );
+      pcDTOS.put( dto1.getColour(),dto1 );
    }
    
    //Button methods
@@ -144,6 +152,6 @@ public class MainGui extends GuiView {
    
    @Override
    public void propertyChange(PropertyChangeEvent evt) {
-
+   
    }
 }

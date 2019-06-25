@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class GuiController extends AbstractClientController {
@@ -20,6 +21,15 @@ public class GuiController extends AbstractClientController {
     
     @Override
     public void start(Stage stage) throws Exception {
+        configGame(stage);
+        startGame( stage );
+    }
+    
+    private void configGame(Stage stage){
+        //TODO: scegli mappa, teschi, colore
+    }
+    
+    private void startGame(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/gui.fxml" ));
         Parent root = loader.load();
         MainGui inGameView = loader.getController();
@@ -31,11 +41,6 @@ public class GuiController extends AbstractClientController {
             this.view.ack( s );
         }
     
-        /*TODO: swap views
-        
-        oldView = null; //Don't know if necessary, is to make oldView garbage-collected
-         */
-    
         inGameView.setHostServices(getHostServices());
         inGameView.setPlayer(player);
     
@@ -45,6 +50,5 @@ public class GuiController extends AbstractClientController {
         stage.maximizedProperty().addListener( (observableValue, aBoolean, t1) ->  stage.setFullScreen( t1 ) );
         stage.setScene( new Scene( root ) );
         stage.show();
-    
     }
 }

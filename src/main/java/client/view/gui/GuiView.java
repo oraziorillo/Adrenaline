@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public abstract class GuiView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
     
-    protected transient RemotePlayer player;
+    protected static transient RemotePlayer player;
     
     protected GuiView() throws RemoteException {
     }

@@ -1,9 +1,5 @@
 package common.dto_model;
 
-import common.dto_model.PcBoardDTO;
-import common.dto_model.PowerUpCardDTO;
-import common.dto_model.SquareDTO;
-import common.dto_model.WeaponCardDTO;
 import common.enums.PcColourEnum;
 
 import java.util.ArrayList;
@@ -19,7 +15,11 @@ public class PcDTO {
     public PcColourEnum getColour() {
         return colour;
     }
-
+    
+    public void setColour(PcColourEnum colour) {
+        this.colour = colour;
+    }
+    
     public PcBoardDTO getPcBoard() {
         return pcBoard;
     }
@@ -51,4 +51,5 @@ public class PcDTO {
     public void setCurrSquare(SquareDTO currSquare) {
         this.currSquare = currSquare;
     }
+    
 }
