@@ -9,5 +9,4 @@ public interface RemoteView {
 
     PropertyChangeListener getListener();
 
-
 }

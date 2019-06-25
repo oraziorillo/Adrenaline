@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.components.card_spaces;
 
+import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.Transition;
@@ -16,6 +17,8 @@ import javafx.util.Duration;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 
+import java.io.IOException;
+
 
 public class CardHolder {
    @FXML
@@ -30,6 +33,7 @@ public class CardHolder {
    private ImageView[] cards = new ImageView[3];
    @FXML
    private final ObjectProperty<CardinalDirectionEnum> cornerProperty = new SimpleObjectProperty<>(CardinalDirectionEnum.NORTH);
+   private RemotePlayer player;
    
    public void initialize(){
       Duration duration = new Duration( 500 );
@@ -37,8 +41,17 @@ public class CardHolder {
          int cardIndex = i;
          ImageView card = ( ImageView )weapon_box.getChildren().get( i );
          cards[i]=card;
-         card.setOnMouseEntered( (me)-> appear(  cardIndex ) );
-         card.setOnMouseExited( (me)-> disappear(cardIndex ) );
+         card.setOnMouseEntered( e-> appear(  cardIndex ) );
+         card.setOnMouseExited( e-> disappear(cardIndex ) );
+         card.setOnMouseClicked( e-> {
+            try {
+               player.chooseWeaponOnSpawnPoint( cardIndex );
+            } catch ( IOException ex ) {
+               try {
+                  player.quit();
+               } catch ( IOException ignored ) {}
+            }
+         } );
          card.onMouseClickedProperty().set( (e)-> System.out.println("clicked") );
          TranslateTransition trans = new TranslateTransition( duration );
          rotations[i] = new RotateTransition( duration );

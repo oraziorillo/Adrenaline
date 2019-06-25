@@ -157,7 +157,6 @@ public class Pc {
             powerUps.add(powerUpToDraw);
 
         //notify listeners
-        //notify listeners
         changes.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
     }
 

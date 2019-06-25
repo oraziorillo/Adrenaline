@@ -1,1 +1,29 @@
-{}
+{
+  "eadf31f9-5520-47c8-9979-9c94d100e603": {
+    "username": "uiy",
+    "player": {
+      "token": "eadf31f9-5520-47c8-9979-9c94d100e603",
+      "pc": null,
+      "currState": null
+    },
+    "incompleteGameID": null
+  },
+  "9f465564-82fb-405f-a0d3-479e5de8d9e2": {
+    "username": "rafdsc+",
+    "player": {
+      "token": "9f465564-82fb-405f-a0d3-479e5de8d9e2",
+      "pc": null,
+      "currState": null
+    },
+    "incompleteGameID": null
+  },
+  "bb0b2132-d60e-4622-8737-aaa95d53c942": {
+    "username": "euay",
+    "player": {
+      "token": "bb0b2132-d60e-4622-8737-aaa95d53c942",
+      "pc": null,
+      "currState": null
+    },
+    "incompleteGameID": null
+  }
+}

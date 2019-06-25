@@ -3,6 +3,7 @@ package client.view.gui;
 import client.controller.socket.ClientSocketHandler;
 import client.view.AbstractView;
 import common.remote_interfaces.RemoteLoginController;
+import common.remote_interfaces.RemotePlayer;
 import javafx.concurrent.Task;
 import javafx.scene.control.*;
 
@@ -18,14 +19,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class GuiView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
-
+    
+    protected transient RemotePlayer player;
+    
     protected GuiView() throws RemoteException {
     }
 
     @Override
     public RemoteLoginController acquireConnection() {
         RemoteLoginController loginController;
-        Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?\nI suggest it, cause rmi is just 2 lines of code", new ButtonType("Socket"), new ButtonType("Rmi"));
+        Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("Socket"), new ButtonType("Rmi"));
         rmiOrSocket.setHeaderText(null);
         rmiOrSocket.setTitle("Select connection");
         Optional<ButtonType> resonse = rmiOrSocket.showAndWait();
@@ -104,6 +107,7 @@ public abstract class GuiView extends UnicastRemoteObject implements AbstractVie
         errorAlert.setContentText(msg);
         errorAlert.setHeaderText(null);
         errorAlert.showAndWait();
+        try {player.quit();} catch ( IOException ignored ) {}
         System.exit(1);
     }
 
@@ -113,5 +117,8 @@ public abstract class GuiView extends UnicastRemoteObject implements AbstractVie
         input.setHeaderText(null);
         return input.showAndWait().get();
     }
-
+    
+    public void setPlayer(RemotePlayer player) {
+       this.player = player;
+    }
 }

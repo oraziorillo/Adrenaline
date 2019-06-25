@@ -16,9 +16,9 @@
             <ColumnConstraints hgrow="ALWAYS"/>
         </columnConstraints>
         <VBox GridPane.rowIndex="1">
-            <Button VBox.vgrow="ALWAYS"/>
-            <Button VBox.vgrow="ALWAYS"/>
-            <Button VBox.vgrow="ALWAYS"/>
+            <Button id="moveButton" VBox.vgrow="ALWAYS" onAction="#moveButton"/>
+            <Button id="collectButton" VBox.vgrow="ALWAYS" onAction="#collectButton"/>
+            <Button id="shootButton" VBox.vgrow="ALWAYS" onAction="#shootButton"/>
         </VBox>
     </GridPane>
 </StackPane>

@@ -6,9 +6,9 @@
     <center>
         <HBox alignment="CENTER_RIGHT">
             <VBox alignment="CENTER" HBox.hgrow="SOMETIMES"> <!--Map and buttons-->
-                <fx:include source="mappa.fxml" fx:id="mappa" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS" viewOrder="-1"/>
+                <fx:include source="mappa.fxml" fx:id="map" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS" viewOrder="-1"/>
                 <HBox fx:id="underMapButtons" alignment="TOP_RIGHT" translateY = "-5">
-                    <Button text="Apply"/><Button text="Undo"/><Button text="Reload"/><Button text="Pass"/>
+                    <Button text="Apply" onAction="#applyClicked"/><Button text="Undo"/><Button text="Reload" onAction="#reloadClicked"/><Button text="Pass" onAction="#passClicked"/><Button text="Skip" onAction="#skipClicked"/>
                 </HBox>
             </VBox>
             <ImageView preserveRatio="true"><Image url="/images/portamazzo_armi.png" preserveRatio="true" requestedWidth="200"/> </ImageView>
