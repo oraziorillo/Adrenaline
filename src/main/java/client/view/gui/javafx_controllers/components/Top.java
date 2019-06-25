@@ -2,6 +2,7 @@ package client.view.gui.javafx_controllers.components;
 
 import client.view.gui.javafx_controllers.dialogs.SettingsMenu;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
+import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ public class Top {
    public HBox killShotTrack;
    public AnchorPane cardHolder;
    private HostServices hostServices;
+   private RemotePlayer player;
    
    public void initialize(){
       double height =100;
@@ -47,6 +49,7 @@ public class Top {
       Parent parent = loader.load();
       SettingsMenu settingsMenu = loader.getController();
       settingsMenu.setHostServices( hostServices );
+      settingsMenu.setPlayer( player );
       Scene scene = new Scene( parent );
       Stage stage = new Stage();
       stage.initModality( Modality.APPLICATION_MODAL );
@@ -57,5 +60,10 @@ public class Top {
    
    public void setHostServices(HostServices hostServices) {
       this.hostServices = hostServices;
+   }
+   
+   public void setPlayer(RemotePlayer player) {
+      this.player = player;
+      
    }
 }

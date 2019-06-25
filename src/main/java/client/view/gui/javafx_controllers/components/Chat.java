@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.components;
 
+import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -26,6 +27,7 @@ public class Chat {
    private TranslateTransition translate;
    private ScaleTransition scale = new ScaleTransition(duration);
    private boolean isOpened  = true;
+   private RemotePlayer player;
    
    public void initialize(){
       translate = new TranslateTransition( duration,messaggi );
@@ -87,4 +89,7 @@ public class Chat {
       input.clear();
    }
    
+   public void setPlayer(RemotePlayer player) {
+      this.player = player;
+   }
 }
