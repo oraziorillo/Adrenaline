@@ -33,7 +33,8 @@ public enum SocketPlayerEnum {
     CHOOSE_POWER_UP("ch","choose power up"),
     REMOVE_UPGRADE("ru","remove selectUpgrade"),
     UNDO("undo"),
-    QUIT("quit","q");
+    QUIT("quit","q"),
+    HELP("help");
     
     private Set<String> CliStrings = new HashSet<>();
     
@@ -47,7 +48,7 @@ public enum SocketPlayerEnum {
                 return e;
             }
         }
-        throw new IllegalArgumentException( s + " is not a recognised command" );
+        throw new IllegalArgumentException( s + " is not a recognised command. Type help to display all possible commands." );
     }
     
     public Set<String> getCliStrings() {

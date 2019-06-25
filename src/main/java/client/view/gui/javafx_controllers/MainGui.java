@@ -79,11 +79,6 @@ public class MainGui extends GuiView {
       chatController.appear();
    }
 
-   @Override
-   public PropertyChangeListener getListener() {
-      return null;
-   }
-
 
    /**
     * Cause every message is immediatly displayed in the chat, no acks are pending
@@ -93,6 +88,14 @@ public class MainGui extends GuiView {
    @Override
    public Collection<String> getPendingAcks() {
       return new HashSet<>();
+   }
+
+
+
+   //TODO i seguenti due metodi sono stati inseriti solo per non avere errore
+   @Override
+   public PropertyChangeListener getListener() {
+      return null;
    }
 
    @Override

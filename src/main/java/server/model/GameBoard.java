@@ -5,7 +5,7 @@ import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
 import server.model.squares.Square;
 
-import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -117,7 +117,7 @@ public class GameBoard {
     }
 
 
-    void addPropertyChangeListener(PropertyChangeListener listener) {
-        squares.forEach(s -> s.addPropertyChangeListener(listener));
+    public void addPropertyChangeSupport(PropertyChangeSupport pcs) {
+        squares.forEach(s -> s.addPropertyChangeSupport(pcs));
     }
 }

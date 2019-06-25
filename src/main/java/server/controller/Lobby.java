@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class Lobby {
 
     //TODO: timer preso dal file di config
-    private static final int TIME = Math.toIntExact( TimeUnit.MINUTES.toMillis( 3 ) );
+    private static final int TIME = Math.toIntExact( TimeUnit.MINUTES.toMillis( 1 ) );
 
     @Expose private Controller controller;
     @Expose private UUID gameUUID;

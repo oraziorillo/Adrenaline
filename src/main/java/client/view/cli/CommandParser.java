@@ -7,7 +7,8 @@ import java.io.IOException;
 
 public abstract class CommandParser {
     public static void executeCommand(String[] commands, RemotePlayer player, AbstractView view) throws IOException {
-        switch (SocketPlayerEnum.parseString( commands[0] )) {//TODO: aggiungi i comandi restanti
+        switch (SocketPlayerEnum.parseString( commands[0] )) {
+            //TODO: aggiungi i comandi restanti
             case CHOOSE_MAP:
                 player.chooseMap( Integer.parseInt( commands[1] ) );
                 break;
@@ -56,6 +57,8 @@ public abstract class CommandParser {
             case SKIP:
                 player.skip();
                 break;
+            case HELP:
+                printHelp();
             default:
                 StringBuilder errorMessage = new StringBuilder("Unrecognized command: "+commands[0]+" with arguments: ");
                 String separator = ", ";
@@ -64,5 +67,34 @@ public abstract class CommandParser {
                 }
                 throw new IllegalArgumentException( errorMessage.toString() );
         }
+    }
+
+    private static void printHelp(){
+        System.out.println("m\t" + "map\t" + "choose map\n" +
+                        "sk\t" + "skulls\t" + "choose number of skulls\n" +
+                        "choose colour\t" + "colour\t" + "col\n" +
+                        "choose colour\t" + "colour\t" + "col\n" +
+                        "c\t" + "comment\n" +
+                        "run\t" +"r\n" +
+                        "grab stuff\t" + "gs\n" +
+                        "shoot\t" + "s\n" +
+                        "pw\t" + "powerup\n" +
+                        "ss\t" + "select square\n" +
+                        "grab weapon\t" + "gw\t" + "choose weapon\n" +
+                        "cw\n" +
+                        "sf\t" + "switch\t" + "switch firemode\n" +
+                        "ch\t" + "choose powerup\n" +
+                        "selectUpgrade\t" + "u\n" +
+                        "asynch\t" + "ca\n" +
+                        "choose direction\t" + "choose dir\n" +
+                        "ok\n" +
+                        "re\t" + "reload\n" +
+                        "p\t" + "pass\n" +
+                        "skip\n" +
+                        "pw\t" + "power up\n" +
+                        "ch\t" + "choose power up\n" +
+                        "ru\t" + "remove selectUpgrade\n" +
+                        "undo\n" +
+                        "quit\t" + "q");
     }
 }
