@@ -6,11 +6,9 @@ import client.view.gui.javafx_controllers.components.Map;
 import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
-import common.dto_model.PcBoardDTO;
 import common.dto_model.PowerUpCardDTO;
-import common.enums.CardinalDirectionEnum;
-import common.enums.PcColourEnum;
 import common.dto_model.WeaponCardDTOFirstVersion;
+import common.enums.CardinalDirectionEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.fxml.FXML;
@@ -18,6 +16,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -79,6 +79,11 @@ public class MainGui extends GuiView {
       chatController.appear();
    }
 
+   @Override
+   public PropertyChangeListener getListener() {
+      return null;
+   }
+
 
    /**
     * Cause every message is immediatly displayed in the chat, no acks are pending
@@ -90,4 +95,8 @@ public class MainGui extends GuiView {
       return new HashSet<>();
    }
 
+   @Override
+   public void propertyChange(PropertyChangeEvent evt) {
+
+   }
 }

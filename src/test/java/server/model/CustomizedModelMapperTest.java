@@ -48,7 +48,7 @@ public class CustomizedModelMapperTest {
         when( pc1.getColour()).thenReturn( PcColourEnum.BLUE);
         when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
         SpawnPoint spawnPoint = new SpawnPoint(2, 2, SquareColourEnum.RED);
-        spawnPoint.init(deck, null, null);
+        spawnPoint.init(deck, null);
         spawnPoint.addPc(pc1); spawnPoint.addPc(pc2);
         spawnPoint.setTargetable(true);
         SquareDTO squareDTO = modelMapper.map(spawnPoint, SquareDTO.class);
@@ -75,7 +75,7 @@ public class CustomizedModelMapperTest {
         when(deck.draw()).thenReturn(ammoTile);
         when( pc1.getColour()).thenReturn( PcColourEnum.BLUE);
         when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
-        ammoSquare.init(null, deck, null);
+        ammoSquare.init(null, deck);
         ammoSquare.addPc(pc1); ammoSquare.addPc(pc2);
         ammoSquare.refill();
         SquareDTO squareDTO = modelMapper.map(ammoSquare, SquareDTO.class);
