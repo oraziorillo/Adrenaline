@@ -3,13 +3,15 @@ package server.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
+
 import java.util.Arrays;
 
 /**
  * Represents the ammo tiles
  */
 public class AmmoTile {
-    private short[] ammo;
+    @Expose private short[] ammo;
     private boolean hasPowerUp;
 
     /**

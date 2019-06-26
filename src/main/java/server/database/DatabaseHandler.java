@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static server.database.FileEnum.*;
 
@@ -93,6 +94,11 @@ public class DatabaseHandler {
     }
 
 
+    public boolean isPendantGame(UUID gameUUID) {
+        return gameInfoByUUID.containsKey(gameUUID);
+    }
+
+
     public boolean hasPendentGame(UUID token) {
         return playerInfoByToken.get(token).hasPendentGame();
     }
@@ -110,6 +116,13 @@ public class DatabaseHandler {
 
     public RemoteView getView(UUID token) {
         return playerInfoByToken.get(token).getView();
+    }
+
+
+    public List<RemoteView> getViews(UUID gameID) {
+        return gameInfoByUUID.get(gameID).getPlayersTokens().stream()
+                .map(t -> playerInfoByToken.get(t).getView())
+                .collect(Collectors.toList());
     }
 
 
@@ -141,7 +154,7 @@ public class DatabaseHandler {
     }
 
 
-    void gameStarted(Lobby lobby) {
+    public void gameStarted(Lobby lobby) {
         UUID gameUUID = lobby.getGameUUID();
         if (!gameInfoByUUID.containsKey(gameUUID)){
             //if the starting game is a new one, then add to the db the corresponding data
@@ -158,7 +171,7 @@ public class DatabaseHandler {
     }
 
 
-    void gameEnded(UUID gameUUID) {
+    public void gameEnded(UUID gameUUID) {
         List<UUID> playersInGame = gameInfoByUUID.get(gameUUID).getPlayersTokens();
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded(gameUUID));
         gameInfoByUUID.remove(gameUUID);

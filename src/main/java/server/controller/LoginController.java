@@ -23,6 +23,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
 
    private LoginController() throws IOException {
       super();
+      this.newLobby = new Lobby();
    }
 
 
@@ -66,7 +67,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     *
     * @param token the unique identifier for a player
     */
-   public void joinLobby(UUID token) throws PlayerAlreadyLoggedInException {
+   public synchronized void joinLobby(UUID token) throws PlayerAlreadyLoggedInException {
       if (databaseHandler.isRegistered(token)) {
          Lobby currLobby;
          if (databaseHandler.hasPendentGame(token)) {
@@ -75,7 +76,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
             currLobby.addPlayer(databaseHandler.getPlayer(token));
          } else {
             //otherwise it is added to a new game
-            if (newLobby == null)
+            if (!newLobby.isAvailable())
                newLobby = new Lobby();
             newLobby.addPlayer(databaseHandler.getPlayer(token));
          }
@@ -83,7 +84,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    }
    
    @Override
-   public synchronized void setRemoteView(RemoteView view, UUID token) throws IOException {
+   public synchronized void setRemoteView(RemoteView view, UUID token) {
       databaseHandler.registerView( token,view );
    }
 }

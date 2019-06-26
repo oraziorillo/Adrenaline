@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import server.database.DatabaseHandler;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
@@ -44,13 +45,21 @@ public class Game {
         this.ammoDeck = new Deck<>();
     }
 
+    public Game(UUID gameUUID) {
+        //todo inizializza da file
+    }
 
-    public static Game getGame(){
-        Game game = new Game();
-        game.initWeaponsDeck();
-        game.initPowerUpsDeck();
-        game.initAmmoDeck();
-        return game;
+
+    public static Game getGame(UUID gameUUID){
+        if (DatabaseHandler.getInstance().isPendantGame(gameUUID))
+            return new Game(gameUUID);
+        else {
+            Game game = new Game();
+            game.initWeaponsDeck();
+            game.initPowerUpsDeck();
+            game.initAmmoDeck();
+            return game;
+        }
     }
 
 
@@ -99,7 +108,7 @@ public class Game {
 
     private void initAmmoDeck(){
         try {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
             Type ammoTileArrayListType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
 
@@ -182,7 +191,8 @@ public class Game {
 
 
     public void addPc(Pc pc) {
-        this.pcs.add(pc);
+        pc.addPropertyChangeSupport(changes);
+        pcs.add(pc);
     }
 
 
@@ -321,7 +331,6 @@ public class Game {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         changes.addPropertyChangeListener(listener);
-        pcs.forEach(pc -> pc.addPropertyChangeListener(listener));
     }
 
 }

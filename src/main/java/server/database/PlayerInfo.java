@@ -9,7 +9,7 @@ import java.util.UUID;
 class PlayerInfo {
 
     @Expose private String username;
-    @Expose private Player player;
+    /*@Expose*/ private Player player;
     @Expose private UUID incompleteGameID;
     private RemoteView view;
 

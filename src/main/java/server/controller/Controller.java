@@ -27,21 +27,18 @@ public class Controller{
 
 
     public Controller(List<Player> players) {
-        super();
-        this.game = Game.getGame();
         this.players = players;
         this.squaresToRefill = new HashSet<>();
         this.deadPlayers = new LinkedList<>();
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
-        initGame();
     }
 
 
-    private void initGame(){
+    public void initGame(UUID gameUUID){
+        game = Game.getGame(gameUUID);
         players.forEach(p -> {
             PropertyChangeListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
-            game.addPc(p.getPc());
             game.addPropertyChangeListener(listener);
         });
     }

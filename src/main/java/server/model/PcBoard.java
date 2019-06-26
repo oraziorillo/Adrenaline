@@ -5,7 +5,6 @@ import common.enums.PcColourEnum;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import static common.Constants.*;
@@ -192,7 +191,7 @@ class PcBoard {
     }
 
 
-    void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
+    void addPropertyChangeSupport(PropertyChangeSupport changes) {
+        this.changes = changes;
     }
 }

@@ -3,12 +3,13 @@ package server.database;
 import com.google.gson.annotations.Expose;
 import server.controller.Lobby;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 class GameInfo {
 
-    @Expose private Lobby lobby;
+    /*@Expose*/ private Lobby lobby;
     @Expose private List<UUID> playersTokens;
     private boolean active;
 
@@ -16,6 +17,7 @@ class GameInfo {
 
     GameInfo(Lobby lobby){
         this.lobby = lobby;
+        this.playersTokens = new LinkedList<>();
     }
 
     boolean isActive() {
