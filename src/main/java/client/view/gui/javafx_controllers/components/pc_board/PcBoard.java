@@ -3,26 +3,24 @@ package client.view.gui.javafx_controllers.components.pc_board;
 import common.enums.PcColourEnum;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
-public class PcController {
+public class PcBoard implements ChangeListener<Boolean> {
    public HBox mainPane;
    public ImageView immagine;
    @FXML Double HEIGHT;
-   @FXML
-   HBox translating;
-   @FXML
-   Azioni azioniController;
-   @FXML
-   Vita vitaController;
+   @FXML HBox translating;
+   @FXML Azioni azioniController;
+   @FXML Vita vitaController;
    private TranslateTransition translate;
    public void initialize(){
-      azioniController.setImage( new Image( "/images/pc_board/banshee_azioni.png",0, HEIGHT, true,false ) );
-      vitaController.setBackground( new Image( "/images/pc_board/banshee_vita.png",0,HEIGHT,true,false ) );
+      setPcColour( PcColourEnum.PURPLE );
       translate = new TranslateTransition( new Duration( 500 ), translating);
       translating.setTranslateX( -vitaController.getBackground().getWidth() );
       translate.setToX( 0 );
@@ -45,7 +43,17 @@ public class PcController {
    }
    
    public void setPcColour(PcColourEnum color){
-      azioniController.setImage( new Image( "/images/pc_board/"+color+".png",0,HEIGHT,true,false ) );
-      vitaController.setBackground( new Image( "/images/pc_board"+color+".png",0,HEIGHT,true,false ) );
+      azioniController.setImage( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/azioni.png",0,HEIGHT,true,false ) );
+      vitaController.setBackground( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/vita.png",0,HEIGHT,true,false ) );
+      immagine.setImage( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/immagine.png",0,HEIGHT,true,false ) );
+   }
+   
+   @Override
+   public void changed(ObservableValue<? extends Boolean> finalFrenzyProp, Boolean oldFrenzy, Boolean newFrenzy) {
+      if(newFrenzy){
+         //TODO: carica azioni frenetiche
+      }else{
+         //TODO: carica azioni normali
+      }
    }
 }

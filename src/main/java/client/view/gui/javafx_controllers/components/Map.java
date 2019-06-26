@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.components;
 
 import common.dto_model.PcDTO;
+import common.dto_model.SquareDTO;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.binding.Bindings;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
-public class Map implements MapChangeListener<PcColourEnum,PcDTO> {
+public class Map implements MapChangeListener<PcColourEnum,PcDTO>{
    @FXML
    GridPane grid;
    @FXML Button button;
@@ -28,6 +29,7 @@ public class Map implements MapChangeListener<PcColourEnum,PcDTO> {
    
    private Pane[][] squares = new Pane[3][4];
    private HashMap<PcColourEnum,Circle> pcCircles = new HashMap<>();
+   
    private static final int ROWS = 3;
    private static final int COLS = 4;
    
@@ -71,7 +73,7 @@ public class Map implements MapChangeListener<PcColourEnum,PcDTO> {
    }
    
    public void setMap(int mapIndex){
-      Image image = new Image( "/images/map_"+mapIndex+".png" );
+      Image image = new Image( "/images/maps/map_"+mapIndex+".png" );
       BackgroundImage bi = new BackgroundImage( image,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize( 1,1,false,false,true,false ) );
       double ratio = image.getWidth()/image.getHeight();
       grid.setBackground( new Background( bi ) );

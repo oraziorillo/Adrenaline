@@ -62,4 +62,14 @@ public class SquareDTO {
     public void setPcs(Set<PcColourEnum> pcs) {
         this.pcs = pcs;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof  SquareDTO){
+            SquareDTO s = (SquareDTO)obj;
+            return s.col == this.col && s.row == this.row;
+        }else {
+            return false;
+        }
+    }
 }

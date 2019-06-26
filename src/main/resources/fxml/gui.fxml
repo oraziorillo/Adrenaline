@@ -20,8 +20,8 @@
         <fx:include fx:id="top" source="top.fxml" BorderPane.alignment="TOP_CENTER"/>
     </top>
     <bottom>
-        <HBox minHeight="${pc.height}" maxHeight="${pc.height}" prefHeight="${pc.height}" alignment="BOTTOM_CENTER" >
-            <fx:include source="pc_board/pcBoard.fxml" fx:id="pc" viewOrder="-Infinity" />
+        <HBox minHeight="${pcBoard.height}" maxHeight="${pcBoard.height}" prefHeight="${pcBoard.height}" alignment="BOTTOM_CENTER" >
+            <fx:include source="pc_board/pcBoard.fxml" fx:id="pcBoard" viewOrder="-Infinity" />
             <Region HBox.hgrow="ALWAYS"/>
             <fx:include source="card_hand.fxml" fx:id="weaponHand" HBox.hgrow="ALWAYS"/>
             <Region HBox.hgrow="ALWAYS"/>

@@ -6,6 +6,7 @@ import client.view.gui.javafx_controllers.components.Map;
 import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
+import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.SquareDTO;
@@ -14,15 +15,14 @@ import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-import javafx.collections.ObservableSet;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import server.model.squares.Square;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -44,7 +44,8 @@ public class MainGui extends GuiView {
    @FXML private transient HBox underMapButtons;
    @FXML private transient Top topController;
    @FXML private transient Chat chatController;
-   private transient ObservableMap<PcColourEnum,PcDTO> pcDTOS = FXCollections.observableHashMap();
+   @FXML private transient PcBoard pcBoardController;
+   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );   //TODO: fallo osservare da chi è interessato
    
    public MainGui() throws RemoteException {
    }
@@ -52,7 +53,8 @@ public class MainGui extends GuiView {
    
    public void initialize() {
       mapController.setMap(0);
-      pcDTOS.addListener( mapController );
+      //init finalFrenzy listeners
+      finalFrenzy.addListener( ( ChangeListener<? super Boolean> ) pcBoardController );
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
@@ -76,7 +78,6 @@ public class MainGui extends GuiView {
          PcDTO pc = new PcDTO();
          pc.setColour( PcColourEnum.values()[i] );
          pc.setCurrSquare( s );
-         pcDTOS.put( PcColourEnum.values()[i],pc );
       }
    }
    
@@ -146,22 +147,23 @@ public class MainGui extends GuiView {
       return new HashSet<>();
    }
    
-   
-   //TODO i seguenti due metodi sono stati inseriti solo per non avere errore
-   
    @Override
    public PropertyChangeListener getListener() {
-      return null;
+      return this;
    }
    
    @Override
    public void propertyChange(PropertyChangeEvent evt) {
       switch (evt.getPropertyName()){
          case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN://Eventi Pc
-            PcDTO pc = ( PcDTO ) evt.getNewValue();
-            pcDTOS.put( pc.getColour(),pc );
-            //TODO: mostra ciò che riguarda le carte
+            //TODO
+         case SET_TARGETABLE: case COLLECT: case REFILL: //Eventi square
+            //TODO
+         case FINAL_FRENZY:   //eventi game
+            finalFrenzy.setValue( ( Boolean ) evt.getNewValue() );
             break;
+         case ADD_AMMO: case ADD_DAMAGE: case ADD_MARKS: case PAY_AMMO: case INCREASE_NUMBER_OF_DEATHS: case INCREASE_POINTS: //eventi PcBoard
+            //TODO
       }
    }
 }
