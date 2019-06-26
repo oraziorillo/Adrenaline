@@ -39,6 +39,7 @@ public class PcSelectionState extends State {
         if (pcColour != null) {
             controller.removeAvailableColour(pcColour);
             Pc pc = new Pc(PcColourEnum.valueOf(pcColour), controller.getGame());
+            controller.getGame().addPc(pc);
             controller.getCurrPlayer().setPc(pc);
             return true;
         }

@@ -303,9 +303,9 @@ public class Pc {
     }
 
 
-    void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
-        pcBoard.addPropertyChangeListener(listener);
+    public void addPropertyChangeSupport(PropertyChangeSupport changes) {
+        this.changes = changes;
+        pcBoard.addPropertyChangeSupport(changes);
     }
 }
 

@@ -16,10 +16,11 @@ import java.util.concurrent.TimeUnit;
 public class Lobby {
 
     //TODO: timer preso dal file di config
-    private static final int TIME = Math.toIntExact( TimeUnit.MINUTES.toMillis( 1 ) );
+    private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(10));
 
     @Expose private Controller controller;
     @Expose private UUID gameUUID;
+    private boolean gameStarted;
     private List<Player> players;
     private Timer timer;
     private DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
@@ -38,6 +39,11 @@ public class Lobby {
         this.players = new LinkedList<>();
         this.timer = new Timer(TIME, actionEvent -> startNewGame());
         this.timer.stop();
+    }
+
+
+    public boolean isAvailable() {
+        return !gameStarted && players.size() <= 5;
     }
 
 
@@ -62,9 +68,9 @@ public class Lobby {
     void addPlayer(Player player) throws PlayerAlreadyLoggedInException {
         if (players.contains(player))
             throw new PlayerAlreadyLoggedInException();
+        players.add(player);
         ackAllPlayersExcept("Say hello to @" + databaseHandler.getUsername(player.getToken()) + System.lineSeparator() + System.lineSeparator() +
                 "There are " + players.size() + " players in this lobby now");
-        players.add(player);
         try {
             databaseHandler.getView(player.getToken()).ack("Joined a lobby. There are " + players.size() + " players in this room");
         } catch (IOException e) {
@@ -72,14 +78,14 @@ public class Lobby {
             removePlayer(player);
         }
 
-        ackAllPlayersExcept( getAllUsernames() );
-        if (players.size() >= 3 && players.size() <5) {
+        ackAllPlayersExcept(getAllUsernames());
+        if (players.size() >= 3 && players.size() < 5) {
             timer.start();
-            ackAllPlayersExcept( players.size()+" players has joined! The game will start in "+ TimeUnit.MILLISECONDS.toMinutes( timer.getDelay() )+" minutes" );
-        }else if (players.size() == 5) {
+            ackAllPlayersExcept(players.size() + " players have joined! The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes");
+        } else if (players.size() == 5) {
             timer.stop();
             startNewGame();
-            ackAllPlayersExcept(players.size() + " players has joined! Game is starting!");
+            ackAllPlayersExcept(players.size() + " players have joined! Game is starting!");
         }
     }
 
@@ -96,10 +102,19 @@ public class Lobby {
 
 
     private void startNewGame() {
-        this.controller = new Controller(players);
-
+        timer.stop();
+        controller = new Controller(players);
+        controller.initGame(gameUUID);
         players.forEach(p -> p.setCurrState(new SetupMapState(controller)));
-        //TODO: else this.controller = fromJson
+        DatabaseHandler.getInstance().gameStarted(this);
+        DatabaseHandler.getInstance().getViews(gameUUID).forEach(v -> {
+            try {
+                v.ack("Game Started");
+            } catch (IOException e) {
+                //todo fare qualcosa
+            }
+        });
+        gameStarted = true;
     }
 
 
@@ -119,14 +134,14 @@ public class Lobby {
     }
 
 
-    private String getAllUsernames(){
+    private String getAllUsernames() {
         StringBuilder result = new StringBuilder("Players in the room:");
-        String at = System.lineSeparator()+"@";
-        for(Player p: players){
-            result.append( at+ databaseHandler.getUsername( p.getToken() ) );
+        String at = System.lineSeparator() + "@";
+        for (Player p : players) {
+            result.append(at + databaseHandler.getUsername(p.getToken()));
         }
         return result.toString();
     }
-    
+
 }
 

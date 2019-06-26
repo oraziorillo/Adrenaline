@@ -18,8 +18,7 @@ public class AmmoTileDeckTest {
 
     @Before
     public void ammoTileDeckConstructionFine() throws FileNotFoundException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         Type ammoTileType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
 
