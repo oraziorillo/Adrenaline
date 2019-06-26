@@ -11,6 +11,7 @@ import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTOFirstVersion;
+import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
@@ -57,6 +58,8 @@ public class MainGui extends GuiView {
       finalFrenzy.addListener( ( ChangeListener<? super Boolean> ) pcBoardController );
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
+      cardHolderRightController.setBackgroundColor( AmmoEnum.YELLOW );
+      topController.cardHolderController.setBackgroundColor( AmmoEnum.BLUE );
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
          Node n = underMapButtons.getChildren().get(i);
          n.setTranslateX(2 * (size - i));

@@ -65,7 +65,7 @@ public class CardHolder {
    }
    
    public void setBackgroundColor(AmmoEnum color){
-      String path = "/images/porta_armi_"+color.name().toLowerCase()+".png";
+      String path = "/images/card_holders/"+color.name().toLowerCase()+".png";
       Image img = new Image( path,true );
       background.setImage( img );
    }

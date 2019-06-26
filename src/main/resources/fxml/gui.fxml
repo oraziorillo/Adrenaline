@@ -13,7 +13,7 @@
                 </HBox>
             </VBox>
             <Region HBox.hgrow="SOMETIMES"/>
-            <ImageView preserveRatio="true" fx:id="weaponsDeck"><Image url="/images/portamazzo_armi.png" preserveRatio="true" requestedWidth="200"/> </ImageView>
+            <ImageView preserveRatio="true" fx:id="weaponsDeck"><Image url="/images/deck_holders/armi.png" preserveRatio="true" requestedWidth="200"/> </ImageView>
         </HBox>
     </center>
     <top>
