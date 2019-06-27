@@ -129,12 +129,23 @@ public class MainGui extends GuiView {
    
    @FXML
    private void skipClicked(ActionEvent actionEvent) {
-      
+      //TODO: remove following test lines
+      Random random = new Random();
+      PcColourEnum pcToMoveColor = PcColourEnum.values()[random.nextInt( PcColourEnum.values().length )];
+      PropertyChangeSupport thrower = new PropertyChangeSupport( this );
+      PcDTO pcToMove = new PcDTO();
+      SquareDTO square = new SquareDTO();
+      square.setCol( random.nextInt( 4 ) );
+      square.setRow( random.nextInt( 3 ) );
+      pcToMove.setCurrSquare( square );
+      pcToMove.setColour( pcToMoveColor );
+      propertyChange(new PropertyChangeEvent(this,MOVE_TO,pcs.get( pcToMoveColor ),pcToMove ));
+      /*
       try {
          player.skip();
       } catch ( IOException e ) {
          error( "Server unreachable" );
-      }
+      }*/
    }
    
    public void setHostServices(HostServices hostServices) {
