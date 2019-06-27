@@ -15,7 +15,7 @@ public interface AbstractView extends RemoteView {
 
     RemoteLoginController acquireConnection() throws RemoteException;
 
-    boolean wantsRegister() throws RemoteException;
+    boolean wantsToRegister() throws RemoteException;
 
     String acquireUsername() throws RemoteException;
 

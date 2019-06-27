@@ -8,6 +8,7 @@ import server.model.WeaponCard;
 import server.model.squares.Square;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,11 @@ public class Controller{
             PropertyChangeListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
             game.addPropertyChangeListener(listener);
         });
+        try {
+            getCurrPlayer().getView().ack("It's your turn!!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -166,6 +172,12 @@ public class Controller{
             currPlayerIndex = 0;
         else
             currPlayerIndex++;
+
+        try {
+            getCurrPlayer().getView().ack("You are the current player now!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

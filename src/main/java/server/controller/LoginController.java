@@ -57,6 +57,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    @Override
    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
       view.ack("Logging in as @" + databaseHandler.getUsername(token));
+      databaseHandler.getPlayer(token).setView(view);    //PER IL DEBUG
       databaseHandler.registerView( token,view );
       return databaseHandler.getPlayer(token);
    }

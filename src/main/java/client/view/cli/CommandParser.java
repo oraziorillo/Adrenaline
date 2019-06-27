@@ -10,6 +10,7 @@ public abstract class CommandParser {
         switch (SocketPlayerEnum.parseString( commands[0] )) {
             //TODO: aggiungi i comandi restanti
             case CHOOSE_MAP:
+                view.ack("qua ci sono arrivato " + commands[1]);
                 player.chooseMap( Integer.parseInt( commands[1] ) );
                 break;
             case CHOOSE_NUMBER_OF_SKULLS:

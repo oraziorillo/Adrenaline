@@ -55,6 +55,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     }
     
     private void parseRemoteView(String[] args) throws IOException {
+        view.ack("Arrivo in parseRemoteView");
         switch (RemoteViewEnum.valueOf( args[0] )) {
             case ACK:
                 StringBuilder builder = new StringBuilder(  );
@@ -83,7 +84,8 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public synchronized RemotePlayer login(UUID token, RemoteView view) {
-        this.view = view;
+        if (view == null)
+            this.view = view;
         this.token = token;
         new Thread( this ).start();
         out.println( LOGIN.toString() + "," + token );
@@ -96,26 +98,36 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public synchronized void joinLobby(UUID token) {
+        try {
+            view.ack("Sono in joinLobby " + out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         out.println( JOIN_LOBBY.toString() + "," + token );
         out.flush();
     }
     
     @Override
-    public void setRemoteView(RemoteView view, UUID token) throws IOException {
+    public synchronized void setRemoteView(RemoteView view, UUID token) throws IOException {
         this.view = view;
     }
     
     //Player
     
     @Override
-    public void chooseMap(int n) {
-        out.print( CHOOSE_MAP.toString() + "," + n );
+    public synchronized void chooseMap(int n) {
+        try {
+            view.ack("Sono in chooseMap " + out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        out.println( CHOOSE_MAP.toString() + "," + n );
         out.flush();
     }
     
     
     @Override
-    public void chooseNumberOfSkulls(int n) {
+    public synchronized void chooseNumberOfSkulls(int n) {
         out.println( CHOOSE_NUMBER_OF_SKULLS.toString() + "," + n );
         out.flush();
     }

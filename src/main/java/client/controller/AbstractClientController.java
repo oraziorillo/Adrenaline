@@ -18,11 +18,16 @@ public abstract class AbstractClientController extends Application {
     
     protected AbstractClientController(AbstractView view) {
         this.view = view;
+        initialize();
+    }
+
+
+    protected void initialize(){
         try {
             UUID token;
             this.loginController = view.acquireConnection();
-            boolean wantsRegister = view.wantsRegister();
-            if (wantsRegister) {
+            boolean wantsToRegister = view.wantsToRegister();
+            if (wantsToRegister) {
                 do {
                     token = loginController.register( view.acquireUsername(), view );
                 } while (token == null);
@@ -44,7 +49,7 @@ public abstract class AbstractClientController extends Application {
             }catch ( RemoteException ignored ){
                 throw new IllegalStateException( "View should be local" );
             }
-            
+
         } catch ( PlayerAlreadyLoggedInException e ) {
             e.printStackTrace();
             //TODO

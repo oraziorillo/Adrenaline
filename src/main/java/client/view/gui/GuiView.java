@@ -61,7 +61,7 @@ public abstract class GuiView extends UnicastRemoteObject implements AbstractVie
     }
 
     @Override
-    public boolean wantsRegister() {
+    public boolean wantsToRegister() {
         Alert firstTime = new Alert(
                 Alert.AlertType.CONFIRMATION,
                 "is this your first time?",

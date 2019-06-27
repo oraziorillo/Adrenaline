@@ -1,6 +1,7 @@
 package server.controller;
 
 import com.google.gson.annotations.Expose;
+import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
 import server.exceptions.PlayerAlreadyLoggedInException;
@@ -105,7 +106,12 @@ public class Lobby {
         timer.stop();
         controller = new Controller(players);
         controller.initGame(gameUUID);
-        players.forEach(p -> p.setCurrState(new SetupMapState(controller)));
+        for (Player p: players) {
+            if (players.get(0) == p)
+                p.setCurrState(new SetupMapState(controller));
+            else
+                p.setCurrState(new InactiveState(controller, 0));
+        }
         DatabaseHandler.getInstance().gameStarted(this);
         DatabaseHandler.getInstance().getViews(gameUUID).forEach(v -> {
             try {

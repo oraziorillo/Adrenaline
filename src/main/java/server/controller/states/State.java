@@ -5,6 +5,8 @@ import common.enums.CardinalDirectionEnum;
 import server.model.Pc;
 import server.model.WeaponCard;
 
+import java.io.IOException;
+
 /**
  * This class represents a state of a game state diagram.
  * All it's methods are useless by default
@@ -43,21 +45,21 @@ public abstract class State {
 
     public void selectSquare(int row, int col) {}
 
-    public void selectPowerUp(int index) {}
+    public void selectPowerUp(int index) { print(); }
 
-    public void selectWeaponOnBoard(int index) {}
+    public void selectWeaponOnBoard(int index) { print(); }
 
-    public void selectWeaponOfMine(int index) {}
+    public void selectWeaponOfMine(int index) { print(); }
 
-    public void switchFireMode(WeaponCard weapon) {}
+    public void switchFireMode(WeaponCard weapon) { print(); }
 
-    public void selectUpgrade(WeaponCard weapon, int index) {}
+    public void selectUpgrade(WeaponCard weapon, int index) { print(); }
 
-    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {}
+    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) { print(); }
 
-    public void selectTarget(Pc targetPc) {}
+    public void selectTarget(Pc targetPc) { print(); }
 
-    public void selectDirection(CardinalDirectionEnum direction) {}
+    public void selectDirection(CardinalDirectionEnum direction) { print(); }
 
     public void setHasToRespawn(boolean hasToRespawn) {}
 
@@ -90,5 +92,13 @@ public abstract class State {
      * @return The next expected state
      */
     public abstract State nextState();
+
+    void print(){
+        try {
+            controller.getCurrPlayer().getView().ack("Using this command now is useless");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

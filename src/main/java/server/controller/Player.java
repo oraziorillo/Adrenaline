@@ -3,10 +3,12 @@ package server.controller;
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
 import common.remote_interfaces.RemotePlayer;
+import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
 import server.model.Pc;
 import server.model.WeaponCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
@@ -22,12 +24,22 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     @Expose private final UUID token;
     @Expose private Pc pc;
     @Expose private State currState;
+    private RemoteView view;
     private transient WeaponCard currWeapon;
 
 
     public Player(UUID token) throws RemoteException {
         super();
         this.token = token;
+    }
+
+
+    public RemoteView getView() {           //PER IL DEBUG
+        return view;
+    }
+
+    public void setView(RemoteView view) {      //PER IL DEBUG
+        this.view = view;
     }
 
 
@@ -81,6 +93,12 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void chooseMap(int n) {
+        try {
+            view.ack("Sto eseguendo il metodo choose map lato server");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (n >= FIRST_MAP && n <= LAST_MAP)
             currState.selectMap(n);
     }

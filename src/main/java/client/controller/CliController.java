@@ -16,11 +16,12 @@ public class CliController extends AbstractClientController  {
     @Override
     public void start(Stage stage) throws Exception {
         try{
-            String cmd = view.requestString( "Insert command" );
-            String[] commands = cmd.split( "-" );
+            String cmd = view.requestString("Insert command");
+            String[] commands = cmd.split("-");
             CommandParser.executeCommand( commands, player, view );
         } catch ( IOException serverUnreachable ) {
-            try{view.error( "Server unreachable" );}catch ( RemoteException ignored ){}
+            try{view.error( "Server unreachable" );}
+            catch ( RemoteException ignored ){}
         }catch ( IllegalArgumentException unsupportedCommand ){
             System.out.println(unsupportedCommand.getMessage());
         }

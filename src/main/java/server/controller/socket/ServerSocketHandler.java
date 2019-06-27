@@ -33,6 +33,11 @@ public class ServerSocketHandler implements Runnable {
     public void run() {
         while (!socket.isClosed()){
             String[] args = in.next().split( "," );
+            try {
+                view.ack("e qui ci arrivo? Ora devo usare gli handler. L'argomento passato è :" + args[0] + args[1]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             try{
                 handleLoginController( args );
                 handlePlayerController( args );
@@ -88,8 +93,10 @@ public class ServerSocketHandler implements Runnable {
      */
     private void handlePlayerController(String[] args) throws IOException {
         int argInt;
+        view.ack("e qui ci arrivo? PRIMO");
         switch (SocketPlayerEnum.valueOf(args[0])) {
             case CHOOSE_MAP:
+                view.ack("e qui ci arrivo? SECONDO");
                 argInt = Integer.parseInt(args[1]);
                 player.chooseMap(argInt);
                 break;

@@ -21,9 +21,11 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class CliView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
-    private transient InputReader inputReader = new CliInputReader();
+
+    private transient InputReader inputReader;
     
     public CliView() throws RemoteException {
+        this.inputReader = new CliInputReader();
     }
     
     @Override
@@ -59,7 +61,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView, Proper
     }
     
     @Override
-    public boolean wantsRegister(){
+    public boolean wantsToRegister(){
         HashSet<String> yesAnswers = new HashSet<>( Arrays.asList("y", "yes"));
         HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));
         String cmd;

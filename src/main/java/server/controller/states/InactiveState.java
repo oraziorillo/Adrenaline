@@ -20,7 +20,7 @@ public class InactiveState extends State {
     private Player attackedPlayer;
 
 
-    InactiveState(Controller controller, int nextState) {
+    public InactiveState(Controller controller, int nextState) {
         super(controller);
         this.nextState = nextState;
     }
