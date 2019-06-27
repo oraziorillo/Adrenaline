@@ -28,10 +28,12 @@ import javafx.scene.layout.HBox;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 import static common.Constants.*;
 
@@ -63,10 +65,15 @@ public class MainGui extends GuiView {
       pcs.addListener( mapController.playerObserver );
       //init squares listeners
       squares.addListener( mapController.squareObserver );
+      squares.addListener( cardHolderLeftController );
+      squares.addListener( cardHolderRightController );
+      squares.addListener( topController.cardHolderController );
       //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
+      cardHolderLeftController.setBackgroundColor( AmmoEnum.RED );
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       cardHolderRightController.setBackgroundColor( AmmoEnum.YELLOW );
+      topController.cardHolderController.setCorner( CardinalDirectionEnum.NORTH );
       topController.cardHolderController.setBackgroundColor( AmmoEnum.BLUE );
       //make under map buttons overlap a little
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
@@ -122,6 +129,7 @@ public class MainGui extends GuiView {
    
    @FXML
    private void skipClicked(ActionEvent actionEvent) {
+      
       try {
          player.skip();
       } catch ( IOException e ) {
@@ -138,6 +146,9 @@ public class MainGui extends GuiView {
       super.setPlayer( player );
       topController.setPlayer(player);
       chatController.setPlayer(player);
+      cardHolderRightController.setPlayer( player );
+      cardHolderLeftController.setPlayer( player );
+      topController.cardHolderController.setPlayer( player );
       
    }
    
@@ -165,7 +176,7 @@ public class MainGui extends GuiView {
    @Override
    public void propertyChange(PropertyChangeEvent evt) {
       switch (evt.getPropertyName()){
-         case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN://Eventi Pc
+         case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN:   //Eventi Pc
             PcDTO pc = ( PcDTO ) evt.getNewValue();
             pcs.put( pc.getColour(),pc );
             break;
