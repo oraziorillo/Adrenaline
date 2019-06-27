@@ -127,6 +127,7 @@ public class ServerSocketHandler implements Runnable {
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
                 break;
             case OK:
+                view.ack("Comando OK viene chiamato");
                 player.ok();
                 break;
             case RELOAD:
