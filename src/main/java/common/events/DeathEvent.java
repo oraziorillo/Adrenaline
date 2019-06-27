@@ -2,6 +2,8 @@ package common.events;
 
 import common.dto_model.PcDTO;
 
+import static common.Constants.DEATH;
+
 public class DeathEvent extends ModelEvent {
 
     private PcDTO deadPc;
@@ -22,4 +24,12 @@ public class DeathEvent extends ModelEvent {
     public Object getNewValue() {
         return deadPc;
     }
+
+
+    @Override
+    public String getPropertyName() {
+        return DEATH;
+    }
+
+
 }

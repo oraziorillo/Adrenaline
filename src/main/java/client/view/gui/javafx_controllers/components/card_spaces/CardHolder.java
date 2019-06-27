@@ -1,5 +1,7 @@
 package client.view.gui.javafx_controllers.components.card_spaces;
 
+import common.dto_model.SquareDTO;
+import common.dto_model.WeaponCardDTO;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -8,6 +10,7 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,11 +23,11 @@ import common.enums.CardinalDirectionEnum;
 import java.io.IOException;
 
 
-public class CardHolder {
+public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    @FXML
    public AnchorPane mainPane;
    @FXML
-   private FlowPane weapon_box;
+   private FlowPane weaponBox;
    @FXML
    private ImageView background;
    @FXML Double CARD_TRANSLATION;
@@ -39,7 +42,7 @@ public class CardHolder {
       Duration duration = new Duration( 500 );
       for(int i=0; i<3;i++){
          int cardIndex = i;
-         ImageView card = ( ImageView )weapon_box.getChildren().get( i );
+         ImageView card = ( ImageView ) weaponBox.getChildren().get( i );
          cards[i]=card;
          card.setOnMouseEntered( e-> appear(  cardIndex ) );
          card.setOnMouseExited( e-> disappear(cardIndex ) );
@@ -49,10 +52,9 @@ public class CardHolder {
             } catch ( IOException ex ) {
                try {
                   player.quit();
-               } catch ( IOException ignored ) {}
+               } catch ( IOException ignored ){}
             }
          } );
-         card.onMouseClickedProperty().set( (e)-> System.out.println("clicked") );
          TranslateTransition trans = new TranslateTransition( duration );
          rotations[i] = new RotateTransition( duration );
          trans.setToY( -CARD_TRANSLATION );
@@ -102,11 +104,11 @@ public class CardHolder {
             break;
          case SOUTH:
             rotation = 180;
-            transYMult = -1;
+            transYMult = 1;
             break;
          case NORTH:
             rotation = 0;
-            transYMult = 1;
+            transYMult = -1;
             break;
             default:
                throw new IllegalArgumentException( "Only 4 cardinal direction exists. "+ corner +" is not one of those" );
@@ -125,6 +127,37 @@ public class CardHolder {
       setBackgroundColor( AmmoEnum.RED );
       for(ImageView card: cards) {
          card.setImage( new Image( "/images/weapons/martello_ionico.png", true ) );
+      }
+   }
+   
+   public void setCards(WeaponCardDTO[] cards){
+      if(cards.length!=this.cards.length){
+         throw new IllegalArgumentException( "You must set "+this.cards.length+" cards at time" );
+      }
+      for(int i=0;i<cards.length;i++){
+         int forLambda=i;
+         ImageView card = this.cards[i];
+         card.setImage( new Image( cards[i].getPathImage(),true ) );
+         card.setOnMouseClicked( e-> {
+            try {
+               player.chooseWeaponOnSpawnPoint( forLambda );
+            } catch ( IOException ex ) {
+               //TODO: call error in MainGui
+            }
+         } );
+      }
+   }
+   
+   public void setPlayer(RemotePlayer player) {
+      this.player = player;
+   }
+   
+   @Override
+   public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
+      if (change.wasAdded()) {
+         if(true) {//TODO: controlla che lo spawnpoint sia giusto)
+            this.setCards( change.getValueAdded().getWeapons() );
+         }
       }
    }
 }

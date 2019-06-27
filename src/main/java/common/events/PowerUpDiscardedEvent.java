@@ -2,13 +2,15 @@ package common.events;
 
 import common.dto_model.PowerUpCardDTO;
 
-public class DiscardPowerUpEvent extends ModelEvent {
+import static common.Constants.POWER_UP_DISCARDED;
+
+public class PowerUpDiscardedEvent extends ModelEvent {
 
     private PowerUpCardDTO powerUp;
     private String pc;
 
 
-    public DiscardPowerUpEvent(PowerUpCardDTO powerUp, String pc){
+    public PowerUpDiscardedEvent(PowerUpCardDTO powerUp, String pc){
         this.powerUp = powerUp;
         this.pc = pc;
     }
@@ -23,5 +25,11 @@ public class DiscardPowerUpEvent extends ModelEvent {
     @Override
     public Object getNewValue() {
         return powerUp;
+    }
+
+
+    @Override
+    public String getPropertyName() {
+        return POWER_UP_DISCARDED;
     }
 }

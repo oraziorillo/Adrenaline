@@ -2,6 +2,8 @@ package common.events;
 
 import common.dto_model.SquareDTO;
 
+import static common.Constants.SPAWN;
+
 public class SpawnEvent extends ModelEvent {
 
     private String pcName;
@@ -23,5 +25,11 @@ public class SpawnEvent extends ModelEvent {
     @Override
     public Object getNewValue() {
         return newPos;
+    }
+
+
+    @Override
+    public String getPropertyName() {
+        return SPAWN;
     }
 }

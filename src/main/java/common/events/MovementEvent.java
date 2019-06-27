@@ -2,7 +2,9 @@ package common.events;
 
 import common.dto_model.SquareDTO;
 
-public class MovementEvent implements ModelEvent {
+import static common.Constants.MOVEMENT;
+
+public class MovementEvent extends ModelEvent {
 
     private String pcName;
     private SquareDTO from;
@@ -25,5 +27,11 @@ public class MovementEvent implements ModelEvent {
     @Override
     public Object getNewValue() {
         return to;
+    }
+
+
+    @Override
+    public String getPropertyName() {
+        return MOVEMENT;
     }
 }

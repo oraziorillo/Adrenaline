@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,8 +23,9 @@ public class Top {
    @FXML
    public CardHolder cardHolderController;
    @FXML
-   public HBox killShotTrack;
-   public AnchorPane cardHolder;
+   private HBox killShotTrack;
+   @FXML
+   private AnchorPane cardHolder;
    private HostServices hostServices;
    private RemotePlayer player;
    
@@ -40,12 +42,16 @@ public class Top {
       skull = new ImageView( new Image( "/images/teschio_9.png",0,height,true,false ));
       skull.setPreserveRatio( true );
       killShotTrack.getChildren().add( skull );
+      //Final frenzy box
+      skull = new ImageView(new Image( "/images/killshot_box.png",0,height,true,false ) );
+      skull.setPreserveRatio( true );
+      killShotTrack.getChildren().add( skull );
    }
    
    
    @FXML
    public void showSettings() throws IOException {
-      FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/settingsMenu.fxml" ) );
+      FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/inGame/settingsMenu.fxml" ) );
       Parent parent = loader.load();
       SettingsMenu settingsMenu = loader.getController();
       settingsMenu.setHostServices( hostServices );

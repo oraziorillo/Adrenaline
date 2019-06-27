@@ -14,23 +14,26 @@ import common.dto_model.WeaponCardDTOFirstVersion;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
+import common.events.ModelEvent;
+import common.events.ModelEventListener;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 import static common.Constants.*;
 
@@ -46,7 +49,9 @@ public class MainGui extends GuiView {
    @FXML private transient Top topController;
    @FXML private transient Chat chatController;
    @FXML private transient PcBoard pcBoardController;
-   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );   //TODO: fallo osservare da chi è interessato
+   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
+   private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
+   private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
    
    public MainGui() throws RemoteException {
    }
@@ -55,11 +60,22 @@ public class MainGui extends GuiView {
    public void initialize() {
       mapController.setMap(0);
       //init finalFrenzy listeners
-      finalFrenzy.addListener( ( ChangeListener<? super Boolean> ) pcBoardController );
+      finalFrenzy.addListener( pcBoardController );
+      //init pc listeners
+      pcs.addListener( mapController.playerObserver );
+      //init squares listeners
+      squares.addListener( mapController.squareObserver );
+      squares.addListener( cardHolderLeftController );
+      squares.addListener( cardHolderRightController );
+      squares.addListener( topController.cardHolderController );
+      //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
+      cardHolderLeftController.setBackgroundColor( AmmoEnum.RED );
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       cardHolderRightController.setBackgroundColor( AmmoEnum.YELLOW );
+      topController.cardHolderController.setCorner( CardinalDirectionEnum.NORTH );
       topController.cardHolderController.setBackgroundColor( AmmoEnum.BLUE );
+      //make under map buttons overlap a little
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
          Node n = underMapButtons.getChildren().get(i);
          n.setTranslateX(2 * (size - i));
@@ -73,7 +89,6 @@ public class MainGui extends GuiView {
          weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
-      PcDTO[] dtos = new PcDTO[5];
       for(int i=0;i<PcColourEnum.values().length;i++){
          SquareDTO s=new SquareDTO();
          s.setRow( 1 );
@@ -114,11 +129,23 @@ public class MainGui extends GuiView {
    
    @FXML
    private void skipClicked(ActionEvent actionEvent) {
+      //TODO: remove following test lines
+      Random random = new Random();
+      PcColourEnum pcToMoveColor = PcColourEnum.values()[random.nextInt( PcColourEnum.values().length )];
+      PropertyChangeSupport thrower = new PropertyChangeSupport( this );
+      PcDTO pcToMove = new PcDTO();
+      SquareDTO square = new SquareDTO();
+      square.setCol( random.nextInt( 4 ) );
+      square.setRow( random.nextInt( 3 ) );
+      pcToMove.setCurrSquare( square );
+      pcToMove.setColour( pcToMoveColor );
+      //propertyChange(new PropertyChangeEvent(this, MOVEMENT,pcs.get( pcToMoveColor ),pcToMove ));
+      /*
       try {
          player.skip();
       } catch ( IOException e ) {
          error( "Server unreachable" );
-      }
+      }*/
    }
    
    public void setHostServices(HostServices hostServices) {
@@ -130,6 +157,9 @@ public class MainGui extends GuiView {
       super.setPlayer( player );
       topController.setPlayer(player);
       chatController.setPlayer(player);
+      cardHolderRightController.setPlayer( player );
+      cardHolderLeftController.setPlayer( player );
+      topController.cardHolderController.setPlayer( player );
       
    }
    
@@ -138,7 +168,6 @@ public class MainGui extends GuiView {
       chatController.showServerMessage(message);
       chatController.appear();
    }
-   
    
    /**
     * Cause every message is immediatly displayed in the chat, no acks are pending
@@ -151,22 +180,27 @@ public class MainGui extends GuiView {
    }
    
    @Override
-   public PropertyChangeListener getListener() {
+   public ModelEventListener getListener() {
       return this;
    }
-   
+
+
    @Override
-   public void propertyChange(PropertyChangeEvent evt) {
-      switch (evt.getPropertyName()){
-         case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN://Eventi Pc
-            //TODO
-         case SET_TARGETABLE: case COLLECT: case REFILL: //Eventi square
-            //TODO
-         case FINAL_FRENZY:   //eventi game
-            finalFrenzy.setValue( ( Boolean ) evt.getNewValue() );
+   public void modelEvent(ModelEvent event) {
+      switch (event.getPropertyName()){
+         case MOVEMENT: case POWER_UP_DROWN: case POWER_UP_DISCARDED: case NUMBER_OF_DEATH_INCREASED: case ADRENALINE_UP: case SPAWN:   //Eventi Pc
+            PcDTO pc = ( PcDTO ) event.getNewValue();
+            pcs.put( pc.getColour(),pc );
             break;
-         case ADD_AMMO: case ADD_DAMAGE: case ADD_MARKS: case PAY_AMMO: case INCREASE_NUMBER_OF_DEATHS: case INCREASE_POINTS: //eventi PcBoard
-            //TODO
+         case TARGETABLE_SET: case ITEM_COLLECTED: case SQUARE_REFILLED: //Eventi square
+            SquareDTO square = ( SquareDTO ) event.getNewValue();
+            squares.put( square,square );
+            break;
+         case FINAL_FRENZY:   //eventi game
+            finalFrenzy.setValue( ( Boolean ) event.getNewValue() );
+            break;
+         case AMMO_CHANGED: case DAMAGE_TAKEN: case MARKS_TAKEN: case DEATH: case POINTS_INCREASED: //eventi PcBoard
+            //TODO: gestisci eventi pcBoard
       }
    }
 }

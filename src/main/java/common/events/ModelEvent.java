@@ -15,5 +15,7 @@ public abstract class ModelEvent implements Serializable {
         this.privateMessage = privateMessage;
     }
 
-    abstract Object getNewValue();
+    public abstract Object getNewValue();
+
+    public abstract String getPropertyName();
 }

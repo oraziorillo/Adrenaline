@@ -5,13 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import common.dto_model.GameBoardDTO;
 import common.dto_model.KillShotTrackDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
-import common.events.FinalFrenzyEvent;
-import common.events.KillShotTrackSetEvent;
-import common.events.ModelEventHandler;
-import common.events.ModelEventListener;
+import common.events.*;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.database.DatabaseHandler;
@@ -149,7 +147,7 @@ public class Game {
             gameBoard.addModelEventHandler(events);
 
             //notify map set
-            //events.fireEvent(new MapSetEvent(modelMapper.map(gameBoard, GameBoard.class), numberOfMap));
+            events.fireEvent(new GameBoardSetEvent(modelMapper.map(gameBoard, GameBoardDTO.class), numberOfMap));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

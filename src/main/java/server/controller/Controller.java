@@ -1,6 +1,7 @@
 package server.controller;
 
 import common.enums.PcColourEnum;
+import common.events.ModelEventListener;
 import server.database.DatabaseHandler;
 import server.model.Game;
 import server.model.Pc;
@@ -38,7 +39,7 @@ public class Controller{
     public void initGame(UUID gameUUID){
         game = Game.getGame(gameUUID);
         players.forEach(p -> {
-            EventListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
+            ModelEventListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
             game.addModelEventListener(listener);
         });
         try {
@@ -135,12 +136,12 @@ public class Controller{
 
 
     public boolean checkAvailableColour(String pcColour) {
-        return availablePcColours.contains(PcColourEnum.valueOf(pcColour));
+        return availablePcColours.contains(PcColourEnum.fromString(pcColour));
     }
 
 
     public void removeAvailableColour(String pcColour) {
-        availablePcColours.remove(PcColourEnum.valueOf(pcColour));
+        availablePcColours.remove(PcColourEnum.fromString(pcColour));
     }
 
 

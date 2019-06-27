@@ -1,6 +1,7 @@
 package client.controller;
 
 import client.view.AbstractView;
+import client.view.gui.GuiExceptionHandler;
 import client.view.gui.PopUpGuiView;
 import client.view.gui.javafx_controllers.MainGui;
 import javafx.fxml.FXMLLoader;
@@ -26,13 +27,15 @@ public class GuiController extends AbstractClientController {
     }
     
     private void configGame(Stage stage){
+        //Magari si potrebbe pure fare qui il login?
         //TODO: scegli mappa, teschi, colore
     }
     
     private void startGame(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/gui.fxml" ));
+        FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
         MainGui inGameView = loader.getController();
+        Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
     
         loginController.setRemoteView( inGameView, player.getToken() );
         AbstractView oldView = this.view;

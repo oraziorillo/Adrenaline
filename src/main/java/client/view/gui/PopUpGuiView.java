@@ -1,10 +1,10 @@
 package client.view.gui;
 
+import common.events.ModelEvent;
+import common.events.ModelEventListener;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,6 @@ public class PopUpGuiView extends GuiView {
      */
     private final ArrayList<String> pendingAcks = new ArrayList<>();
     private final ArrayList<Alert> visibleAlerts = new ArrayList<>();
-    //TODO: usa una coda che permetta di rimuovere un oggetto a caso dato il riferimento
     
     public PopUpGuiView() throws RemoteException {
     }
@@ -60,13 +59,13 @@ public class PopUpGuiView extends GuiView {
 
 
     @Override
-    public PropertyChangeListener getListener() {
+    public ModelEventListener getListener() {
         return this;
     }
 
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelEvent(ModelEvent event) {
 
     }
 }

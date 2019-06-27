@@ -8,7 +8,7 @@
 #settingsButton{
     -fx-max-height: 75;
     -fx-max-width: 75;
-    -fx-background-image: url("/images/settings_button.png");
-    -fx-background-size: stretch;
-    -fx-border: none;
+    -fx-background-image: url("/images/settings_button.png"), url("/images/bordo.png");
+    -fx-background-size: stretch,stretch;
+    -fx-background-insets: -2 -2 -2 -2, 0 0 0 0;
 }

@@ -48,9 +48,7 @@ public class ServerSocketHandler implements Runnable {
                 } catch (IOException ignored) {
                 }
             } catch (IllegalArgumentException ignored) {
-                ignored.printStackTrace();
             } //only one of the "handle..." method will not throw it
-
         }
     }
 
@@ -104,6 +102,10 @@ public class ServerSocketHandler implements Runnable {
                 argInt = Integer.parseInt(args[1]);
                 int argInt2 = Integer.parseInt(args[2]);
                 player.chooseSquare(argInt, argInt2);
+                break;
+            case CHOOSE_POWER_UP:
+                argInt = Integer.parseInt(args[1]);
+                player.choosePowerUp(argInt);
                 break;
             case GRAB_WEAPON_ON_SPAWN_POINT:
                 argInt = Integer.parseInt(args[1]);

@@ -2,6 +2,8 @@ package common.events;
 
 import common.dto_model.SquareDTO;
 
+import static common.Constants.TARGETABLE_SET;
+
 public class TargetableSetEvent extends ModelEvent {
 
     private SquareDTO square;
@@ -19,8 +21,16 @@ public class TargetableSetEvent extends ModelEvent {
 
 
     @Override
-    Object getNewValue() {
+    public Object getNewValue() {
         return square;
     }
+
+
+    @Override
+    public String getPropertyName() {
+        return TARGETABLE_SET;
+    }
+
+
 }
 

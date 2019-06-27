@@ -37,6 +37,7 @@ public class GameBoardTest {
         gameBoard = customGson.fromJson(gameBoards.get(N_MAP), GameBoard.class);
     }
 
+
     @Test
     public void checkVisibles(){
         for (int r = 0; r < 3; r++)

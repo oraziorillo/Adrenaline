@@ -98,7 +98,7 @@ public class Pc {
         pcBoard.increasePoints(earnedPoints);
 
         //notify listeners
-        events.fireEvent(new IncreasePointsEvent(modelMapper.map(this, PcDTO.class), earnedPoints));
+        events.fireEvent(new PointsIncreasedEvents(modelMapper.map(this, PcDTO.class), earnedPoints));
     }
 
 
@@ -163,7 +163,7 @@ public class Pc {
 
         //TODO in questo caso non solo l'evento è privato ma bisogna mandare la carta al solo utente che l'ha pescata
         //notify listeners
-        //events.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
+        //events.firePropertyChange(POWER_UP_DROWN, old, modelMapper.map(this, PcDTO.class));
     }
 
 
@@ -178,7 +178,7 @@ public class Pc {
         }
 
         //notify listeners
-        events.fireEvent(new DiscardPowerUpEvent(modelMapper.map(p, PowerUpCardDTO.class), this.getName()));
+        events.fireEvent(new PowerUpDiscardedEvent(modelMapper.map(p, PowerUpCardDTO.class), this.getName()));
     }
 
 
@@ -216,7 +216,7 @@ public class Pc {
         pcBoard.addAmmo(ammoTile);
 
         //notify ammo change
-        events.fireEvent(new AmmoChangeEvent(modelMapper.map(this, PcDTO.class),
+        events.fireEvent(new AmmoChangedEvent(modelMapper.map(this, PcDTO.class),
                 ammoTile.getAmmo(), null, true));
 
         if (ammoTile.containsPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
@@ -247,7 +247,7 @@ public class Pc {
         powerUps.removeAll(powerUpsToDiscard);
 
         //notify ammo payment
-        events.fireEvent(new AmmoChangeEvent(modelMapper.map(this, PcDTO.class),
+        events.fireEvent(new AmmoChangedEvent(modelMapper.map(this, PcDTO.class),
                 ammoPaid, powerUpsDiscarded, false));
 
         return true;
@@ -349,7 +349,7 @@ public class Pc {
         pcBoard.increaseNumberOfDeaths();
 
         //notify listeners
-        events.fireEvent(new IncreaseNumberOfDeathEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
+        events.fireEvent(new NumberOfDeathIncreasedEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
     }
 }
 

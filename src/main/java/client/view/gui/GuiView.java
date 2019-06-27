@@ -2,12 +2,12 @@ package client.view.gui;
 
 import client.controller.socket.ClientSocketHandler;
 import client.view.AbstractView;
+import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.concurrent.Task;
 import javafx.scene.control.*;
 
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
@@ -18,7 +18,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class GuiView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
+public abstract class GuiView extends UnicastRemoteObject implements AbstractView, ModelEventListener {
     
     protected static transient RemotePlayer player;
     

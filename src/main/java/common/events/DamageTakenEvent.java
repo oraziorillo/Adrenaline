@@ -4,6 +4,8 @@ import common.dto_model.PcDTO;
 
 import java.util.Arrays;
 
+import static common.Constants.DAMAGE_TAKEN;
+
 public class DamageTakenEvent extends ModelEvent {
 
     private PcDTO pc;
@@ -27,5 +29,11 @@ public class DamageTakenEvent extends ModelEvent {
     @Override
     public Object getNewValue() {
         return pc.getPcBoard();
+    }
+
+
+    @Override
+    public String getPropertyName() {
+        return DAMAGE_TAKEN;
     }
 }

@@ -1,5 +1,6 @@
 package common.dto_model;
 
+import common.enums.AmmoEnum;
 import server.model.AmmoTile;
 
 public class AmmoTileDTO {
@@ -14,7 +15,7 @@ public class AmmoTileDTO {
     }
 
     public String getImagePath() {
-        //TODO
+        //TODO: aggiungi path immagine
         return "Ciao";
     }
 
@@ -42,5 +43,15 @@ public class AmmoTileDTO {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (AmmoEnum a : AmmoEnum.values())
+            stringBuilder.append("+ ").append(ammo[a.ordinal()]).append(" ").append(a).append("\n");
+        if (hasPowerUp)
+            stringBuilder.append("+ 1 Power Up Card");
+        return stringBuilder.toString();
     }
 }

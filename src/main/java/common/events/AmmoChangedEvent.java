@@ -5,7 +5,9 @@ import common.enums.AmmoEnum;
 
 import java.util.List;
 
-public class AmmoChangeEvent extends ModelEvent{
+import static common.Constants.AMMO_CHANGED;
+
+public class AmmoChangedEvent extends ModelEvent{
 
     private PcDTO pc;
     private short[] ammoDifference;
@@ -13,7 +15,7 @@ public class AmmoChangeEvent extends ModelEvent{
     private boolean isEarned;
 
 
-    public AmmoChangeEvent(PcDTO pc, short[] ammoDifference, List<String> powerUpsDiscarded, boolean isEarned){
+    public AmmoChangedEvent(PcDTO pc, short[] ammoDifference, List<String> powerUpsDiscarded, boolean isEarned){
         setPrivateMessage(true);
         this.pc = pc;
         this.ammoDifference = ammoDifference;
@@ -33,14 +35,20 @@ public class AmmoChangeEvent extends ModelEvent{
 
 
     private String ammoDifferenceToString(short[] ammoDifference){
-        StringBuilder finalString = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         for (AmmoEnum a : AmmoEnum.values())
-            finalString.append(isEarned ? "+ " : "- ").append(ammoDifference[a.ordinal()]).append(" ").append(a).append(" ammo\n");
-        return finalString.toString();
+            stringBuilder.append(isEarned ? "+ " : "- ").append(ammoDifference[a.ordinal()]).append(" ").append(a).append(" ammo\n");
+        return stringBuilder.toString();
     }
 
     @Override
-    Object getNewValue() {
-        return pc;
+    public Object getNewValue() {
+        return pc.getPcBoard();
+    }
+
+
+    @Override
+    public String getPropertyName() {
+        return AMMO_CHANGED;
     }
 }
