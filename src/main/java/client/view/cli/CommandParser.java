@@ -36,13 +36,13 @@ public abstract class CommandParser {
             case CHOOSE_POWER_UP:
                 player.choosePowerUp( Integer.parseInt( commands[1] ) );
                 break;
-            case GRAB_WEAPON_ON_SPAWNPOINT:
+            case GRAB_WEAPON_ON_SPAWN_POINT:
                 player.chooseWeaponOnSpawnPoint( Integer.parseInt( commands[1] ) );
                 break;
             case CHOOSE_WEAPON_OF_MINE:
                 player.chooseWeaponOfMine( Integer.parseInt( commands[1] ) );
                 break;
-            case SWITCH_FIREMODE:
+            case SWITCH_FIRE_MODE:
                 player.switchFireMode();
                 break;
             case RELOAD:

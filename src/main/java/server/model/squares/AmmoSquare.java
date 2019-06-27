@@ -71,7 +71,7 @@ public class AmmoSquare extends Square {
         ammoTile = null;
 
         //notify listeners
-        changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
+        events.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
     }
 
     
@@ -87,7 +87,7 @@ public class AmmoSquare extends Square {
         }
 
         //notify listeners
-        changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
+        events.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
     }
 }
 

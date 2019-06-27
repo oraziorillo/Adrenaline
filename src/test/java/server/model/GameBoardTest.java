@@ -43,8 +43,8 @@ public class GameBoardTest {
             for (int c = 0; c < 4; c++){
                 Square tempSquare = gameBoard.getSquare(r, c);
                 if (tempSquare != null) {
-                    System.out.print(tempSquare.toPairString() + " ---- can see ---> ");
-                    tempSquare.getVisibles().forEach(v -> System.out.print(v.toPairString() + " "));
+                    System.out.print(tempSquare.toString() + " ---- can see ---> ");
+                    tempSquare.getVisibles().forEach(v -> System.out.print(v.toString() + " "));
                     System.out.println();
                 } else {
                     System.out.println("not present");

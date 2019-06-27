@@ -5,10 +5,10 @@ import client.view.AbstractView;
 import client.view.InputReader;
 import common.enums.ConnectionsEnum;
 import common.enums.SocketEnum;
+import common.events.ModelEvent;
+import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class CliView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
+public class CliView extends UnicastRemoteObject implements AbstractView, ModelEventListener {
 
     private transient InputReader inputReader;
 
@@ -124,18 +124,22 @@ public class CliView extends UnicastRemoteObject implements AbstractView, Proper
         return new HashSet<>();
     }
 
+
     @Override
     public void ack(String message) {
         System.out.println(message);
     }
 
+
     @Override
-    public PropertyChangeListener getListener() {
+    public ModelEventListener getListener() {
         return this;
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
 
+    @Override
+    public void modelEvent(ModelEvent event) {
+        //TODO se private mostrare solo all'utente interessato
+        System.out.println(event.toString());
     }
 }

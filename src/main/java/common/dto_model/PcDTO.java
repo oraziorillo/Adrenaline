@@ -11,6 +11,7 @@ public class PcDTO {
     private WeaponCardDTO[] weapons;
     private ArrayList<PowerUpCardDTO> powerUps;
     private SquareDTO currSquare;
+    private short adrenaline;
 
     public PcColourEnum getColour() {
         return colour;
@@ -51,5 +52,16 @@ public class PcDTO {
     public void setCurrSquare(SquareDTO currSquare) {
         this.currSquare = currSquare;
     }
-    
+
+    public short getAdrenaline() {
+        return adrenaline;
+    }
+
+    public void setAdrenaline(short adrenaline) {
+        this.adrenaline = adrenaline;
+    }
+
+    public String getName() {
+        return colour.getName();
+    }
 }

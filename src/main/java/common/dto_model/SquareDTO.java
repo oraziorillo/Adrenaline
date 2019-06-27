@@ -2,7 +2,6 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
-import java.util.List;
 import java.util.Set;
 
 public class SquareDTO {
@@ -71,5 +70,10 @@ public class SquareDTO {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "(" + row + "," + col + ")";
     }
 }

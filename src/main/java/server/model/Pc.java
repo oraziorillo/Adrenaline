@@ -1,16 +1,17 @@
 package server.model;
 
+import common.dto_model.PcBoardDTO;
 import common.dto_model.PcDTO;
+import common.dto_model.PowerUpCardDTO;
+import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
+import common.events.*;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Pc {
 
     private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
 
-    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    private ModelEventHandler events = new ModelEventHandler();
 
     private final Game currGame;
     private final PcColourEnum colour;
@@ -95,6 +96,9 @@ public class Pc {
 
     public void increasePoints(int earnedPoints){
         pcBoard.increasePoints(earnedPoints);
+
+        //notify listeners
+        events.fireEvent(new IncreasePointsEvent(modelMapper.map(this, PcDTO.class), earnedPoints));
     }
 
 
@@ -115,6 +119,7 @@ public class Pc {
         return powerUps.get(index);
     }
 
+
     public List<PowerUpCard> getPowerUps() {
         return powerUps;
     }
@@ -126,14 +131,15 @@ public class Pc {
         }
         return weapons[index];
     }
-    
+
+
     /**
      * Removes this from the square it's currently on, puts this on s
      * @param s the new square
      */
     public void moveTo(Square s) {
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        SquareDTO oldPos = modelMapper.map(currSquare, SquareDTO.class);
 
         if (s == null) {
             throw new IllegalArgumentException("Invalid square");
@@ -144,27 +150,25 @@ public class Pc {
         this.currSquare.addPc(this);
 
         //notify listeners
-        changes.firePropertyChange(MOVE_TO, old, modelMapper.map(this, PcDTO.class));
+        SquareDTO newPos = modelMapper.map(currSquare, SquareDTO.class);
+        events.fireEvent(new MovementEvent(colour.getName(), oldPos, newPos));
     }
 
 
     public void drawPowerUp(){
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
-
         PowerUpCard powerUpToDraw = currGame.drawPowerUp();
         if (powerUpToDraw != null)
             powerUps.add(powerUpToDraw);
 
+        //TODO in questo caso non solo l'evento è privato ma bisogna mandare la carta al solo utente che l'ha pescata
         //notify listeners
-        changes.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
+        //events.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
     }
 
 
     public void discardPowerUp(PowerUpCard p) {
-
-        PcDTO old = modelMapper.map(this, PcDTO.class);
-
+        //TODO index è inutilizzato: serviva a qualcosa?
         int oldIndex;
         if (powerUps.contains(p)) {
              oldIndex = powerUps.indexOf(p);
@@ -174,9 +178,10 @@ public class Pc {
         }
 
         //notify listeners
-        changes.firePropertyChange(DISCARD_POWER_UP, old, modelMapper.map(this, PcDTO.class));
+        events.fireEvent(new DiscardPowerUpEvent(modelMapper.map(p, PowerUpCardDTO.class), this.getName()));
     }
-    
+
+
     /**
      * Calls the collect method of the current square on this
      * @throws EmptySquareException if the targetSquare is Empty
@@ -187,12 +192,6 @@ public class Pc {
         targetSquare.collect(this);
     }
 
-
-    public void addAmmo(AmmoTile ammo) {
-        pcBoard.addAmmo(ammo);
-        if (ammo.containsPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
-            drawPowerUp();
-    }
 
     public void resetPowerUpAsAmmo (){
         for (PowerUpCard p: powerUps)
@@ -213,29 +212,76 @@ public class Pc {
     }
 
 
+    public void addAmmo(AmmoTile ammoTile) {
+        pcBoard.addAmmo(ammoTile);
+
+        //notify ammo change
+        events.fireEvent(new AmmoChangeEvent(modelMapper.map(this, PcDTO.class),
+                ammoTile.getAmmo(), null, true));
+
+        if (ammoTile.containsPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
+            drawPowerUp();
+    }
+
+
+    public boolean payAmmo(short[] cost) {
+        if (!hasEnoughAmmo(cost))
+            return false;
+        short[] remainingCost = pcBoard.payAmmo(cost);
+
+        //ammo that was paid
+        short[] ammoPaid = new short[AMMO_COLOURS_NUMBER];
+        for (int i = 0; i < AMMO_COLOURS_NUMBER; i++)
+            ammoPaid[i] = (short) (cost[i] - remainingCost[i]);
+
+        List<PowerUpCard> powerUpsToDiscard = new ArrayList<>();
+        List<String> powerUpsDiscarded = new ArrayList<>();
+        powerUps.forEach(p -> {
+            if (p.isSelectedAsAmmo() && remainingCost[p.getColour().ordinal()] > 0) {
+                remainingCost[p.getColour().ordinal()]--;
+                powerUpsToDiscard.add(p);
+                powerUpsDiscarded.add(p.getName());
+            }
+        });
+
+        powerUps.removeAll(powerUpsToDiscard);
+
+        //notify ammo payment
+        events.fireEvent(new AmmoChangeEvent(modelMapper.map(this, PcDTO.class),
+                ammoPaid, powerUpsDiscarded, false));
+
+        return true;
+    }
+
+
     public void takeMarks(PcColourEnum shooterColour, short marks) {
         if (this.colour == shooterColour)
             return;
         pcBoard.addMarks(shooterColour, marks);
+
+        //notify listeners
+        events.fireEvent(new MarksTakenEvent(modelMapper.map(this, PcDTO.class), shooterColour.getName(), marks));
     }
 
 
     public void takeDamage(PcColourEnum shooterColour, short damages) {
-
-        PcDTO old = modelMapper.map(this, PcDTO.class);
 
         if (this.colour == shooterColour)
             return;
         short totalDamage;
         totalDamage = (short) (pcBoard.getMarks(shooterColour) + damages);
         pcBoard.addDamage(shooterColour, totalDamage);
+
+        //notify damage taken
+        events.fireEvent(new DamageTakenEvent(modelMapper.map(this, PcDTO.class), shooterColour.getName(), damages));
+
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFE_POINTS - 2) {
             boolean overkill = damageIndex == (LIFE_POINTS - 1);
             currGame.killOccurred(this.colour, overkill);
 
             //notify death
-            changes.firePropertyChange(KILL_OCCURRED, old, modelMapper.map(this, PcDTO.class));
+            events.fireEvent(new DeathEvent(modelMapper.map(this, PcDTO.class)));
         }
 
         boolean adrenalineUp = false;
@@ -249,14 +295,13 @@ public class Pc {
         }
 
         if (adrenalineUp)
+
             //notify adrenaline up
-            changes.firePropertyChange(ADRENALINE_UP, old, modelMapper.map(this, PcDTO.class));
+            events.fireEvent(new AdrenalineUpEvent(modelMapper.map(this, PcDTO.class)));
     }
 
 
     public void spawn(Square t) {
-
-        PcDTO old = modelMapper.map(this, PcDTO.class);
 
         if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
@@ -267,7 +312,7 @@ public class Pc {
         currSquare.addPc(this);
 
         //notify listeners
-        changes.firePropertyChange(SPAWN, old, modelMapper.map(this, PcDTO.class));
+        events.fireEvent(new SpawnEvent(getName(), modelMapper.map(t, SquareDTO.class)));
     }
 
 
@@ -287,25 +332,24 @@ public class Pc {
     }
 
 
-    public boolean payAmmo(short[] cost) {
-        if (!hasEnoughAmmo(cost))
-            return false;
-        short[] remainingCost = pcBoard.payAmmo(cost);
-        List<PowerUpCard> powerUpToDiscard = new ArrayList<>();
-        powerUps.forEach(p -> {
-            if (p.isSelectedAsAmmo() && remainingCost[p.getColour().ordinal()] > 0) {
-                remainingCost[p.getColour().ordinal()]--;
-                powerUpToDiscard.add(p);
-            }
-        });
-        powerUps.removeAll(powerUpToDiscard);
-        return true;
+
+    public void addModelEventHandler(ModelEventHandler events) {
+        this.events = events;
+        pcBoard.addModelEventHandler(events);
     }
 
 
-    public void addPropertyChangeSupport(PropertyChangeSupport changes) {
-        this.changes = changes;
-        pcBoard.addPropertyChangeSupport(changes);
+    @Override
+    public String toString() {
+        return this.colour.getName();
+    }
+
+
+    void increaseNumberOfDeaths() {
+        pcBoard.increaseNumberOfDeaths();
+
+        //notify listeners
+        events.fireEvent(new IncreaseNumberOfDeathEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
     }
 }
 

@@ -136,7 +136,7 @@ public class SpawnPoint extends Square {
         currPc.payAmmo(cost);
 
         //notify listeners
-        changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
+        events.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
 
         resetWeaponIndexes();
         
@@ -154,7 +154,7 @@ public class SpawnPoint extends Square {
         }
 
         //notify listeners
-        changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
+        events.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
     }
 
 }

@@ -105,7 +105,7 @@ public class ServerSocketHandler implements Runnable {
                 int argInt2 = Integer.parseInt(args[2]);
                 player.chooseSquare(argInt, argInt2);
                 break;
-            case GRAB_WEAPON_ON_SPAWNPOINT:
+            case GRAB_WEAPON_ON_SPAWN_POINT:
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOnSpawnPoint(argInt);
                 break;
@@ -116,13 +116,13 @@ public class ServerSocketHandler implements Runnable {
             case QUIT:
                 player.quit();
                 break;
-            case SWITCH_FIREMODE:
+            case SWITCH_FIRE_MODE:
                 player.switchFireMode();
                 break;
             //TODO case UPGRADE:
             //    player.upgrade();
             //    break;
-            case CHOOSE_ASYNCH_EFFECT_ORDER:
+            case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
                 boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
                 break;
