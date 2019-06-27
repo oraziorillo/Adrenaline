@@ -10,14 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import static common.enums.interfaces_names.SocketLoginEnum.*;
-import static common.enums.interfaces_names.SocketPlayerEnum.*;
+import static common.enums.interfaces_names.SocketEnum.*;
 
 public class ClientSocketHandler implements Runnable, RemoteLoginController, RemotePlayer {
     private Socket socket;
@@ -55,7 +53,6 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     }
     
     private void parseRemoteView(String[] args) throws IOException {
-        view.ack("Arrivo in parseRemoteView");
         switch (RemoteViewEnum.valueOf( args[0] )) {
             case ACK:
                 StringBuilder builder = new StringBuilder(  );
@@ -275,7 +272,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     }
     
     @Override
-    public UUID getToken() throws RemoteException {
+    public UUID getToken() {
         return this.token;
     }
 }

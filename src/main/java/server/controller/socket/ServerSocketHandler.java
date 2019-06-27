@@ -1,7 +1,6 @@
 package server.controller.socket;
 
-import common.enums.interfaces_names.SocketLoginEnum;
-import common.enums.interfaces_names.SocketPlayerEnum;
+import common.enums.interfaces_names.SocketEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.LoginController;
@@ -26,22 +25,21 @@ public class ServerSocketHandler implements Runnable {
         this.out = new PrintWriter(socket.getOutputStream());
         this.in = new Scanner(socket.getInputStream());
         this.loginController = LoginController.getInstance();
-        this.view = new RemoteViewSocketProxy( socket );
+        this.view = new RemoteViewSocketProxy(socket);
     }
 
     @Override
     public void run() {
-        while (!socket.isClosed()){
-            String[] args = in.next().split( "," );
+        while (!socket.isClosed()) {
+            String[] args = in.next().split(",");
             try {
                 view.ack("e qui ci arrivo? Ora devo usare gli handler. L'argomento passato è :" + args[0] + args[1]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            try{
-                handleLoginController( args );
-                handlePlayerController( args );
-            } catch ( IOException e ) {
+            try {
+                handle(args);
+            } catch (IOException e) {
                 try {
                     socket.close();
                     out.close();
@@ -55,22 +53,25 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+
     /**
-     * Parser for login controller methods
+     * Parser for socket methods
      *
-     * @param args the strings sent by the client
-     * @throws IOException              if user is unreachable
-     * @throws IllegalArgumentException if the method name (args[0]) is not in SocketLoginEnum
-     * @see SocketLoginEnum
+     * @param args the strings to parse
+     * @throws IOException              if client is unreachable
+     * @throws IllegalArgumentException if the method name (args[0]) is not in SocketEnum
+     * @see SocketEnum
      */
-    private void handleLoginController(String[] args) throws IOException {
-        switch (SocketLoginEnum.valueOf(args[0])) {
+    private void handle(String[] args) throws IOException {
+        int argInt;
+        view.ack("e qui ci arrivo? PRIMO");
+        switch (SocketEnum.valueOf(args[0])) {
             case REGISTER:
-                out.println(loginController.register(args[1],view));
+                out.println(loginController.register(args[1], view));
                 out.flush();
                 break;
             case LOGIN:
-                this.player = loginController.login(UUID.fromString(args[1]),view);
+                this.player = loginController.login(UUID.fromString(args[1]), view);
                 break;
             case JOIN_LOBBY:
                 try {
@@ -79,22 +80,6 @@ public class ServerSocketHandler implements Runnable {
                     e.printStackTrace(); //TODO
                 }
                 break;
-            //TODO: incompleta
-        }
-    }
-
-    /**
-     * Parser for RemotePlayer methods
-     *
-     * @param args the strings to parse
-     * @throws IOException              if client is unreachable
-     * @throws IllegalArgumentException if the method name (args[0]) is not in SocketPlayerEnum
-     * @see SocketPlayerEnum
-     */
-    private void handlePlayerController(String[] args) throws IOException {
-        int argInt;
-        view.ack("e qui ci arrivo? PRIMO");
-        switch (SocketPlayerEnum.valueOf(args[0])) {
             case CHOOSE_MAP:
                 view.ack("e qui ci arrivo? SECONDO");
                 argInt = Integer.parseInt(args[1]);
@@ -151,7 +136,9 @@ public class ServerSocketHandler implements Runnable {
             case PASS:
                 player.pass();
                 break;
-            //TODO: incompleta
+            default:
+                //TODO: incompleta
+                break;
         }
     }
 }

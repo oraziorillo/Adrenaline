@@ -8,7 +8,10 @@ import java.util.Set;
  * Contains the possible actions an user can perform.
  * Support enum for hand-made socket stubs
  */
-public enum SocketPlayerEnum {
+public enum SocketEnum {
+    REGISTER,
+    LOGIN,
+    JOIN_LOBBY(":j",":join"),
     CHOOSE_MAP("m","map","choose map"),
     CHOOSE_NUMBER_OF_SKULLS( "sk", "skulls", "choose number of skulls" ),
     CHOOSE_PC_COLOUR("choose colour","colour","col"),
@@ -38,12 +41,12 @@ public enum SocketPlayerEnum {
     
     private Set<String> CliStrings = new HashSet<>();
     
-    SocketPlayerEnum(String... validCommands){
+    SocketEnum(String... validCommands){
         CliStrings.addAll( Arrays.asList( validCommands ) );
     }
     
-    public static SocketPlayerEnum parseString(String s){
-        for(SocketPlayerEnum e: values()){
+    public static SocketEnum parseString(String s){
+        for(SocketEnum e: values()){
             if(e.CliStrings.contains( s ) ){
                 return e;
             }
