@@ -19,7 +19,6 @@ public class PopUpGuiView extends GuiView {
      */
     private final ArrayList<String> pendingAcks = new ArrayList<>();
     private final ArrayList<Alert> visibleAlerts = new ArrayList<>();
-    //TODO: usa una coda che permetta di rimuovere un oggetto a caso dato il riferimento
     
     public PopUpGuiView() throws RemoteException {
     }

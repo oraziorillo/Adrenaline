@@ -6,7 +6,6 @@ import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
@@ -18,22 +17,30 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.EnumMap;
 
 
 public class Map implements MapChangeListener<PcColourEnum,PcDTO>{
    @FXML
    GridPane grid;
-   @FXML Button button;
    private RemotePlayer player;
    
+   public final MapChangeListener<PcColourEnum,PcDTO> playerObserver = change -> {
+      //TODO: automatizza la gestione dei pc nella mappa
+   };
+   
+   public final MapChangeListener<SquareDTO,SquareDTO> squareObserver = change -> {
+      //TODO: automatizza la gestione degli square nella mappa
+   };
+   
    private Pane[][] squares = new Pane[3][4];
-   private HashMap<PcColourEnum,Circle> pcCircles = new HashMap<>();
+   private EnumMap<PcColourEnum,Circle> pcCircles = new EnumMap<>( PcColourEnum.class );
    
    private static final int ROWS = 3;
    private static final int COLS = 4;
    
    public void initialize() {
+      //force columns to stay same sized
       for(int c=0;c<COLS;c++){
          ColumnConstraints cc = new ColumnConstraints();
          cc.setPercentWidth( 100/COLS );
@@ -41,40 +48,40 @@ public class Map implements MapChangeListener<PcColourEnum,PcDTO>{
          grid.getColumnConstraints().add( cc );
       }
       for(int r=0;r<ROWS;r++){
+         //force rows to stay same sized
          RowConstraints rc = new RowConstraints();
          rc.setPercentHeight( 100/ROWS );
          rc.setVgrow( Priority.ALWAYS );
          grid.getRowConstraints().add( rc );
+         //setup cells
          for(int c=0;c<COLS;c++){
             int row=r,column=c;
             
-            Button button = new Button();
-            button.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
-            button.setBackground( null );
-            button.setOnAction( e-> {
+            FlowPane cellContents = new FlowPane( Orientation.VERTICAL );
+            cellContents.setAlignment( Pos.CENTER );
+            cellContents.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
+            cellContents.setOnMouseClicked( e->{
                try {
                   player.chooseSquare( row,column );
                } catch ( IOException ex ) {
                   //TODO: chiama error in MainGui
                }
             } );
-            
-            FlowPane circles = new FlowPane( Orientation.VERTICAL );
-            circles.setAlignment( Pos.CENTER );
-            circles.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
    
-            StackPane stackPane = new StackPane( circles,button );
+            StackPane stackPane = new StackPane( cellContents );
             stackPane.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
             
-            squares[r][c]=circles;
+            squares[r][c]=cellContents;
             grid.add( stackPane,c,r);
          }
       }
    }
    
    public void setMap(int mapIndex){
+      //load map image
       Image image = new Image( "/images/maps/map_"+mapIndex+".png" );
       BackgroundImage bi = new BackgroundImage( image,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize( 1,1,false,false,true,false ) );
+      //setup image and map to preserve aspect ratio
       double ratio = image.getWidth()/image.getHeight();
       grid.setBackground( new Background( bi ) );
       grid.maxWidthProperty().bind( Bindings.multiply( ratio,grid.heightProperty() ) );

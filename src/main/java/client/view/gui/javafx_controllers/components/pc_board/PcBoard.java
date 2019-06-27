@@ -1,17 +1,19 @@
 package client.view.gui.javafx_controllers.components.pc_board;
 
+import common.dto_model.PcBoardDTO;
 import common.enums.PcColourEnum;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
-public class PcBoard implements ChangeListener<Boolean> {
+public class PcBoard implements ChangeListener<Boolean>, SetChangeListener<PcBoardDTO> {
    public HBox mainPane;
    public ImageView immagine;
    @FXML Double HEIGHT;
@@ -19,6 +21,7 @@ public class PcBoard implements ChangeListener<Boolean> {
    @FXML Azioni azioniController;
    @FXML Vita vitaController;
    private TranslateTransition translate;
+   private PcColourEnum settedColor;
    public void initialize(){
       setPcColour( PcColourEnum.PURPLE );
       translate = new TranslateTransition( new Duration( 500 ), translating);
@@ -43,6 +46,7 @@ public class PcBoard implements ChangeListener<Boolean> {
    }
    
    public void setPcColour(PcColourEnum color){
+      settedColor = color;
       azioniController.setImage( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/azioni.png",0,HEIGHT,true,false ) );
       vitaController.setBackground( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/vita.png",0,HEIGHT,true,false ) );
       immagine.setImage( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/immagine.png",0,HEIGHT,true,false ) );
@@ -55,5 +59,10 @@ public class PcBoard implements ChangeListener<Boolean> {
       }else{
          //TODO: carica azioni normali
       }
+   }
+   
+   @Override
+   public void onChanged(Change<? extends PcBoardDTO> change) {
+   
    }
 }

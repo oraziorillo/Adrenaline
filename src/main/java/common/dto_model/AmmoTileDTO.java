@@ -14,7 +14,7 @@ public class AmmoTileDTO {
     }
 
     public String getImagePath() {
-        //TODO
+        //TODO: aggiungi path immagine
         return "Ciao";
     }
 

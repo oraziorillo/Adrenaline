@@ -18,7 +18,8 @@ import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -46,7 +47,9 @@ public class MainGui extends GuiView {
    @FXML private transient Top topController;
    @FXML private transient Chat chatController;
    @FXML private transient PcBoard pcBoardController;
-   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );   //TODO: fallo osservare da chi è interessato
+   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
+   private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
+   private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
    
    public MainGui() throws RemoteException {
    }
@@ -55,11 +58,17 @@ public class MainGui extends GuiView {
    public void initialize() {
       mapController.setMap(0);
       //init finalFrenzy listeners
-      finalFrenzy.addListener( ( ChangeListener<? super Boolean> ) pcBoardController );
+      finalFrenzy.addListener( pcBoardController );
+      //init pc listeners
+      pcs.addListener( mapController.playerObserver );
+      //init squares listeners
+      squares.addListener( mapController.squareObserver );
+      //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       cardHolderRightController.setBackgroundColor( AmmoEnum.YELLOW );
       topController.cardHolderController.setBackgroundColor( AmmoEnum.BLUE );
+      //make under map buttons overlap a little
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
          Node n = underMapButtons.getChildren().get(i);
          n.setTranslateX(2 * (size - i));
@@ -73,7 +82,6 @@ public class MainGui extends GuiView {
          weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
-      PcDTO[] dtos = new PcDTO[5];
       for(int i=0;i<PcColourEnum.values().length;i++){
          SquareDTO s=new SquareDTO();
          s.setRow( 1 );
@@ -139,7 +147,6 @@ public class MainGui extends GuiView {
       chatController.appear();
    }
    
-   
    /**
     * Cause every message is immediatly displayed in the chat, no acks are pending
     *
@@ -159,14 +166,18 @@ public class MainGui extends GuiView {
    public void propertyChange(PropertyChangeEvent evt) {
       switch (evt.getPropertyName()){
          case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN://Eventi Pc
-            //TODO
+            PcDTO pc = ( PcDTO ) evt.getNewValue();
+            pcs.put( pc.getColour(),pc );
+            break;
          case SET_TARGETABLE: case COLLECT: case REFILL: //Eventi square
-            //TODO
+            SquareDTO square = ( SquareDTO ) evt.getNewValue();
+            squares.put( square,square );
+            break;
          case FINAL_FRENZY:   //eventi game
             finalFrenzy.setValue( ( Boolean ) evt.getNewValue() );
             break;
          case ADD_AMMO: case ADD_DAMAGE: case ADD_MARKS: case PAY_AMMO: case INCREASE_NUMBER_OF_DEATHS: case INCREASE_POINTS: //eventi PcBoard
-            //TODO
+            //TODO: gestisci eventi pcBoard
       }
    }
 }
