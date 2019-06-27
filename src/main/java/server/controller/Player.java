@@ -2,14 +2,17 @@ package server.controller;
 
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
+import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
 import server.model.Pc;
 import server.model.WeaponCard;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static common.Constants.*;
@@ -71,7 +74,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-    void hasToRespawn(){
+    synchronized void hasToRespawn(){
         if (currState.isInactive()){
             currState.setHasToRespawn(true);
             currState = currState.nextState();
@@ -79,7 +82,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-    void setActive() {
+    synchronized void setActive() {
         if (currState.isInactive())
             currState = currState.nextState();
     }
@@ -106,7 +109,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void choosePcColour(String colour) {
-        currState.selectPcColour(colour);
+            currState.selectPcColour(colour);
     }
 
 
@@ -214,6 +217,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void ok() {
+        try {
+            view.ack("questo è il mio stato attuale" + currState);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (currState.ok())
             currState = currState.nextState();
     }

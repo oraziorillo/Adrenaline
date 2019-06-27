@@ -1,6 +1,11 @@
 package server.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.stream.JsonReader;
 import common.dto_model.AmmoTileDTO;
+import common.dto_model.GameBoardDTO;
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;
 import common.enums.PcColourEnum;
@@ -9,8 +14,12 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
+import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.AmmoSquare;
 import server.model.squares.SpawnPoint;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -94,5 +103,29 @@ public class CustomizedModelMapperTest {
         WeaponCardDTO weaponCardDTO = modelMapper.map(weaponCard, WeaponCardDTO.class);
         assertEquals(weaponName, weaponCardDTO.getName());
     }
+
+
+    private GameBoard setupGameBoard() throws FileNotFoundException {
+        GameBoard gameBoard;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
+        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
+
+        JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
+        return gameBoard = customGson.fromJson(gameBoards.get(3), GameBoard.class);
+    }
+
+    @Test
+    public void modelMapperWorksFineOnGameBoard() throws FileNotFoundException {
+        GameBoard gameBoard = setupGameBoard();
+        GameBoardDTO gameBoardDTO = modelMapper.map(gameBoard, GameBoardDTO.class);
+        assertEquals(gameBoardDTO.getColumns(), gameBoard.getColumns());
+        assertEquals(gameBoardDTO.getRows(), gameBoard.getRows());
+        assertEquals(gameBoardDTO.getSpawnPoints().size(), gameBoard.getSpawnPoints().size());
+        assertEquals(gameBoardDTO.getSpawnPoints().get(2).getCol(), gameBoard.getSpawnPoints().get(2).getCol());
+    }
+
 
 }

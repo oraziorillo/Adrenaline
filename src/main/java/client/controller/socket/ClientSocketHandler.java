@@ -167,7 +167,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void choosePowerUp(int index) {
-        out.println( CHOOSE_POWER_UP + "," + index );
+        out.println( CHOOSE_POWERUP + "," + index );
         out.flush();
     }
     

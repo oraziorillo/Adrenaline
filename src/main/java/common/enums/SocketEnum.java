@@ -33,7 +33,6 @@ public enum SocketEnum {
     PASS("p","pass"),
     SKIP("skip"),
     USE_POWER_UP("pw","power up"),
-    CHOOSE_POWER_UP("ch","choose power up"),
     REMOVE_UPGRADE("ru","remove selectUpgrade"),
     UNDO("undo"),
     QUIT("quit","q"),

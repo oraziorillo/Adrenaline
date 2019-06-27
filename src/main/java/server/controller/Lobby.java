@@ -110,7 +110,7 @@ public class Lobby {
             if (players.get(0) == p)
                 p.setCurrState(new SetupMapState(controller));
             else
-                p.setCurrState(new InactiveState(controller, 0));
+                p.setCurrState(new InactiveState(controller, InactiveState.PC_SELECTION_STATE));
         }
         DatabaseHandler.getInstance().gameStarted(this);
         DatabaseHandler.getInstance().getViews(gameUUID).forEach(v -> {

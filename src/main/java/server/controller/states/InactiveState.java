@@ -7,9 +7,11 @@ import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.actions.Action;
 
+import java.io.IOException;
+
 public class InactiveState extends State {
 
-    static final int PC_SELECTION_STATE = 0;
+    public static final int PC_SELECTION_STATE = 0;
     static final int FIRST_TURN_STATE = 1;
     static final int START_TURN_STATE = 2;
 
@@ -62,6 +64,11 @@ public class InactiveState extends State {
     public State nextState() {
         if (hasToRespawn)
             return new RespawnState(controller);
+        try {
+            controller.getCurrPlayer().getView().ack("Now you are in " + nextState + "state");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         switch (nextState){
             case PC_SELECTION_STATE:
                 return new PcSelectionState(controller);

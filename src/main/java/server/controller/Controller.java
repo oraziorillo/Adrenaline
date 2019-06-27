@@ -136,12 +136,12 @@ public class Controller{
 
 
     public boolean checkAvailableColour(String pcColour) {
-        return availablePcColours.contains(PcColourEnum.valueOf(pcColour));
+        return availablePcColours.contains(PcColourEnum.fromString(pcColour));
     }
 
 
     public void removeAvailableColour(String pcColour) {
-        availablePcColours.remove(PcColourEnum.valueOf(pcColour));
+        availablePcColours.remove(PcColourEnum.fromString(pcColour));
     }
 
 

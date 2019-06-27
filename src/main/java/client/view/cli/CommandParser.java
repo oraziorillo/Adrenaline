@@ -33,7 +33,7 @@ public abstract class CommandParser {
             case CHOOSE_SQUARE:
                 player.chooseSquare( Integer.parseInt( commands[1] ), Integer.parseInt( commands[1] ) );
                 break;
-            case CHOOSE_POWER_UP:
+            case CHOOSE_POWERUP:
                 player.choosePowerUp( Integer.parseInt( commands[1] ) );
                 break;
             case GRAB_WEAPON_ON_SPAWNPOINT:

@@ -57,6 +57,22 @@ public class GameBoard {
     }
 
 
+    public int getColumns() {
+        return columns;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public List<Square> getSquares() {
+        return squares;
+    }
+
+    public List<Square> getSpawnPoints() {
+        return spawnPoints;
+    }
+
     /**
      * assigns the proper deck to each square and the list of listeners
      * @param weaponsDeck deck of weapons
@@ -84,7 +100,6 @@ public class GameBoard {
     public KillShot[] getKillShotTrack() {
         return killShotTrack.getKillShotTrack();
     }
-
 
     Square getSquare(int row, int col){
         if (row >= rows || col >= columns)
