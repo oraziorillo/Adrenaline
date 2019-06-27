@@ -1,6 +1,6 @@
 package client.controller.socket;
 
-import common.enums.interfaces_names.RemoteViewEnum;
+import common.enums.RemoteViewEnum;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import static common.enums.interfaces_names.SocketEnum.*;
+import static common.enums.SocketEnum.*;
 
 public class ClientSocketHandler implements Runnable, RemoteLoginController, RemotePlayer {
     private Socket socket;
@@ -62,8 +62,10 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
                 view.ack( builder.toString() );
         }
     }
+
     
     //LoginController
+
     @Override
     public synchronized UUID register(String username, RemoteView view) throws IOException {
         this.view = view;
@@ -95,11 +97,6 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public synchronized void joinLobby(UUID token) {
-        try {
-            view.ack("Sono in joinLobby " + out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         out.println( JOIN_LOBBY.toString() + "," + token );
         out.flush();
     }
@@ -108,16 +105,12 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     public synchronized void setRemoteView(RemoteView view, UUID token) throws IOException {
         this.view = view;
     }
-    
+
+
     //Player
     
     @Override
     public synchronized void chooseMap(int n) {
-        try {
-            view.ack("Sono in chooseMap " + out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         out.println( CHOOSE_MAP.toString() + "," + n );
         out.flush();
     }
@@ -263,7 +256,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
             out.close();
             in.close();
             socket.close();
-        }catch ( IOException ignored ){} //if already closed it's ok
+        } catch ( IOException ignored ){} //if already closed it's ok
     }
     
     @Override

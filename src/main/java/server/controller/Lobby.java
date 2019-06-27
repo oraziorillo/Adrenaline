@@ -79,7 +79,7 @@ public class Lobby {
             removePlayer(player);
         }
 
-        ackAllPlayersExcept(getAllUsernames());
+        ackAllPlayersExcept(getAllUserNames());
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
             ackAllPlayersExcept(players.size() + " players have joined! The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes");
@@ -91,9 +91,9 @@ public class Lobby {
     }
 
 
-    void removePlayer(Player player) {
+    private void removePlayer(Player player) {
         players.remove(player);
-        ackAllPlayersExcept("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!" + System.lineSeparator() + getAllUsernames());
+        ackAllPlayersExcept("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!" + System.lineSeparator() + getAllUserNames());
         if (players.size() < 3) {
             timer.stop();
             ackAllPlayersExcept(TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds and the game would have started. Now we have to start again." + System.lineSeparator() +
@@ -140,7 +140,7 @@ public class Lobby {
     }
 
 
-    private String getAllUsernames() {
+    private String getAllUserNames() {
         StringBuilder result = new StringBuilder("Players in the room:");
         String at = System.lineSeparator() + "@";
         for (Player p : players) {

@@ -21,7 +21,7 @@ public class ClientSocketHandlerTest {
             }
         } );
         server.start();
-        tested = new ClientSocketHandler( new Socket("localhost",10000) );
+        tested = new ClientSocketHandler( new SOCKET("localhost",10000) );
         new Thread( tested ).start();
         Mockito.doNothing().when( view).ack( any(String.class) );
     }

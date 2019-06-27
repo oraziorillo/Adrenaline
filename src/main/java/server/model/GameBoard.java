@@ -117,7 +117,7 @@ public class GameBoard {
     }
 
 
-    public void addPropertyChangeSupport(PropertyChangeSupport pcs) {
+    void addPropertyChangeSupport(PropertyChangeSupport pcs) {
         squares.forEach(s -> s.addPropertyChangeSupport(pcs));
     }
 }

@@ -28,7 +28,7 @@ public abstract class GuiView extends UnicastRemoteObject implements AbstractVie
     @Override
     public RemoteLoginController acquireConnection() {
         RemoteLoginController loginController;
-        Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("Socket"), new ButtonType("Rmi"));
+        Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
         rmiOrSocket.setHeaderText(null);
         rmiOrSocket.setTitle("Select connection");
         Optional<ButtonType> resonse = rmiOrSocket.showAndWait();

@@ -1,14 +1,12 @@
 package common.enums;
 
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public enum ConnectionsEnum {
-    Socket("s","socket"),
-    Rmi("r","rmi");
-    
+    SOCKET("s","socket"),
+    RMI("r","rmi");
+
     private final Collection<String> recognisedStrings;
     
     ConnectionsEnum(String... recognisedStrings){

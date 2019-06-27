@@ -1,7 +1,7 @@
 package client.view.cli;
 
 import client.view.AbstractView;
-import common.enums.interfaces_names.SocketEnum;
+import common.enums.SocketEnum;
 import common.remote_interfaces.RemotePlayer;
 import java.io.IOException;
 
@@ -10,7 +10,6 @@ public abstract class CommandParser {
         switch (SocketEnum.parseString( commands[0] )) {
             //TODO: aggiungi i comandi restanti
             case CHOOSE_MAP:
-                view.ack("qua ci sono arrivato " + commands[1]);
                 player.chooseMap( Integer.parseInt( commands[1] ) );
                 break;
             case CHOOSE_NUMBER_OF_SKULLS:

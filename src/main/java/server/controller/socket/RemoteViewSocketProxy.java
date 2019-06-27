@@ -7,7 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.Socket;
 
-import static common.enums.interfaces_names.RemoteViewEnum.ACK;
+import static common.enums.RemoteViewEnum.ACK;
 
 public class RemoteViewSocketProxy extends AbstractSocketProxy implements RemoteView {
    

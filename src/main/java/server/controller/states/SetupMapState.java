@@ -24,12 +24,12 @@ public class SetupMapState extends State{
 
     /**
      * Sets a map index
-     * @param n the index of the map
+     * @param mapIndex the index of the map
      */
     @Override
-    public void selectMap(int n) {
+    public void selectMap(int mapIndex) {
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP)
-            this.mapIndex = n;
+            this.mapIndex = mapIndex;
     }
 
 
