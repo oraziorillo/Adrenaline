@@ -1,6 +1,6 @@
 package server.controller.socket;
 
-import common.enums.interfaces_names.SocketEnum;
+import common.enums.SocketEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.LoginController;
@@ -33,7 +33,7 @@ public class ServerSocketHandler implements Runnable {
         while (!socket.isClosed()) {
             String[] args = in.next().split(",");
             try {
-                view.ack("e qui ci arrivo? Ora devo usare gli handler. L'argomento passato è :" + args[0] + args[1]);
+                view.ack("Command :" + args[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -48,6 +48,7 @@ public class ServerSocketHandler implements Runnable {
                 } catch (IOException ignored) {
                 }
             } catch (IllegalArgumentException ignored) {
+                ignored.printStackTrace();
             } //only one of the "handle..." method will not throw it
 
         }
@@ -64,7 +65,6 @@ public class ServerSocketHandler implements Runnable {
      */
     private void handle(String[] args) throws IOException {
         int argInt;
-        view.ack("e qui ci arrivo? PRIMO");
         switch (SocketEnum.valueOf(args[0])) {
             case REGISTER:
                 out.println(loginController.register(args[1], view));
@@ -81,7 +81,6 @@ public class ServerSocketHandler implements Runnable {
                 }
                 break;
             case CHOOSE_MAP:
-                view.ack("e qui ci arrivo? SECONDO");
                 argInt = Integer.parseInt(args[1]);
                 player.chooseMap(argInt);
                 break;

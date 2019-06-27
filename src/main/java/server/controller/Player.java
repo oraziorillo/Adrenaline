@@ -8,7 +8,6 @@ import server.controller.states.State;
 import server.model.Pc;
 import server.model.WeaponCard;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
@@ -93,12 +92,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void chooseMap(int n) {
-        try {
-            view.ack("Sto eseguendo il metodo choose map lato server");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         if (n >= FIRST_MAP && n <= LAST_MAP)
             currState.selectMap(n);
     }

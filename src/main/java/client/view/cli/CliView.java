@@ -4,6 +4,7 @@ import client.controller.socket.ClientSocketHandler;
 import client.view.AbstractView;
 import client.view.InputReader;
 import common.enums.ConnectionsEnum;
+import common.enums.SocketEnum;
 import common.remote_interfaces.RemoteLoginController;
 
 import java.beans.PropertyChangeEvent;
@@ -15,7 +16,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
@@ -23,84 +23,107 @@ import java.util.UUID;
 public class CliView extends UnicastRemoteObject implements AbstractView, PropertyChangeListener {
 
     private transient InputReader inputReader;
-    
+
     public CliView() throws RemoteException {
         this.inputReader = new CliInputReader();
     }
-    
+
     @Override
-    public RemoteLoginController acquireConnection(){
+    public RemoteLoginController acquireConnection() {
         ConnectionsEnum cmd = null;
         do {
             try {
-                cmd = ConnectionsEnum.parseString( inputReader.requestString( "Choose a connection method:" + System.lineSeparator() + " - (s)ocket" + System.lineSeparator() + " - (r)mi" + System.lineSeparator() ).toLowerCase());
-            }catch ( IllegalArgumentException e ){
+                cmd = ConnectionsEnum.parseString(inputReader.requestString(
+                        "Choose a connection method:" + System.lineSeparator() +
+                         "s  ->  socket" + System.lineSeparator() +
+                         "r  ->  rmi")
+                        .toLowerCase());
+                System.out.println();
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         } while (cmd == null);
-        switch (cmd){
-            case Socket:
+        switch (cmd) {
+            case SOCKET:
                 try {
-                    Socket socket = new Socket( HOST, SOCKET_PORT );
-                    ClientSocketHandler handler = new ClientSocketHandler( socket );
-                    new Thread( handler ).start();
+                    Socket socket = new Socket(HOST, SOCKET_PORT);
+                    ClientSocketHandler handler = new ClientSocketHandler(socket);
+                    new Thread(handler).start();
                     return handler;
-                } catch (IOException e ) {
-                    error( "Server unreachable" );
+                } catch (IOException e) {
+                    error("Server unreachable");
                 }
-            case Rmi:
+            case RMI:
                 try {
-                    Registry registry = LocateRegistry.getRegistry( HOST, RMI_PORT );
-                    return ( RemoteLoginController ) registry.lookup( "LoginController" );
-                } catch ( RemoteException | NotBoundException e ) {
-                    error( "Server unreachable" );
+                    Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
+                    return (RemoteLoginController) registry.lookup("LoginController");
+                } catch (RemoteException | NotBoundException e) {
+                    error("Server unreachable");
                 }
             default:
-                    throw new IllegalArgumentException( cmd + "is not supported yet" );
+                throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+        }
+
+    }
+
+
+    @Override
+    public boolean wantsToRegister() {
+        SocketEnum cmd = null;
+        do {
+            try {
+                cmd = SocketEnum.parseString(inputReader.requestString(
+                        "r  ->  register" + System.lineSeparator() +
+                        "l  ->  login")
+                        .toLowerCase());
+                System.out.println();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (cmd == null);
+
+        switch (cmd) {
+            case REGISTER:
+                return true;
+            case LOGIN:
+                return false;
+            default:
+                throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
         }
     }
-    
-    @Override
-    public boolean wantsToRegister(){
-        HashSet<String> yesAnswers = new HashSet<>( Arrays.asList("y", "yes"));
-        HashSet<String> noAnswers = new HashSet<>(Arrays.asList("n", "no"));
-        String cmd;
-        do{
-            cmd = inputReader.requestString("Do you have a login token?"+System.lineSeparator()).toLowerCase();
-        }while (!yesAnswers.contains( cmd ) && ! noAnswers.contains( cmd ));
-        return noAnswers.contains( cmd );
-    }
-    
+
+
     @Override
     public String acquireUsername() {
         return inputReader.requestString("Insert a username");
     }
-    
+
     @Override
     public UUID acquireToken() {
         return UUID.fromString(inputReader.requestString("Insert your token"));
     }
-    
+
     @Override
     public String requestString(String message) {
-        return inputReader.requestString( message );
+        return inputReader.requestString(message);
     }
-    
+
     @Override
     public void error(String msg) {
-        inputReader.requestString( msg + System.lineSeparator() + "Press enter to exit." );
-        System.exit( 1 );
+        inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
+        System.exit(1);
     }
-    
+
     /**
-     * Cause every message is immediatly displayed in the cli, no acks are pending
+     * Cause every message is immediately displayed in the cli, no acks are pending
+     *
      * @return an empty Collection
      */
     @Override
     public Collection<String> getPendingAcks() {
         return new HashSet<>();
     }
-    
+
     @Override
     public void ack(String message) {
         System.out.println(message);

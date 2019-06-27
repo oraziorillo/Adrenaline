@@ -14,7 +14,7 @@ public class CliController extends AbstractClientController  {
     }
     
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         try{
             String cmd = view.requestString("Insert command");
             String[] commands = cmd.split("-");

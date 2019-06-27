@@ -1,4 +1,4 @@
-package common.enums.interfaces_names;
+package common.enums;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,9 +9,9 @@ import java.util.Set;
  * Support enum for hand-made socket stubs
  */
 public enum SocketEnum {
-    REGISTER,
-    LOGIN,
-    JOIN_LOBBY(":j",":join"),
+    REGISTER("r", "register"),
+    LOGIN("l", "login"),
+    JOIN_LOBBY("j","join"),
     CHOOSE_MAP("m","map","choose map"),
     CHOOSE_NUMBER_OF_SKULLS( "sk", "skulls", "choose number of skulls" ),
     CHOOSE_PC_COLOUR("choose colour","colour","col"),

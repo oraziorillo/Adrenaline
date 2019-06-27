@@ -1,9 +1,9 @@
 package server.model;
 
-import common.enums.interfaces_names.SocketEnum;
+import common.enums.SocketEnum;
 import org.junit.Test;
 
-import static common.enums.interfaces_names.SocketEnum.CHOOSE_MAP;
+import static common.enums.SocketEnum.CHOOSE_MAP;
 
 public class RandomTest {
 

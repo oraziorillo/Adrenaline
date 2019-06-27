@@ -16,7 +16,7 @@ public abstract class AbstractClientController extends Application {
     protected transient RemoteLoginController loginController;
     protected transient RemotePlayer player;
     
-    protected AbstractClientController(AbstractView view) {
+    AbstractClientController(AbstractView view) {
         this.view = view;
         initialize();
     }
@@ -31,7 +31,7 @@ public abstract class AbstractClientController extends Application {
                 do {
                     token = loginController.register( view.acquireUsername(), view );
                 } while (token == null);
-                view.ack( "This is your token: " + token + "\n\nUse it to login next time\n" );
+                view.ack( "This is your token: " + token + "\nUse it to login next time\n" );
                 player = loginController.login( token, view );
             } else {
                 RemotePlayer tmpPlayer;
