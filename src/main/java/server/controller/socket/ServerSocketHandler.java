@@ -33,7 +33,7 @@ public class ServerSocketHandler implements Runnable {
         while (!socket.isClosed()) {
             String[] args = in.next().split(",");
             try {
-                view.ack("e qui ci arrivo? Ora devo usare gli handler. L'argomento passato è :" + args[0] + args[1]);
+                view.ack("e qui ci arrivo? Ora devo usare gli handler. L'argomento passato è :" + args[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -128,6 +128,7 @@ public class ServerSocketHandler implements Runnable {
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
                 break;
             case OK:
+                view.ack("Comando OK viene chiamato");
                 player.ok();
                 break;
             case RELOAD:

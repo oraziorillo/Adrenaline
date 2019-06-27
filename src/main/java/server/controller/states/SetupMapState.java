@@ -28,7 +28,7 @@ public class SetupMapState extends State{
      */
     @Override
     public void selectMap(int n) {
-        if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP)
+        if (n >= FIRST_MAP && n <= LAST_MAP)
             this.mapIndex = n;
     }
 

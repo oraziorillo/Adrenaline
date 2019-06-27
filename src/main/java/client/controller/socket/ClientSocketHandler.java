@@ -95,11 +95,6 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public synchronized void joinLobby(UUID token) {
-        try {
-            view.ack("Sono in joinLobby " + out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         out.println( JOIN_LOBBY.toString() + "," + token );
         out.flush();
     }
@@ -113,11 +108,6 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public synchronized void chooseMap(int n) {
-        try {
-            view.ack("Sono in chooseMap " + out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         out.println( CHOOSE_MAP.toString() + "," + n );
         out.flush();
     }
