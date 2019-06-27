@@ -4,7 +4,6 @@ import static common.Constants.FINAL_FRENZY;
 
 public class FinalFrenzyEvent extends ModelEvent {
 
-
     @Override
     public String toString() {
         return "FINAL FRENZY!";

@@ -178,7 +178,9 @@ public class Pc {
         }
 
         //notify listeners
-        events.fireEvent(new PowerUpDiscardedEvent(modelMapper.map(p, PowerUpCardDTO.class), this.getName()));
+        events.fireEvent(new PowerUpDiscardedEvent(
+                modelMapper.map(this, PcDTO.class),
+                modelMapper.map(p, PowerUpCardDTO.class)));
     }
 
 
@@ -312,7 +314,7 @@ public class Pc {
         currSquare.addPc(this);
 
         //notify listeners
-        events.fireEvent(new SpawnEvent(getName(), modelMapper.map(t, SquareDTO.class)));
+        events.fireEvent(new SpawnEvent(modelMapper.map(this, PcDTO.class)));
     }
 
 

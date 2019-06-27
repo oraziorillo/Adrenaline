@@ -1,30 +1,28 @@
 package common.events;
 
-import common.dto_model.SquareDTO;
+import common.dto_model.PcDTO;
 
 import static common.Constants.SPAWN;
 
 public class SpawnEvent extends ModelEvent {
 
-    private String pcName;
-    private SquareDTO newPos;
+    private PcDTO pc;
 
 
-    public SpawnEvent(String pcName, SquareDTO newPos){
-        this.pcName = pcName;
-        this.newPos = newPos;
+    public SpawnEvent(PcDTO pc){
+        this.pc = pc;
     }
 
 
     @Override
     public String toString() {
-        return pcName + " spawned on " + newPos.toString();
+        return pc.getName() + " spawned on " + pc.getCurrSquare();
     }
 
 
     @Override
     public Object getNewValue() {
-        return newPos;
+        return pc;
     }
 
 
