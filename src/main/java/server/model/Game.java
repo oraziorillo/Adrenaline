@@ -5,30 +5,36 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import common.dto_model.GameBoardDTO;
+import common.dto_model.KillShotTrackDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import common.events.*;
+import common.events.game_events.FinalFrenzyEvent;
+import common.events.game_events.GameBoardSetEvent;
+import common.events.killshottrack_events.KillShotTrackSetEvent;
+import org.modelmapper.ModelMapper;
+import server.controller.CustomizedModelMapper;
 import server.database.DatabaseHandler;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.Square;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static common.Constants.FINAL_FRENZY;
-
 /**
  * This class represents an ADRENALINE game
  */
 public class Game {
 
-    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
+
+    private ModelEventHandler events = new ModelEventHandler();
 
     private GameBoard gameBoard;
     private Set<Pc> pcs;
@@ -142,10 +148,14 @@ public class Game {
             gameBoard = customGson.fromJson(gameBoards.get(numberOfMap - 1), GameBoard.class);
 
             gameBoard.initSquares(weaponsDeck, ammoDeck);
-            gameBoard.addPropertyChangeSupport(changes);
             for (Square s: gameBoard.getSquares()) {
                 System.out.println(s.getRow() + " " + s.getCol() + " " + s.getColour());
             }
+            gameBoard.addModelEventHandler(events);
+
+            //notify map set
+            events.fireEvent(new GameBoardSetEvent(modelMapper.map(gameBoard, GameBoardDTO.class), numberOfMap));
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -158,6 +168,9 @@ public class Game {
      */
     public void initKillShotTrack(int numberOfSkulls){
         gameBoard.initKillShotTrack(numberOfSkulls);
+
+        //notify kill shot track set
+        events.fireEvent(new KillShotTrackSetEvent(modelMapper.map(gameBoard.getKillShotTrack(), KillShotTrackDTO.class)));
     }
 
 
@@ -171,7 +184,7 @@ public class Game {
         this.finalFrenzy = finalFrenzy;
 
         //notify listeners
-        changes.firePropertyChange(FINAL_FRENZY, !finalFrenzy, finalFrenzy);
+        events.fireEvent(new FinalFrenzyEvent());
     }
 
 
@@ -194,7 +207,7 @@ public class Game {
 
 
     public void addPc(Pc pc) {
-        pc.addPropertyChangeSupport(changes);
+        pc.addModelEventHandler(events);
         pcs.add(pc);
     }
 
@@ -208,7 +221,7 @@ public class Game {
         scoringPoints(deadPc, doubleKill);
         boolean turnIntoFinalFrenzy = scoreOnKillShotTrack(deadPc);
         if (!isFinalFrenzy())
-            deadPc.getPcBoard().increaseNumberOfDeaths();
+            deadPc.increaseNumberOfDeaths();
         return turnIntoFinalFrenzy;
     }
 
@@ -332,8 +345,8 @@ public class Game {
     }
 
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
+    public void addModelEventListener(ModelEventListener listener) {
+        events.addModelEventListener(listener);
     }
 
 }

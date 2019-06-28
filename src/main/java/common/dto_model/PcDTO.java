@@ -4,13 +4,15 @@ import common.enums.PcColourEnum;
 
 import java.util.ArrayList;
 
-public class PcDTO {
+public class PcDTO extends DTO{
 
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
     private ArrayList<PowerUpCardDTO> powerUps;
     private SquareDTO currSquare;
-    
+    private short adrenaline;
+
+
     public PcBoardDTO getPcBoard() {
         return pcBoard;
     }
@@ -42,5 +44,16 @@ public class PcDTO {
     public void setCurrSquare(SquareDTO currSquare) {
         this.currSquare = currSquare;
     }
-    
+
+    public short getAdrenaline() {
+        return adrenaline;
+    }
+
+    public void setAdrenaline(short adrenaline) {
+        this.adrenaline = adrenaline;
+    }
+
+    public String getName() {
+        return pcBoard.getColour().getName();
+    }
 }

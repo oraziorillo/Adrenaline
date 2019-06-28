@@ -167,14 +167,14 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void choosePowerUp(int index) {
-        out.println( CHOOSE_POWERUP + "," + index );
+        out.println( CHOOSE_POWER_UP + "," + index );
         out.flush();
     }
     
     
     @Override
     public void chooseWeaponOnSpawnPoint(int n) {
-        out.println( GRAB_WEAPON_ON_SPAWNPOINT + "," + n );
+        out.println( GRAB_WEAPON_ON_SPAWN_POINT + "," + n );
         out.flush();
     }
     
@@ -188,7 +188,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void switchFireMode() {
-        out.println( SWITCH_FIREMODE );
+        out.println(SWITCH_FIRE_MODE);
         out.flush();
     }
     
@@ -202,7 +202,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     
     @Override
     public void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
-        out.println( CHOOSE_ASYNCH_EFFECT_ORDER + "," + beforeBasicEffect);
+        out.println( CHOOSE_ASYNCHRONOUS_EFFECT_ORDER + "," + beforeBasicEffect);
         out.flush();
     }
 

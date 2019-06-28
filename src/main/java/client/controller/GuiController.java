@@ -2,8 +2,9 @@ package client.controller;
 
 import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
-import client.view.gui.PopUpGuiView;
-import client.view.gui.javafx_controllers.MainGui;
+import client.view.gui.GuiView;
+import client.view.gui.javafx_controllers.view_states.InGameState;
+import common.remote_interfaces.RemoteLoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,33 +14,53 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.UUID;
 
 public class GuiController extends AbstractClientController {
     
     public GuiController() throws RemoteException {
-        super( new PopUpGuiView() );
+        super( new GuiView() );
     }
     
     @Override
     public void start(Stage stage) throws Exception {
+        Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
+        authUser( stage );
         configGame(stage);
         startGame( stage );
     }
     
+    private void authUser(Stage stage){
+        try {
+            RemoteLoginController loginController = view.acquireConnection();
+            UUID token;
+            if (view.wantsToRegister()) {
+                String username = view.acquireUsername();
+                token = loginController.register( username, view );
+            } else {
+                token = view.acquireToken();
+            }
+            player = loginController.login( token, view );
+        }catch ( IOException e ){
+            try {
+                view.error( "Server unreachable" );
+            }catch ( RemoteException ignored ){}
+        }
+    }
+    
     private void configGame(Stage stage){
-        //Magari si potrebbe pure fare qui il login?
         //TODO: scegli mappa, teschi, colore
     }
     
     private void startGame(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
-        MainGui inGameView = loader.getController();
-        Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
+        InGameState inGameView = loader.getController();
     
         loginController.setRemoteView( inGameView, player.getToken() );
         AbstractView oldView = this.view;
         this.view = inGameView;
+        
         for(String s: oldView.getPendingAcks()){
             this.view.ack( s );
         }

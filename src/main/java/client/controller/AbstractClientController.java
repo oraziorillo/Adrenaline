@@ -21,7 +21,6 @@ public abstract class AbstractClientController extends Application {
         initialize();
     }
 
-
     protected void initialize(){
         try {
             UUID token;

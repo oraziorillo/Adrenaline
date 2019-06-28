@@ -1,12 +1,13 @@
 package common.remote_interfaces;
 
-import java.beans.PropertyChangeListener;
+import common.events.ModelEventListener;
+
 import java.io.IOException;
 
 public interface RemoteView {
 
     void ack(String message) throws IOException;
 
-    PropertyChangeListener getListener();
+    ModelEventListener getListener();
 
 }

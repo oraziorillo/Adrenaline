@@ -3,9 +3,9 @@ package server.model;
 import com.google.gson.annotations.Expose;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import common.events.ModelEventHandler;
 import server.model.squares.Square;
 
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -131,7 +131,7 @@ public class GameBoard {
     }
 
 
-    void addPropertyChangeSupport(PropertyChangeSupport pcs) {
-        squares.forEach(s -> s.addPropertyChangeSupport(pcs));
+    void addModelEventHandler(ModelEventHandler events) {
+        squares.forEach(s -> s.addModelEventHandler(events));
     }
 }

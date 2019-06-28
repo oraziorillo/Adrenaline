@@ -1,9 +1,9 @@
 package server.controller.socket;
 
 import client.controller.socket.AbstractSocketProxy;
+import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteView;
 
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -22,7 +22,7 @@ public class RemoteViewSocketProxy extends AbstractSocketProxy implements Remote
    }
 
    @Override
-   public PropertyChangeListener getListener() {
+   public ModelEventListener getListener() {
       //TODO
       return null;
    }

@@ -2,7 +2,7 @@ package common.dto_model;
 
 import java.util.List;
 
-public class GameBoardDTO {
+public class GameBoardDTO extends DTO{
 
     private int rows;
     private int columns;

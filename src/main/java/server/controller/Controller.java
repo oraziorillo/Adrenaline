@@ -1,13 +1,13 @@
 package server.controller;
 
 import common.enums.PcColourEnum;
+import common.events.ModelEventListener;
 import server.database.DatabaseHandler;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
 import server.model.squares.Square;
 
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,8 +40,8 @@ public class Controller{
     public void initGame(UUID gameUUID){
         game = Game.getGame(gameUUID);
         players.forEach(p -> {
-            PropertyChangeListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
-            game.addPropertyChangeListener(listener);
+            ModelEventListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
+            game.addModelEventListener(listener);
         });
         try {
             getCurrPlayer().getView().ack("It's your turn!!");

@@ -1,19 +1,17 @@
-package client.view.gui.javafx_controllers;
+package client.view.gui.javafx_controllers.view_states;
 
-import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.components.Chat;
 import client.view.gui.javafx_controllers.components.Map;
 import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
 import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
-import common.dto_model.PcDTO;
-import common.dto_model.PowerUpCardDTO;
-import common.dto_model.SquareDTO;
-import common.dto_model.WeaponCardDTOFirstVersion;
+import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
+import common.events.pc_events.AdrenalineUpEvent;
+import common.events.ModelEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -25,20 +23,14 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import server.model.AmmoTile;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Random;
 
-import static common.Constants.*;
 
-
-public class MainGui extends GuiView {
+public class InGameState extends ViewState {
    @FXML private transient GridPane killShotTrack;
    @FXML private transient Map mapController;
    @FXML private transient CardHolder cardHolderLeftController;
@@ -52,10 +44,6 @@ public class MainGui extends GuiView {
    private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
-   
-   public MainGui() throws RemoteException {
-   }
-   
    
    public void initialize() {
       mapController.setMap(0);
@@ -120,6 +108,7 @@ public class MainGui extends GuiView {
    
    @FXML
    private void reloadClicked(ActionEvent actionEvent) {
+      //TODO: remove folloing te
       try {
          player.reload();
       } catch ( IOException e ) {
@@ -137,9 +126,11 @@ public class MainGui extends GuiView {
       SquareDTO square = new SquareDTO();
       square.setCol( random.nextInt( 4 ) );
       square.setRow( random.nextInt( 3 ) );
+      AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
+      square.setAmmoTile( random.nextBoolean()?fullTile:null );
       pcToMove.setCurrSquare( square );
       pcToMove.setColour( pcToMoveColor );
-      propertyChange(new PropertyChangeEvent(this,MOVE_TO,pcs.get( pcToMoveColor ),pcToMove ));
+      modelEvent(new AdrenalineUpEvent( pcToMove ));
       /*
       try {
          player.skip();
@@ -150,6 +141,11 @@ public class MainGui extends GuiView {
    
    public void setHostServices(HostServices hostServices) {
       topController.setHostServices(hostServices);
+   }
+   
+   @Override
+   public ViewState nextState() {
+      return new UserAuthState();
    }
    
    @Override
@@ -168,38 +164,12 @@ public class MainGui extends GuiView {
       chatController.showServerMessage(message);
       chatController.appear();
    }
-   
-   /**
-    * Cause every message is immediatly displayed in the chat, no acks are pending
-    *
-    * @return an empty Collection
-    */
+
+
    @Override
-   public Collection<String> getPendingAcks() {
-      return new HashSet<>();
-   }
-   
-   @Override
-   public PropertyChangeListener getListener() {
-      return this;
-   }
-   
-   @Override
-   public void propertyChange(PropertyChangeEvent evt) {
-      switch (evt.getPropertyName()){
-         case MOVE_TO: case DRAW_POWER_UP: case DISCARD_POWER_UP: case KILL_OCCURRED: case ADRENALINE_UP: case SPAWN:   //Eventi Pc
-            PcDTO pc = ( PcDTO ) evt.getNewValue();
-            pcs.put( pc.getColour(),pc );
-            break;
-         case SET_TARGETABLE: case COLLECT: case REFILL: //Eventi square
-            SquareDTO square = ( SquareDTO ) evt.getNewValue();
-            squares.put( square,square );
-            break;
-         case FINAL_FRENZY:   //eventi game
-            finalFrenzy.setValue( ( Boolean ) evt.getNewValue() );
-            break;
-         case ADD_AMMO: case ADD_DAMAGE: case ADD_MARKS: case PAY_AMMO: case INCREASE_NUMBER_OF_DEATHS: case INCREASE_POINTS: //eventi PcBoard
-            //TODO: gestisci eventi pcBoard
+   public void modelEvent(ModelEvent event) {
+      switch (event.getPropertyName()){
+            //TODO: rivedi eventi con orazio
       }
    }
 }

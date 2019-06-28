@@ -1,11 +1,9 @@
 package server.model;
 
-import common.dto_model.PcBoardDTO;
 import common.enums.PcColourEnum;
+import common.events.ModelEventHandler;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
-
-import java.beans.PropertyChangeSupport;
 
 import static common.Constants.*;
 
@@ -13,7 +11,7 @@ class PcBoard {
 
     private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
 
-    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    private ModelEventHandler events = new ModelEventHandler();
 
     private PcColourEnum colour;
     private short points;
@@ -88,33 +86,18 @@ class PcBoard {
 
 
     void increasePoints(int earnedPoints){
-
-        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
-
         this.points += earnedPoints;
-
-
-        //notify listeners
-        changes.firePropertyChange(INCREASE_POINTS, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void increaseNumberOfDeaths(){
-
-        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
-
         if (numOfDeaths != 5)
             numOfDeaths++;
 
-        //notify listeners
-        changes.firePropertyChange(INCREASE_NUMBER_OF_DEATHS, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void addDamage(PcColourEnum shooterColour, short numOfDamage){
-
-        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
-
         while (numOfDamage != 0) {
             if (damageTrackIndex == LIFE_POINTS)
                 break;
@@ -122,37 +105,23 @@ class PcBoard {
             damageTrackIndex++;
             numOfDamage--;
         }
-
-        changes.firePropertyChange(ADD_DAMAGE, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void addMarks(PcColourEnum shooterColour, short numOfMarks) {
-
-        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
-
         if (marks[shooterColour.ordinal()] + numOfMarks > MAX_NUMBER_OF_MARKS_PER_COLOUR)
             marks[shooterColour.ordinal()] = MAX_NUMBER_OF_MARKS_PER_COLOUR;
         else
             marks[shooterColour.ordinal()] += numOfMarks;
-
-        //notify listeners
-        changes.firePropertyChange(ADD_MARKS, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
     void addAmmo(AmmoTile ammoTile) {
-
-        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
-
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++) {
             this.ammo[i] += ammoTile.getAmmo()[i];
             if (ammo[i] > MAX_AMMO_PER_COLOUR)
                 ammo[i] = MAX_AMMO_PER_COLOUR;
         }
-
-        //notify listeners
-        changes.firePropertyChange(ADD_AMMO, old, modelMapper.map(this, PcBoardDTO.class));
     }
 
 
@@ -166,27 +135,20 @@ class PcBoard {
 
     /**
      * reverse of addAmmo
-     * @param ammo some ammos
+     * @param cost some ammos
      * @return ammo, where every succesfully payed ammo has been removed (so it will be a "not payed" array)
      */
-    short[] payAmmo(short[] ammo) {
-
-        PcBoardDTO old = modelMapper.map(this, PcBoardDTO.class);
-
+    short[] payAmmo(short[] cost) {
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++){
-            if (this.ammo[i] >= ammo[i]){
-                this.ammo[i] -= ammo[i];
-                ammo[i] = 0;
+            if (this.ammo[i] >= cost[i]){
+                this.ammo[i] -= cost[i];
+                cost[i] = 0;
             } else {
-                ammo[i] -= this.ammo[i];
+                cost[i] -= this.ammo[i];
                 this.ammo[i] = 0;
             }
         }
-
-        //notify listeners
-        changes.firePropertyChange(PAY_AMMO, old, modelMapper.map(this, PcBoardDTO.class));
-
-        return ammo;
+        return cost;
     }
 
 
@@ -196,8 +158,8 @@ class PcBoard {
     }
 
 
-    void addPropertyChangeSupport(PropertyChangeSupport changes) {
-        this.changes = changes;
+    void addModelEventHandler(ModelEventHandler events) {
+        this.events = events;
     }
 
 }

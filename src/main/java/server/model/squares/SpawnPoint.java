@@ -1,9 +1,10 @@
 package server.model.squares;
 
 import com.google.gson.annotations.Expose;
-import common.dto_model.PcDTO;
 import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
+import common.events.ItemCollectedEvent;
+import common.events.square_events.SquareRefilledEvent;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;
@@ -106,9 +107,6 @@ public class SpawnPoint extends Square {
      */
     @Override
     public void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException {
-
-        //SquareDTO old = modelMapper.map(this, SquareDTO.class);
-
         if (isEmpty())
             throw new EmptySquareException();
         if (weaponToGrabIndex < 0)
@@ -135,8 +133,9 @@ public class SpawnPoint extends Square {
         cost[weaponToGrab.getColour().ordinal()]--;
         currPc.payAmmo(cost);
 
-        //notify listeners
-        //changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
+        //notify item collected
+        events.fireEvent(new ItemCollectedEvent(
+                currPc.getName(), modelMapper.map(this, SquareDTO.class), weaponToGrab.getName()));
 
         resetWeaponIndexes();
         
@@ -145,16 +144,14 @@ public class SpawnPoint extends Square {
 
     public void refill() {
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
-
         for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++) {
             if (weapons[i] == null && weaponsDeck.size() > 0) {
                 weapons[i] = weaponsDeck.draw();
             }
         }
 
-        //notify listeners
-        changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
+        //notify square refilled
+        events.fireEvent(new SquareRefilledEvent(modelMapper.map(this, SquareDTO.class), true));
     }
 
 }

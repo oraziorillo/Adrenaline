@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import common.dto_model.SquareDTO;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
+import common.events.ModelEventHandler;
+import common.events.square_events.TargetableSetEvent;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
@@ -13,20 +15,17 @@ import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
 
-import java.beans.PropertyChangeSupport;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static common.Constants.SET_TARGETABLE;
-
 public abstract class Square {
 
     ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
 
-    PropertyChangeSupport changes;
+    ModelEventHandler events;
 
     @Expose private int row;
     @Expose private int col;
@@ -93,13 +92,10 @@ public abstract class Square {
 
 
     public void setTargetable(boolean targetable){
-
-        //SquareDTO old = modelMapper.map(this, SquareDTO.class);
-
         this.targetable = targetable;
 
         //notify listeners
-        //changes.firePropertyChange(SET_TARGETABLE, old, modelMapper.map(this, SquareDTO.class));
+        events.fireEvent(new TargetableSetEvent(modelMapper.map(this, SquareDTO.class)));
     }
 
 
@@ -251,13 +247,9 @@ public abstract class Square {
     }
 
 
-    public String toPairString(){
-        return "(" + this.row + "," + this.col + ")";
-    }
 
-
-    public void addPropertyChangeSupport(PropertyChangeSupport pcs) {
-        this.changes = pcs;
+    public void addModelEventHandler(ModelEventHandler events) {
+        this.events = events;
     }
 
 
@@ -271,5 +263,10 @@ public abstract class Square {
 
 
     public abstract void refill();
+
+    @Override
+    public String toString(){
+        return "(" + this.row + "," + this.col + ")";
+    }
 }
 

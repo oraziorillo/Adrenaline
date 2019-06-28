@@ -1,6 +1,6 @@
 package common.dto_model;
 
-public abstract class Card {
+public abstract class AbstractCardDTO extends DTO{
 
    private static final String IMAGE_PATH_PREFIX = "/images/";
    protected String extension = ".png";
@@ -10,7 +10,7 @@ public abstract class Card {
       return IMAGE_PATH_PREFIX;
    }
 
-   public Card(String name){
+   public AbstractCardDTO(String name){
       if(name.contains( "\\." )){
          String[] splitted = name.split( "\\." );
          extension = "."+ splitted[1];

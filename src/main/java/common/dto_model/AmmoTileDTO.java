@@ -1,14 +1,31 @@
 package common.dto_model;
 
-public class AmmoTileDTO {
+import common.enums.AmmoEnum;
+import javafx.scene.image.ImageView;
+import server.model.AmmoTile;
+
+public class AmmoTileDTO extends DTO{
 
     private short[] ammo;
     private boolean hasPowerUp;
-    protected String extension = ".png";
+    protected static final String EXTENSION = ".png";
+    protected static final String DIR = "/images/ammos/";
 
-    public String getImagePath() {
-        //TODO: aggiungi path immagine
-        return "Ciao";
+
+   public static String getEmptyPath() {
+       return DIR+"empty"+EXTENSION;
+   }
+
+   public String getImagePath() {
+        StringBuilder pathBuilder = new StringBuilder();
+        if(hasPowerUp){
+            pathBuilder.append( "p" );
+        }
+        for(int i=0;i<AmmoEnum.values().length;i++){
+            AmmoEnum color = AmmoEnum.values()[i];
+            pathBuilder.append( color.toString().toLowerCase() );
+        }
+        return pathBuilder.toString();
     }
 
     public short[] getAmmo() {
@@ -27,11 +44,13 @@ public class AmmoTileDTO {
         this.ammo = ammo;
     }
 
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (AmmoEnum a : AmmoEnum.values())
+            stringBuilder.append("+ ").append(ammo[a.ordinal()]).append(" ").append(a).append("\n");
+        if (hasPowerUp)
+            stringBuilder.append("+ 1 Power Up AbstractCardDTO");
+        return stringBuilder.toString();
     }
 }

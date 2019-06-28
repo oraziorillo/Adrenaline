@@ -1,6 +1,6 @@
 package client.view.gui.javafx_controllers.components.card_spaces;
 
-import common.dto_model.Card;
+import common.dto_model.AbstractCardDTO;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-public class CardHand <T extends Card>{
+public class CardHand <T extends AbstractCardDTO>{
    @FXML
    StackPane mainPane;
    @FXML
@@ -26,7 +26,7 @@ public class CardHand <T extends Card>{
    private Duration duration = new Duration(300);
    @FXML Double hiddenFraction;
    
-   private Card[] cards= new Card[3];
+   private AbstractCardDTO[] cards= new AbstractCardDTO[3];
    
    public void initialize(){
       cardsImages = new ImageView[]{card0,card1,card2};
