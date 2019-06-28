@@ -1,17 +1,10 @@
 package common.dto_model;
 
-import server.model.AmmoTile;
-
 public class AmmoTileDTO {
 
     private short[] ammo;
     private boolean hasPowerUp;
     protected String extension = ".png";
-
-    AmmoTileDTO(AmmoTile ammoTile){
-        this.ammo = ammoTile.getAmmo();
-        this.hasPowerUp = ammoTile.containsPowerUp();
-    }
 
     public String getImagePath() {
         //TODO: aggiungi path immagine
@@ -21,8 +14,6 @@ public class AmmoTileDTO {
     public short[] getAmmo() {
         return ammo;
     }
-
-
 
     public void setHasPowerUp(boolean hasPowerUp) {
         this.hasPowerUp = hasPowerUp;

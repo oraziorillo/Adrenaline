@@ -25,8 +25,8 @@ public class Pc {
 
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
+
     private final Game currGame;
-    private final PcColourEnum colour;
     private PcBoard pcBoard;
     private short adrenaline;
     private WeaponCard[] weapons;
@@ -36,8 +36,7 @@ public class Pc {
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
-        this.colour = colour;
-        this.pcBoard = new PcBoard();
+        this.pcBoard = new PcBoard(colour);
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
     }
@@ -59,12 +58,12 @@ public class Pc {
 
 
     public String getName() {
-        return colour.getName();
+        return pcBoard.getColour().getName();
     }
 
 
     public PcColourEnum getColour() {
-        return colour;
+        return getColour();
     }
 
 
@@ -133,7 +132,7 @@ public class Pc {
      */
     public void moveTo(Square s) {
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        //PcDTO old = modelMapper.map(this, PcDTO.class);
 
         if (s == null) {
             throw new IllegalArgumentException("Invalid square");
@@ -144,26 +143,26 @@ public class Pc {
         this.currSquare.addPc(this);
 
         //notify listeners
-        changes.firePropertyChange(MOVE_TO, old, modelMapper.map(this, PcDTO.class));
+        //changes.firePropertyChange(MOVE_TO, old, modelMapper.map(this, PcDTO.class));
     }
 
 
     public void drawPowerUp(){
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        //PcDTO old = modelMapper.map(this, PcDTO.class);
 
         PowerUpCard powerUpToDraw = currGame.drawPowerUp();
         if (powerUpToDraw != null)
             powerUps.add(powerUpToDraw);
 
         //notify listeners
-        changes.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
+        //changes.firePropertyChange(DRAW_POWER_UP, old, modelMapper.map(this, PcDTO.class));
     }
 
 
     public void discardPowerUp(PowerUpCard p) {
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        //PcDTO old = modelMapper.map(this, PcDTO.class);
 
         int oldIndex;
         if (powerUps.contains(p)) {
@@ -174,7 +173,7 @@ public class Pc {
         }
 
         //notify listeners
-        changes.firePropertyChange(DISCARD_POWER_UP, old, modelMapper.map(this, PcDTO.class));
+        //changes.firePropertyChange(DISCARD_POWER_UP, old, modelMapper.map(this, PcDTO.class));
     }
     
     /**
@@ -214,7 +213,7 @@ public class Pc {
 
 
     public void takeMarks(PcColourEnum shooterColour, short marks) {
-        if (this.colour == shooterColour)
+        if (pcBoard.getColour() == shooterColour)
             return;
         pcBoard.addMarks(shooterColour, marks);
     }
@@ -224,7 +223,7 @@ public class Pc {
 
         PcDTO old = modelMapper.map(this, PcDTO.class);
 
-        if (this.colour == shooterColour)
+        if (pcBoard.getColour() == shooterColour)
             return;
         short totalDamage;
         totalDamage = (short) (pcBoard.getMarks(shooterColour) + damages);
@@ -232,7 +231,7 @@ public class Pc {
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFE_POINTS - 2) {
             boolean overkill = damageIndex == (LIFE_POINTS - 1);
-            currGame.killOccurred(this.colour, overkill);
+            currGame.killOccurred(pcBoard.getColour(), overkill);
 
             //notify death
             changes.firePropertyChange(KILL_OCCURRED, old, modelMapper.map(this, PcDTO.class));
@@ -256,7 +255,7 @@ public class Pc {
 
     public void spawn(Square t) {
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        //PcDTO old = modelMapper.map(this, PcDTO.class);
 
         if (!t.isSpawnPoint()) {
             throw new IllegalArgumentException("Not a spawn Square");
@@ -267,7 +266,7 @@ public class Pc {
         currSquare.addPc(this);
 
         //notify listeners
-        changes.firePropertyChange(SPAWN, old, modelMapper.map(this, PcDTO.class));
+        // changes.firePropertyChange(SPAWN, old, modelMapper.map(this, PcDTO.class));
     }
 
 

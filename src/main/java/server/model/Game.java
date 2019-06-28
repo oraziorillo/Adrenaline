@@ -43,6 +43,7 @@ public class Game {
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
+        this.finalFrenzy = false;
     }
 
     public Game(UUID gameUUID) {
@@ -138,11 +139,13 @@ public class Game {
 
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
             JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-            gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
+            gameBoard = customGson.fromJson(gameBoards.get(numberOfMap - 1), GameBoard.class);
 
             gameBoard.initSquares(weaponsDeck, ammoDeck);
             gameBoard.addPropertyChangeSupport(changes);
-
+            for (Square s: gameBoard.getSquares()) {
+                System.out.println(s.getRow() + " " + s.getCol() + " " + s.getColour());
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
+import common.dto_model.PcDTO;
+import common.dto_model.SquareDTO;
+import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +15,10 @@ import server.model.squares.Square;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static common.Constants.REFILL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -35,6 +41,23 @@ public class GameBoardTest {
 
         JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
         gameBoard = customGson.fromJson(gameBoards.get(N_MAP), GameBoard.class);
+    }
+
+
+    @Test
+    public void getSpawnPointWorksFine(){
+        AmmoEnum ammoEnum = AmmoEnum.RED;
+        Square s = gameBoard.getSpawnPoint(ammoEnum.toSquareColour());
+        System.out.println(s.getColour());
+    }
+
+    @Test
+    public void atDistanceWorksFine(){
+        Set<Square> s;
+        s = gameBoard.getSquare(1, 3).atDistance(4);
+        for (Square square: s) {
+            System.out.println("Ecco: " + square.getRow() + square.getCol()  + square.getColour());
+        }
     }
 
 

@@ -94,12 +94,12 @@ public abstract class Square {
 
     public void setTargetable(boolean targetable){
 
-        SquareDTO old = modelMapper.map(this, SquareDTO.class);
+        //SquareDTO old = modelMapper.map(this, SquareDTO.class);
 
         this.targetable = targetable;
 
         //notify listeners
-        changes.firePropertyChange(SET_TARGETABLE, old, modelMapper.map(this, SquareDTO.class));
+        //changes.firePropertyChange(SET_TARGETABLE, old, modelMapper.map(this, SquareDTO.class));
     }
 
 

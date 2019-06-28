@@ -12,8 +12,10 @@ public class RandomTest {
     public void randomTest(){
         System.out.println(CHOOSE_MAP.toString());
         System.out.println(SocketEnum.valueOf(CHOOSE_MAP.toString()));
-        String[] commands = "ok".split("-");
-        System.out.println(PcColourEnum.fromString("blue"));
+        String[] commands = "ss-1-2".split("-");
+        for (String s: commands) {
+            System.out.println(s);
+        }
     }
 
      @Test
@@ -25,4 +27,5 @@ public class RandomTest {
             }
         }
      }
+
 }

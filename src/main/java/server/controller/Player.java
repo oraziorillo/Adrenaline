@@ -147,6 +147,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void chooseSquare(int row, int col) {
+        try {
+            view.ack("Ho scelto questo square" + row + col);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         currState.selectSquare(row, col);
     }
 

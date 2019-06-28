@@ -125,6 +125,9 @@ public class CustomizedModelMapperTest {
         assertEquals(gameBoardDTO.getRows(), gameBoard.getRows());
         assertEquals(gameBoardDTO.getSpawnPoints().size(), gameBoard.getSpawnPoints().size());
         assertEquals(gameBoardDTO.getSpawnPoints().get(2).getCol(), gameBoard.getSpawnPoints().get(2).getCol());
+        for (SquareDTO s: gameBoardDTO.getSquares()) {
+            System.out.println(s.getRow() + " " + s.getCol() + " " + s.isTargetable());
+        }
     }
 
 

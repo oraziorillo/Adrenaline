@@ -6,6 +6,8 @@ import server.exceptions.NotEnoughAmmoException;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
+
+import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,10 @@ class GrabStuffState extends State{
         if (targetSquare != null) {
             try {
                 targetSquare.setWeaponToGrabIndex(index);
+                controller.getCurrPlayer().getView().ack("L'indice è stato settato bene");
             } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -66,12 +71,17 @@ class GrabStuffState extends State{
         if (s != null && !s.isEmpty()) {
             this.targetSquare = s;
             targetSquare.resetWeaponIndexes();
+            try {
+                controller.getCurrPlayer().getView().ack("Lo square è stato selezionato");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     
     /**
-     * Selects a powerUp to use as a weapon when collecting a weapon
+     * Selects a powerUp to use as an ammo when collecting a weapon
      * @param index the powerup card index
      */
     @Override
@@ -103,6 +113,20 @@ class GrabStuffState extends State{
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toSet());
         controller.getGame().setTargetableSquares(targetableSquares, true);
+        try {
+            controller.getCurrPlayer().getView().ack(controller.getCurrPc().getCurrSquare().getRow() + " " + controller.getCurrPc().getCurrSquare().getCol());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (Square s: targetableSquares) {
+            if (s.isTargetable()){
+                try {
+                    controller.getCurrPlayer().getView().ack(s + "è targhettabile");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     
@@ -133,6 +157,11 @@ class GrabStuffState extends State{
                 currPc.moveTo(targetSquare);
                 controller.getGame().setTargetableSquares(targetableSquares, false);
                 controller.addSquareToRefill(targetSquare);
+                try {
+                    controller.getCurrPlayer().getView().ack("Il pc ha raccolto e si è spostato");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             } catch (EmptySquareException e) {
                 //TODO print error

@@ -4,6 +4,7 @@ import common.enums.PcColourEnum;
 
 public class PcBoardDTO {
 
+    private PcColourEnum colour;
     private short points;
     private short damageTrackIndex;
     private short[] marks;
@@ -12,6 +13,14 @@ public class PcBoardDTO {
     private int [] pcValue;
     private int numOfDeaths;
 
+
+    public PcColourEnum getColour() {
+        return colour;
+    }
+
+    public void setColour(PcColourEnum colour) {
+        this.colour = colour;
+    }
 
     public short getDamageTrackIndex() {
         return damageTrackIndex;

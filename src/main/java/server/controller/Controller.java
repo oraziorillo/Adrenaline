@@ -33,6 +33,7 @@ public class Controller{
         this.deadPlayers = new LinkedList<>();
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
+        this.remainingActions = 2;
     }
 
 

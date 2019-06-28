@@ -141,5 +141,6 @@ public class SquareTest {
     }
 
     //TODO test di allSquaresInDirection e allSquares
+
 }
 

@@ -34,7 +34,7 @@ public class AmmoSquare extends Square {
     @Override
     public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.ammoDeck = ammoDeck;
-        ammoTile = this.ammoDeck.draw();
+        refill();
     }
 
 
@@ -63,7 +63,7 @@ public class AmmoSquare extends Square {
     @Override
     public void collect(Pc currPc) throws EmptySquareException {
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        //PcDTO old = modelMapper.map(this, PcDTO.class);
 
         if (isEmpty())
             throw new EmptySquareException();
@@ -71,7 +71,7 @@ public class AmmoSquare extends Square {
         ammoTile = null;
 
         //notify listeners
-        changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
+        //changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
     }
 
     
@@ -80,14 +80,14 @@ public class AmmoSquare extends Square {
      */
     public void refill(){
 
-        PcDTO old = modelMapper.map(this, PcDTO.class);
+        //PcDTO old = modelMapper.map(this, PcDTO.class);
 
         if(ammoTile == null) {
             ammoTile = ammoDeck.draw();
         }
 
         //notify listeners
-        changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
+        //changes.firePropertyChange(REFILL, old, modelMapper.map(this, SquareDTO.class));
     }
 }
 

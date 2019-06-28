@@ -128,6 +128,9 @@ public class ServerSocketHandler implements Runnable {
                 boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
                 break;
+            case UNDO:
+                player.undo();
+                break;
             case OK:
                 view.ack("Comando OK viene chiamato");
                 player.ok();

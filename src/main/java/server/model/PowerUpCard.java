@@ -19,8 +19,8 @@ public class PowerUpCard {
 
     @Expose private String name;
     @Expose private Action action;
+    @Expose private AmmoEnum colour;
     private boolean selectedAsAmmo;
-    private AmmoEnum colour;
 
     public PowerUpCard(JsonObject jsonPowerUpCard){
         this.name = jsonPowerUpCard.get("name").getAsString();

@@ -107,7 +107,7 @@ public class SpawnPoint extends Square {
     @Override
     public void collect(Pc currPc) throws EmptySquareException, NotEnoughAmmoException {
 
-        SquareDTO old = modelMapper.map(this, SquareDTO.class);
+        //SquareDTO old = modelMapper.map(this, SquareDTO.class);
 
         if (isEmpty())
             throw new EmptySquareException();
@@ -136,7 +136,7 @@ public class SpawnPoint extends Square {
         currPc.payAmmo(cost);
 
         //notify listeners
-        changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
+        //changes.firePropertyChange(COLLECT, old, modelMapper.map(this, SquareDTO.class));
 
         resetWeaponIndexes();
         
@@ -147,7 +147,7 @@ public class SpawnPoint extends Square {
 
         PcDTO old = modelMapper.map(this, PcDTO.class);
 
-        for (int i = 0; i < weapons.length; i++) {
+        for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++) {
             if (weapons[i] == null && weaponsDeck.size() > 0) {
                 weapons[i] = weaponsDeck.draw();
             }

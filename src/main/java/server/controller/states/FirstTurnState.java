@@ -6,6 +6,8 @@ import server.model.PowerUpCard;
 import server.model.squares.Square;
 import common.enums.AmmoEnum;
 
+import java.io.IOException;
+
 /**
  * Spawns the pcs for the first time
  */

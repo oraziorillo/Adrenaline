@@ -15,6 +15,7 @@ class PcBoard {
 
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
+    private PcColourEnum colour;
     private short points;
     private short damageTrackIndex;
     private short[] marks;
@@ -23,7 +24,8 @@ class PcBoard {
     private int [] pcValue;
     private int numOfDeaths;
 
-    PcBoard(){
+    PcBoard(PcColourEnum colour){
+        this.colour = colour;
         this.points = 0;
         this.numOfDeaths = 0;
         this.damageTrackIndex = 0;
@@ -40,6 +42,9 @@ class PcBoard {
         }
     }
 
+    public PcColourEnum getColour() {
+        return colour;
+    }
 
     short getPoints() {
         return points;
@@ -194,4 +199,5 @@ class PcBoard {
     void addPropertyChangeSupport(PropertyChangeSupport changes) {
         this.changes = changes;
     }
+
 }

@@ -6,19 +6,10 @@ import java.util.ArrayList;
 
 public class PcDTO {
 
-    private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
     private ArrayList<PowerUpCardDTO> powerUps;
     private SquareDTO currSquare;
-
-    public PcColourEnum getColour() {
-        return colour;
-    }
-    
-    public void setColour(PcColourEnum colour) {
-        this.colour = colour;
-    }
     
     public PcBoardDTO getPcBoard() {
         return pcBoard;
