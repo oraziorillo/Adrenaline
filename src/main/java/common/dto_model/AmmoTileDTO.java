@@ -1,6 +1,7 @@
 package common.dto_model;
 
 import common.enums.AmmoEnum;
+import javafx.scene.image.ImageView;
 import server.model.AmmoTile;
 
 public class AmmoTileDTO {
@@ -14,8 +15,12 @@ public class AmmoTileDTO {
         this.ammo = ammoTile.getAmmo();
         this.hasPowerUp = ammoTile.containsPowerUp();
     }
-
-    public String getImagePath() {
+   
+   public static String getEmptyPath() {
+       return DIR+"empty"+EXTENSION;
+   }
+   
+   public String getImagePath() {
         StringBuilder pathBuilder = new StringBuilder();
         if(hasPowerUp){
             pathBuilder.append( "p" );

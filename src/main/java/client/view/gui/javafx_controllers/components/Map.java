@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.components;
 
+import common.dto_model.AmmoTileDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.SquareDTO;
 import common.enums.PcColourEnum;
@@ -79,6 +80,12 @@ public class Map {
             c.radiusProperty().unbind();
             c.radiusProperty().bind( radius );
          }
+         for(ImageView[] array:ammos){
+            for(ImageView ammo: array){
+               ammo.fitHeightProperty().unbind();
+               ammo.fitHeightProperty().bind( radius );
+            }
+         }
          //add the circle to the square
          square.getChildren().add( circle );
          square.setMinSize( 0,0 );
@@ -90,7 +97,19 @@ public class Map {
    
    
    public final MapChangeListener<SquareDTO,SquareDTO> squareObserver = change -> {
-      //TODO: automatizza la gestione degli square nella mappa
+      if(change.wasAdded()&&!change.wasRemoved()){
+         throw new IllegalStateException( "Squares shouldn't be just removed, they should be modified or added" );
+      }
+      if(change.wasAdded()){
+         SquareDTO newSquare = change.getValueAdded();
+         ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];;
+         if(true) {  //TODO: se la tile è "piena"
+            AmmoTileDTO ammoTileDTO = change.getValueAdded().getAmmoTile();
+            currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
+         }else{
+            currAmmo.setImage( new Image( AmmoTileDTO.getEmptyPath() ) );
+         }
+      }
    };
    
    public void initialize() {
@@ -121,13 +140,17 @@ public class Map {
                   //TODO: chiama error in MainGui
                }
             } );
+            
+            ImageView ammoTile = new ImageView();
+            ammoTile.setPreserveRatio( true );
+            ammos[r][c] = ammoTile;
    
-            StackPane stackPane = new StackPane( pcsPane );
+            StackPane stackPane = new StackPane( pcsPane,ammoTile );
             stackPane.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
             StackPane.setAlignment( pcsPane,Pos.TOP_LEFT );
-            //TODO: visualizza ammo
-            
+            StackPane.setAlignment( ammoTile,Pos.BOTTOM_RIGHT );
             squares[r][c]=pcsPane;
+            
             grid.add( stackPane,c,r);
          }
       }
