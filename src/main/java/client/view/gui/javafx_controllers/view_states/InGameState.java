@@ -6,14 +6,13 @@ import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
 import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
-import common.dto_model.PcDTO;
-import common.dto_model.PowerUpCardDTO;
-import common.dto_model.SquareDTO;
-import common.dto_model.WeaponCardDTOFirstVersion;
+import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
+import common.events.AdrenalineUpEvent;
 import common.events.ModelEvent;
+import common.events.MovementEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -25,7 +24,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import server.model.AmmoTile;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Random;
@@ -128,9 +129,11 @@ public class InGameState extends ViewState {
       SquareDTO square = new SquareDTO();
       square.setCol( random.nextInt( 4 ) );
       square.setRow( random.nextInt( 3 ) );
+      AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
+      square.setAmmoTile( random.nextBoolean()?fullTile:null );
       pcToMove.setCurrSquare( square );
       pcToMove.setColour( pcToMoveColor );
-      //propertyChange(new PropertyChangeEvent(this, MOVEMENT,pcs.get( pcToMoveColor ),pcToMove ));
+      modelEvent(new AdrenalineUpEvent( pcToMove ));
       /*
       try {
          player.skip();

@@ -42,12 +42,16 @@ public class GuiView extends UnicastRemoteObject implements AbstractView, ModelE
    
    @Override
    public String acquireUsername() throws RemoteException {
-      return currentGui.acquireUsername();
+      String username = currentGui.acquireUsername();
+      nextState();
+      return username;
    }
    
    @Override
    public UUID acquireToken() throws RemoteException {
-      return currentGui.acquireToken();
+      UUID token = currentGui.acquireToken();
+      nextState();
+      return token;
    }
    
    @Override
