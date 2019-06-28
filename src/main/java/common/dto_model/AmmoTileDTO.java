@@ -7,7 +7,8 @@ public class AmmoTileDTO {
 
     private short[] ammo;
     private boolean hasPowerUp;
-    protected String extension = ".png";
+    protected static final String EXTENSION = ".png";
+    protected static final String DIR = "/images/ammos/";
 
     AmmoTileDTO(AmmoTile ammoTile){
         this.ammo = ammoTile.getAmmo();
@@ -15,8 +16,15 @@ public class AmmoTileDTO {
     }
 
     public String getImagePath() {
-        //TODO: aggiungi path immagine
-        return "Ciao";
+        StringBuilder pathBuilder = new StringBuilder();
+        if(hasPowerUp){
+            pathBuilder.append( "p" );
+        }
+        for(int i=0;i<AmmoEnum.values().length;i++){
+            AmmoEnum color = AmmoEnum.values()[i];
+            pathBuilder.append( color.toString().toLowerCase() );
+        }
+        return pathBuilder.toString();
     }
 
     public short[] getAmmo() {
@@ -35,14 +43,6 @@ public class AmmoTileDTO {
 
     public void setAmmo(short[] ammo) {
         this.ammo = ammo;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
     }
 
     @Override
