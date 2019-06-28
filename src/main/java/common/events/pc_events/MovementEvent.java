@@ -1,10 +1,12 @@
-package common.events;
+package common.events.pc_events;
 
+import common.dto_model.PcDTO;
 import common.dto_model.SquareDTO;
 
 import static common.Constants.MOVEMENT;
 
-public class MovementEvent extends ModelEvent {
+//TODO: aspetta push di orazio
+public class MovementEvent extends PcEvent {
 
     private String pcName;
     private SquareDTO from;
@@ -25,8 +27,8 @@ public class MovementEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
-        return to;
+    public PcDTO getNewValue() {
+        return null;
     }
 
 

@@ -7,6 +7,7 @@ import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import common.events.*;
+import common.events.pc_events.*;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
@@ -351,7 +352,7 @@ public class Pc {
         pcBoard.increaseNumberOfDeaths();
 
         //notify listeners
-        events.fireEvent(new NumberOfDeathIncreasedEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
+        events.fireEvent(new NumberOfDeathIncreasedEvent(modelMapper.map(this, PcDTO.class)));
     }
 }
 

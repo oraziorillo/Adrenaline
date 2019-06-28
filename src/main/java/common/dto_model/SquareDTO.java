@@ -4,7 +4,7 @@ import common.enums.PcColourEnum;
 
 import java.util.Set;
 
-public class SquareDTO {
+public class SquareDTO extends DTO{
 
     private int row;
     private int col;

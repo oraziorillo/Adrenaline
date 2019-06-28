@@ -1,10 +1,10 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 
 import static common.Constants.SPAWN;
 
-public class SpawnEvent extends ModelEvent {
+public class SpawnEvent extends PcEvent {
 
     private PcDTO pc;
 
@@ -21,7 +21,7 @@ public class SpawnEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public PcDTO getNewValue() {
         return pc;
     }
 

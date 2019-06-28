@@ -1,4 +1,4 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 
@@ -6,12 +6,11 @@ import java.util.Arrays;
 
 import static common.Constants.MARKS_TAKEN;
 
-public class MarksTakenEvent extends ModelEvent {
+public class MarksTakenEvent extends PcEvent {
 
     private PcDTO pc;
     private String shooter;
     private int marks;
-
 
     public MarksTakenEvent(PcDTO pc, String shooter, short marks){
         this.pc = pc;
@@ -27,11 +26,10 @@ public class MarksTakenEvent extends ModelEvent {
     }
 
     @Override
-    public Object getNewValue() {
-        return pc.getPcBoard();
+    public PcDTO getNewValue() {
+        return pc;
     }
-
-
+    
     @Override
     public String getPropertyName() {
         return MARKS_TAKEN;

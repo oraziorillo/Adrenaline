@@ -1,10 +1,10 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 
 import static common.Constants.ADRENALINE_UP;
 
-public class AdrenalineUpEvent extends ModelEvent {
+public class AdrenalineUpEvent extends PcEvent {
 
     private PcDTO pc;
 
@@ -21,7 +21,7 @@ public class AdrenalineUpEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public PcDTO getNewValue() {
         return pc;
     }
 

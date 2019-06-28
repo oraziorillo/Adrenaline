@@ -4,14 +4,14 @@ import common.enums.AmmoEnum;
 import javafx.scene.image.ImageView;
 import server.model.AmmoTile;
 
-public class AmmoTileDTO {
+public class AmmoTileDTO extends DTO{
 
     private short[] ammo;
     private boolean hasPowerUp;
     protected static final String EXTENSION = ".png";
     protected static final String DIR = "/images/ammos/";
 
-    AmmoTileDTO(AmmoTile ammoTile){
+    public AmmoTileDTO(AmmoTile ammoTile){
         this.ammo = ammoTile.getAmmo();
         this.hasPowerUp = ammoTile.containsPowerUp();
     }
@@ -56,7 +56,7 @@ public class AmmoTileDTO {
         for (AmmoEnum a : AmmoEnum.values())
             stringBuilder.append("+ ").append(ammo[a.ordinal()]).append(" ").append(a).append("\n");
         if (hasPowerUp)
-            stringBuilder.append("+ 1 Power Up Card");
+            stringBuilder.append("+ 1 Power Up AbstractCardDTO");
         return stringBuilder.toString();
     }
 }

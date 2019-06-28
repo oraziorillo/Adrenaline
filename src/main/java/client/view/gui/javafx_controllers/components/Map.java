@@ -26,13 +26,13 @@ import java.io.IOException;
 import java.util.EnumMap;
 
 
-public class Map {
+public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
    @FXML
    GridPane grid;
    private RemotePlayer player;
    
-   
    private Pane[][] squares = new Pane[ROWS][COLS];
+   
    private EnumMap<PcColourEnum,Circle> pcCircles = new EnumMap<>( PcColourEnum.class );
    private ImageView[][] ammos = new ImageView[ROWS][COLS];
    //TODO: bindalo con il numero di giocatori -> ricevi subito il numero di giocatori
@@ -95,14 +95,13 @@ public class Map {
       }
    };
    
-   
    public final MapChangeListener<SquareDTO,SquareDTO> squareObserver = change -> {
       if(change.wasAdded()&&!change.wasRemoved()){
          throw new IllegalStateException( "Squares shouldn't be just removed, they should be modified or added" );
       }
       if(change.wasAdded()){
          SquareDTO newSquare = change.getValueAdded();
-         ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];;
+         ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
          if(true) {  //TODO: se la tile è "piena"
             AmmoTileDTO ammoTileDTO = change.getValueAdded().getAmmoTile();
             currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
@@ -111,6 +110,31 @@ public class Map {
          }
       }
    };
+   
+   @Override
+   public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
+      if(change.wasRemoved()&&!change.wasAdded()){
+         throw new IllegalStateException( "Squares shouldn't be just removed, they should be modified or added" );
+      }
+      if(change.wasAdded()){
+         updateAmmos( change.getValueAdded() );
+         
+      }
+   }
+   
+   private void updateAmmos(SquareDTO newSquare){
+      ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];;
+      if (newSquare.getAmmoTile() == null) {
+         currAmmo.setImage( new Image( AmmoTileDTO.getEmptyPath() ) );
+      } else {
+         AmmoTileDTO ammoTileDTO = newSquare.getAmmoTile();
+         currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
+      }
+   }
+   private void updatePcs(SquareDTO newSquare){
+   
+   }
+   
    
    public void initialize() {
       //force columns to stay same sized
@@ -171,6 +195,5 @@ public class Map {
    public void setPlayer(RemotePlayer player) {
       this.player = player;
    }
-   
    
 }

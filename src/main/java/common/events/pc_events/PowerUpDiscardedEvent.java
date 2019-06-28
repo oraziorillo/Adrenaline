@@ -1,11 +1,13 @@
-package common.events;
+package common.events.pc_events;
 
+import common.dto_model.DTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
+import common.events.ModelEvent;
 
 import static common.Constants.POWER_UP_DISCARDED;
 
-public class PowerUpDiscardedEvent extends ModelEvent {
+public class PowerUpDiscardedEvent extends PcEvent {
 
     private PcDTO pc;
     private PowerUpCardDTO powerUp;
@@ -24,7 +26,7 @@ public class PowerUpDiscardedEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public PcDTO getNewValue() {
         return pc;
     }
 

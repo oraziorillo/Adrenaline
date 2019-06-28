@@ -20,7 +20,7 @@ public class AmmoTile {
      * @param ammo every field must be non-negative. Sum must be 3 if hasPowerUp==false, 2 otherwise
      * @param hasPowerUp for 2ammo-1powerUp cards
      */
-    AmmoTile(short[] ammo, boolean hasPowerUp) {
+    public AmmoTile(short[] ammo, boolean hasPowerUp) {
         this.ammo = ammo;
         this.hasPowerUp = hasPowerUp;
     }

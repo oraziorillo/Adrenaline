@@ -1,10 +1,11 @@
-package common.events;
+package common.events.game_events;
 
 import common.dto_model.GameBoardDTO;
+import common.events.ModelEvent;
 
 import static common.Constants.GAME_BOARD_SET;
 
-public class GameBoardSetEvent extends ModelEvent {
+public class GameBoardSetEvent extends GameEvent {
 
     private GameBoardDTO gameBoard;
     private int numberOfMap;
@@ -23,7 +24,7 @@ public class GameBoardSetEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public GameBoardDTO getNewValue() {
         return gameBoard;
     }
 

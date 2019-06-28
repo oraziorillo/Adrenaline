@@ -1,10 +1,10 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 
 import static common.Constants.DEATH;
 
-public class DeathEvent extends ModelEvent {
+public class DeathEvent extends PcEvent {
 
     private PcDTO deadPc;
 
@@ -21,7 +21,7 @@ public class DeathEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public PcDTO getNewValue() {
         return deadPc;
     }
 

@@ -2,7 +2,7 @@ package common.dto_model;
 
 import server.model.KillShot;
 
-public class KillShotTrackDTO {
+public class KillShotTrackDTO extends DTO{
 
     private KillShot[] killShotTrack;
     private KillShot [] finalFrenzyKillShotTrack;

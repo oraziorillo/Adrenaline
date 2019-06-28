@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
 import common.events.ItemCollectedEvent;
-import common.events.SquareRefilledEvent;
+import common.events.square_events.SquareRefilledEvent;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.AmmoTile;

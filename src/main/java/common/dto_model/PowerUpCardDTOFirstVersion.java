@@ -2,7 +2,7 @@ package common.dto_model;
 
 import common.enums.AmmoEnum;
 
-public class PowerUpCardDTOFirstVersion extends Card{
+public class PowerUpCardDTOFirstVersion extends AbstractCardDTO {
    public static final String DEFAULT_NAME = "retro_powerup";
    private AmmoEnum color;
    

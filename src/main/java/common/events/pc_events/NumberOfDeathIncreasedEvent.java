@@ -1,16 +1,17 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcBoardDTO;
+import common.dto_model.PcDTO;
 
 import static common.Constants.NUMBER_OF_DEATH_INCREASED;
 
-public class NumberOfDeathIncreasedEvent extends ModelEvent {
+public class NumberOfDeathIncreasedEvent extends PcEvent {
 
-    private PcBoardDTO pcBoard;
+    private PcDTO pc;
 
 
-    public NumberOfDeathIncreasedEvent(PcBoardDTO pcBoard){
-        this.pcBoard = pcBoard;
+    public NumberOfDeathIncreasedEvent(PcDTO pcBoard){
+        this.pc = pcBoard;
     }
 
 
@@ -21,8 +22,8 @@ public class NumberOfDeathIncreasedEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
-        return pcBoard;
+    public PcDTO getNewValue() {
+        return pc;
     }
 
 

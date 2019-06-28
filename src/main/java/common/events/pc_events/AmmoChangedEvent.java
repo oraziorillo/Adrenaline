@@ -1,4 +1,4 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 import common.enums.AmmoEnum;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import static common.Constants.AMMO_CHANGED;
 
-public class AmmoChangedEvent extends ModelEvent{
+public class AmmoChangedEvent extends PcEvent {
 
     private PcDTO pc;
     private short[] ammoDifference;
@@ -42,8 +42,8 @@ public class AmmoChangedEvent extends ModelEvent{
     }
 
     @Override
-    public Object getNewValue() {
-        return pc.getPcBoard();
+    public PcDTO getNewValue() {
+        return pc;
     }
 
 

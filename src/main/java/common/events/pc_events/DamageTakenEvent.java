@@ -1,4 +1,4 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static common.Constants.DAMAGE_TAKEN;
 
-public class DamageTakenEvent extends ModelEvent {
+public class DamageTakenEvent extends PcEvent {
 
     private PcDTO pc;
     private String shooter;
@@ -27,8 +27,8 @@ public class DamageTakenEvent extends ModelEvent {
     }
 
     @Override
-    public Object getNewValue() {
-        return pc.getPcBoard();
+    public PcDTO getNewValue() {
+        return pc;
     }
 
 

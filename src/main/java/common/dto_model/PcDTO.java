@@ -4,7 +4,7 @@ import common.enums.PcColourEnum;
 
 import java.util.ArrayList;
 
-public class PcDTO {
+public class PcDTO extends DTO{
 
     private PcColourEnum colour;
     private PcBoardDTO pcBoard;

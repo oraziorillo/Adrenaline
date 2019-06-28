@@ -1,8 +1,6 @@
 package common.dto_model;
 
-import common.dto_model.Card;
-
-public class WeaponCardDTOFirstVersion extends Card {
+public class WeaponCardDTOFirstVersion extends AbstractCardDTO {
    private static final String DIRECTORY_NAME = "weapons/";
    private static final String DEFAULT_NAME = "retro_arma";
    private int basicEffects;

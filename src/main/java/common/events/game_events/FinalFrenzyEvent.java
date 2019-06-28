@@ -1,8 +1,10 @@
-package common.events;
+package common.events.game_events;
+
+import common.dto_model.GameBoardDTO;
 
 import static common.Constants.FINAL_FRENZY;
 
-public class FinalFrenzyEvent extends ModelEvent {
+public class FinalFrenzyEvent extends GameEvent {
 
     @Override
     public String toString() {
@@ -11,7 +13,7 @@ public class FinalFrenzyEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public GameBoardDTO getNewValue() {
         return null;
     }
 

@@ -10,9 +10,8 @@ import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
-import common.events.AdrenalineUpEvent;
+import common.events.pc_events.AdrenalineUpEvent;
 import common.events.ModelEvent;
-import common.events.MovementEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -26,12 +25,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import server.model.AmmoTile;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Random;
-
-import static common.Constants.*;
 
 
 public class InGameState extends ViewState {
@@ -112,6 +108,7 @@ public class InGameState extends ViewState {
    
    @FXML
    private void reloadClicked(ActionEvent actionEvent) {
+      //TODO: remove folloing te
       try {
          player.reload();
       } catch ( IOException e ) {
@@ -172,19 +169,7 @@ public class InGameState extends ViewState {
    @Override
    public void modelEvent(ModelEvent event) {
       switch (event.getPropertyName()){
-         case MOVEMENT: case POWER_UP_DROWN: case POWER_UP_DISCARDED: case NUMBER_OF_DEATH_INCREASED: case ADRENALINE_UP: case SPAWN:   //Eventi Pc
-            PcDTO pc = ( PcDTO ) event.getNewValue();
-            pcs.put( pc.getColour(),pc );
-            break;
-         case TARGETABLE_SET: case ITEM_COLLECTED: case SQUARE_REFILLED: //Eventi square
-            SquareDTO square = ( SquareDTO ) event.getNewValue();
-            squares.put( square,square );
-            break;
-         case FINAL_FRENZY:   //eventi game
-            finalFrenzy.setValue( ( Boolean ) event.getNewValue() );
-            break;
-         case AMMO_CHANGED: case DAMAGE_TAKEN: case MARKS_TAKEN: case DEATH: case POINTS_INCREASED: //eventi PcBoard
-            //TODO: gestisci eventi pcBoard
+            //TODO: rivedi eventi con orazio
       }
    }
 }

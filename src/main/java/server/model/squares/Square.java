@@ -5,7 +5,7 @@ import common.dto_model.SquareDTO;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
 import common.events.ModelEventHandler;
-import common.events.TargetableSetEvent;
+import common.events.square_events.TargetableSetEvent;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;

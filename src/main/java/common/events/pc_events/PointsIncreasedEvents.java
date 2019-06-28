@@ -1,10 +1,10 @@
-package common.events;
+package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 
 import static common.Constants.POINTS_INCREASED;
 
-public class PointsIncreasedEvents extends ModelEvent {
+public class PointsIncreasedEvents extends PcEvent {
 
     private PcDTO pc;
     private int earnedPoints;
@@ -23,8 +23,8 @@ public class PointsIncreasedEvents extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
-        return pc.getPcBoard();
+    public PcDTO getNewValue() {
+        return pc;
     }
 
 

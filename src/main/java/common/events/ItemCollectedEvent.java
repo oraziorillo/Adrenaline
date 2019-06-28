@@ -1,5 +1,6 @@
 package common.events;
 
+import common.dto_model.DTO;
 import common.dto_model.SquareDTO;
 
 import static common.Constants.ITEM_COLLECTED;
@@ -24,7 +25,7 @@ public class ItemCollectedEvent extends ModelEvent {
     }
 
     @Override
-    public Object getNewValue() {
+    public DTO getNewValue() {
         return square;
     }
 

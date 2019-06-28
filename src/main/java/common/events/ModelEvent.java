@@ -1,5 +1,7 @@
 package common.events;
 
+import common.dto_model.DTO;
+
 import java.io.Serializable;
 
 public abstract class ModelEvent implements Serializable {
@@ -15,7 +17,7 @@ public abstract class ModelEvent implements Serializable {
         this.privateMessage = privateMessage;
     }
 
-    public abstract Object getNewValue();
+    public abstract DTO getNewValue();
 
     public abstract String getPropertyName();
 }

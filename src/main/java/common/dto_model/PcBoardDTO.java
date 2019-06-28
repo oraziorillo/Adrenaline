@@ -2,7 +2,7 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
-public class PcBoardDTO {
+public class PcBoardDTO extends DTO{
 
     private short points;
     private short damageTrackIndex;

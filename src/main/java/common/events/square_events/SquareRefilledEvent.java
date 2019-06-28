@@ -1,4 +1,4 @@
-package common.events;
+package common.events.square_events;
 
 import common.dto_model.SquareDTO;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static common.Constants.SQUARE_REFILLED;
 
-public class SquareRefilledEvent extends ModelEvent {
+public class SquareRefilledEvent extends SquareEvent {
 
     private SquareDTO square;
     private boolean isSpawnPoint;
@@ -27,7 +27,7 @@ public class SquareRefilledEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public SquareDTO getNewValue() {
         return square;
     }
 

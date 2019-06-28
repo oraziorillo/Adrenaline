@@ -1,10 +1,12 @@
-package common.events;
+package common.events.square_events;
 
+import common.dto_model.DTO;
 import common.dto_model.SquareDTO;
+import common.events.ModelEvent;
 
 import static common.Constants.TARGETABLE_SET;
 
-public class TargetableSetEvent extends ModelEvent {
+public class TargetableSetEvent extends SquareEvent {
 
     private SquareDTO square;
 
@@ -21,7 +23,7 @@ public class TargetableSetEvent extends ModelEvent {
 
 
     @Override
-    public Object getNewValue() {
+    public SquareDTO getNewValue() {
         return square;
     }
 
