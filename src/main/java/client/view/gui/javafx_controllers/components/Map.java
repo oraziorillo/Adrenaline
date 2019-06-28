@@ -137,7 +137,7 @@ public class Map {
                try {
                   player.chooseSquare( row,column );
                } catch ( IOException ex ) {
-                  //TODO: chiama error in MainGui
+                  //TODO: chiama error in InGameState
                }
             } );
             

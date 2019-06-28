@@ -1,6 +1,5 @@
-package client.view.gui.javafx_controllers;
+package client.view.gui.javafx_controllers.view_states;
 
-import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.components.Chat;
 import client.view.gui.javafx_controllers.components.Map;
 import client.view.gui.javafx_controllers.components.Top;
@@ -15,7 +14,6 @@ import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.events.ModelEvent;
-import common.events.ModelEventListener;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -30,15 +28,12 @@ import javafx.scene.layout.HBox;
 
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Random;
 
 import static common.Constants.*;
 
 
-public class MainGui extends GuiView {
+public class InGameState extends ViewState {
    @FXML private transient GridPane killShotTrack;
    @FXML private transient Map mapController;
    @FXML private transient CardHolder cardHolderLeftController;
@@ -52,10 +47,6 @@ public class MainGui extends GuiView {
    private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
-   
-   public MainGui() throws RemoteException {
-   }
-   
    
    public void initialize() {
       mapController.setMap(0);
@@ -153,6 +144,11 @@ public class MainGui extends GuiView {
    }
    
    @Override
+   public ViewState nextState() {
+      return new UserAuthState();
+   }
+   
+   @Override
    public void setPlayer(RemotePlayer player) {
       super.setPlayer( player );
       topController.setPlayer(player);
@@ -167,21 +163,6 @@ public class MainGui extends GuiView {
    public void ack(String message) {
       chatController.showServerMessage(message);
       chatController.appear();
-   }
-   
-   /**
-    * Cause every message is immediatly displayed in the chat, no acks are pending
-    *
-    * @return an empty Collection
-    */
-   @Override
-   public Collection<String> getPendingAcks() {
-      return new HashSet<>();
-   }
-   
-   @Override
-   public ModelEventListener getListener() {
-      return this;
    }
 
 

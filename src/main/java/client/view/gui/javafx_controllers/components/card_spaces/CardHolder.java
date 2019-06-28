@@ -142,7 +142,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
             try {
                player.chooseWeaponOnSpawnPoint( forLambda );
             } catch ( IOException ex ) {
-               //TODO: call error in MainGui
+               //TODO: call error in InGameState
             }
          } );
       }
