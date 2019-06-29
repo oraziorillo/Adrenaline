@@ -2,8 +2,6 @@ package server.controller.states;
 
 import server.controller.Controller;
 
-import java.io.IOException;
-
 import static common.Constants.MAX_KILL_SHOT_TRACK_SIZE;
 import static common.Constants.MIN_KILL_SHOT_TRACK_SIZE;
 
@@ -42,11 +40,6 @@ public class SetupKillShotTrackState extends State{
     public boolean ok() {
         if (killShotTrackIndex >= MIN_KILL_SHOT_TRACK_SIZE && killShotTrackIndex <= MAX_KILL_SHOT_TRACK_SIZE){
             controller.getGame().initKillShotTrack(killShotTrackIndex);
-            try {
-                controller.getCurrPlayer().getView().ack("killShot set correctly");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return true;
         }
         return false;

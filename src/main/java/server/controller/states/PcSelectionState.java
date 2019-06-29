@@ -41,11 +41,6 @@ public class PcSelectionState extends State {
         if (pcColour != null) {
             controller.removeAvailableColour(pcColour);
             Pc pc = new Pc(PcColourEnum.fromString(pcColour), controller.getGame());
-            try {
-                controller.getCurrPlayer().getView().ack(pcColour + "has been chosen");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             controller.getGame().addPc(pc);
             controller.getCurrPlayer().setPc(pc);
             return true;

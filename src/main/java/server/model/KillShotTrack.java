@@ -23,7 +23,6 @@ public class KillShotTrack {
         this.finalFrenzyCurrentKillShotTrackIndex = 0;
         for (int i = 0; i < 5; i++)
             finalFrenzyKillShotTrack[i] = new KillShot();
-        System.out.println("killshottrack built");
     }
 
     public KillShot[] getFinalFrenzyKillShotTrack() {

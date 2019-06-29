@@ -164,7 +164,7 @@ public class Game {
         gameBoard.initKillShotTrack(numberOfSkulls);
 
         //notify kill shot track set
-        events.fireEvent(new KillShotTrackSetEvent(modelMapper.map(gameBoard.getKillShotTrackArray(), KillShotTrackDTO.class)));
+        events.fireEvent(new KillShotTrackSetEvent(modelMapper.map(gameBoard.getKillShotTrack(), KillShotTrackDTO.class)));
     }
 
 
