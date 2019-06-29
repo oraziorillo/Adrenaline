@@ -8,11 +8,9 @@ import java.net.Socket;
 
 public abstract class AbstractSocketProxy {
 
-
     protected final Socket socket;
     protected final PrintWriter out;
     protected final BufferedReader in;
-
 
     public AbstractSocketProxy(String host, int port) throws IOException {
         this(new Socket(host, port));

@@ -33,7 +33,7 @@ public class ServerSocketHandler implements Runnable {
     @Override
     public void run() {
         while (!socket.isClosed()) {
-            String[] args = in.next().split(REGEX);
+            String[] args = in.nextLine().split(REGEX);
             try {
                 view.ack("Command :" + args[0]);
             } catch (IOException e) {
@@ -134,7 +134,6 @@ public class ServerSocketHandler implements Runnable {
                 player.undo();
                 break;
             case OK:
-                view.ack("Comando OK viene chiamato");
                 player.ok();
                 break;
             case RELOAD:

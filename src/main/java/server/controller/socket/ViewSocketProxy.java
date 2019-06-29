@@ -18,20 +18,16 @@ import static common.enums.ViewMethodsEnum.*;
 
 public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, ModelEventListener {
 
+
    ViewSocketProxy(Socket socket) throws IOException {
       super(socket);
    }
+
 
    @Override
    public void ack(String message) {
       out.println(ACK + REGEX + message.replaceAll(System.lineSeparator(), REGEX));
       out.flush();
-   }
-
-
-   @Override
-   public ModelEventListener getListener() {
-      return this;
    }
 
 
@@ -63,5 +59,10 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    public void onSquareUpdate(SquareEvent event) {
       out.println(ON_SQUARE_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
+   }
+
+   @Override
+   public ModelEventListener getListener() {
+      return this;
    }
 }
