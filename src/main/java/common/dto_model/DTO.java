@@ -1,4 +1,6 @@
 package common.dto_model;
 
-public abstract class DTO {
+import java.io.Serializable;
+
+public interface DTO extends Serializable {
 }

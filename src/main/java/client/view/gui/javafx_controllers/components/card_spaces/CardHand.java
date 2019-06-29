@@ -5,7 +5,6 @@ import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -25,7 +24,7 @@ public class CardHand <T extends AbstractCardDTO>{
    private TranslateTransition[] transitions = new TranslateTransition[3];
    private Duration duration = new Duration(300);
    @FXML Double hiddenFraction;
-   
+   //TODO: inizia a usare general weapon
    private AbstractCardDTO[] cards= new AbstractCardDTO[3];
    
    public void initialize(){
@@ -55,16 +54,24 @@ public class CardHand <T extends AbstractCardDTO>{
       current.play();
    }
    
-   public void setCard(T newCard, int cardIndex){
-      ImageView cardImage = cardsImages[cardIndex];
-      cards[cardIndex] = newCard;
-      cardImage.setImage( new Image( newCard.getImagePath(),true) );
-      cardImage.getImage().heightProperty().addListener( (observableValue, aDouble, t1) ->{
-         mainPane.setTranslateY( t1.doubleValue() * hiddenFraction );
-         mainPane.setMaxWidth( (card0.getImage().getWidth() * cards.length) + (cardBox.getSpacing() * cards.length-1 ) );
-      } );
-      transitions[cardIndex].setNode( cardImage );
+   public void setCards(T[] newCards){
+      if(newCards==null) return;
+      if(newCards.length!=cardsImages.length){
+         throw new IllegalArgumentException( "setting "+newCards.length+" cards in a "+cardsImages.length+" sized space" );
+      }
+      for(int i = 0; i<newCards.length;i++){
+         ImageView cardImage = cardsImages[i];
+         T newCard = newCards[i];   //TODO: add support for null values
+         cards[i] = newCard;
+         //cardImage.setImage( new Image( newCard.getImagePath(),true) );
+         cardImage.getImage().heightProperty().addListener( (observableValue, aDouble, t1) ->{
+            mainPane.setTranslateY( t1.doubleValue() * hiddenFraction );
+            mainPane.setMaxWidth( (card0.getImage().getWidth() * cards.length) + (cardBox.getSpacing() * cards.length-1 ) );
+         } );
+         transitions[i].setNode( cardImage );
+      }
    }
+   
    
 }
 

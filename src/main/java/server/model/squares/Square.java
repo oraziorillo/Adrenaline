@@ -4,16 +4,12 @@ import com.google.gson.annotations.Expose;
 import common.dto_model.SquareDTO;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
-import common.events.ModelEventHandler;
 import common.events.square_events.TargetableSetEvent;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
-import server.model.AmmoTile;
-import server.model.Deck;
-import server.model.Pc;
-import server.model.WeaponCard;
+import server.model.*;
 
 import java.util.HashSet;
 import java.util.LinkedList;

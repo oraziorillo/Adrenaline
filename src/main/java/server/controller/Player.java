@@ -2,7 +2,6 @@ package server.controller;
 
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
-import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
@@ -12,7 +11,6 @@ import server.model.WeaponCard;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Arrays;
 import java.util.UUID;
 
 import static common.Constants.*;
@@ -26,7 +24,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     @Expose private final UUID token;
     @Expose private Pc pc;
     @Expose private State currState;
-    private RemoteView view;
+    private transient RemoteView view;
     private transient WeaponCard currWeapon;
 
 

@@ -4,11 +4,11 @@ import common.enums.PcColourEnum;
 
 import java.util.ArrayList;
 
-public class PcDTO extends DTO{
+public class PcDTO implements DTO {
 
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
-    private ArrayList<PowerUpCardDTO> powerUps;
+    private PowerUpCardDTO[] powerUps;
     private SquareDTO currSquare;
     private short adrenaline;
 
@@ -29,11 +29,11 @@ public class PcDTO extends DTO{
         this.weapons = weapons;
     }
 
-    public ArrayList<PowerUpCardDTO> getPowerUps() {
+    public PowerUpCardDTO[] getPowerUps() {
         return powerUps;
     }
 
-    public void setPowerUps(ArrayList<PowerUpCardDTO> powerUps) {
+    public void setPowerUps(PowerUpCardDTO[] powerUps) {
         this.powerUps = powerUps;
     }
 

@@ -3,12 +3,10 @@ package server.model.actions;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
-import server.model.*;
+import server.model.Pc;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +18,7 @@ public class DamageMarksAction extends Action {
     @Expose private boolean additionalDamage;
     @Expose private boolean exclusiveForOldTargets;
     @Expose private boolean targetsOnDifferentSquares;
-    TargetChecker orientedTargetChecker;
+    private TargetChecker orientedTargetChecker;
 
 
     public DamageMarksAction(JsonObject jsonAction) {
@@ -136,6 +134,7 @@ public class DamageMarksAction extends Action {
                 pc.takeDamage(shooter.getColour(), damage);
             if (marks != 0)
                 pc.takeMarks(shooter.getColour(), marks);
+            pc.notifyDamageMarks(shooter.getName(), damage, marks);
         });
         return targets;
     }

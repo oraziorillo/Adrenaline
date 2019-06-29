@@ -4,14 +4,14 @@ import common.enums.PcColourEnum;
 
 import java.util.Set;
 
-public class SquareDTO extends DTO{
+public class SquareDTO implements DTO {
 
     private int row;
     private int col;
     private boolean targetable;
-    public Set<PcColourEnum> pcs;
-    public AmmoTileDTO ammoTile;
-    public WeaponCardDTO[] weapons;
+    private Set<PcColourEnum> pcs;
+    private AmmoTileDTO ammoTile;
+    private WeaponCardDTO[] weapons;
 
     public WeaponCardDTO[] getWeapons() {
         return weapons;

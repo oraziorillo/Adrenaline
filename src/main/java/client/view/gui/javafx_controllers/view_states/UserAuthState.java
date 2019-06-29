@@ -1,6 +1,11 @@
 package client.view.gui.javafx_controllers.view_states;
 
 import client.controller.socket.ClientSocketHandler;
+import common.events.game_board_events.GameBoardEvent;
+import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.pc_board_events.PcBoardEvent;
+import common.events.pc_events.PcEvent;
+import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.concurrent.Task;
 import javafx.scene.control.*;
@@ -56,7 +61,7 @@ public class UserAuthState extends ViewState {
                break;
             case "socket":
             default:
-               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT));
+               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
                loginController = handler;
                Thread thread = new Thread(new Task<>() {
                   @Override
@@ -125,5 +130,30 @@ public class UserAuthState extends ViewState {
    @Override
    public ViewState nextState() {
       return new InGameState();
+   }
+
+   @Override
+   public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
+
+   }
+
+   @Override
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+
+   }
+
+   @Override
+   public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+
+   }
+
+   @Override
+   public void onPcUpdate(PcEvent event) throws IOException {
+
+   }
+
+   @Override
+   public void onSquareUpdate(SquareEvent event) throws IOException {
+
    }
 }

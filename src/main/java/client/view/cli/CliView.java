@@ -4,9 +4,13 @@ import client.controller.socket.ClientSocketHandler;
 import client.view.AbstractView;
 import client.view.InputReader;
 import common.enums.ConnectionsEnum;
-import common.enums.SocketEnum;
-import common.events.ModelEvent;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
+import common.events.game_board_events.GameBoardEvent;
+import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.pc_board_events.PcBoardEvent;
+import common.events.pc_events.PcEvent;
+import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 
 import java.io.IOException;
@@ -20,7 +24,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
-public class CliView extends UnicastRemoteObject implements AbstractView, ModelEventListener {
+public class CliView extends UnicastRemoteObject implements AbstractView {
 
     private transient InputReader inputReader;
 
@@ -47,7 +51,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView, ModelE
             case SOCKET:
                 try {
                     Socket socket = new Socket(HOST, SOCKET_PORT);
-                    ClientSocketHandler handler = new ClientSocketHandler(socket);
+                    ClientSocketHandler handler = new ClientSocketHandler(socket, this);
                     new Thread(handler).start();
                     return handler;
                 } catch (IOException e) {
@@ -69,10 +73,10 @@ public class CliView extends UnicastRemoteObject implements AbstractView, ModelE
 
     @Override
     public boolean wantsToRegister() {
-        SocketEnum cmd = null;
+        ControllerMethodsEnum cmd = null;
         do {
             try {
-                cmd = SocketEnum.parseString(inputReader.requestString(
+                cmd = ControllerMethodsEnum.parseString(inputReader.requestString(
                         "r  ->  register" + System.lineSeparator() +
                         "l  ->  login")
                         .toLowerCase());
@@ -138,8 +142,27 @@ public class CliView extends UnicastRemoteObject implements AbstractView, ModelE
 
 
     @Override
-    public void modelEvent(ModelEvent event) {
-        //TODO se private mostrare solo all'utente interessato
-        System.out.println(event.toString());
+    public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
+        System.out.println(event);
+    }
+
+    @Override
+    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+        System.out.println(event);
+    }
+
+    @Override
+    public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+        System.out.println(event);
+    }
+
+    @Override
+    public void onPcUpdate(PcEvent event) throws IOException {
+        System.out.println(event);
+    }
+
+    @Override
+    public void onSquareUpdate(SquareEvent event) throws IOException {
+        System.out.println(event);
     }
 }

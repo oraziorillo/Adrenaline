@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public enum ConnectionsEnum {
-    SOCKET("s","socket"),
-    RMI("r","rmi");
+    SOCKET("s", "socket"),
+    RMI("r", "rmi");
 
     private final Collection<String> recognisedStrings;
     

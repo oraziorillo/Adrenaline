@@ -1,13 +1,13 @@
 package client.view.cli;
 
 import client.view.AbstractView;
-import common.enums.SocketEnum;
+import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemotePlayer;
 import java.io.IOException;
 
 public abstract class CommandParser {
     public static void executeCommand(String[] commands, RemotePlayer player, AbstractView view) throws IOException {
-        switch (SocketEnum.parseString( commands[0] )) {
+        switch (ControllerMethodsEnum.parseString( commands[0] )) {
             //TODO: aggiungi i comandi restanti
             case CHOOSE_MAP:
                 player.chooseMap( Integer.parseInt( commands[1] ) );

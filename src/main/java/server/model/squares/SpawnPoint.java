@@ -3,7 +3,7 @@ package server.model.squares;
 import com.google.gson.annotations.Expose;
 import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
-import common.events.ItemCollectedEvent;
+import common.events.square_events.ItemCollectedEvent;
 import common.events.square_events.SquareRefilledEvent;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
@@ -135,7 +135,7 @@ public class SpawnPoint extends Square {
 
         //notify item collected
         events.fireEvent(new ItemCollectedEvent(
-                currPc.getName(), modelMapper.map(this, SquareDTO.class), weaponToGrab.getName()));
+                currPc.getColour(), modelMapper.map(this, SquareDTO.class), weaponToGrab.getName()));
 
         resetWeaponIndexes();
         

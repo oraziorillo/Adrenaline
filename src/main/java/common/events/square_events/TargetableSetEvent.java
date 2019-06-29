@@ -1,18 +1,21 @@
 package common.events.square_events;
 
-import common.dto_model.DTO;
 import common.dto_model.SquareDTO;
-import common.events.ModelEvent;
 
 import static common.Constants.TARGETABLE_SET;
 
 public class TargetableSetEvent extends SquareEvent {
 
-    private SquareDTO square;
+    private int eventID = TARGETABLE_SET;
 
 
     public TargetableSetEvent(SquareDTO square){
-        this.square = square;
+        super(square);
+    }
+
+
+    private TargetableSetEvent(SquareDTO square, boolean isPrivate){
+        super(square, isPrivate);
     }
 
 
@@ -23,16 +26,8 @@ public class TargetableSetEvent extends SquareEvent {
 
 
     @Override
-    public SquareDTO getNewValue() {
-        return square;
+    public SquareEvent switchToPrivate() {
+        return new TargetableSetEvent(square, true);
     }
-
-
-    @Override
-    public String getPropertyName() {
-        return TARGETABLE_SET;
-    }
-
-
 }
 

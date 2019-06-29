@@ -1,11 +1,13 @@
 package client.view.gui.javafx_controllers.components.pc_board;
 
 import common.dto_model.PcBoardDTO;
+import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.MapChangeListener;
 import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -13,7 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
-public class PcBoard implements ChangeListener<Boolean>, SetChangeListener<PcBoardDTO> {
+public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    public HBox mainPane;
    public ImageView immagine;
    @FXML Double HEIGHT;
@@ -25,9 +27,9 @@ public class PcBoard implements ChangeListener<Boolean>, SetChangeListener<PcBoa
    public void initialize(){
       setPcColour( PcColourEnum.PURPLE );
       translate = new TranslateTransition( new Duration( 500 ), translating);
-      translating.setTranslateX( -vitaController.getBackground().getWidth() );
+      translating.setTranslateX( -vitaController.getBackground().getImage().getWidth() );
       translate.setToX( 0 );
-      translate.setFromX( -vitaController.getBackground().getWidth() );
+      translate.setFromX( -vitaController.getBackground().getImage().getWidth() );
       mainPane.maxWidthProperty().bind( Bindings.add( azioniController.getImage().widthProperty(), immagine.getImage().widthProperty() ));
       mainPane.minWidthProperty().bind( Bindings.add( azioniController.getImage().widthProperty(), immagine.getImage().widthProperty() ));
       mainPane.prefWidthProperty().bind( Bindings.add( azioniController.getImage().widthProperty(), immagine.getImage().widthProperty() ));
@@ -53,16 +55,7 @@ public class PcBoard implements ChangeListener<Boolean>, SetChangeListener<PcBoa
    }
    
    @Override
-   public void changed(ObservableValue<? extends Boolean> finalFrenzyProp, Boolean oldFrenzy, Boolean newFrenzy) {
-      if(newFrenzy){
-         //TODO: carica azioni frenetiche
-      }else{
-         //TODO: carica azioni normali
-      }
-   }
-   
-   @Override
-   public void onChanged(Change<? extends PcBoardDTO> change) {
+   public void onChanged(Change<? extends PcColourEnum, ? extends PcDTO> change) {
    
    }
 }

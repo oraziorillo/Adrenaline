@@ -10,8 +10,6 @@ import server.model.squares.Square;
 import server.model.target_checkers.*;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 
@@ -147,41 +145,6 @@ public abstract class Action {
 
 
     public abstract Set<Pc> apply(Pc shooter);
-
-
-    /*
-    class TargetCheckerDeserializer implements JsonDeserializer<TargetChecker> {
-
-        @Override
-        public TargetChecker deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
-
-            switch (json.getAsJsonObject().get("type").getAsString()) {
-                case "visibility":
-                    return new VisibilityDecorator(targetChecker);
-                case "blindness":
-                    return new BlindnessDecorator(targetChecker);
-                case "minDistance":
-                    return new MinDistanceDecorator(targetChecker);
-                case "maxDistance":
-                    return new MaxDistanceDecorator(targetChecker);
-                case "maxDistanceFromVisible":
-                    return new MaxDistanceFromVIsiblesDecorator(targetChecker);
-                case "straightLine":
-                    return new SimpleStraightLineDecorator(targetChecker);
-                case "beyondWallsStraightLine":
-                    return new BeyondWallsStraightLineDecorator(targetChecker);
-                case "sameRoom":
-                    return new SameRoomDecorator(targetChecker);
-                case "differentRoom":
-                    return new DifferentRoomDecorator(targetChecker);
-                default:
-                    return null;
-            }
-        }
-    }
-     */
-
 
 }
 

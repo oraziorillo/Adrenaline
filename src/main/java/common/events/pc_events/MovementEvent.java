@@ -1,20 +1,25 @@
 package common.events.pc_events;
 
 import common.dto_model.PcDTO;
-import common.dto_model.SquareDTO;
 
 import static common.Constants.MOVEMENT;
 
-//TODO: aspetta push di orazio
 public class MovementEvent extends PcEvent {
 
-    private String pcName;
-    private SquareDTO from;
-    private SquareDTO to;
+    private int eventID = MOVEMENT;
+    private String from;
+    private String to;
 
 
-    public MovementEvent(String pcName, SquareDTO from, SquareDTO to){
-        this.pcName = pcName;
+    public MovementEvent(PcDTO pc, String from, String to){
+        super(pc);
+        this.from = from;
+        this.to = to;
+    }
+
+
+    private MovementEvent (PcDTO pc, String from, String to, boolean isPrivate) {
+        super(pc, isPrivate);
         this.from = from;
         this.to = to;
     }
@@ -22,18 +27,15 @@ public class MovementEvent extends PcEvent {
 
     @Override
     public String toString() {
-        return pcName + " moved from " + from + " to " + to;
+        return isUncensored
+                ? "You"
+                : pc.getName()
+                + " moved from " + from + " to " + to;
     }
 
 
     @Override
-    public PcDTO getNewValue() {
-        return null;
-    }
-
-
-    @Override
-    public String getPropertyName() {
-        return MOVEMENT;
+    public PcEvent hideSensibleContent() {
+        return new MovementEvent(getCensoredDTO(), from, to, true);
     }
 }

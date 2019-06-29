@@ -3,7 +3,6 @@ package server.model;
 import com.google.gson.annotations.Expose;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
-import common.events.ModelEventHandler;
 import server.model.squares.Square;
 
 import java.util.ArrayList;
@@ -91,13 +90,16 @@ public class GameBoard {
         killShotTrack = new KillShotTrack(numberOfSkulls);
     }
 
+    public KillShotTrack getKillShotTrack() {
+        return killShotTrack;
+    }
 
-    public KillShot[] getFinalFrenzyKillShotTrack() {
+    public KillShot[] getFinalFrenzyKillShotTrackArray() {
         return killShotTrack.getFinalFrenzyKillShotTrack();
     }
 
 
-    public KillShot[] getKillShotTrack() {
+    public KillShot[] getKillShotTrackArray() {
         return killShotTrack.getKillShotTrack();
     }
 

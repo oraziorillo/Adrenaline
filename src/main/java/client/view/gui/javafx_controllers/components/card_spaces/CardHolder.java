@@ -37,7 +37,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    @FXML
    private final ObjectProperty<CardinalDirectionEnum> cornerProperty = new SimpleObjectProperty<>(CardinalDirectionEnum.NORTH);
    private RemotePlayer player;
-   
+
    public void initialize(){
       Duration duration = new Duration( 500 );
       for(int i=0; i<3;i++){
@@ -65,13 +65,13 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       }
       test();
    }
-   
+
    public void setBackgroundColor(AmmoEnum color){
       String path = "/images/card_holders/"+color.name().toLowerCase()+".png";
       Image img = new Image( path,true );
       background.setImage( img );
    }
-   
+
    private void disappear(int cardIndex){
       Transition current = showing[cardIndex];
       cards[cardIndex].setViewOrder( 0 );
@@ -79,7 +79,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       current.setRate( -1 );
       current.play();
    }
-   
+
    private void appear(int cardIndex){
       Transition current = showing[cardIndex];
       cards[cardIndex].setViewOrder( -1 );
@@ -87,7 +87,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       current.setRate( 1 );
       current.play();
    }
-   
+
    public void setCorner(CardinalDirectionEnum corner) {
       double rotation;
       double transXMult = 0;
@@ -122,14 +122,14 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       mainPane.setTranslateY( -CARD_TRANSLATION*transYMult  );
       this.cornerProperty.set( corner );
    }
-   
+
    public void test(){
       setBackgroundColor( AmmoEnum.RED );
       for(ImageView card: cards) {
          card.setImage( new Image( "/images/weapons/martello_ionico.png", true ) );
       }
    }
-   
+
    public void setCards(WeaponCardDTO[] cards){
       if(cards.length!=this.cards.length){
          throw new IllegalArgumentException( "You must set "+this.cards.length+" cards at time" );
@@ -137,7 +137,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       for(int i=0;i<cards.length;i++){
          int forLambda=i;
          ImageView card = this.cards[i];
-         card.setImage( new Image( cards[i].getPathImage(),true ) );
+         //card.setImage( new Image( cards[i].getImagePath(),true ) );
          card.setOnMouseClicked( e-> {
             try {
                player.chooseWeaponOnSpawnPoint( forLambda );
@@ -147,11 +147,11 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
          } );
       }
    }
-   
+
    public void setPlayer(RemotePlayer player) {
       this.player = player;
    }
-   
+
    @Override
    public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
       if (change.wasAdded()) {
