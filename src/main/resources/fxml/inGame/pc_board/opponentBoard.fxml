@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.Double?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
+      fx:controller="client.view.gui.javafx_controllers.components.pc_board.OpponentBoard" stylesheets="/css/pc_board/Pc.css">
+
+    <HBox alignment="TOP_CENTER">
+        <fx:include source="vita.fxml" fx:id="vita"/>
+        <ImageView fx:id="immagine" preserveRatio="true"/>
+    </HBox>
+    <HBox>
+        <HBox fx:id="powerups"/>
+        <HBox fx:id="weapons"/>
+        <fx:include fx:id="ammos" source="/fxml/inGame/munizioni.fxml" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+</VBox>

@@ -11,7 +11,7 @@ public class Vita {
       background.setImage( image );
    }
    
-   public Image getBackground(){
-      return background.getImage();
+   public ImageView getBackground(){
+      return background;
    }
 }
