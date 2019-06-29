@@ -36,7 +36,7 @@ public class CustomizedModelMapperTest {
         short[] ammo = new short[]{1, 2, 0};
         AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(ammo);
-        when(ammoTile.containsPowerUp()).thenReturn(false);
+        when(ammoTile.hasPowerUp()).thenReturn(false);
         AmmoTileDTO ammoTileDTO = modelMapper.map(ammoTile, AmmoTileDTO.class);
         System.out.println("{ " + ammoTileDTO.getAmmo()[0] + ", " + ammoTileDTO.getAmmo()[1] + ", "  + ammoTileDTO.getAmmo()[2] + " }");
     }

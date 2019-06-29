@@ -220,7 +220,7 @@ public class Pc {
         events.fireEvent(new AmmoChangedEvent(modelMapper.map(pcBoard, PcBoardDTO.class),
                 ammoTile.getAmmo(), null, true));
 
-        if (ammoTile.containsPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
+        if (ammoTile.hasPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
             drawPowerUp();
     }
 

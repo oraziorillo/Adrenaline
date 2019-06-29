@@ -26,7 +26,6 @@ public class AmmoTileDeckTest {
 
         reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
         ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileType);
-        ammoTiles.forEach(AmmoTile::setHasPowerUp);
 
         deck = new Deck<>();
         ammoTiles.forEach(a -> deck.add(a));

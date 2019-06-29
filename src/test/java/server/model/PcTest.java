@@ -132,7 +132,7 @@ public class PcTest {
         short [] ammo = new short []{1,1,0};
         AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(ammo);
-        when(ammoTile.containsPowerUp()).thenReturn(true);
+        when(ammoTile.hasPowerUp()).thenReturn(true);
         assertEquals(0, tested.getPowerUps().size());
         tested.addAmmo(ammoTile);
         assertEquals(2, tested.getAmmo()[0]);
