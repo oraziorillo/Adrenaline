@@ -1,8 +1,6 @@
 package server.controller;
 
-import common.dto_model.AmmoTileDTO;
-import common.dto_model.SquareDTO;
-import common.dto_model.WeaponCardDTO;
+import common.dto_model.*;
 import common.enums.PcColourEnum;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -19,6 +17,7 @@ import java.util.stream.Collectors;
 
 
 public class CustomizedModelMapper {
+
 
     private static ModelMapper modelMapper;
 
@@ -62,7 +61,8 @@ public class CustomizedModelMapper {
 
     private void configureWeaponCard() {
         TypeMap<WeaponCard, WeaponCardDTO> typeMap = modelMapper.createTypeMap(WeaponCard.class, WeaponCardDTO.class);
-        typeMap.addMappings(mapper -> mapper.map(WeaponCard::getFireModeIndex, WeaponCardDTO::setBasicEffects));
+        typeMap.addMappings(mapper -> mapper.map(WeaponCard::getFireModeSize, WeaponCardDTO::setBasicEffects));
         typeMap.addMappings(mapper -> mapper.map(WeaponCard::getUpgradesSize, WeaponCardDTO::setUpgrades));
     }
+
 }

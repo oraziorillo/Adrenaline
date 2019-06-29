@@ -13,6 +13,7 @@ public class PcBoardDTO implements DTO {
     private int[] pcValue;
     private int numOfDeaths;
 
+
     public PcColourEnum getColour() {
         return colour;
     }

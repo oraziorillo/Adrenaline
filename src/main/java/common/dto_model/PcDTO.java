@@ -2,24 +2,32 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
+import java.util.ArrayList;
+
 public class  PcDTO implements DTO {
 
+    private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
-    private PowerUpCardDTO[] powerUps;
+    private ArrayList<PowerUpCardDTO> powerUps;
     private SquareDTO currSquare;
     private short adrenaline;
 
-    public PcColourEnum getColour() {
-        return pcBoard.getColour();
-    }
 
-    public void setColour(PcColourEnum colour) {
-        pcBoard.setColour(colour);
+    public String getName() {
+        return pcBoard.getColour().getName();
     }
 
     public PcBoardDTO getPcBoard() {
         return pcBoard;
+    }
+
+    public PcColourEnum getColour() {
+        return colour;
+    }
+
+    public void setColour(PcColourEnum colour) {
+        this.colour = colour;
     }
 
     public void setPcBoard(PcBoardDTO pcBoard) {
@@ -34,11 +42,11 @@ public class  PcDTO implements DTO {
         this.weapons = weapons;
     }
 
-    public PowerUpCardDTO[] getPowerUps() {
+    public ArrayList<PowerUpCardDTO> getPowerUps() {
         return powerUps;
     }
 
-    public void setPowerUps(PowerUpCardDTO[] powerUps) {
+    public void setPowerUps(ArrayList<PowerUpCardDTO> powerUps) {
         this.powerUps = powerUps;
     }
 
@@ -56,9 +64,5 @@ public class  PcDTO implements DTO {
 
     public void setAdrenaline(short adrenaline) {
         this.adrenaline = adrenaline;
-    }
-
-    public String getName() {
-        return pcBoard.getColour().getName();
     }
 }

@@ -33,6 +33,7 @@ public class AmmoSquare extends Square {
     public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.ammoDeck = ammoDeck;
         this.ammoTile = ammoDeck.draw();
+
     }
 
 

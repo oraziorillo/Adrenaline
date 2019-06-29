@@ -39,37 +39,37 @@ class PcBoard {
     }
 
 
-    short getPoints() {
+    public short getPoints() {
         return points;
     }
 
 
-    int getNumOfDeaths() {
+    public int getNumOfDeaths() {
         return numOfDeaths;
     }
 
 
-    short[] getAmmo() {
+    public short[] getAmmo() {
         return ammo;
     }
 
 
-    PcColourEnum[] getDamageTrack() {
+    public PcColourEnum[] getDamageTrack() {
         return damageTrack;
     }
 
 
-    short getDamageTrackIndex() {
+    public short getDamageTrackIndex() {
         return damageTrackIndex;
     }
 
 
-    int[] getPcValue() {
+    public int[] getPcValue() {
         return pcValue;
     }
 
 
-    short getMarks(PcColourEnum selectedColour) {
+    public short getMarks(PcColourEnum selectedColour) {
         return marks[selectedColour.ordinal()];
     }
 
@@ -88,7 +88,6 @@ class PcBoard {
     void increaseNumberOfDeaths(){
         if (numOfDeaths != 5)
             numOfDeaths++;
-
     }
 
 

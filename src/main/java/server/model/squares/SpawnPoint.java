@@ -57,10 +57,10 @@ public class SpawnPoint extends Square {
         return weapons;
     }
 
+
     public int getWeaponToDropIndex() {
         return weaponToDropIndex;
     }
-
 
 
     @Override
