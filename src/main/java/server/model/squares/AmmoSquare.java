@@ -2,7 +2,7 @@ package server.model.squares;
 
 import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
-import common.events.ItemCollectedEvent;
+import common.events.square_events.ItemCollectedEvent;
 import common.events.square_events.SquareRefilledEvent;
 import server.exceptions.EmptySquareException;
 import server.model.AmmoTile;
@@ -66,7 +66,7 @@ public class AmmoSquare extends Square {
 
         //notify item collected
         events.fireEvent(new ItemCollectedEvent(
-                currPc.getName(), modelMapper.map(this, SquareDTO.class), ammoTile.toString()));
+                currPc.getColour(), modelMapper.map(this, SquareDTO.class), ammoTile.toString()));
 
         ammoTile = null;
     }

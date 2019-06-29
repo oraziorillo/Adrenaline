@@ -1,7 +1,6 @@
 package server.model;
 
 import common.enums.PcColourEnum;
-import common.events.ModelEventHandler;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 

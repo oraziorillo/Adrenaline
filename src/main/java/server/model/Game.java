@@ -7,12 +7,14 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.dto_model.GameBoardDTO;
 import common.dto_model.KillShotTrackDTO;
+import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
 import common.events.*;
-import common.events.game_events.FinalFrenzyEvent;
-import common.events.game_events.GameBoardSetEvent;
-import common.events.killshottrack_events.KillShotTrackSetEvent;
+import common.events.kill_shot_track_events.FinalFrenzyEvent;
+import common.events.game_board_events.GameBoardSetEvent;
+import common.events.kill_shot_track_events.KillShotTrackSetEvent;
+import common.events.pc_events.PcColourChosenEvent;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.database.DatabaseHandler;
@@ -166,7 +168,7 @@ public class Game {
         gameBoard.initKillShotTrack(numberOfSkulls);
 
         //notify kill shot track set
-        events.fireEvent(new KillShotTrackSetEvent(modelMapper.map(gameBoard.getKillShotTrack(), KillShotTrackDTO.class)));
+        events.fireEvent(new KillShotTrackSetEvent(modelMapper.map(gameBoard.getKillShotTrackArray(), KillShotTrackDTO.class)));
     }
 
 
@@ -180,7 +182,7 @@ public class Game {
         this.finalFrenzy = finalFrenzy;
 
         //notify listeners
-        events.fireEvent(new FinalFrenzyEvent());
+        events.fireEvent(new FinalFrenzyEvent(modelMapper.map(gameBoard.getKillShotTrack(), KillShotTrackDTO.class)));
     }
 
 
@@ -203,7 +205,12 @@ public class Game {
 
 
     public void addPc(Pc pc) {
+        events.addListenerColour(pc.getColour());
         pc.addModelEventHandler(events);
+
+        //notify colour chosen
+        events.fireEvent(new PcColourChosenEvent(modelMapper.map(pc, PcDTO.class)));
+
         pcs.add(pc);
     }
 
@@ -222,7 +229,7 @@ public class Game {
     }
 
 
-    private void scoringPoints(Pc deadPc, boolean doublekill) {
+    private void scoringPoints(Pc deadPc, boolean doubleKill) {
         PcColourEnum [] deadPcDamageTrack = deadPc.getDamageTrack();
         int [] pcValue = deadPc.getPcBoard().getPcValue();
         int pcValueIndex = 0;
@@ -234,11 +241,17 @@ public class Game {
             pcValueIndex = deadPc.getPcBoard().getNumOfDeaths();
 
             //assigns the first blood point, only if the board is not flipped
-            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[0]).findFirst().get().increasePoints(1);
+            pcs.stream()
+                    .filter(pc -> pc.getColour() == deadPcDamageTrack[0])
+                    .findFirst()
+                    .ifPresent(p -> p.increasePoints(1));
         }
         //assigns an extra point, only if the current player gets a doubleKill
-        if (doublekill)
-            pcs.stream().filter(pc -> pc.getColour() == deadPcDamageTrack[10]).findFirst().get().increasePoints(1);
+        if (doubleKill)
+            pcs.stream()
+                    .filter(pc -> pc.getColour() == deadPcDamageTrack[10])
+                    .findFirst()
+                    .ifPresent(p -> p.increasePoints(1));
 
         //assign points to each Pc who damaged the deadPc
         for (PcColourEnum colour: deadPcDamageTrack) {
@@ -258,7 +271,11 @@ public class Game {
             }
             if (max != 0) {
                 int finalMaxIndex = maxIndex;
-                pcs.stream().filter(pc -> pc.getColour().ordinal() == finalMaxIndex).findFirst().get().increasePoints(pcValue[pcValueIndex]);
+                int finalPcValueIndex = pcValueIndex;
+                pcs.stream()
+                        .filter(pc -> pc.getColour().ordinal() == finalMaxIndex)
+                        .findFirst()
+                        .ifPresent(p -> p.increasePoints(pcValue[finalPcValueIndex]));
                 if (pcValueIndex != pcValue.length - 1)
                     pcValueIndex++;
                 else
@@ -318,7 +335,7 @@ public class Game {
 
 
     private Integer pointsFromKillShots(Pc pc){
-        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrack()) + pointsOnKillShotTrack(pc, gameBoard.getFinalFrenzyKillShotTrack());
+        return pointsOnKillShotTrack(pc, gameBoard.getKillShotTrackArray()) + pointsOnKillShotTrack(pc, gameBoard.getFinalFrenzyKillShotTrackArray());
     }
 
 
@@ -341,8 +358,8 @@ public class Game {
     }
 
 
-    public void addModelEventListener(ModelEventListener listener) {
-        events.addModelEventListener(listener);
+    public void addModelEventListener(UUID playerID, ModelEventListener listener) {
+        events.addModelEventListener(playerID, listener);
     }
 
 }

@@ -7,6 +7,7 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MappingContext;
 import server.model.AmmoTile;
 import server.model.Pc;
 import server.model.squares.AmmoSquare;
@@ -46,7 +47,9 @@ public class CustomizedModelMapper {
 
 
     private void configureSquare() {
-        Converter<Set<Pc>, Set<PcColourEnum>> toPcColour = ctx -> ctx.getSource() == null ? null : ctx.getSource().stream().map(Pc::getColour).collect(Collectors.toSet());
+        Converter<Set<Pc>, Set<PcColourEnum>> toPcColour = ctx -> ctx.getSource() == null
+                ? null
+                : ctx.getSource().stream().map(Pc::getColour).collect(Collectors.toSet());
 
         TypeMap<SpawnPoint, SquareDTO> typeMapSpawnPoint = modelMapper.createTypeMap(SpawnPoint.class, SquareDTO.class);
         TypeMap<AmmoSquare, SquareDTO> typeMapAmmoSquare = modelMapper.createTypeMap(AmmoSquare.class, SquareDTO.class);
@@ -55,4 +58,10 @@ public class CustomizedModelMapper {
         typeMapAmmoSquare.addMappings(mapper -> mapper.using(toPcColour).map(AmmoSquare::getPcs, SquareDTO::setPcs));
     }
 
+
+    private Set<PcColourEnum> fromPcToPcColour(MappingContext<Set<Pc>, Set<PcColourEnum>> toPcColour){
+        Converter<Set<Pc>, Set<PcColourEnum>> listOfColours;
+        listOfColours = setOfPc -> setOfPc.getSource().stream().map(Pc::getColour).collect(Collectors.toSet());
+        return listOfColours.convert(toPcColour);
+    }
 }

@@ -1,6 +1,6 @@
 package server.controller.socket;
 
-import common.enums.SocketEnum;
+import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.LoginController;
@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.UUID;
+
+import static common.Constants.REGEX;
 
 public class ServerSocketHandler implements Runnable {
     private final Socket socket;
@@ -25,13 +27,13 @@ public class ServerSocketHandler implements Runnable {
         this.out = new PrintWriter(socket.getOutputStream());
         this.in = new Scanner(socket.getInputStream());
         this.loginController = LoginController.getInstance();
-        this.view = new RemoteViewSocketProxy(socket);
+        this.view = new ViewSocketProxy(socket);
     }
 
     @Override
     public void run() {
         while (!socket.isClosed()) {
-            String[] args = in.next().split(",");
+            String[] args = in.next().split(REGEX);
             try {
                 view.ack("Command :" + args[0]);
             } catch (IOException e) {
@@ -58,12 +60,12 @@ public class ServerSocketHandler implements Runnable {
      *
      * @param args the strings to parse
      * @throws IOException              if client is unreachable
-     * @throws IllegalArgumentException if the method name (args[0]) is not in SocketEnum
-     * @see SocketEnum
+     * @throws IllegalArgumentException if the method name (args[0]) is not in ControllerMethodsEnum
+     * @see ControllerMethodsEnum
      */
     private void handle(String[] args) throws IOException {
         int argInt;
-        switch (SocketEnum.valueOf(args[0])) {
+        switch (ControllerMethodsEnum.valueOf(args[0])) {
             case REGISTER:
                 out.println(loginController.register(args[1], view));
                 out.flush();

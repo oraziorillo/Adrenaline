@@ -2,8 +2,6 @@ package server.controller.states;
 
 import server.controller.Controller;
 
-import java.io.IOException;
-
 import static common.Constants.FIRST_MAP;
 import static common.Constants.LAST_MAP;
 
@@ -41,11 +39,6 @@ public class SetupMapState extends State{
     public boolean ok() {
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
             controller.getGame().initMap(mapIndex);
-            try {
-                controller.getCurrPlayer().getView().ack("map has been set!");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return true;
         }
         return false;

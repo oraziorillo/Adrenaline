@@ -6,28 +6,29 @@ import static common.Constants.ADRENALINE_UP;
 
 public class AdrenalineUpEvent extends PcEvent {
 
-    private PcDTO pc;
+    private int eventID = ADRENALINE_UP;
 
 
-    public AdrenalineUpEvent(PcDTO pc){
-        this.pc = pc;
+    public AdrenalineUpEvent(PcDTO pc) {
+        super(pc);
+    }
+
+
+    private AdrenalineUpEvent(PcDTO censored, boolean isPrivate) {
+        super(censored, isPrivate);
     }
 
 
     @Override
-    public String toString() {
-        return pc.getName() + "'s adrenaline level increased to " + pc.getAdrenaline() + "!";
+    public String getDynamicMessage() {
+        return isUncensored
+                ? "You got adrenaline level " + pc.getAdrenaline()
+                : "";
     }
 
 
     @Override
-    public PcDTO getNewValue() {
-        return pc;
-    }
-
-
-    @Override
-    public String getPropertyName() {
-        return ADRENALINE_UP;
+    public PcEvent hideSensibleContent() {
+        return new AdrenalineUpEvent(getCensoredDTO(), true);
     }
 }

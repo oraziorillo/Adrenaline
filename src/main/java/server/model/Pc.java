@@ -3,16 +3,16 @@ package server.model;
 import common.dto_model.PcBoardDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
-import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
-import common.events.*;
+import common.events.pc_board_events.*;
 import common.events.pc_events.*;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +99,7 @@ public class Pc {
         pcBoard.increasePoints(earnedPoints);
 
         //notify listeners
-        events.fireEvent(new PointsIncreasedEvents(modelMapper.map(this, PcDTO.class), earnedPoints));
+        events.fireEvent(new PointsIncreasedEvents(modelMapper.map(pcBoard, PcBoardDTO.class), earnedPoints));
     }
 
 
@@ -140,7 +140,7 @@ public class Pc {
      */
     public void moveTo(Square s) {
 
-        SquareDTO oldPos = modelMapper.map(currSquare, SquareDTO.class);
+        String oldPos = currSquare.toString();
 
         if (s == null) {
             throw new IllegalArgumentException("Invalid square");
@@ -151,28 +151,26 @@ public class Pc {
         this.currSquare.addPc(this);
 
         //notify listeners
-        SquareDTO newPos = modelMapper.map(currSquare, SquareDTO.class);
-        events.fireEvent(new MovementEvent(colour.getName(), oldPos, newPos));
+        events.fireEvent(new MovementEvent(modelMapper.map(this, PcDTO.class), oldPos, currSquare.toString()));
     }
 
 
     public void drawPowerUp(){
 
         PowerUpCard powerUpToDraw = currGame.drawPowerUp();
-        if (powerUpToDraw != null)
+        if (powerUpToDraw != null) {
             powerUps.add(powerUpToDraw);
 
-        //TODO in questo caso non solo l'evento è privato ma bisogna mandare la carta al solo utente che l'ha pescata
-        //notify listeners
-        //events.firePropertyChange(POWER_UP_DROWN, old, modelMapper.map(this, PcDTO.class));
+            //notify power up drown
+            events.fireEvent(new PowerUpDrownEvent(
+                    modelMapper.map(this, PcDTO.class),
+                    modelMapper.map(powerUpToDraw, PowerUpCardDTO.class)));
+        }
     }
 
 
     public void discardPowerUp(PowerUpCard p) {
-        //TODO index è inutilizzato: serviva a qualcosa?
-        int oldIndex;
         if (powerUps.contains(p)) {
-             oldIndex = powerUps.indexOf(p);
             powerUps.remove(p);
         } else {
             throw new IllegalArgumentException("You don't have this powerUp");
@@ -219,7 +217,7 @@ public class Pc {
         pcBoard.addAmmo(ammoTile);
 
         //notify ammo change
-        events.fireEvent(new AmmoChangedEvent(modelMapper.map(this, PcDTO.class),
+        events.fireEvent(new AmmoChangedEvent(modelMapper.map(pcBoard, PcBoardDTO.class),
                 ammoTile.getAmmo(), null, true));
 
         if (ammoTile.containsPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
@@ -250,20 +248,10 @@ public class Pc {
         powerUps.removeAll(powerUpsToDiscard);
 
         //notify ammo payment
-        events.fireEvent(new AmmoChangedEvent(modelMapper.map(this, PcDTO.class),
+        events.fireEvent(new AmmoChangedEvent(modelMapper.map(pcBoard, PcBoardDTO.class),
                 ammoPaid, powerUpsDiscarded, false));
 
         return true;
-    }
-
-
-    public void takeMarks(PcColourEnum shooterColour, short marks) {
-        if (this.colour == shooterColour)
-            return;
-        pcBoard.addMarks(shooterColour, marks);
-
-        //notify listeners
-        events.fireEvent(new MarksTakenEvent(modelMapper.map(this, PcDTO.class), shooterColour.getName(), marks));
     }
 
 
@@ -275,16 +263,13 @@ public class Pc {
         totalDamage = (short) (pcBoard.getMarks(shooterColour) + damages);
         pcBoard.addDamage(shooterColour, totalDamage);
 
-        //notify damage taken
-        events.fireEvent(new DamageTakenEvent(modelMapper.map(this, PcDTO.class), shooterColour.getName(), damages));
-
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFE_POINTS - 2) {
             boolean overkill = damageIndex == (LIFE_POINTS - 1);
             currGame.killOccurred(this.colour, overkill);
 
             //notify death
-            events.fireEvent(new DeathEvent(modelMapper.map(this, PcDTO.class)));
+            events.fireEvent(new DeathEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
         }
 
         boolean adrenalineUp = false;
@@ -301,6 +286,18 @@ public class Pc {
 
             //notify adrenaline up
             events.fireEvent(new AdrenalineUpEvent(modelMapper.map(this, PcDTO.class)));
+    }
+
+
+    public void takeMarks(PcColourEnum shooterColour, short marks) {
+        if (this.colour == shooterColour)
+            return;
+        pcBoard.addMarks(shooterColour, marks);
+    }
+
+
+    public void notifyDamageMarks(String shooterName, short damages, short marks){
+        events.fireEvent(new DamageMarksTakenEvent(modelMapper.map(pcBoard, PcBoardDTO.class), shooterName, damages, marks));
     }
 
 
@@ -352,7 +349,7 @@ public class Pc {
         pcBoard.increaseNumberOfDeaths();
 
         //notify listeners
-        events.fireEvent(new NumberOfDeathIncreasedEvent(modelMapper.map(this, PcDTO.class)));
+        events.fireEvent(new NumberOfDeathIncreasedEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
     }
 }
 

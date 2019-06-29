@@ -2,8 +2,9 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
-public class PcBoardDTO extends DTO{
+public abstract class PcBoardDTO implements DTO {
 
+    private PcColourEnum colour;
     private short points;
     private short damageTrackIndex;
     private short[] marks;
@@ -12,6 +13,13 @@ public class PcBoardDTO extends DTO{
     private int [] pcValue;
     private int numOfDeaths;
 
+    public PcColourEnum getColour() {
+        return colour;
+    }
+
+    public void setColour(PcColourEnum colour) {
+        this.colour = colour;
+    }
 
     public short getDamageTrackIndex() {
         return damageTrackIndex;

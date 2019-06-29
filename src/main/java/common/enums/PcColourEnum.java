@@ -1,9 +1,11 @@
 package common.enums;
 
+import java.io.Serializable;
+
 /**
  * Enumerates the possible colours of a Pc. Has a method to get the Pc name (Not the Player's username)
  */
-public enum PcColourEnum {
+public enum PcColourEnum implements Serializable {
     GREY("DOZER"),
     GREEN("SPROG"),
     YELLOW(":D-STRUCT-OR"),

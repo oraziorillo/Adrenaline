@@ -3,17 +3,15 @@ package server.model.actions;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
-import server.model.*;
+import server.model.Pc;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DamageMarksAction extends Action {
-    @Expose private short damage;
+    @Expose private short damages;
     @Expose private short marks;
     @Expose private boolean squareExplosive;
     @Expose private boolean roomExplosive;
@@ -25,7 +23,7 @@ public class DamageMarksAction extends Action {
 
     public DamageMarksAction(JsonObject jsonAction) {
         super(jsonAction);
-        this.damage = jsonAction.get("damage").getAsShort();
+        this.damages = jsonAction.get("damages").getAsShort();
         this.marks = jsonAction.get("marks").getAsShort();
         this.squareExplosive = jsonAction.get("squareExplosive").getAsBoolean();
         this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
@@ -129,13 +127,14 @@ public class DamageMarksAction extends Action {
 
     @Override
     public Set<Pc> apply(Pc shooter) {
-        //if shooter has been added to the targets set, it is removed before damage is applied
+        //if shooter has been added to the targets set, it is removed before damages is applied
         targets.remove(shooter);
         targets.forEach(pc -> {
-            if (damage != 0)
-                pc.takeDamage(shooter.getColour(), damage);
+            if (damages != 0)
+                pc.takeDamage(shooter.getColour(), damages);
             if (marks != 0)
                 pc.takeMarks(shooter.getColour(), marks);
+            pc.notifyDamageMarks(shooter.getName(), damages, marks);
         });
         return targets;
     }

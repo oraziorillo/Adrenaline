@@ -4,20 +4,9 @@ import common.dto_model.DTO;
 
 import java.io.Serializable;
 
-public abstract class ModelEvent implements Serializable {
+public interface ModelEvent extends Serializable {
 
-    private boolean privateMessage;
+    DTO getDTO();
 
-
-    public boolean isPrivateMessage(){
-        return privateMessage;
-    }
-
-    public void setPrivateMessage(boolean privateMessage) {
-        this.privateMessage = privateMessage;
-    }
-
-    public abstract DTO getNewValue();
-
-    public abstract String getPropertyName();
+    String getDynamicMessage();
 }

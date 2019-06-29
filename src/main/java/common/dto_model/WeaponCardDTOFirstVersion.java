@@ -1,6 +1,8 @@
 package common.dto_model;
 
-public class WeaponCardDTOFirstVersion extends AbstractCardDTO {
+@Deprecated
+public class WeaponCardDTOFirstVersion {
+   /*
    private static final String DIRECTORY_NAME = "weapons/";
    private static final String DEFAULT_NAME = "retro_arma";
    private int basicEffects;
@@ -33,4 +35,6 @@ public class WeaponCardDTOFirstVersion extends AbstractCardDTO {
    public int getUpgrades() {
       return upgrades;
    }
+
+    */
 }

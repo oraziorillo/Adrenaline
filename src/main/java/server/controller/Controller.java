@@ -9,6 +9,7 @@ import server.model.WeaponCard;
 import server.model.squares.Square;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,13 @@ public class Controller{
     public void initGame(UUID gameUUID){
         game = Game.getGame(gameUUID);
         players.forEach(p -> {
-            ModelEventListener listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
-            game.addModelEventListener(listener);
+            ModelEventListener listener = null;
+            try {
+                listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            game.addModelEventListener(p.getToken(), listener);
         });
         try {
             getCurrPlayer().getView().ack("It's your turn!!");

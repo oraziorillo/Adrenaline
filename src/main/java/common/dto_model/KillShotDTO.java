@@ -2,7 +2,7 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
-public class KillShotDTO extends DTO{
+public class KillShotDTO implements DTO {
 
     private PcColourEnum colour;
     private boolean skulled;

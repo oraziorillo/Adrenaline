@@ -1,6 +1,6 @@
 package common.dto_model;
 
-public abstract class AbstractCardDTO extends DTO{
+public abstract class AbstractCardDTO implements DTO {
 
    private static final String IMAGE_PATH_PREFIX = "/images/";
    protected String extension = ".png";

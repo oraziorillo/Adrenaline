@@ -6,12 +6,17 @@ import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
 import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
-import common.dto_model.*;
+import common.dto_model.PcDTO;
+import common.dto_model.PowerUpCardDTO;
+import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
-import common.events.pc_events.AdrenalineUpEvent;
-import common.events.ModelEvent;
+import common.events.game_board_events.GameBoardEvent;
+import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.pc_board_events.PcBoardEvent;
+import common.events.pc_events.PcEvent;
+import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -23,7 +28,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import server.model.AmmoTile;
 
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -35,7 +39,8 @@ public class InGameState extends ViewState {
    @FXML private transient Map mapController;
    @FXML private transient CardHolder cardHolderLeftController;
    @FXML private transient CardHolder cardHolderRightController;
-   @FXML private transient CardHand<WeaponCardDTOFirstVersion> weaponHandController;
+   //TODO usi first version
+   // @FXML private transient CardHand<WeaponCardDTOFirstVersion> weaponHandController;
    @FXML private transient CardHand<PowerUpCardDTO> powerUpHandController;
    @FXML private transient HBox underMapButtons;
    @FXML private transient Top topController;
@@ -74,7 +79,8 @@ public class InGameState extends ViewState {
    
    private void test() {
       for (int i = 0; i < 3; i++) {
-         weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
+         //TODO usi firstversion
+          // weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
          powerUpHandController.setCard( new PowerUpCardDTO(), i );
       }
       for(int i=0;i<PcColourEnum.values().length;i++){
@@ -126,11 +132,12 @@ public class InGameState extends ViewState {
       SquareDTO square = new SquareDTO();
       square.setCol( random.nextInt( 4 ) );
       square.setRow( random.nextInt( 3 ) );
-      AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
-      square.setAmmoTile( random.nextBoolean()?fullTile:null );
+      //TODO: mattè i model mapper non si costruiscono così, altrimenti vengono sollevate eccezioni, va usato il model mapper
+      //AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
+      //square.setAmmoTile( random.nextBoolean()?fullTile:null );
       pcToMove.setCurrSquare( square );
       pcToMove.setColour( pcToMoveColor );
-      modelEvent(new AdrenalineUpEvent( pcToMove ));
+      //TODO onPcUpdate(new AdrenalineUpEvent( pcToMove ));
       /*
       try {
          player.skip();
@@ -165,11 +172,28 @@ public class InGameState extends ViewState {
       chatController.appear();
    }
 
+    @Override
+    public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
 
-   @Override
-   public void modelEvent(ModelEvent event) {
-      switch (event.getPropertyName()){
-            //TODO: rivedi eventi con orazio
-      }
-   }
+    }
+
+    @Override
+    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+
+    }
+
+    @Override
+    public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+
+    }
+
+    @Override
+    public void onPcUpdate(PcEvent event) throws IOException {
+
+    }
+
+    @Override
+    public void onSquareUpdate(SquareEvent event) throws IOException {
+
+    }
 }

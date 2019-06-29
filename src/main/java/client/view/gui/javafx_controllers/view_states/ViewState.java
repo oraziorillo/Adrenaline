@@ -1,7 +1,6 @@
 package client.view.gui.javafx_controllers.view_states;
 
 import client.view.AbstractView;
-import common.events.ModelEvent;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -91,11 +90,6 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    @Override
    public String requestString(String message) throws RemoteException {
       return null;
-   }
-   
-   @Override
-   public void modelEvent(ModelEvent event) {
-   
    }
    
    @Override
