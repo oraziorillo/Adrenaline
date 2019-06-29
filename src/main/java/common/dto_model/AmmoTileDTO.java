@@ -48,7 +48,7 @@ public class AmmoTileDTO {
         for (AmmoEnum a : AmmoEnum.values())
             stringBuilder.append("+ ").append(ammo[a.ordinal()]).append(" ").append(a).append("\n");
         if (hasPowerUp)
-            stringBuilder.append("+ 1 Power Up Card");
+            stringBuilder.append("+ 1 Power Up");
         return stringBuilder.toString();
     }
 }

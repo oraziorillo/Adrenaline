@@ -18,9 +18,11 @@ import static common.enums.ViewMethodsEnum.*;
 
 public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, ModelEventListener {
 
+
    ViewSocketProxy(Socket socket) throws IOException {
       super(socket);
    }
+
 
    @Override
    public void ack(String message) {
@@ -30,38 +32,37 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
 
 
    @Override
-   public ModelEventListener getListener() {
-      return this;
-   }
-
-
-   @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      out.print(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
+      out.println(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-      out.print(ON_KILL_SHOT_TRACK_UPDATE + REGEX + new Gson().toJson(event));
+      out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
-      out.print(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
+      out.println(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
    public void onPcUpdate(PcEvent event) {
-      out.print(ON_PC_UPDATE + REGEX + new Gson().toJson(event));
+      out.println(ON_PC_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
    public void onSquareUpdate(SquareEvent event) {
-      out.print(ON_SQUARE_UPDATE + REGEX + new Gson().toJson(event));
+      out.println(ON_SQUARE_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
+   }
+
+   @Override
+   public ModelEventListener getListener() {
+      return this;
    }
 }
