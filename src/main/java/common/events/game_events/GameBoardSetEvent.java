@@ -1,7 +1,6 @@
 package common.events.game_events;
 
 import common.dto_model.GameBoardDTO;
-import common.events.ModelEvent;
 
 import static common.Constants.GAME_BOARD_SET;
 

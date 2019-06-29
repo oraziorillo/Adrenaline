@@ -101,14 +101,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
         out.flush();
     }
     
-    @Override
-    public synchronized void setRemoteView(RemoteView view, UUID token) throws IOException {
-        this.view = view;
-    }
-
-
     //Player
-    
     @Override
     public synchronized void chooseMap(int n) {
         out.println( CHOOSE_MAP.toString() + "," + n );

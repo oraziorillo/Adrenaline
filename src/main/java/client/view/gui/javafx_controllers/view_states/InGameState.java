@@ -6,6 +6,7 @@ import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
 import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
+import common.Constants;
 import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
@@ -35,7 +36,7 @@ public class InGameState extends ViewState {
    @FXML private transient Map mapController;
    @FXML private transient CardHolder cardHolderLeftController;
    @FXML private transient CardHolder cardHolderRightController;
-   @FXML private transient CardHand<WeaponCardDTOFirstVersion> weaponHandController;
+   @FXML private transient CardHand<WeaponCardDTO> weaponHandController;
    @FXML private transient CardHand<PowerUpCardDTO> powerUpHandController;
    @FXML private transient HBox underMapButtons;
    @FXML private transient Top topController;
@@ -47,8 +48,6 @@ public class InGameState extends ViewState {
    
    public void initialize() {
       mapController.setMap(0);
-      //init finalFrenzy listeners
-      finalFrenzy.addListener( pcBoardController );
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
       //init squares listeners
@@ -73,10 +72,14 @@ public class InGameState extends ViewState {
    }
    
    private void test() {
+      WeaponCardDTO[] weapons = new WeaponCardDTO[3];
+      PowerUpCardDTO[] powerups = new PowerUpCardDTO[3];
       for (int i = 0; i < 3; i++) {
-         weaponHandController.setCard( new WeaponCardDTOFirstVersion( "martello_ionico", 1, 1 ), i );
-         powerUpHandController.setCard( new PowerUpCardDTO(), i );
+         weapons[i] = new WeaponCardDTO( "martello_ionico", 1, 1 );
+         powerups[i] = new PowerUpCardDTO();
       }
+      weaponHandController.setCards( weapons );
+      powerUpHandController.setCards( powerups );
       for(int i=0;i<PcColourEnum.values().length;i++){
          SquareDTO s=new SquareDTO();
          s.setRow( 1 );
@@ -108,7 +111,6 @@ public class InGameState extends ViewState {
    
    @FXML
    private void reloadClicked(ActionEvent actionEvent) {
-      //TODO: remove folloing te
       try {
          player.reload();
       } catch ( IOException e ) {
@@ -124,13 +126,16 @@ public class InGameState extends ViewState {
       PropertyChangeSupport thrower = new PropertyChangeSupport( this );
       PcDTO pcToMove = new PcDTO();
       SquareDTO square = new SquareDTO();
-      square.setCol( random.nextInt( 4 ) );
-      square.setRow( random.nextInt( 3 ) );
+      square.setCol(0);// random.nextInt( 4 ) );
+      square.setRow(0);// random.nextInt( 3 ) );
       AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
       square.setAmmoTile( random.nextBoolean()?fullTile:null );
       pcToMove.setCurrSquare( square );
       pcToMove.setColour( pcToMoveColor );
+      WeaponCardDTO ionico = new WeaponCardDTO("martello_ionico",1,1);
+      pcToMove.setWeapons(new WeaponCardDTO[]{ionico,ionico,ionico});
       modelEvent(new AdrenalineUpEvent( pcToMove ));
+      System.out.println("skip clicked");
       /*
       try {
          player.skip();
@@ -169,6 +174,10 @@ public class InGameState extends ViewState {
    @Override
    public void modelEvent(ModelEvent event) {
       switch (event.getPropertyName()){
+         case Constants
+                 .ADRENALINE_UP:
+            PcDTO pc = ( PcDTO ) event.getNewValue();
+            pcs.put( pc.getColour(),pc );
             //TODO: rivedi eventi con orazio
       }
    }

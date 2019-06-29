@@ -57,7 +57,6 @@ public class GuiController extends AbstractClientController {
         Parent root = loader.load();
         InGameState inGameView = loader.getController();
     
-        loginController.setRemoteView( inGameView, player.getToken() );
         AbstractView oldView = this.view;
         this.view = inGameView;
         

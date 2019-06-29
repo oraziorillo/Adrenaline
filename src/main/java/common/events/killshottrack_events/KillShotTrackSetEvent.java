@@ -1,9 +1,7 @@
 package common.events.killshottrack_events;
 
-import common.dto_model.GameBoardDTO;
 import common.dto_model.KillShotTrackDTO;
 import common.events.ModelEvent;
-import common.events.game_events.GameEvent;
 
 import static common.Constants.KILL_SHOT_TRACK_SET;
 
