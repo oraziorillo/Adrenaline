@@ -150,8 +150,6 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     }
 
 
-    //Player
-
     @Override
     public synchronized void chooseMap(int n) {
         out.println(CHOOSE_MAP.toString() + REGEX + n);

@@ -56,8 +56,6 @@ public class GuiController extends AbstractClientController {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
         InGameState inGameView = loader.getController();
-    
-        //loginController.setRemoteView( inGameView, player.getToken() );
         AbstractView oldView = this.view;
         this.view = inGameView;
         

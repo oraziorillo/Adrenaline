@@ -9,7 +9,7 @@ public class PcDTO implements DTO {
     private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
-    private ArrayList<PowerUpCardDTO> powerUps;
+    private PowerUpCardDTO[] powerUps;
     private SquareDTO currSquare;
     private short adrenaline;
 
@@ -37,11 +37,11 @@ public class PcDTO implements DTO {
         this.weapons = weapons;
     }
 
-    public ArrayList<PowerUpCardDTO> getPowerUps() {
+    public PowerUpCardDTO[] getPowerUps() {
         return powerUps;
     }
 
-    public void setPowerUps(ArrayList<PowerUpCardDTO> powerUps) {
+    public void setPowerUps(PowerUpCardDTO[] powerUps) {
         this.powerUps = powerUps;
     }
 

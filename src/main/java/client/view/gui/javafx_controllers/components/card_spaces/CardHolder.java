@@ -137,7 +137,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       for(int i=0;i<cards.length;i++){
          int forLambda=i;
          ImageView card = this.cards[i];
-         card.setImage( new Image( cards[i].getPathImage(),true ) );
+         card.setImage( new Image( cards[i].getImagePath(),true ) );
          card.setOnMouseClicked( e-> {
             try {
                player.chooseWeaponOnSpawnPoint( forLambda );

@@ -21,4 +21,5 @@ public abstract class AbstractCardDTO implements DTO {
    }
 
    public abstract boolean isDefaultCard();
+   
 }

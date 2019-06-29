@@ -5,7 +5,6 @@ import common.enums.AmmoEnum;
 public class PowerUpCardDTO extends AbstractCardDTO {
     
     private static final String DEFAULT_NAME = "retro_powerup";
-    private String name;
     private AmmoEnum colour;
     
     public PowerUpCardDTO(String name, AmmoEnum color) {
@@ -14,7 +13,13 @@ public class PowerUpCardDTO extends AbstractCardDTO {
     }
     
     public PowerUpCardDTO(){
-        this(DEFAULT_NAME,AmmoEnum.RED);
+        this(DEFAULT_NAME,null);
+    }
+    
+    @Override
+    public String getImagePath() {
+        String appendedColor = colour==null?"":("_"+colour.toString().toLowerCase());
+        return super.getImagePath() + name + appendedColor + extension;
     }
     
     public String getName() {
@@ -36,5 +41,9 @@ public class PowerUpCardDTO extends AbstractCardDTO {
     @Override
     public boolean isDefaultCard() {
         return name.equals( DEFAULT_NAME );
+    }
+    
+    public static PowerUpCardDTO getCardBack(){
+        return new PowerUpCardDTO();
     }
 }

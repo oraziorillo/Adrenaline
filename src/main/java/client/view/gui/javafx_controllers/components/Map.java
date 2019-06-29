@@ -1,20 +1,24 @@
 package client.view.gui.javafx_controllers.components;
 
+import client.view.gui.javafx_controllers.components.pc_board.OpponentBoard;
 import common.dto_model.AmmoTileDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.SquareDTO;
+import common.dto_model.WeaponCardDTO;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
+import javafx.animation.Animation;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -32,8 +36,11 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
    private RemotePlayer player;
    
    private Pane[][] squares = new Pane[ROWS][COLS];
+   private StackPane[][] stackPanes = new StackPane[ROWS][COLS];
    
    private EnumMap<PcColourEnum,Circle> pcCircles = new EnumMap<>( PcColourEnum.class );
+   private EnumMap<PcColourEnum,VBox> opponentBoardGraphics = new EnumMap<>( PcColourEnum.class );
+   private EnumMap<PcColourEnum,OpponentBoard> opponentBoardControllers = new EnumMap<>(PcColourEnum.class);
    private ImageView[][] ammos = new ImageView[ROWS][COLS];
    //TODO: bindalo con il numero di giocatori -> ricevi subito il numero di giocatori
    private DoubleProperty innerGridSize = new SimpleDoubleProperty();
@@ -61,11 +68,6 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
          transition.setToX( 0 ); transition.setToY( 0 );
          circle.setVisible( true );
          transition.play();
-      }else if(change.wasRemoved()){
-         PcDTO removed = change.getValueRemoved();
-         Circle circle = pcCircles.get( removed.getColour() );
-         Pane square = squares[removed.getCurrSquare().getRow()][removed.getCurrSquare().getCol()];
-         square.getChildren().remove( circle );
       }else if(change.wasAdded()){
          int playersNumb = change.getMap().size();
          //size of the implicit grid insie a cell
@@ -73,25 +75,35 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
          PcColourEnum colour = change.getValueAdded().getColour();   //Get changing pc's color
          Pane square = squares[change.getValueAdded().getCurrSquare().getRow()][change.getValueAdded().getCurrSquare().getCol()];   //get new square
          Circle circle = pcCircles.getOrDefault( colour,new Circle(0,Color.valueOf( colour.toString() )) ); //get pc circle
+         pcCircles.put( colour,circle );
          //bind radius to payers number for every circle
          NumberBinding radius = Bindings.subtract( Bindings.divide(Bindings.min( square.widthProperty(),square.heightProperty()),Bindings.multiply( 2,innerGridSize )),1);
-         circle.radiusProperty().bind( radius );
-         for(Circle c:pcCircles.values()){
-            c.radiusProperty().unbind();
-            c.radiusProperty().bind( radius );
-         }
          for(ImageView[] array:ammos){
             for(ImageView ammo: array){
                ammo.fitHeightProperty().unbind();
                ammo.fitHeightProperty().bind( radius );
             }
          }
+   
+         OpponentBoard created = loadNewBoard(colour);
+         change.getMap().addListener( created );
+         for(OpponentBoard c:opponentBoardControllers.values()){
+            c.onChanged( change );
+         }
+         created.heightProperty().bind( Bindings.multiply( circle.radiusProperty(),2) );
+   
          //add the circle to the square
          square.getChildren().add( circle );
          square.setMinSize( 0,0 );
+   
          //update class data structures and show
-         pcCircles.put( colour,circle );
+         for(Circle c:pcCircles.values()){
+            c.radiusProperty().unbind();
+            c.radiusProperty().bind( radius );
+         }
          circle.setVisible( true );
+      }else{
+         throw new IllegalArgumentException( "Squares shouldn't be removed" );
       }
    };
    
@@ -102,7 +114,7 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
       if(change.wasAdded()){
          SquareDTO newSquare = change.getValueAdded();
          ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
-         if(true) {  //TODO: se la tile è "piena"
+         if(change.getValueAdded().getAmmoTile()!=null) {
             AmmoTileDTO ammoTileDTO = change.getValueAdded().getAmmoTile();
             currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
          }else{
@@ -123,16 +135,13 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
    }
    
    private void updateAmmos(SquareDTO newSquare){
-      ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];;
+      ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
       if (newSquare.getAmmoTile() == null) {
          currAmmo.setImage( new Image( AmmoTileDTO.getEmptyPath() ) );
       } else {
          AmmoTileDTO ammoTileDTO = newSquare.getAmmoTile();
          currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
       }
-   }
-   private void updatePcs(SquareDTO newSquare){
-   
    }
    
    
@@ -141,6 +150,7 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
       for(int c=0;c<COLS;c++){
          ColumnConstraints cc = new ColumnConstraints();
          cc.setPercentWidth( 100/COLS );
+         cc.setHalignment( HPos.CENTER );
          cc.setHgrow( Priority.ALWAYS );
          grid.getColumnConstraints().add( cc );
       }
@@ -149,35 +159,88 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
          RowConstraints rc = new RowConstraints();
          rc.setPercentHeight( 100/ROWS );
          rc.setVgrow( Priority.ALWAYS );
+         rc.setValignment( VPos.CENTER );
          grid.getRowConstraints().add( rc );
          //setup cells
          for(int c=0;c<COLS;c++){
             int row=r,column=c;
-            
             FlowPane pcsPane = new FlowPane( Orientation.HORIZONTAL );
             pcsPane.setAlignment( Pos.CENTER );
             pcsPane.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
-            pcsPane.setOnMouseClicked( e->{
-               try {
-                  player.chooseSquare( row,column );
-               } catch ( IOException ex ) {
-                  //TODO: chiama error in InGameState
-               }
-            } );
+            pcsPane.setOnMouseClicked( e-> squareClicked( row,column ));
             
             ImageView ammoTile = new ImageView();
             ammoTile.setPreserveRatio( true );
             ammos[r][c] = ammoTile;
    
             StackPane stackPane = new StackPane( pcsPane,ammoTile );
-            stackPane.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
+            stackPane.maxWidthProperty().bind( Bindings.divide( grid.widthProperty(),COLS ) );
+            stackPane.maxHeightProperty().bind( Bindings.divide( grid.heightProperty(),ROWS ) );
             StackPane.setAlignment( pcsPane,Pos.TOP_LEFT );
             StackPane.setAlignment( ammoTile,Pos.BOTTOM_RIGHT );
+            
             squares[r][c]=pcsPane;
+            stackPanes[r][c]=stackPane;
             
             grid.add( stackPane,c,r);
          }
       }
+   }
+   
+   private void squareClicked(int row,int col){
+      try {
+         player.chooseSquare( row,col );
+      } catch ( IOException ex ) {
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),ex );
+      }
+   }
+   
+   private OpponentBoard loadNewBoard(PcColourEnum color){
+      FXMLLoader boardLoader = new FXMLLoader(Map.class.getResource( "/fxml/inGame/pc_board/opponentBoard.fxml" ));
+      VBox board;
+      OpponentBoard boardController;
+      ScaleTransition scale;
+      try {
+         board = boardLoader.load();
+      } catch ( IOException e ) {
+         IllegalArgumentException iae = new IllegalArgumentException( "Can't load graphic resources" );
+         iae.setStackTrace( e.getStackTrace() );
+         throw iae;
+      }
+      scale = new ScaleTransition( new Duration( 200 ),board );
+      boardController = boardLoader.getController();
+      boardController.setColor( color );
+      pcCircles.get( color ).setOnMouseEntered( e->showBoard( color,scale ) );
+      board.setOnMouseExited( e->hideBoard( color,scale ) );
+      board.toFront();
+      scale.setFromX( 0 ); scale.setFromY( 0 );
+      scale.setToX( 1 ); scale.setToY( 1 );
+      board.setScaleX( 0 ); board.setScaleY( 0 );
+      opponentBoardGraphics.put( color,board );
+      opponentBoardControllers.put( color,boardController );
+      return boardController;
+   }
+   
+   private synchronized void showBoard(PcColourEnum color,ScaleTransition scale){
+      if(!scale.getStatus().equals( Animation.Status.RUNNING )) {
+         VBox board;
+         Circle circle = pcCircles.get( color );
+         board = opponentBoardGraphics.get( color );
+         grid.add( board, GridPane.getColumnIndex( circle.getParent().getParent() ), GridPane.getRowIndex( circle.getParent().getParent() ) );
+         scale.stop();
+         scale.setRate( 1 );
+         scale.play();
+      }
+   }
+   
+   private synchronized void hideBoard(PcColourEnum color,ScaleTransition scale){
+      scale.stop();
+      scale.setRate( -1 );
+      scale.setOnFinished( e -> {
+         scale.setOnFinished( null );
+         grid.getChildren().remove( opponentBoardGraphics.get( color ) );
+      } );
+      scale.play();
    }
    
    public void setMap(int mapIndex){
@@ -195,5 +258,7 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
    public void setPlayer(RemotePlayer player) {
       this.player = player;
    }
+   
+   
    
 }
