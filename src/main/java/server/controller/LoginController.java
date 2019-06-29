@@ -9,6 +9,8 @@ import server.exceptions.PlayerAlreadyLoggedInException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -16,13 +18,17 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
 
    private static LoginController instance;
 
-   private transient DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+   private transient DatabaseHandler databaseHandler;
+
+   private transient List<Lobby> currentLobbies;
 
    private transient Lobby newLobby;
 
 
    private LoginController() throws IOException {
       super();
+      databaseHandler = DatabaseHandler.getInstance();
+      this.currentLobbies = databaseHandler.getLobbies();
       this.newLobby = new Lobby();
    }
 
@@ -58,7 +64,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
       view.ack("Logging in as @" + databaseHandler.getUsername(token));
       databaseHandler.getPlayer(token).setView(view);    //PER IL DEBUG
-      databaseHandler.registerView( token,view );
+      //databaseHandler.registerView( token,view );      NON PIÙ NECESSARIO
       return databaseHandler.getPlayer(token);
    }
 
@@ -70,15 +76,21 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     */
    public synchronized void joinLobby(UUID token) throws PlayerAlreadyLoggedInException {
       if (databaseHandler.isRegistered(token)) {
-         Lobby currLobby;
          if (databaseHandler.hasPendentGame(token)) {
-            //if this player is already present in a started game, add it to the started game
-            currLobby = databaseHandler.getMyOldLobby(token);
-            currLobby.addPlayer(databaseHandler.getPlayer(token));
+
+            Lobby playerLobby;
+            UUID incompleteGame = databaseHandler.getGameUUID(token);
+            playerLobby = currentLobbies.stream().filter(lobby -> lobby.getGameUUID() == incompleteGame).findFirst().get();
+            playerLobby.addPlayer(databaseHandler.getPlayer(token));
+
          } else {
+
             //otherwise it is added to a new game
-            if (!newLobby.isAvailable())
+            if (!newLobby.isAvailable()) {
+               currentLobbies.add(newLobby);
                newLobby = new Lobby();
+
+            }
             newLobby.addPlayer(databaseHandler.getPlayer(token));
          }
       }

@@ -2,6 +2,7 @@ package server.controller.states;
 
 import server.controller.Controller;
 import common.enums.PcColourEnum;
+import server.database.DatabaseHandler;
 import server.model.Pc;
 
 import java.io.IOException;
@@ -66,7 +67,8 @@ public class PcSelectionState extends State {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (controller.getCurrPlayerIndex() == 0)
+            DatabaseHandler.getInstance().saveUpdates(controller);
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
-
 }

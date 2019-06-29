@@ -25,8 +25,6 @@ public class LaunchServer {
                 Socket clientSocket = serverSocket.accept();
                 pool.submit(new ServerSocketHandler(clientSocket));
             }
-
         }
-
     }
 }

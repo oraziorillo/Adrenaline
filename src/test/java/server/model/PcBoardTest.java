@@ -15,7 +15,7 @@ public class PcBoardTest {
 
     @Before
     public void setupTest() {
-        tested = new PcBoard();
+        tested = new PcBoard(PcColourEnum.GREEN);
     }
 
     @Test

@@ -4,7 +4,7 @@ public enum FileEnum {
 
     TOKENS_BY_USER_NAME("src/main/java/server/database/files/tokensByUserName.json"),
     PLAYER_INFO_BY_TOKEN("src/main/java/server/database/files/playerInfoByToken.json"),
-    GAME_INFO_BY_UUID("src/main/java/server/database/files/gameInfoByToken.json");
+    GAME_PATH_BY_UUID("src/main/java/server/database/files/gamePathByToken.json");
 
     private String filePath;
 

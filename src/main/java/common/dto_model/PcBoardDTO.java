@@ -21,14 +21,6 @@ public abstract class PcBoardDTO implements DTO {
         this.colour = colour;
     }
 
-    public PcColourEnum getColour() {
-        return colour;
-    }
-
-    public void setColour(PcColourEnum colour) {
-        this.colour = colour;
-    }
-
     public short getDamageTrackIndex() {
         return damageTrackIndex;
     }

@@ -1,8 +1,7 @@
 package server.controller;
 
 import com.google.gson.annotations.Expose;
-import server.controller.states.InactiveState;
-import server.controller.states.SetupMapState;
+import common.remote_interfaces.RemoteView;
 import server.database.DatabaseHandler;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
@@ -10,6 +9,7 @@ import javax.swing.Timer;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Pre-game, singleton waiting room. Stores players and starts a game when has enough of them.
@@ -73,7 +73,7 @@ public class Lobby {
         ackAllPlayersExcept("Say hello to @" + databaseHandler.getUsername(player.getToken()) + System.lineSeparator() + System.lineSeparator() +
                 "There are " + players.size() + " players in this lobby now");
         try {
-            databaseHandler.getView(player.getToken()).ack("Joined a lobby. There are " + players.size() + " players in this room");
+            player.getView().ack("Joined a lobby. There are " + players.size() + " players in this room");
         } catch (IOException e) {
             player.quit();
             removePlayer(player);
@@ -104,16 +104,14 @@ public class Lobby {
 
     private void startNewGame() {
         timer.stop();
-        controller = new Controller(players);
-        controller.initGame(gameUUID);
-        for (Player p: players) {
-            if (players.get(0) == p)
-                p.setCurrState(new SetupMapState(controller));
-            else
-                p.setCurrState(new InactiveState(controller, InactiveState.PC_SELECTION_STATE));
+        controller = new Controller(gameUUID, players);
+        if (databaseHandler.containsGame(gameUUID)) {
+            controller.initGame(gameUUID);
+        } else {
+            controller.initGame();
         }
-        DatabaseHandler.getInstance().gameStarted(this);
-        DatabaseHandler.getInstance().getViews(gameUUID).forEach(v -> {
+        databaseHandler.saveUpdates(controller);
+        getViews().forEach(v -> {
             try {
                 v.ack("Game Started");
             } catch (IOException e) {
@@ -129,7 +127,7 @@ public class Lobby {
         for (Player p1 : players) {
             if (!excludedColl.contains(p1)) {
                 try {
-                    databaseHandler.getView(p1.getToken()).ack(message);
+                    p1.getView().ack(message);
                 } catch (IOException e) {
                     p1.quit();
                     removePlayer(p1);
@@ -137,6 +135,11 @@ public class Lobby {
                 }
             }
         }
+    }
+
+
+    private List<RemoteView> getViews(){
+        return players.stream().map(Player::getView).collect(Collectors.toList());
     }
 
 

@@ -46,9 +46,19 @@ public class FirstTurnState extends State{
         if (powerUpToDropIndex > -1) {
             PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
             AmmoEnum respawnColour = powerUp.getColour();
+            try {
+                controller.getCurrPlayer().getView().ack("Colore del powerUp " + respawnColour);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
             pcToSpawn.spawn(s);
             pcToSpawn.discardPowerUp(powerUp);
+            try {
+                controller.getCurrPlayer().getView().ack("Fin qui tutto bene. Fine del metodo ok");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         return false;

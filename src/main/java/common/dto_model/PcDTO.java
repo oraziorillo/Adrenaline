@@ -12,6 +12,13 @@ public class PcDTO implements DTO {
     private SquareDTO currSquare;
     private short adrenaline;
 
+    public PcColourEnum getColour() {
+        return pcBoard.getColour();
+    }
+
+    public void setColour(PcColourEnum colour) {
+        pcBoard.setColour(colour);
+    }
 
     public PcBoardDTO getPcBoard() {
         return pcBoard;

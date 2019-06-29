@@ -113,11 +113,6 @@ class GrabStuffState extends State{
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toSet());
         controller.getGame().setTargetableSquares(targetableSquares, true);
-        try {
-            controller.getCurrPlayer().getView().ack(controller.getCurrPc().getCurrSquare().getRow() + " " + controller.getCurrPc().getCurrSquare().getCol());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         for (Square s: targetableSquares) {
             if (s.isTargetable()){
                 try {

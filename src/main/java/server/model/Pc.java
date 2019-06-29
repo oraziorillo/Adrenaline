@@ -262,9 +262,6 @@ public class Pc {
         totalDamage = (short) (pcBoard.getMarks(shooterColour) + damages);
         pcBoard.addDamage(shooterColour, totalDamage);
 
-        //notify damage taken
-        events.fireEvent(new DamageTakenEvent(modelMapper.map(this, PcDTO.class), shooterColour.getName(), damages));
-
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFE_POINTS - 2) {
             boolean overkill = damageIndex == (LIFE_POINTS - 1);

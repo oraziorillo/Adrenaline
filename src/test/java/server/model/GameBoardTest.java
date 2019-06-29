@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static common.Constants.REFILL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
