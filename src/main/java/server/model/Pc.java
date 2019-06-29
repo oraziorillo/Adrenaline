@@ -27,8 +27,8 @@ public class Pc {
 
     private ModelEventHandler events = new ModelEventHandler();
 
+
     private final Game currGame;
-    private final PcColourEnum colour;
     private PcBoard pcBoard;
     private short adrenaline;
     private WeaponCard[] weapons;
@@ -38,8 +38,7 @@ public class Pc {
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
-        this.colour = colour;
-        this.pcBoard = new PcBoard();
+        this.pcBoard = new PcBoard(colour);
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
     }
@@ -61,12 +60,12 @@ public class Pc {
 
 
     public String getName() {
-        return colour.getName();
+        return pcBoard.getColour().getName();
     }
 
 
     public PcColourEnum getColour() {
-        return colour;
+        return pcBoard.getColour();
     }
 
 
@@ -257,7 +256,7 @@ public class Pc {
 
     public void takeDamage(PcColourEnum shooterColour, short damages) {
 
-        if (this.colour == shooterColour)
+        if (pcBoard.getColour() == shooterColour)
             return;
         short totalDamage;
         totalDamage = (short) (pcBoard.getMarks(shooterColour) + damages);
@@ -266,7 +265,7 @@ public class Pc {
         int damageIndex = pcBoard.getDamageTrackIndex();
         if (damageIndex >= LIFE_POINTS - 2) {
             boolean overkill = damageIndex == (LIFE_POINTS - 1);
-            currGame.killOccurred(this.colour, overkill);
+            currGame.killOccurred(pcBoard.getColour(), overkill);
 
             //notify death
             events.fireEvent(new DeathEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
@@ -290,7 +289,7 @@ public class Pc {
 
 
     public void takeMarks(PcColourEnum shooterColour, short marks) {
-        if (this.colour == shooterColour)
+        if (pcBoard.getColour() == shooterColour)
             return;
         pcBoard.addMarks(shooterColour, marks);
     }
@@ -341,7 +340,7 @@ public class Pc {
 
     @Override
     public String toString() {
-        return this.colour.getName();
+        return pcBoard.getColour().getName();
     }
 
 

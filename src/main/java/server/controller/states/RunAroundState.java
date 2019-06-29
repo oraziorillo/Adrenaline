@@ -3,6 +3,8 @@ package server.controller.states;
 import server.controller.Controller;
 import server.model.Pc;
 import server.model.squares.Square;
+
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -28,8 +30,14 @@ public class RunAroundState extends State{
    @Override
    public void selectSquare(int row, int column) {
       Square s = controller.getGame().getSquare(row, column);
-      if (s != null && s.isTargetable())
+      if (s != null && s.isTargetable()) {
          this.targetSquare = s;
+         try {
+            controller.getCurrPlayer().getView().ack("Lo square è stato selezionato");
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
    }
    
    /**
@@ -40,7 +48,22 @@ public class RunAroundState extends State{
    void setTargetableToValidSquares(Pc referencePc){
       int maxDistance = controller.isFinalFrenzy() ? 4 : 3;
       targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+      targetableSquares.remove(controller.getCurrPc().getCurrSquare());
       controller.getGame().setTargetableSquares(targetableSquares, true);
+      try {
+         controller.getCurrPlayer().getView().ack(controller.getCurrPc().getCurrSquare().getRow() + " " + controller.getCurrPc().getCurrSquare().getCol());
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      for (Square s: targetableSquares) {
+         if (s.isTargetable()){
+            try {
+               controller.getCurrPlayer().getView().ack(s + "è targhettabile");
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
+         }
+      }
    }
    
    /**
@@ -51,11 +74,16 @@ public class RunAroundState extends State{
    public boolean undo() {
       controller.getGame().setTargetableSquares(targetableSquares, false);
       undo = true;
+      try {
+         controller.getCurrPlayer().getView().ack("Qua sta facendo undo");
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
       return true;
    }
    
    /**
-    * Applies the pre-setted movement
+    * Applies the pre-set movement
     * @return false if no target to move to was setted before, true else
     */
    @Override
@@ -63,6 +91,11 @@ public class RunAroundState extends State{
       if (targetSquare != null) {
          controller.getCurrPc().moveTo(targetSquare);
          controller.getGame().setTargetableSquares(targetableSquares, false);
+         try {
+            controller.getCurrPlayer().getView().ack("Il pc si è spostato, fiiiiiga");
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
          return true;
       }
       return false;

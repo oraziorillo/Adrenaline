@@ -11,13 +11,12 @@ import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
 import common.events.*;
-import common.events.kill_shot_track_events.FinalFrenzyEvent;
 import common.events.game_board_events.GameBoardSetEvent;
+import common.events.kill_shot_track_events.FinalFrenzyEvent;
 import common.events.kill_shot_track_events.KillShotTrackSetEvent;
 import common.events.pc_events.PcColourChosenEvent;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
-import server.database.DatabaseHandler;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
@@ -46,28 +45,42 @@ public class Game {
     private boolean finalFrenzy;
 
 
-    private Game() {
+    public Game() {
         this.pcs = new HashSet<>();
+        this.finalFrenzy = false;
+    }
+
+
+    public Game(UUID gameUUID) {
+        return;
+    }
+
+    public static Game getGame(UUID gameUUID) {
+        Game game;
+        if (gameUUID != null){
+            game = new Game(gameUUID);
+            game.initDecks(gameUUID);
+        }
+        else {
+            game = new Game();
+            game.initDecks();
+        }
+        return game;
+    }
+
+
+    private void initDecks(UUID gameUUID){
+
+    }
+
+
+    private void initDecks(){
         this.weaponsDeck = new Deck<>();
         this.powerUpsDeck = new Deck<>();
         this.ammoDeck = new Deck<>();
-    }
-
-    public Game(UUID gameUUID) {
-        //todo inizializza da file
-    }
-
-
-    public static Game getGame(UUID gameUUID){
-        if (DatabaseHandler.getInstance().isPendantGame(gameUUID))
-            return new Game(gameUUID);
-        else {
-            Game game = new Game();
-            game.initWeaponsDeck();
-            game.initPowerUpsDeck();
-            game.initAmmoDeck();
-            return game;
-        }
+        initWeaponsDeck();
+        initPowerUpsDeck();
+        initAmmoDeck();
     }
 
 
@@ -123,7 +136,6 @@ public class Game {
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
             ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileArrayListType);
 
-            ammoTiles.forEach(a -> ammoDeck.add(a));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -142,9 +154,12 @@ public class Game {
 
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
             JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-            gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
+            gameBoard = customGson.fromJson(gameBoards.get(numberOfMap - 1), GameBoard.class);
 
             gameBoard.initSquares(weaponsDeck, ammoDeck);
+            for (Square s: gameBoard.getSquares()) {
+                System.out.println(s.getRow() + " " + s.getCol() + " " + s.getColour());
+            }
             gameBoard.addModelEventHandler(events);
 
             //notify map set
@@ -208,6 +223,11 @@ public class Game {
         events.fireEvent(new PcColourChosenEvent(modelMapper.map(pc, PcDTO.class)));
 
         pcs.add(pc);
+    }
+
+
+    public Pc getPc(PcColourEnum colour){
+        return pcs.stream().filter(pc -> pc.getColour() == colour).findFirst().get();
     }
 
 

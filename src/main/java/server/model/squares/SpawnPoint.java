@@ -143,7 +143,8 @@ public class SpawnPoint extends Square {
 
 
     public void refill() {
-        for (int i = 0; i < weapons.length; i++) {
+
+        for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++) {
             if (weapons[i] == null && weaponsDeck.size() > 0) {
                 weapons[i] = weaponsDeck.draw();
             }

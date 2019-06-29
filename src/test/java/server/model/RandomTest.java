@@ -14,6 +14,11 @@ public class RandomTest {
         System.out.println(ControllerMethodsEnum.valueOf(CHOOSE_MAP.toString()));
         String[] commands = "ok".split("-");
         System.out.println(PcColourEnum.fromString("blue"));
+        System.out.println(ControllerMethodsEnum.valueOf(CHOOSE_MAP.toString()));
+        String[] commands1 = "ss-1-2".split("-");
+        for (String s: commands1) {
+            System.out.println(s);
+        }
     }
 
      @Test
@@ -25,4 +30,5 @@ public class RandomTest {
             }
         }
      }
+
 }

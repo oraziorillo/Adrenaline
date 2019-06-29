@@ -104,10 +104,9 @@ public class GameBoard {
     }
 
     Square getSquare(int row, int col){
-        if (row >= rows || col >= columns)
+        if (row >= rows || row < 0 || col >= columns || col < 0)
             return null;
         Optional<Square> currSquare = squares.stream()
-                .parallel()
                 .filter(s -> (col == s.getCol() && row == s.getRow()))
                 .findFirst();
         return currSquare.orElse(null);

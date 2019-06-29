@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class PcDTO implements DTO {
 
-    private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
     private PowerUpCardDTO[] powerUps;
@@ -14,13 +13,13 @@ public class PcDTO implements DTO {
     private short adrenaline;
 
     public PcColourEnum getColour() {
-        return colour;
+        return pcBoard.getColour();
     }
-    
+
     public void setColour(PcColourEnum colour) {
-        this.colour = colour;
+        pcBoard.setColour(colour);
     }
-    
+
     public PcBoardDTO getPcBoard() {
         return pcBoard;
     }
@@ -62,6 +61,6 @@ public class PcDTO implements DTO {
     }
 
     public String getName() {
-        return colour.getName();
+        return pcBoard.getColour().getName();
     }
 }

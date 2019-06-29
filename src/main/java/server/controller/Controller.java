@@ -1,7 +1,11 @@
 package server.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
+import server.controller.states.InactiveState;
+import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
 import server.model.Game;
 import server.model.Pc;
@@ -9,6 +13,7 @@ import server.model.WeaponCard;
 import server.model.squares.Square;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +23,7 @@ import static common.Constants.ACTIONS_PER_TURN;
 
 public class Controller{
 
+    private UUID gameUUID;
     private Game game;
     private int currPlayerIndex;
     private int lastPlayerIndex;
@@ -28,33 +34,66 @@ public class Controller{
     private LinkedList<Player> deadPlayers;
 
 
-    public Controller(List<Player> players) {
+    public Controller(UUID gameUUID, List<Player> players) {
+        this.gameUUID = gameUUID;
         this.players = players;
         this.squaresToRefill = new HashSet<>();
         this.deadPlayers = new LinkedList<>();
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
+        this.remainingActions = 2;
     }
 
 
     public void initGame(UUID gameUUID){
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
         game = Game.getGame(gameUUID);
-        players.forEach(p -> {
-            ModelEventListener listener = null;
-            try {
-                listener = DatabaseHandler.getInstance().getView(p.getToken()).getListener();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            game.addModelEventListener(p.getToken(), listener);
-        });
+        addListenersToGame();
+        players.forEach(player -> player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken()))));
+    }
+
+
+    public void initGame(){
+        game = Game.getGame(null);
+        addListenersToGame();
+        for (Player p: players) {
+            if (players.get(0) == p)
+                p.setCurrState(new SetupMapState(this));
+            else
+                p.setCurrState(new InactiveState(this, InactiveState.PC_SELECTION_STATE));
+        }
         try {
             getCurrPlayer().getView().ack("It's your turn!!");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
+
+    private void addListenersToGame(){
+        players.forEach(player -> {
+            try {
+                player.getView().ack("Sto per leggere i listener");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        players.forEach(p -> {
+            ModelEventListener listener = null;
+            try {
+                listener = p.getView().getListener();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            game.addModelEventListener(p.getToken(), listener);
+        });
+    }
+
+
+    public UUID getGameUUID() {
+        return gameUUID;
+    }
 
     public boolean isFinalFrenzy() {
         return game.isFinalFrenzy();
@@ -190,5 +229,13 @@ public class Controller{
     public boolean isNextOnDuty(Player player){
         return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
                 currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
+    }
+
+    public synchronized void saveUpdates() {
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        Gson gson = new GsonBuilder()
+                .serializeNulls()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
     }
 }

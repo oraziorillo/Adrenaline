@@ -1,17 +1,19 @@
 package server.database;
 
 import com.google.gson.annotations.Expose;
-import common.remote_interfaces.RemoteView;
+import common.enums.PcColourEnum;
 import server.controller.Player;
+import server.controller.states.State;
 
 import java.util.UUID;
 
 class PlayerInfo {
 
+    private Player player;
     @Expose private String username;
-    /*@Expose*/ private Player player;
+    @Expose private PcColourEnum pcColour;
+    @Expose private State currState;
     @Expose private UUID incompleteGameID;
-    private RemoteView view;
 
 
     PlayerInfo(){}
@@ -37,6 +39,22 @@ class PlayerInfo {
         this.player = player;
     }
 
+    public PcColourEnum getPcColour() {
+        return pcColour;
+    }
+
+    public void setPcColour(PcColourEnum pcColour) {
+        this.pcColour = pcColour;
+    }
+
+    public State getCurrState() {
+        return currState;
+    }
+
+    public void setCurrState(State currState) {
+        this.currState = currState;
+    }
+
     UUID getIncompleteGameID() {
         return incompleteGameID;
     }
@@ -45,20 +63,13 @@ class PlayerInfo {
         this.incompleteGameID = incompleteGameID;
     }
 
-    RemoteView getView() {
-        return view;
-    }
-
-    void setView(RemoteView view) {
-        this.view = view;
-    }
-
     boolean hasPendentGame(){
         return incompleteGameID != null;
     }
 
-    void gameEnded(UUID gameUUID){
-        if (gameUUID.equals(incompleteGameID))
-            incompleteGameID = null;
+    void gameEnded(){
+        pcColour = null;
+        currState = null;
+        incompleteGameID = null;
     }
 }

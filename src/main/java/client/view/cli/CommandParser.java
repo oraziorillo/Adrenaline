@@ -31,7 +31,7 @@ public abstract class CommandParser {
                 player.usePowerUp();
                 break;
             case CHOOSE_SQUARE:
-                player.chooseSquare( Integer.parseInt( commands[1] ), Integer.parseInt( commands[1] ) );
+                player.chooseSquare( Integer.parseInt( commands[1] ), Integer.parseInt( commands[2] ) );
                 break;
             case CHOOSE_POWER_UP:
                 player.choosePowerUp( Integer.parseInt( commands[1] ) );
@@ -48,14 +48,20 @@ public abstract class CommandParser {
             case RELOAD:
                 player.reload();
                 break;
+            case UNDO:
+                player.undo();
+                break;
             case OK:
                 player.ok();
                 break;
-            case QUIT:
-                player.quit();
+            case PASS:
+                player.pass();
                 break;
             case SKIP:
                 player.skip();
+                break;
+            case QUIT:
+                player.quit();
                 break;
             case HELP:
                 printHelp();
