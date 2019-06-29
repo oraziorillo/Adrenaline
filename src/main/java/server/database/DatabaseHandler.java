@@ -34,38 +34,43 @@ public class DatabaseHandler {
             .excludeFieldsWithoutExposeAnnotation()
             .create();
 
-    // ideale sarebbe aggiungere un hashmap lobbyByGameUUID che contiene una lista vuota di players e viene inizializzata subito
-    // avere un hashmap come ora gameInfoByToken che contiene informazioni sul gioco
-    // avere un hashmap come ora players con UUID del game
-
 
     private DatabaseHandler() {
-
         initFromFile(TOKENS_BY_USER_NAME, gson);
         initFromFile(PLAYER_INFO_BY_TOKEN, gson);
         initFromFile(GAME_PATH_BY_UUID, gson);
     }
 
 
-    private void initFromFile(FileEnum file, Gson gson) {
+    public static DatabaseHandler getInstance() {
+        if (instance == null) {
+            instance = new DatabaseHandler();
+        }
+        return instance;
+    }
 
+
+    private void initFromFile(FileEnum file, Gson gson) {
         try (JsonReader reader = new JsonReader(new FileReader(file.getFilePath()))) {
             Type type;
             switch (file) {
                 case TOKENS_BY_USER_NAME:
-                    type = new TypeToken<HashMap<String, String>>() {}.getType();
+                    type = new TypeToken<HashMap<String, String>>() {
+                    }.getType();
                     tokensByUserName = gson.fromJson(reader, type);
                     if (tokensByUserName == null)
                         resetFile(TOKENS_BY_USER_NAME);
                     break;
                 case PLAYER_INFO_BY_TOKEN:
-                    type = new TypeToken<HashMap<UUID, PlayerInfo>>() {}.getType();
+                    type = new TypeToken<HashMap<UUID, PlayerInfo>>() {
+                    }.getType();
                     playerInfoByToken = gson.fromJson(reader, type);
                     if (playerInfoByToken == null)
                         resetFile(PLAYER_INFO_BY_TOKEN);
                     break;
                 case GAME_PATH_BY_UUID:
-                    type = new TypeToken<HashMap<UUID, String>>() {}.getType();
+                    type = new TypeToken<HashMap<UUID, String>>() {
+                    }.getType();
                     gamePathByUUID = gson.fromJson(reader, type);
                     if (gamePathByUUID == null)
                         resetFile(GAME_PATH_BY_UUID);
@@ -81,14 +86,6 @@ public class DatabaseHandler {
     }
 
 
-        public static DatabaseHandler getInstance() {
-        if (instance == null) {
-            instance = new DatabaseHandler();
-        }
-        return instance;
-    }
-
-
     public boolean isRegistered(UUID token) {
         return playerInfoByToken.containsKey(token);
     }
@@ -99,7 +96,9 @@ public class DatabaseHandler {
     }
 
 
-    public boolean isPendantGame(UUID gameUUID) { return gamePathByUUID.containsKey(gameUUID); }
+    public boolean isPendantGame(UUID gameUUID) {
+        return gamePathByUUID.containsKey(gameUUID);
+    }
 
 
     public boolean hasPendentGame(UUID token) {
@@ -112,9 +111,9 @@ public class DatabaseHandler {
     }
 
 
-    public Player getPlayer(UUID token)  {
+    public Player getPlayer(UUID token) {
         if (playerInfoByToken.containsKey(token)) {
-            if (playerInfoByToken.get(token).getPlayer() == null){
+            if (playerInfoByToken.get(token).getPlayer() == null) {
                 Player player = null;
                 try {
                     player = new Player(token);
@@ -129,17 +128,16 @@ public class DatabaseHandler {
     }
 
 
-
     public List<Lobby> getLobbies() {
         List<Lobby> lobbies = new ArrayList<>();
-        for (UUID gameUUID: gamePathByUUID.keySet()) {
+        for (UUID gameUUID : gamePathByUUID.keySet()) {
             lobbies.add(new Lobby(gameUUID));
         }
         return lobbies;
     }
 
 
-    public UUID getGameUUID (UUID playerToken){
+    public UUID getGameUUID(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getIncompleteGameID();
     }
 
@@ -149,11 +147,11 @@ public class DatabaseHandler {
     }
 
 
-    public void setPlayerColour(UUID playerToken, PcColourEnum pcColour){
+    public void setPlayerColour(UUID playerToken, PcColourEnum pcColour) {
         playerInfoByToken.get(playerToken).setPcColour(pcColour);
     }
 
-    public PcColourEnum getPlayerColour(UUID playerToken){
+    public PcColourEnum getPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPcColour();
     }
 
@@ -183,12 +181,14 @@ public class DatabaseHandler {
 
     public synchronized void saveUpdates(Controller controller) {
         UUID gameUUID = controller.getGameUUID();
-        if (!gamePathByUUID.containsKey(gameUUID)){
+        if (!gamePathByUUID.containsKey(gameUUID)) {
             //if the starting game is a new one, then add to the db the corresponding data
             //TODO scrivere il file con le informazioni del game
             String filePath = generateFilePath(gameUUID);
             gamePathByUUID.put(gameUUID, filePath);
-            controller.getPlayers().forEach(p -> { playerInfoByToken.get(p.getToken()).setIncompleteGameID(gameUUID); });
+            controller.getPlayers().forEach(p -> {
+                playerInfoByToken.get(p.getToken()).setIncompleteGameID(gameUUID);
+            });
         }
         GameInfo gameInfo = new GameInfo(controller.getPlayers());
         gameInfo.gameStarted();
@@ -207,13 +207,11 @@ public class DatabaseHandler {
     }
 
 
-
     public synchronized void gameEnded(Controller controller) {
         List<UUID> playersInGame = controller.getPlayers().stream().map(Player::getToken).collect(Collectors.toList());
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded());
         File gameFile = new File(generateFilePath(controller.getGameUUID()));
-        boolean success = gameFile.delete();
-        assert (success);
+        gameFile.delete();
         gamePathByUUID.remove(controller.getGameUUID());
         overwrite(PLAYER_INFO_BY_TOKEN);
         overwrite(GAME_PATH_BY_UUID);
@@ -223,13 +221,6 @@ public class DatabaseHandler {
     private synchronized void overwrite(FileEnum file) {
 
         try (FileWriter writer = new FileWriter(file.getFilePath())) {
-
-            Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .serializeNulls()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
-
             switch (file) {
                 case TOKENS_BY_USER_NAME:
                     gson.toJson(tokensByUserName, writer);
@@ -249,17 +240,9 @@ public class DatabaseHandler {
     }
 
 
-    private synchronized void overWrite(GameInfo gameInfo, UUID gameUUID){
+    private synchronized void overWrite(GameInfo gameInfo, UUID gameUUID) {
         try (FileWriter writer = new FileWriter(gamePathByUUID.get(gameUUID))) {
-
-            Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .serializeNulls()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
-
             gson.toJson(gameInfo, writer);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -267,7 +250,7 @@ public class DatabaseHandler {
 
 
     //to use in case you want to clear data
-    private synchronized void resetAllData(){
+    private synchronized void resetAllData() {
         tokensByUserName = new HashMap<>();
         overwrite(TOKENS_BY_USER_NAME);
         playerInfoByToken = new HashMap<>();
@@ -294,7 +277,7 @@ public class DatabaseHandler {
     }
 
 
-    public synchronized String generateFilePath(UUID uuid){
+    private synchronized String generateFilePath(UUID uuid) {
         return "src/main/java/server/database/files/" + uuid + ".json";
     }
 
