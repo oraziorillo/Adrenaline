@@ -29,6 +29,8 @@ public class Pc {
 
 
     private final Game currGame;
+    private String name;
+    private PcColourEnum colour;
     private PcBoard pcBoard;
     private short adrenaline;
     private WeaponCard[] weapons;
@@ -38,6 +40,7 @@ public class Pc {
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
+        this.colour = colour;
         this.pcBoard = new PcBoard(colour);
         this.weapons = new WeaponCard[MAX_WEAPONS_IN_HAND];
         this.powerUps = new ArrayList<>();
@@ -60,12 +63,12 @@ public class Pc {
 
 
     public String getName() {
-        return pcBoard.getColour().getName();
+        return colour.getName();
     }
 
 
     public PcColourEnum getColour() {
-        return pcBoard.getColour();
+        return colour;
     }
 
 
@@ -79,7 +82,7 @@ public class Pc {
     }
 
 
-    public int getAdrenaline() {
+    public short getAdrenaline() {
         return adrenaline;
     }
 

@@ -2,7 +2,7 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
-public abstract class PcBoardDTO implements DTO {
+public  class PcBoardDTO implements DTO {
 
     private PcColourEnum colour;
     private short points;
@@ -12,6 +12,7 @@ public abstract class PcBoardDTO implements DTO {
     private PcColourEnum[] damageTrack;
     private int [] pcValue;
     private int numOfDeaths;
+
 
     public PcColourEnum getColour() {
         return colour;

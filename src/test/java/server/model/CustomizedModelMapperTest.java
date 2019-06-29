@@ -5,10 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import common.dto_model.AmmoTileDTO;
-import common.dto_model.GameBoardDTO;
-import common.dto_model.SquareDTO;
-import common.dto_model.WeaponCardDTO;
+import common.dto_model.*;
+import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
 import org.junit.Before;
@@ -35,7 +33,8 @@ public class CustomizedModelMapperTest {
     CustomizedModelMapper customizedModelMapperTest = new CustomizedModelMapper();
 
     ModelMapper modelMapper = customizedModelMapperTest.getModelMapper();
-    private Deck<WeaponCard> deck;
+    private Deck<WeaponCard> weaponCardDeck;
+    private Deck<PowerUpCard> powerUpCardDeck;
 
     @Before
     public void weaponsDeckConstrucionFine() throws FileNotFoundException {
@@ -48,9 +47,41 @@ public class CustomizedModelMapperTest {
         JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
         ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
 
-        deck = new Deck<>();
-        weapons.forEach(w -> deck.add(w));
+        weaponCardDeck = new Deck<>();
+        weapons.forEach(w -> weaponCardDeck.add(w));
     }
+
+
+    @Before
+    public void initPowerUpsDeck() throws FileNotFoundException {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        Type powerUpType = new TypeToken<ArrayList<PowerUpCard>>() {
+        }.getType();
+        JsonReader reader = null;
+
+        reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
+        ArrayList<PowerUpCard> powerUps = customGson.fromJson(reader, powerUpType);
+
+        powerUpCardDeck = new Deck<>();
+        powerUps.forEach(p -> powerUpCardDeck.add(p));
+    }
+
+
+    private GameBoard setupGameBoard() throws FileNotFoundException {
+        GameBoard gameBoard;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
+        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
+
+        JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
+        return gameBoard = customGson.fromJson(gameBoards.get(3), GameBoard.class);
+    }
+
 
 
     @Test
@@ -64,34 +95,47 @@ public class CustomizedModelMapperTest {
     }
 
 
+
+
     @Test
-    public void modelMapperWorksFineFromSpawnPointToSquareDTO(){
-        Pc pc1 = Mockito.mock( Pc.class);
-        Pc pc2 = Mockito.mock( Pc.class);
-        Deck<WeaponCard> deck = Mockito.mock(Deck.class);
-        WeaponCard weaponCard1 = Mockito.mock(WeaponCard.class);
-        WeaponCard weaponCard2 = Mockito.mock(WeaponCard.class);
-        WeaponCard weaponCard3 = Mockito.mock(WeaponCard.class);
-        when(deck.draw()).thenReturn(weaponCard1).thenReturn(weaponCard2).thenReturn(weaponCard3);
-        when(weaponCard1.getName()).thenReturn("Lock Rifle");
-        when(weaponCard2.getName()).thenReturn("Machine Gun");
-        when(weaponCard3.getName()).thenReturn("Tractor Beam");
-        when( pc1.getColour()).thenReturn( PcColourEnum.BLUE);
-        when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
+    public void modelMapperWorksFineFromPowerUpToPowerUpDTO(){
+        PowerUpCard powerUpCard = powerUpCardDeck.draw();
+        PowerUpCardDTO powerUpCardDTO = modelMapper.map(powerUpCard, PowerUpCardDTO.class);
+    }
+
+
+    @Test
+    public void modelMapperWorksFineFromSpawnPointToSquareDTO() {
+        Game game = Mockito.mock(Game.class);
+        Pc pc1 = new Pc(PcColourEnum.BLUE, game);
+        Pc pc2 = new Pc(PcColourEnum.YELLOW, game);
         SpawnPoint spawnPoint = new SpawnPoint(2, 2, SquareColourEnum.RED);
-        spawnPoint.init(deck, null);
-        spawnPoint.addPc(pc1); spawnPoint.addPc(pc2);
-        spawnPoint.setTargetable(true);
+        spawnPoint.init(weaponCardDeck, null);
+        spawnPoint.addPc(pc1);
+        spawnPoint.addPc(pc2);
         SquareDTO squareDTO = modelMapper.map(spawnPoint, SquareDTO.class);
-        assertTrue(squareDTO.isTargetable());
         assertTrue(squareDTO.getCol() == 2);
         assertTrue(squareDTO.getRow() == 2);
         assertEquals(squareDTO.getPcs().size(), spawnPoint.getPcs().size());
         assertTrue(squareDTO.getPcs().contains(PcColourEnum.BLUE));
         assertTrue(squareDTO.getPcs().contains(PcColourEnum.YELLOW));
-        assertEquals(spawnPoint.getWeapons()[0].getName(), "Lock Rifle");
-        assertEquals(spawnPoint.getWeapons()[1].getName(), "Machine Gun");
-        assertEquals(spawnPoint.getWeapons()[2].getName(), "Tractor Beam");
+    }
+
+
+    @Test
+    public void modelMapperWorksFineFromPcBoardToPcBoardDTO(){
+        PcBoard pcBoard = new PcBoard(PcColourEnum.GREEN);
+        PcBoardDTO pcBoardDTO = modelMapper.map(pcBoard, PcBoardDTO.class);
+    }
+
+    @Test
+    public void modelMapperWorksFineFromPcToPCDTO() throws FileNotFoundException {
+        GameBoard gameBoard = setupGameBoard();
+        Game game = Mockito.mock(Game.class);
+        Pc pc = new Pc(PcColourEnum.GREEN, game);
+        WeaponCard weaponCard = weaponCardDeck.draw();
+        pc.addWeapon(weaponCard, 1);
+        PcDTO PcDTO = modelMapper.map(pc, PcDTO.class);
     }
 
 
@@ -108,7 +152,6 @@ public class CustomizedModelMapperTest {
         when( pc2.getColour()).thenReturn( PcColourEnum.YELLOW);
         ammoSquare.init(null, deck);
         ammoSquare.addPc(pc1); ammoSquare.addPc(pc2);
-        ammoSquare.refill();
         SquareDTO squareDTO = modelMapper.map(ammoSquare, SquareDTO.class);
         assertFalse(squareDTO.isTargetable());
         assertArrayEquals(squareDTO.getAmmoTile().getAmmo(), ammo);
@@ -119,25 +162,13 @@ public class CustomizedModelMapperTest {
 
     @Test
     public void modelMapperWorksFineOnWeaponCard(){
-        WeaponCard weaponCard = deck.draw();
+        WeaponCard weaponCard = weaponCardDeck.draw();
         WeaponCardDTO weaponCardDTO = modelMapper.map(weaponCard, WeaponCardDTO.class);
         assertEquals(weaponCard.getName(), weaponCardDTO.getName());
         assertEquals(weaponCard.getFireModes().size(), weaponCardDTO.getBasicEffects());
         assertEquals(weaponCard.getUpgrades().size(), weaponCardDTO.getUpgrades());
     }
 
-
-    private GameBoard setupGameBoard() throws FileNotFoundException {
-        GameBoard gameBoard;
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
-        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
-
-        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
-
-        JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-        return gameBoard = customGson.fromJson(gameBoards.get(3), GameBoard.class);
-    }
 
     @Test
     public void modelMapperWorksFineOnGameBoard() throws FileNotFoundException {

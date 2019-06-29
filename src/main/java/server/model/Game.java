@@ -136,6 +136,7 @@ public class Game {
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
             ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileArrayListType);
 
+            ammoTiles.forEach(ammoTile -> ammoDeck.add(ammoTile));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -157,9 +158,6 @@ public class Game {
             gameBoard = customGson.fromJson(gameBoards.get(numberOfMap - 1), GameBoard.class);
 
             gameBoard.initSquares(weaponsDeck, ammoDeck);
-            for (Square s: gameBoard.getSquares()) {
-                System.out.println(s.getRow() + " " + s.getCol() + " " + s.getColour());
-            }
             gameBoard.addModelEventHandler(events);
 
             //notify map set

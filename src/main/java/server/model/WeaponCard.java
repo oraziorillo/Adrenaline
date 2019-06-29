@@ -92,7 +92,7 @@ public class WeaponCard {
         return fireModes;
     }
 
-    public int getFireModeIndex(){
+    public int getFireModeSize(){
         return fireModes.size();
     }
 
