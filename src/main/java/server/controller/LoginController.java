@@ -9,10 +9,8 @@ import server.exceptions.PlayerAlreadyLoggedInException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 public class LoginController extends UnicastRemoteObject implements RemoteLoginController {
 
@@ -20,7 +18,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
 
    private transient DatabaseHandler databaseHandler;
 
-   private transient List<Lobby> currentLobbies;
+   private transient List<Lobby> lobbies;
 
    private transient Lobby newLobby;
 
@@ -28,7 +26,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    private LoginController() throws IOException {
       super();
       databaseHandler = DatabaseHandler.getInstance();
-      this.currentLobbies = databaseHandler.getLobbies();
+      this.lobbies = databaseHandler.getLobbies();
       this.newLobby = new Lobby();
    }
 
@@ -42,7 +40,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
 
 
    @Override
-   public synchronized UUID register(String username, RemoteView view) throws IOException {
+   public synchronized UUID register(String username, RemoteView view) throws RemoteException {
       if (databaseHandler.isRegistered(username)){
          view.ack("This username is already used");
          return null;
@@ -61,7 +59,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     * @throws RemoteException IDK, rmi stuff
     */
    @Override
-   public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException {
+   public synchronized RemotePlayer login(UUID token, RemoteView view) throws RemoteException {
       view.ack("Logging in as @" + databaseHandler.getUsername(token));
       databaseHandler.getPlayer(token).setView(view);    //PER IL DEBUG
       //databaseHandler.registerView( token,view );      NON PIÙ NECESSARIO
@@ -74,20 +72,27 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     *
     * @param token the unique identifier for a player
     */
-   public synchronized void joinLobby(UUID token) throws PlayerAlreadyLoggedInException {
+   public synchronized void joinLobby(UUID token) throws RemoteException, PlayerAlreadyLoggedInException {
       if (databaseHandler.isRegistered(token)) {
          if (databaseHandler.hasPendentGame(token)) {
 
-            Lobby playerLobby;
+            Lobby lobby;
             UUID incompleteGame = databaseHandler.getGameUUID(token);
-            playerLobby = currentLobbies.stream().filter(lobby -> lobby.getGameUUID() == incompleteGame).findFirst().get();
-            playerLobby.addPlayer(databaseHandler.getPlayer(token));
+            lobby = lobbies
+                    .stream()
+                    .filter(l -> l.getGameUUID() == incompleteGame)
+                    .findFirst()
+                    .orElse(null);
+            if (lobby != null)
+               lobby.addPlayer(databaseHandler.getPlayer(token));
+            else
+               throw new IllegalStateException("Old " + databaseHandler.getPlayer(token) + "'s lobby was not restored successfully");
 
          } else {
 
             //otherwise it is added to a new game
             if (!newLobby.isAvailable()) {
-               currentLobbies.add(newLobby);
+               lobbies.add(newLobby);
                newLobby = new Lobby();
 
             }

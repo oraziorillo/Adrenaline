@@ -1,5 +1,6 @@
 package server.model;
 
+import com.google.gson.annotations.Expose;
 import common.dto_model.PcBoardDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
@@ -29,11 +30,11 @@ public class Pc {
 
 
     private final Game currGame;
-    private PcBoard pcBoard;
-    private short adrenaline;
-    private WeaponCard[] weapons;
-    private ArrayList<PowerUpCard> powerUps;
-    private Square currSquare;
+    @Expose private PcBoard pcBoard;
+    @Expose private short adrenaline;
+    @Expose private WeaponCard[] weapons;
+    @Expose private ArrayList<PowerUpCard> powerUps;
+    @Expose private Square currSquare;
 
 
     public Pc(PcColourEnum colour, Game game) {
@@ -334,7 +335,6 @@ public class Pc {
 
     public void addModelEventHandler(ModelEventHandler events) {
         this.events = events;
-        pcBoard.addModelEventHandler(events);
     }
 
 

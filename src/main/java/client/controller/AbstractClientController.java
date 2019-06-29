@@ -11,47 +11,52 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public abstract class AbstractClientController extends Application {
-    
-    protected transient AbstractView view;
-    protected transient RemoteLoginController loginController;
-    protected transient RemotePlayer player;
-    
+
+    protected AbstractView view;
+    protected RemoteLoginController loginController;
+    protected RemotePlayer player;
+
+
     AbstractClientController(AbstractView view) {
         this.view = view;
         initialize();
     }
 
-    protected void initialize(){
+
+    protected void initialize() {
         try {
             UUID token;
-            this.loginController = view.acquireConnection();
+            this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             boolean wantsToRegister = view.wantsToRegister();
             if (wantsToRegister) {
                 do {
-                    token = loginController.register( view.acquireUsername(), view );
+                    token = loginController.register(view.acquireUsername(), view);
                 } while (token == null);
-                view.ack( "This is your token: " + token + "\nUse it to login next time\n" );
-                player = loginController.login( token, view );
+                view.ack("This is your token: " + token + "\nUse it to login next time\n");
+                player = loginController.login(token, view);
             } else {
                 RemotePlayer tmpPlayer;
                 do {
                     token = view.acquireToken();
-                    tmpPlayer = loginController.login( token, view );
+                    tmpPlayer = loginController.login(token, view);
                 } while (tmpPlayer == null);
                 player = tmpPlayer;
             }
-            loginController.joinLobby( token );
-        }catch ( IOException serverUnreachable ){
-            try{
+            loginController.joinLobby(token);
+        } catch (IOException serverUnreachable) {
+            try {
                 serverUnreachable.printStackTrace();
-                view.error( "Server unreachable" );
-            }catch ( RemoteException ignored ){
-                throw new IllegalStateException( "View should be local" );
+                view.error("Server unreachable");
+            } catch (RemoteException ignored) {
+                throw new IllegalStateException("View should be local");
             }
 
-        } catch ( PlayerAlreadyLoggedInException e ) {
-            e.printStackTrace();
-            //TODO
+        } catch (PlayerAlreadyLoggedInException e) {
+            try {
+                view.ack("The account linked to that token is already logged in");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

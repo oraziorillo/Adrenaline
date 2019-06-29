@@ -3,7 +3,7 @@ package client.view.cli;
 import client.controller.socket.ClientSocketHandler;
 import client.view.AbstractView;
 import client.view.InputReader;
-import common.enums.ConnectionsEnum;
+import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
@@ -33,11 +33,11 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
     }
 
     @Override
-    public RemoteLoginController acquireConnection() {
-        ConnectionsEnum cmd = null;
+    public ConnectionMethodEnum acquireConnectionMethod() {
+        ConnectionMethodEnum cme = null;
         do {
             try {
-                cmd = ConnectionsEnum.parseString(inputReader.requestString(
+                cme = ConnectionMethodEnum.parseString(inputReader.requestString(
                         "Choose a connection method:" + System.lineSeparator() +
                          "s  ->  socket" + System.lineSeparator() +
                          "r  ->  rmi")
@@ -46,8 +46,14 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-        } while (cmd == null);
-        switch (cmd) {
+        } while (cme == null);
+        return cme;
+    }
+
+
+    @Override
+    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+        switch (cme) {
             case SOCKET:
                 try {
                     Socket socket = new Socket(HOST, SOCKET_PORT);
@@ -57,6 +63,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
                 } catch (IOException e) {
                     error("Server unreachable");
                 }
+                break;
             case RMI:
                 try {
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
@@ -64,10 +71,11 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
                 } catch (RemoteException | NotBoundException e) {
                     error("Server unreachable");
                 }
+                break;
             default:
                 throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
         }
-
+        return acquireConnection(cme);
     }
 
 
@@ -107,10 +115,12 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
         return UUID.fromString(inputReader.requestString("Insert your token"));
     }
 
+
     @Override
     public String requestString(String message) {
         return inputReader.requestString(message);
     }
+
 
     @Override
     public void error(String msg) {

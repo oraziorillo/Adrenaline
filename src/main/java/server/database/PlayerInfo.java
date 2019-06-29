@@ -3,7 +3,6 @@ package server.database;
 import com.google.gson.annotations.Expose;
 import common.enums.PcColourEnum;
 import server.controller.Player;
-import server.controller.states.State;
 
 import java.util.UUID;
 
@@ -12,7 +11,6 @@ class PlayerInfo {
     private Player player;
     @Expose private String username;
     @Expose private PcColourEnum pcColour;
-    @Expose private State currState;
     @Expose private UUID incompleteGameID;
 
 
@@ -47,14 +45,6 @@ class PlayerInfo {
         this.pcColour = pcColour;
     }
 
-    public State getCurrState() {
-        return currState;
-    }
-
-    public void setCurrState(State currState) {
-        this.currState = currState;
-    }
-
     UUID getIncompleteGameID() {
         return incompleteGameID;
     }
@@ -69,7 +59,6 @@ class PlayerInfo {
 
     void gameEnded(){
         pcColour = null;
-        currState = null;
         incompleteGameID = null;
     }
 }

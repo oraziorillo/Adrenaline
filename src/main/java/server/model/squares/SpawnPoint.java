@@ -21,11 +21,13 @@ public class SpawnPoint extends Square {
     private WeaponCard[] weapons;
     private Deck<WeaponCard> weaponsDeck;
 
+
     public SpawnPoint(){
         super();
         this.weaponToGrabIndex = -1;
         this.weaponToDropIndex = -1;
     }
+
 
     public SpawnPoint(int x, int y, SquareColourEnum colour) {
         super(x, y, colour);
@@ -66,6 +68,7 @@ public class SpawnPoint extends Square {
         return true;
     }
 
+
     @Override
     public void setWeaponToGrabIndex(int weaponToGrabIndex) {
         if (weaponToGrabIndex >= 0 && weaponToGrabIndex < CARDS_ON_SPAWN_POINT && weapons[weaponToGrabIndex] != null)
@@ -94,6 +97,7 @@ public class SpawnPoint extends Square {
             return weapons[index];
         return null;
     }
+
 
     /**
      * Adds the pre-selected weapon to the given player, unless

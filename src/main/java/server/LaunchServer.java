@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class LaunchServer {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
 
         Registry registry = LocateRegistry.createRegistry(9999);
         registry.rebind("LoginController", LoginController.getInstance());

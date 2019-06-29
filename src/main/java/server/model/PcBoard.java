@@ -1,25 +1,20 @@
 package server.model;
 
+import com.google.gson.annotations.Expose;
 import common.enums.PcColourEnum;
-import org.modelmapper.ModelMapper;
-import server.controller.CustomizedModelMapper;
 
 import static common.Constants.*;
 
 class PcBoard {
 
-    private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
-
-    private ModelEventHandler events = new ModelEventHandler();
-
-    private PcColourEnum colour;
-    private short points;
-    private short damageTrackIndex;
-    private short[] marks;
-    private short[] ammo;
-    private PcColourEnum[] damageTrack;
-    private int [] pcValue;
-    private int numOfDeaths;
+    @Expose private PcColourEnum colour;
+    @Expose private short points;
+    @Expose private short damageTrackIndex;
+    @Expose private short[] marks;
+    @Expose private short[] ammo;
+    @Expose private PcColourEnum[] damageTrack;
+    @Expose private int [] pcValue;
+    @Expose private int numOfDeaths;
 
     PcBoard(PcColourEnum colour){
         this.colour = colour;
@@ -42,6 +37,7 @@ class PcBoard {
     public PcColourEnum getColour() {
         return colour;
     }
+
 
     short getPoints() {
         return points;
@@ -155,10 +151,4 @@ class PcBoard {
         damageTrackIndex = 0;
         damageTrack = new PcColourEnum[LIFE_POINTS];
     }
-
-
-    void addModelEventHandler(ModelEventHandler events) {
-        this.events = events;
-    }
-
 }

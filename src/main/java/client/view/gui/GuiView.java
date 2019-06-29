@@ -2,6 +2,7 @@ package client.view.gui;
 
 import client.view.AbstractView;
 import client.view.gui.javafx_controllers.view_states.ViewState;
+import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -35,9 +36,16 @@ public class GuiView extends UnicastRemoteObject implements AbstractView, ModelE
    }
 
    @Override
-   public RemoteLoginController acquireConnection() throws RemoteException {
-      return currentGui.acquireConnection();
+   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
+      return currentGui.acquireConnectionMethod();
    }
+
+
+   @Override
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+      return currentGui.acquireConnection(cme);
+   }
+
 
    @Override
    public boolean wantsToRegister() throws RemoteException {
@@ -70,7 +78,7 @@ public class GuiView extends UnicastRemoteObject implements AbstractView, ModelE
    }
 
    @Override
-   public void ack(String message) throws IOException {
+   public void ack(String message) throws RemoteException {
       currentGui.ack( message );
    }
 

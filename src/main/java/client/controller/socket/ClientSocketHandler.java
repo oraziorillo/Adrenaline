@@ -15,6 +15,7 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.model.deserializers.ModelEventDeserializer;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
@@ -117,7 +118,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     //LoginController
 
     @Override
-    public synchronized UUID register(String username, RemoteView view) throws IOException {
+    public synchronized UUID register(String username, RemoteView view) {
         out.println(REGISTER.toString() + REGEX + username);
         out.flush();
         String stringToken;

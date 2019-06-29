@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
-import common.remote_interfaces.RemoteView;
 import server.controller.Controller;
 import server.controller.Lobby;
 import server.controller.Player;
@@ -112,17 +111,15 @@ public class DatabaseHandler {
 
 
     public Player getPlayer(UUID token) {
-        if (playerInfoByToken.containsKey(token)) {
-            if (playerInfoByToken.get(token).getPlayer() == null) {
-                Player player = null;
-                try {
-                    player = new Player(token);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+        try {
+            if (playerInfoByToken.containsKey(token)) {
+                if (playerInfoByToken.get(token).getPlayer() == null) {
+                    playerInfoByToken.get(token).setPlayer(new Player(token));
                 }
-                playerInfoByToken.get(token).setPlayer(player);
+                return playerInfoByToken.get(token).getPlayer();
             }
-            return playerInfoByToken.get(token).getPlayer();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -194,7 +191,6 @@ public class DatabaseHandler {
         gameInfo.gameStarted();
         gameInfo.setCurrPlayerIndex(0);
         gameInfo.setLastPlayerIndex(-1);
-        gameInfo.setRemainingActions(2);
         gameInfo.setGame(controller.getGame());
         overWrite(gameInfo, gameUUID);
         overwrite(GAME_PATH_BY_UUID);

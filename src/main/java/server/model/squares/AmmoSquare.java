@@ -32,7 +32,7 @@ public class AmmoSquare extends Square {
     @Override
     public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.ammoDeck = ammoDeck;
-        refill();
+        this.ammoTile = ammoDeck.draw();
     }
 
 

@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.view_states;
 
 import client.view.AbstractView;
+import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -61,10 +62,17 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    }
    
    @Override
-   public RemoteLoginController acquireConnection() throws RemoteException {
+   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
+      nextState();
       return null;
    }
-   
+
+   @Override
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+      nextState();
+      return null;
+   }
+
    @Override
    public String acquireUsername() throws RemoteException {
       nextState();
@@ -78,7 +86,7 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    }
    
    @Override
-   public void ack(String message) throws IOException {
+   public void ack(String message) throws RemoteException {
    
    }
    

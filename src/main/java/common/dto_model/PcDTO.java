@@ -2,9 +2,7 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
-import java.util.ArrayList;
-
-public class PcDTO implements DTO {
+public class  PcDTO implements DTO {
 
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;

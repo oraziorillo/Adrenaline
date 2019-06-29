@@ -1,8 +1,10 @@
 package client.view;
 
+import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
+
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.UUID;
@@ -14,7 +16,9 @@ public interface AbstractView extends RemoteView, ModelEventListener {
 
     void error(String msg) throws RemoteException;
 
-    RemoteLoginController acquireConnection() throws RemoteException;
+    ConnectionMethodEnum acquireConnectionMethod() throws RemoteException;
+
+    RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException;
 
     boolean wantsToRegister() throws RemoteException;
 

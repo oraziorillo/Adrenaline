@@ -2,12 +2,12 @@ package common.remote_interfaces;
 
 import common.events.ModelEventListener;
 
-import java.io.IOException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface RemoteView {
+public interface RemoteView extends Remote {
 
-    void ack(String message) throws IOException;
+    void ack(String message) throws RemoteException;
 
     ModelEventListener getListener() throws RemoteException;
 

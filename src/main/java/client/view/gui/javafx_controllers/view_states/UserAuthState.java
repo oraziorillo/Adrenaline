@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.view_states;
 
 import client.controller.socket.ClientSocketHandler;
+import common.enums.ConnectionMethodEnum;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;
@@ -47,22 +48,26 @@ public class UserAuthState extends ViewState {
    
    
    @Override
-   public RemoteLoginController acquireConnection() throws RemoteException {
+   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
       RemoteLoginController loginController;
       Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");
-      Optional<ButtonType> resonse = rmiOrSocket.showAndWait();
+      Optional<ButtonType> response = rmiOrSocket.showAndWait();
+      return ConnectionMethodEnum.parseString(response.get().getText().toLowerCase());
+   }
+
+
+   @Override
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
       try {
-         switch (resonse.get().getText().toLowerCase()) {
-            case "rmi":
+         switch (cme) {
+            case RMI:
                Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
-               loginController = (RemoteLoginController) registry.lookup("LoginController");
-               break;
-            case "socket":
+               return (RemoteLoginController) registry.lookup("LoginController");
+            case SOCKET:
             default:
                ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
-               loginController = handler;
                Thread thread = new Thread(new Task<>() {
                   @Override
                   protected Object call() throws Exception {
@@ -71,16 +76,16 @@ public class UserAuthState extends ViewState {
                   }
                }, "SocketHandler");
                thread.start();
-               break;
+               return handler;
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");
          connectionEx.printStackTrace();
          return null;    //This line won't be executed, but is needed to avoid variable initialization error on return
       }
-      return loginController;
    }
-   
+
+
    @Override
    public boolean wantsToRegister() throws RemoteException {
       Alert firstTime = new Alert(

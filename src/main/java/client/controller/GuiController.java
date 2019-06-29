@@ -4,7 +4,6 @@ import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.view_states.InGameState;
-import common.remote_interfaces.RemoteLoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +31,7 @@ public class GuiController extends AbstractClientController {
     
     private void authUser(Stage stage){
         try {
-            RemoteLoginController loginController = view.acquireConnection();
+            this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             UUID token;
             if (view.wantsToRegister()) {
                 String username = view.acquireUsername();

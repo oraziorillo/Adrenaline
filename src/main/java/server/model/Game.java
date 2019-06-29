@@ -3,6 +3,7 @@ package server.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.dto_model.GameBoardDTO;
@@ -37,22 +38,24 @@ public class Game {
 
     private ModelEventHandler events = new ModelEventHandler();
 
-    private GameBoard gameBoard;
-    private Set<Pc> pcs;
-    private Deck<WeaponCard> weaponsDeck;
-    private Deck<PowerUpCard> powerUpsDeck;
-    private Deck<AmmoTile> ammoDeck;
-    private boolean finalFrenzy;
+    @Expose private GameBoard gameBoard;
+    @Expose private Set<Pc> pcs;
+    @Expose private Deck<WeaponCard> weaponsDeck;
+    @Expose private Deck<PowerUpCard> powerUpsDeck;
+    @Expose private Deck<AmmoTile> ammoDeck;
+    @Expose private boolean finalFrenzy;
 
 
-    public Game() {
+    private Game() {
         this.pcs = new HashSet<>();
+        this.weaponsDeck = new Deck<>();
+        this.powerUpsDeck = new Deck<>();
+        this.ammoDeck = new Deck<>();
         this.finalFrenzy = false;
     }
 
 
-    public Game(UUID gameUUID) {
-        return;
+    private Game(UUID gameUUID) {
     }
 
     public static Game getGame(UUID gameUUID) {
@@ -69,19 +72,17 @@ public class Game {
     }
 
 
-    private void initDecks(UUID gameUUID){
-
-    }
-
-
     private void initDecks(){
-        this.weaponsDeck = new Deck<>();
-        this.powerUpsDeck = new Deck<>();
-        this.ammoDeck = new Deck<>();
         initWeaponsDeck();
         initPowerUpsDeck();
         initAmmoDeck();
     }
+
+
+    private void initDecks(UUID gameUUID){
+
+    }
+
 
 
     private void initWeaponsDeck() {
@@ -136,6 +137,7 @@ public class Game {
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
             ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileArrayListType);
 
+            ammoTiles.forEach(a -> ammoDeck.add(a));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -157,9 +159,6 @@ public class Game {
             gameBoard = customGson.fromJson(gameBoards.get(numberOfMap - 1), GameBoard.class);
 
             gameBoard.initSquares(weaponsDeck, ammoDeck);
-            for (Square s: gameBoard.getSquares()) {
-                System.out.println(s.getRow() + " " + s.getCol() + " " + s.getColour());
-            }
             gameBoard.addModelEventHandler(events);
 
             //notify map set
@@ -227,7 +226,7 @@ public class Game {
 
 
     public Pc getPc(PcColourEnum colour){
-        return pcs.stream().filter(pc -> pc.getColour() == colour).findFirst().get();
+        return pcs.stream().filter(pc -> pc.getColour() == colour).findFirst().orElse(null);
     }
 
 

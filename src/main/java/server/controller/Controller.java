@@ -13,7 +13,6 @@ import server.model.WeaponCard;
 import server.model.squares.Square;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,13 +71,6 @@ public class Controller{
 
 
     private void addListenersToGame(){
-        players.forEach(player -> {
-            try {
-                player.getView().ack("Sto per leggere i listener");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
         players.forEach(p -> {
             ModelEventListener listener = null;
             try {
