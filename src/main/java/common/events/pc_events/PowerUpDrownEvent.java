@@ -23,7 +23,7 @@ public class PowerUpDrownEvent extends PcEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return isUncensored
                 ? "You draw a " + powerUp.getColour() + " " + powerUp.getName()
                 : "";

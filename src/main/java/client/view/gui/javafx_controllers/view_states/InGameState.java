@@ -75,6 +75,7 @@ public class InGameState extends ViewState {
    }
    
    private void test() {
+      /*
       WeaponCardDTO[] weapons = new WeaponCardDTO[3];
       PowerUpCardDTO[] powerups = new PowerUpCardDTO[3];
       for (int i = 0; i < 3; i++) {
@@ -92,6 +93,8 @@ public class InGameState extends ViewState {
          pc.setColour( PcColourEnum.values()[i] );
          pc.setCurrSquare( s );
       }
+
+       */
    }
    
    //Button methods
@@ -137,8 +140,8 @@ public class InGameState extends ViewState {
       //square.setAmmoTile( random.nextBoolean()?fullTile:null );
       pcToMove.setCurrSquare( square );
       pcToMove.setColour( pcToMoveColor );
-      WeaponCardDTO ionico = new WeaponCardDTO("martello_ionico",1,1);
-      pcToMove.setWeapons(new WeaponCardDTO[]{ionico,ionico,ionico});
+      //WeaponCardDTO ionico = new WeaponCardDTO("martello_ionico",1,1);
+      //pcToMove.setWeapons(new WeaponCardDTO[]{ionico,ionico,ionico});
        //TODO onPcUpdate(new AdrenalineUpEvent( pcToMove ));
       System.out.println("skip clicked");
       /*

@@ -5,7 +5,6 @@ import common.dto_model.WeaponCardDTO;
 import common.remote_interfaces.RemotePlayer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -29,7 +28,7 @@ public class GeneralWeapon {
    
    @FXML
    public void setWeapon(WeaponCardDTO weapon){
-      background.setImage( new Image( weapon.getImagePath(),true ) );
+      //background.setImage( new Image( weapon.getImagePath(),true ) );
       int effect;
       for (effect = 0; effect < weapon.getBasicEffects(); effect++) {
          int e = effect;

@@ -1,23 +1,13 @@
 package common.dto_model;
 
-public class WeaponCardDTO extends AbstractCardDTO {
+public class WeaponCardDTO extends AbstractCardDTO implements DTO {
     
-    private static final String DIRECTORY_NAME = "weapons/";
-    private static final String DEFAULT_NAME = "retro_arma";
+//    private static final String DIRECTORY_NAME = "weapons/";
+//    private static final String DEFAULT_NAME = "retro_arma";
     private int basicEffects;
     private int upgrades;
-    
-    public WeaponCardDTO(String name,int basicEffects,int upgrades) {
-        super( name );
-        this.basicEffects=basicEffects;
-        this.upgrades=upgrades;
-    }
-    
-    public WeaponCardDTO(){
-        super(DEFAULT_NAME);
-        setBasicEffects( 1 );
-        setUpgrades( 1 );
-    }
+    private String name;
+
     
     public String getName() {
         return name;
@@ -42,7 +32,7 @@ public class WeaponCardDTO extends AbstractCardDTO {
     public int getUpgrades() {
         return upgrades;
     }
-    
+    /*
     @Override
     public String getImagePath() {
         return super.getImagePath()+DIRECTORY_NAME+name+extension;
@@ -55,6 +45,6 @@ public class WeaponCardDTO extends AbstractCardDTO {
    
    public static WeaponCardDTO getCardBack() {
       return new WeaponCardDTO(DEFAULT_NAME,0,0);
-   }
+   }*/
    
 }

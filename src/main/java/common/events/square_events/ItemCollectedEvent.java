@@ -27,7 +27,7 @@ public class ItemCollectedEvent extends SquareEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return isUncensored
                 ? "You"
                 : pcColour

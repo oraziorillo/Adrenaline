@@ -22,7 +22,7 @@ public class PointsIncreasedEvents extends PcBoardEvent {
     }
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return isUncensored
                 ? "You"
                 : pcBoard.getColour().getName()

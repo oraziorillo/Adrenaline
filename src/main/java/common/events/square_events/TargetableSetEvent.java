@@ -20,7 +20,7 @@ public class TargetableSetEvent extends SquareEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return square.toString();
     }
 

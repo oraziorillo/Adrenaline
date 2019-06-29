@@ -92,6 +92,14 @@ public class WeaponCard {
         return fireModes;
     }
 
+    public int getFireModeIndex(){
+        return fireModes.size();
+    }
+
+    public int getUpgradesSize(){
+        return upgrades.size();
+    }
+
     public List<Effect> getUpgrades() {
         return upgrades;
     }

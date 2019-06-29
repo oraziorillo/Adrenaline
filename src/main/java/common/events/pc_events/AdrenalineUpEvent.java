@@ -20,7 +20,7 @@ public class AdrenalineUpEvent extends PcEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return isUncensored
                 ? "You got adrenaline level " + pc.getAdrenaline()
                 : "";

@@ -25,7 +25,7 @@ public class SquareRefilledEvent extends SquareEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return isSpawnPoint
                 ? square.toString() + " refilled\nNow there are these weapon cards on it:\n" + Arrays.toString(square.getWeapons())
                 : square.toString() + " refilled\nNow there is a:\n" + square.getAmmoTile().toString() + "\nammo tile on it";

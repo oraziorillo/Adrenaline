@@ -37,7 +37,7 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
 
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      out.print(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event) + "-1");
+      out.print(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 

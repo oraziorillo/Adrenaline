@@ -15,7 +15,7 @@ public class KillShotTrackSetEvent extends KillShotTrackEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return killShotTrack.getKillShotTrack().length + " kills to win";
     }
 }

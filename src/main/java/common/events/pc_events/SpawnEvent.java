@@ -20,7 +20,7 @@ public class SpawnEvent extends PcEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return isUncensored
                 ? "You"
                 : pc.getName()

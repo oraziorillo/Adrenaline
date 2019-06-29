@@ -22,7 +22,7 @@ public class PcColourChosenEvent extends PcEvent{
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return pc.getName() + " chosen";
     }
 }

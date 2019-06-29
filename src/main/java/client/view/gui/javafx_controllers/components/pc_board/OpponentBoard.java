@@ -47,20 +47,20 @@ public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
             if(change.getValueAdded().getWeapons()!=null)
                for (WeaponCardDTO weapon : change.getValueAdded().getWeapons()) {
                   if (weapon != null) {
-                     ImageView img = new ImageView( new Image( weapon.getImagePath(), 0, 0, true, false ) );
-                     img.setPreserveRatio( true );
-                     img.fitHeightProperty().bind( HEIGHT );
-                     weapons.getChildren().add( img );
+                     //ImageView img = new ImageView( new Image( weapon.getImagePath(), 0, 0, true, false ) );
+                     //img.setPreserveRatio( true );
+                     //img.fitHeightProperty().bind( HEIGHT );
+                     //weapons.getChildren().add( img );
                   }
                }
             
             if(change.getValueAdded().getPowerUps()!=null)
                for (PowerUpCardDTO powerUp : change.getValueAdded().getPowerUps()) {
                   if (powerUp != null) {
-                     ImageView img = new ImageView( new Image( powerUp.getImagePath(), 0, 0, true, false ) );
-                     img.fitHeightProperty().bind( Bindings.divide( HEIGHT, 2 ) );
-                     img.setPreserveRatio( true );
-                     powerups.getChildren().add( img );
+                     //ImageView img = new ImageView( new Image( powerUp.getImagePath(), 0, 0, true, false ) );
+                     //img.fitHeightProperty().bind( Bindings.divide( HEIGHT, 2 ) );
+                     //img.setPreserveRatio( true );
+                     //powerups.getChildren().add( img );
                   }
                }
             

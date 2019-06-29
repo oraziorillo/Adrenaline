@@ -2,26 +2,18 @@ package common.dto_model;
 
 import common.enums.AmmoEnum;
 
-public class PowerUpCardDTO extends AbstractCardDTO {
+public class PowerUpCardDTO extends AbstractCardDTO implements DTO {
     
-    private static final String DEFAULT_NAME = "retro_powerup";
+ //   private static final String DEFAULT_NAME = "retro_powerup";
+    private String name;
     private AmmoEnum colour;
-    
-    public PowerUpCardDTO(String name, AmmoEnum color) {
-        super( name );
-        this.colour=color;
-    }
-    
-    public PowerUpCardDTO(){
-        this(DEFAULT_NAME,null);
-    }
-    
-    @Override
-    public String getImagePath() {
-        String appendedColor = colour==null?"":("_"+colour.toString().toLowerCase());
-        return super.getImagePath() + name + appendedColor + extension;
-    }
-    
+
+//    @Override
+//    public String getImagePath() {
+//        String appendedColor = colour==null?"":("_"+colour.toString().toLowerCase());
+//        return super.getImagePath() + name + appendedColor + extension;
+//    }
+//
     public String getName() {
         return name;
     }
@@ -38,12 +30,12 @@ public class PowerUpCardDTO extends AbstractCardDTO {
         this.colour = colour;
     }
     
-    @Override
-    public boolean isDefaultCard() {
-        return name.equals( DEFAULT_NAME );
-    }
-    
-    public static PowerUpCardDTO getCardBack(){
-        return new PowerUpCardDTO();
-    }
+//    @Override
+//    public boolean isDefaultCard() {
+//        return name.equals( DEFAULT_NAME );
+//    }
+//
+//    public static PowerUpCardDTO getCardBack(){
+//        return new PowerUpCardDTO();
+//    }
 }

@@ -20,7 +20,7 @@ public class NumberOfDeathIncreasedEvent extends PcBoardEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return "";
     }
 

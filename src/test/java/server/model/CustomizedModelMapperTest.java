@@ -3,6 +3,7 @@ package server.model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.dto_model.AmmoTileDTO;
 import common.dto_model.GameBoardDTO;
@@ -10,16 +11,21 @@ import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import server.controller.CustomizedModelMapper;
+import server.model.actions.Action;
+import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.AmmoSquare;
 import server.model.squares.SpawnPoint;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -29,6 +35,22 @@ public class CustomizedModelMapperTest {
     CustomizedModelMapper customizedModelMapperTest = new CustomizedModelMapper();
 
     ModelMapper modelMapper = customizedModelMapperTest.getModelMapper();
+    private Deck<WeaponCard> deck;
+
+    @Before
+    public void weaponsDeckConstrucionFine() throws FileNotFoundException {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        Type weaponsType = new TypeToken<ArrayList<WeaponCard>>(){}.getType();
+
+        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
+        ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponsType);
+
+        deck = new Deck<>();
+        weapons.forEach(w -> deck.add(w));
+    }
 
 
     @Test
@@ -97,11 +119,11 @@ public class CustomizedModelMapperTest {
 
     @Test
     public void modelMapperWorksFineOnWeaponCard(){
-        String weaponName = "Lock Rifle";
-        WeaponCard weaponCard = Mockito.mock(WeaponCard.class);
-        when(weaponCard.getName()).thenReturn(weaponName);
+        WeaponCard weaponCard = deck.draw();
         WeaponCardDTO weaponCardDTO = modelMapper.map(weaponCard, WeaponCardDTO.class);
-        assertEquals(weaponName, weaponCardDTO.getName());
+        assertEquals(weaponCard.getName(), weaponCardDTO.getName());
+        assertEquals(weaponCard.getFireModes().size(), weaponCardDTO.getBasicEffects());
+        assertEquals(weaponCard.getUpgrades().size(), weaponCardDTO.getUpgrades());
     }
 
 

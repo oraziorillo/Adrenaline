@@ -40,7 +40,7 @@ public class AmmoChangedEvent extends PcBoardEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         StringBuilder dynamicMessageBuilder = new StringBuilder();
         dynamicMessageBuilder.append(
                 isUncensored

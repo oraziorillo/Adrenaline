@@ -11,19 +11,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DamageMarksAction extends Action {
-    @Expose private short damages;
+    @Expose private short damage;
     @Expose private short marks;
     @Expose private boolean squareExplosive;
     @Expose private boolean roomExplosive;
     @Expose private boolean additionalDamage;
     @Expose private boolean exclusiveForOldTargets;
     @Expose private boolean targetsOnDifferentSquares;
-    TargetChecker orientedTargetChecker;
+    private TargetChecker orientedTargetChecker;
 
 
     public DamageMarksAction(JsonObject jsonAction) {
         super(jsonAction);
-        this.damages = jsonAction.get("damages").getAsShort();
+        this.damage = jsonAction.get("damage").getAsShort();
         this.marks = jsonAction.get("marks").getAsShort();
         this.squareExplosive = jsonAction.get("squareExplosive").getAsBoolean();
         this.roomExplosive = jsonAction.get("roomExplosive").getAsBoolean();
@@ -127,14 +127,14 @@ public class DamageMarksAction extends Action {
 
     @Override
     public Set<Pc> apply(Pc shooter) {
-        //if shooter has been added to the targets set, it is removed before damages is applied
+        //if shooter has been added to the targets set, it is removed before damage is applied
         targets.remove(shooter);
         targets.forEach(pc -> {
-            if (damages != 0)
-                pc.takeDamage(shooter.getColour(), damages);
+            if (damage != 0)
+                pc.takeDamage(shooter.getColour(), damage);
             if (marks != 0)
                 pc.takeMarks(shooter.getColour(), marks);
-            pc.notifyDamageMarks(shooter.getName(), damages, marks);
+            pc.notifyDamageMarks(shooter.getName(), damage, marks);
         });
         return targets;
     }

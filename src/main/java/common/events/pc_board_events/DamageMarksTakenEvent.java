@@ -31,7 +31,7 @@ public class DamageMarksTakenEvent extends PcBoardEvent{
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(
                 isUncensored ? "You"

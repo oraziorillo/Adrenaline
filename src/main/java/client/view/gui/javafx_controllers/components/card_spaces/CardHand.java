@@ -4,10 +4,7 @@ import common.dto_model.AbstractCardDTO;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -66,7 +63,7 @@ public class CardHand <T extends AbstractCardDTO>{
          ImageView cardImage = cardsImages[i];
          T newCard = newCards[i];   //TODO: add support for null values
          cards[i] = newCard;
-         cardImage.setImage( new Image( newCard.getImagePath(),true) );
+         //cardImage.setImage( new Image( newCard.getImagePath(),true) );
          cardImage.getImage().heightProperty().addListener( (observableValue, aDouble, t1) ->{
             mainPane.setTranslateY( t1.doubleValue() * hiddenFraction );
             mainPane.setMaxWidth( (card0.getImage().getWidth() * cards.length) + (cardBox.getSpacing() * cards.length-1 ) );

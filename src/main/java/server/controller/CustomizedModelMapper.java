@@ -2,14 +2,15 @@ package server.controller;
 
 import common.dto_model.AmmoTileDTO;
 import common.dto_model.SquareDTO;
+import common.dto_model.WeaponCardDTO;
 import common.enums.PcColourEnum;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MappingContext;
 import server.model.AmmoTile;
 import server.model.Pc;
+import server.model.WeaponCard;
 import server.model.squares.AmmoSquare;
 import server.model.squares.SpawnPoint;
 
@@ -32,6 +33,7 @@ public class CustomizedModelMapper {
     private void initModelMapper(){
         configureAmmoTile();
         configureSquare();
+        configureWeaponCard();
     }
 
 
@@ -58,10 +60,9 @@ public class CustomizedModelMapper {
         typeMapAmmoSquare.addMappings(mapper -> mapper.using(toPcColour).map(AmmoSquare::getPcs, SquareDTO::setPcs));
     }
 
-
-    private Set<PcColourEnum> fromPcToPcColour(MappingContext<Set<Pc>, Set<PcColourEnum>> toPcColour){
-        Converter<Set<Pc>, Set<PcColourEnum>> listOfColours;
-        listOfColours = setOfPc -> setOfPc.getSource().stream().map(Pc::getColour).collect(Collectors.toSet());
-        return listOfColours.convert(toPcColour);
+    private void configureWeaponCard() {
+        TypeMap<WeaponCard, WeaponCardDTO> typeMap = modelMapper.createTypeMap(WeaponCard.class, WeaponCardDTO.class);
+        typeMap.addMappings(mapper -> mapper.map(WeaponCard::getFireModeIndex, WeaponCardDTO::setBasicEffects));
+        typeMap.addMappings(mapper -> mapper.map(WeaponCard::getUpgradesSize, WeaponCardDTO::setUpgrades));
     }
 }

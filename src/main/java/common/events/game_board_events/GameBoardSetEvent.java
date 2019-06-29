@@ -17,7 +17,7 @@ public class GameBoardSetEvent extends GameBoardEvent {
 
 
     @Override
-    public String getDynamicMessage() {
+    public String toString() {
         return "Map " + numberOfMap + " has been set";
     }
 }

@@ -14,7 +14,7 @@ public class FinalFrenzyEvent extends KillShotTrackEvent {
     }
 
 
-    public String getDynamicMessage() {
+    public String toString() {
         return "FINAL FRENZY!";
     }
 }
