@@ -76,7 +76,8 @@ public class InGameState extends ViewState {
       PowerUpCardDTO[] powerups = new PowerUpCardDTO[3];
       for (int i = 0; i < 3; i++) {
          weapons[i] = new WeaponCardDTO( "martello_ionico", 1, 1 );
-         powerups[i] = new PowerUpCardDTO();
+         powerups[i] = PowerUpCardDTO.getCardBack();
+         System.out.println(powerups[i].getImagePath());
       }
       weaponHandController.setCards( weapons );
       powerUpHandController.setCards( powerups );
