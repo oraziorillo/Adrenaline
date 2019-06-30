@@ -75,10 +75,7 @@ public class InGameState extends ViewState {
       }
       test();
    }
-   
-   InGameState(PcColourEnum color){
-      this.color.set( color );
-   }
+
 
    private void test() {
       /*

@@ -23,8 +23,8 @@ import java.util.UUID;
 import static javafx.application.Platform.runLater;
 
 public class UserAuthState extends ViewState {
-   
-   
+
+
    /**
     * Builds an alert containing the ack and shows it
     * @param message the message of the ack
@@ -45,8 +45,8 @@ public class UserAuthState extends ViewState {
          infos.show();
       } );
    }
-   
-   
+
+
    @Override
    public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
       RemoteLoginController loginController;
@@ -96,7 +96,7 @@ public class UserAuthState extends ViewState {
       );
       return firstTime.showAndWait().get().getButtonData().equals(ButtonBar.ButtonData.YES);
    }
-   
+
    @Override
    public String acquireUsername() throws RemoteException {
       TextInputDialog usernameDialog = new TextInputDialog();
@@ -105,7 +105,7 @@ public class UserAuthState extends ViewState {
       usernameDialog.setContentText("Insert your username");
       return usernameDialog.showAndWait().orElse("username");
    }
-   
+
    @Override
    public UUID acquireToken() throws RemoteException {
       TextInputDialog tokenDialog = new TextInputDialog("Login");
@@ -124,14 +124,14 @@ public class UserAuthState extends ViewState {
       });
       return UUID.fromString(tokenDialog.showAndWait().get());
    }
-   
+
    @Override
    public String requestString(String message) throws RemoteException {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
    }
-   
+
    @Override
    public ViewState nextState() {
       return new InGameState();

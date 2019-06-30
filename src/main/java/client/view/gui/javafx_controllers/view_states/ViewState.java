@@ -106,9 +106,9 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    public ModelEventListener getListener() {
       return this;
    }
-   
+
    public static ViewState getFirstState(){
-      return new UserAuthState();
+        return new UserAuthState();
    }
    
 }
