@@ -1,6 +1,5 @@
 package common.dto_model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameBoardDTO implements DTO {

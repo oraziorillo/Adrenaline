@@ -1,12 +1,10 @@
 package server.controller.states;
 
+import common.enums.AmmoEnum;
 import server.controller.Controller;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
-import common.enums.AmmoEnum;
-
-import java.io.IOException;
 
 /**
  * Spawns the pcs for the first time
@@ -46,19 +44,9 @@ public class FirstTurnState extends State{
         if (powerUpToDropIndex > -1) {
             PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
             AmmoEnum respawnColour = powerUp.getColour();
-            try {
-                controller.getCurrPlayer().getView().ack("Colore del powerUp " + respawnColour);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
             pcToSpawn.spawn(s);
             pcToSpawn.discardPowerUp(powerUp);
-            try {
-                controller.getCurrPlayer().getView().ack("Fin qui tutto bene. Fine del metodo ok");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return true;
         }
         return false;

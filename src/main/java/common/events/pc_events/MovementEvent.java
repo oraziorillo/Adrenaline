@@ -27,9 +27,9 @@ public class MovementEvent extends PcEvent {
 
     @Override
     public String toString() {
-        return isUncensored
+        return (isUncensored
                 ? "You"
-                : pc.getName()
+                : pc.getName())
                 + " moved from " + from + " to " + to;
     }
 

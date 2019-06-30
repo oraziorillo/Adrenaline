@@ -9,7 +9,6 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteView;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.RemoteException;

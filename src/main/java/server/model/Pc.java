@@ -160,7 +160,7 @@ public class Pc {
 
             //notify power up drown
             events.fireEvent(new PowerUpDrownEvent(
-                    convertToDTO(),
+                    this.convertToDTO(),
                     powerUpToDraw.convertToDTO()));
         }
     }

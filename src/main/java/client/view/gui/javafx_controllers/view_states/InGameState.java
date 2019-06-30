@@ -77,9 +77,8 @@ public class InGameState extends ViewState {
       test();
    }
    
-   InGameState(PcColourEnum color) throws RemoteException {
+   InGameState() throws RemoteException {
        super();
-       this.color.set( color );
    }
 
    private void test() {

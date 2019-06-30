@@ -28,9 +28,7 @@ public abstract class PcEvent implements ModelEvent {
 
 
     PcDTO getCensoredDTO() {
-        Pc censoredPc = new Pc(pc.getColour(), null);
-        PcDTO censoredPcDTO = censoredPc.convertToDTO();
-        censoredPcDTO.setColour(pc.getColour());
+        PcDTO censoredPcDTO = new Pc(pc.getColour(), null).convertToDTO();
         censoredPcDTO.setSquareRow(pc.getSquareRow());
         censoredPcDTO.setSquareCol(pc.getSquareCol());
         censoredPcDTO.setAdrenaline(pc.getAdrenaline());

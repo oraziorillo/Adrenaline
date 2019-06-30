@@ -21,9 +21,9 @@ public class SpawnEvent extends PcEvent {
 
     @Override
     public String toString() {
-        return isUncensored
+        return (isUncensored
                 ? "You"
-                : pc.getName()
+                : pc.getName())
                 + " spawned on row" + pc.getSquareRow() + " and " + pc.getSquareCol();
     }
 

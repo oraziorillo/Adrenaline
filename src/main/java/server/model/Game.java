@@ -213,10 +213,9 @@ public class Game {
     public void addPc(Pc pc) {
         events.addListenerColour(pc.getColour());
         pc.addModelEventHandler(events);
-        System.out.println("Fin Qui ci arrivo");
+
         //notify colour chosen
         PcDTO pcDTO = pc.convertToDTO();
-        System.out.println("Anche qui");
         events.fireEvent(new PcColourChosenEvent(pcDTO));
 
         pcs.add(pc);

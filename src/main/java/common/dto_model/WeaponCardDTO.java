@@ -6,7 +6,7 @@ public class WeaponCardDTO extends AbstractCardDTO {
     private static final String DEFAULT_NAME = "retro_arma";
     private int basicEffects;
     private int upgrades;
-    private String name;
+    //private String name;
 
     
     public String getName() {

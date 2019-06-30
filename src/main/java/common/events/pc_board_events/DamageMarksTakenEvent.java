@@ -34,8 +34,8 @@ public class DamageMarksTakenEvent extends PcBoardEvent{
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(
-                isUncensored ? "You"
-                          : pcBoard.getColour().getName())
+                (isUncensored ? "You"
+                          : pcBoard.getColour().getName()))
                 .append(" took ");
         if (damage > 0 && marks > 0)
             builder.append(damage).append(" damages and ").append(marks).append(" marks from ");
