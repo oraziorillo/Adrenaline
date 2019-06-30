@@ -12,6 +12,7 @@ import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 
 import static common.Constants.REGEX;
 import static common.enums.ViewMethodsEnum.*;
@@ -29,8 +30,14 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
       out.println(ACK + REGEX + message.replaceAll(System.lineSeparator(), REGEX));
       out.flush();
    }
-
-
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      out.println(CHAT_MESSAGE + REGEX + message.replaceAll( System.lineSeparator(),REGEX ) );
+      out.flush();
+   }
+   
+   
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
       out.println(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));

@@ -32,9 +32,9 @@ public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
    
    public void setColor(PcColourEnum color){
       settedColor=color;
-      vitaController.setBackground( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/vita.png",0,0,true,false ) );
+      vitaController.setColor( color );
       immagine.setImage( new Image( "/images/pc_board/"+color.getName().toLowerCase()+"/immagine.png",0,0,true,false ) );
-      vitaController.getBackground().fitHeightProperty().bind( HEIGHT );
+      vitaController.fitHeightProperty().bind( HEIGHT );
       immagine.fitHeightProperty().bind( HEIGHT );
    }
    

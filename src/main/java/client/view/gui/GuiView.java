@@ -73,7 +73,12 @@ public class GuiView extends UnicastRemoteObject implements AbstractView, ModelE
    public void ack(String message) throws RemoteException {
       currentGui.ack( message );
    }
-
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      currentGui.chatMessage( message );
+   }
+   
    @Override
    public ModelEventListener getListener() {
       return currentGui.getListener();

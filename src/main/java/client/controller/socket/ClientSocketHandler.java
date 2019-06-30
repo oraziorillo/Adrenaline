@@ -69,13 +69,21 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
 
     private void parseViewMethods(String[] args) throws IOException {
         ViewMethodsEnum viewMethod = ViewMethodsEnum.valueOf(args[0]);
+        StringBuilder builder;
         switch (viewMethod) {
             case ACK:
-                StringBuilder builder = new StringBuilder();
+                builder = new StringBuilder();
                 for (String s : Arrays.copyOfRange(args, 1, args.length)) {
                     builder.append(s).append(System.lineSeparator());
                 }
                 view.ack(builder.toString());
+                break;
+            case CHAT_MESSAGE:
+                builder = new StringBuilder();
+                for (String s : Arrays.copyOfRange(args, 1, args.length)) {
+                    builder.append(s).append(System.lineSeparator());
+                }
+                view.chatMessage(builder.toString());
                 break;
             case ON_GAME_BOARD_UPDATE:
                 GameBoardEvent gameBoardEvent = customGson().fromJson(
@@ -309,5 +317,11 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     @Override
     public UUID getToken() {
         return this.token;
+    }
+    
+    @Override
+    public void sendMessage(String s) throws IOException {
+        out.println( SEND_MESSAGE + REGEX +s.replaceAll( System.lineSeparator(),REGEX ) );
+        out.flush();
     }
 }

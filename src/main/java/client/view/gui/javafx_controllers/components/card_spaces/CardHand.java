@@ -2,13 +2,11 @@ package client.view.gui.javafx_controllers.components.card_spaces;
 
 import client.view.gui.javafx_controllers.components.weapons.GeneralWeapon;
 import common.dto_model.AbstractCardDTO;
-import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
-import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;

@@ -2,6 +2,7 @@ package client.view.gui.javafx_controllers.view_states;
 
 import client.controller.socket.ClientSocketHandler;
 import common.enums.ConnectionMethodEnum;
+import common.enums.PcColourEnum;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;

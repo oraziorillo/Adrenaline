@@ -30,10 +30,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
-
+import java.rmi.RemoteException;
 
 public class InGameState extends ViewState {
-   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>();
    @FXML private GridPane killShotTrack;
    @FXML private Map mapController;
    @FXML private CardHolder cardHolderLeftController;
@@ -44,6 +43,7 @@ public class InGameState extends ViewState {
    @FXML private Top topController;
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
+   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>(PcColourEnum.GREEN);
    private BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
@@ -76,8 +76,8 @@ public class InGameState extends ViewState {
       test();
    }
    
-   InGameState(PcColourEnum color){
-      this.color.set( color );
+   public InGameState(){
+      this.color.set( PcColourEnum.GREEN );
    }
    
    private void test() {
@@ -167,8 +167,13 @@ public class InGameState extends ViewState {
       chatController.showServerMessage(message);
       chatController.appear();
    }
-
-    @Override
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      chatController.showUserMessage( message );
+   }
+   
+   @Override
     public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );

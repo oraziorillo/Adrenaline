@@ -2,6 +2,7 @@ package client.controller;
 
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
+import common.enums.PcColourEnum;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,8 +15,10 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class GuiController extends AbstractClientController {
-    
-    public GuiController() throws RemoteException {
+   
+   public static PcColourEnum choosenColor;
+   
+   public GuiController() throws RemoteException {
         super( new GuiView() );
     }
     

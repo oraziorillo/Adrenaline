@@ -6,10 +6,7 @@
 <?import java.lang.Double?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
-      fx:controller="client.view.gui.javafx_controllers.components.pc_board.PcBoard" stylesheets="/css/pc_board/Pc.css" >
-    <fx:define>
-        <Double fx:id="HEIGHT" fx:value="200"/>
-    </fx:define>
+      fx:controller="client.view.gui.javafx_controllers.components.pc_board.PcBoard" stylesheets="/css/pc_board/Pc.css">
     <fx:include source="azioni.fxml" fx:id="azioni" viewOrder="-1"/>
     <HBox fx:id="translating" id="translating" onMouseEntered="#appear" onMouseExited="#disappear" alignment="BOTTOM_LEFT">
         <fx:include source="vita.fxml" fx:id="vita"/>

@@ -131,8 +131,13 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
     public void ack(String message) {
         System.out.println(message);
     }
-
-
+    
+    @Override
+    public void chatMessage(String message) throws RemoteException {
+        //TODO
+    }
+    
+    
     @Override
     public ModelEventListener getListener() {
         return this;

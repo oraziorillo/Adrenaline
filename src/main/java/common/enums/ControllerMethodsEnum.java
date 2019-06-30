@@ -34,6 +34,7 @@ public enum ControllerMethodsEnum {
     SKIP("skip"),
     REMOVE_UPGRADE("ru", "remove selectUpgrade"),
     UNDO("undo"),
+    SEND_MESSAGE("send message","sm"),
     QUIT("quit", "q"),
     HELP("help");
     

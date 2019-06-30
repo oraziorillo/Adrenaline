@@ -93,6 +93,11 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    }
    
    @Override
+   public void chatMessage(String message) throws RemoteException {
+   
+   }
+   
+   @Override
    public boolean wantsToRegister() throws RemoteException {
       return false;
    }
