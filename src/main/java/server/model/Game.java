@@ -11,7 +11,7 @@ import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
-import common.events.*;
+import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardSetEvent;
 import common.events.kill_shot_track_events.FinalFrenzyEvent;
 import common.events.kill_shot_track_events.KillShotTrackSetEvent;

@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.UUID;
 
-import static common.Constants.REGEX;
+import static common.Constants.*;
 
 public class ServerSocketHandler implements Runnable {
     private final Socket socket;
@@ -34,11 +34,6 @@ public class ServerSocketHandler implements Runnable {
     public void run() {
         while (!socket.isClosed()) {
             String[] args = in.nextLine().split(REGEX);
-            try {
-                view.ack("Command :" + args[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             try {
                 handle(args);
             } catch (IOException e) {
@@ -71,14 +66,17 @@ public class ServerSocketHandler implements Runnable {
                 out.flush();
                 break;
             case LOGIN:
-                this.player = loginController.login(UUID.fromString(args[1]), view);
+                try {
+                    this.player = loginController.login(UUID.fromString(args[1]), view);
+                    out.println(SUCCESS);
+                    out.flush();
+                } catch (PlayerAlreadyLoggedInException e) {
+                    out.println(FAIL);
+                    out.flush();
+                }
                 break;
             case JOIN_LOBBY:
-                try {
-                    loginController.joinLobby(UUID.fromString(args[1]));
-                } catch (PlayerAlreadyLoggedInException e) {
-                    e.printStackTrace(); //TODO
-                }
+                loginController.joinLobby(UUID.fromString(args[1]));
                 break;
             case CHOOSE_MAP:
                 argInt = Integer.parseInt(args[1]);

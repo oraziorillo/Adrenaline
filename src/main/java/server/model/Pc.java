@@ -28,7 +28,6 @@ public class Pc {
 
     private ModelEventHandler events = new ModelEventHandler();
 
-
     private final Game currGame;
     private PcColourEnum colour;
     @Expose private PcBoard pcBoard;
@@ -36,6 +35,7 @@ public class Pc {
     @Expose private WeaponCard[] weapons;
     @Expose private ArrayList<PowerUpCard> powerUps;
     @Expose private Square currSquare;
+
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;

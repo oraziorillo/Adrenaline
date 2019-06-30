@@ -5,7 +5,7 @@ import common.enums.PcColourEnum;
 
 import static common.Constants.*;
 
-class PcBoard {
+public class PcBoard {
 
     @Expose private PcColourEnum colour;
     @Expose private short points;

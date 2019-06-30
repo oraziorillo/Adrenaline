@@ -32,6 +32,7 @@ import javafx.scene.layout.HBox;
 
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Random;
 
 
@@ -49,7 +50,11 @@ public class InGameState extends ViewState {
    private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
-   
+
+   public InGameState(String... previousAcks) throws RemoteException {
+      super(previousAcks);
+   }
+
    public void initialize() {
       mapController.setMap(0);
       //init pc listeners
@@ -158,7 +163,7 @@ public class InGameState extends ViewState {
    }
    
    @Override
-   public ViewState nextState() {
+   public ViewState nextState() throws RemoteException {
       return new UserAuthState();
    }
    
@@ -180,27 +185,27 @@ public class InGameState extends ViewState {
    }
 
     @Override
-    public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
+    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
 
     }
 
     @Override
-    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
 
     }
 
     @Override
-    public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+    public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
 
     }
 
     @Override
-    public void onPcUpdate(PcEvent event) throws IOException {
+    public void onPcUpdate(PcEvent event) throws RemoteException {
 
     }
 
     @Override
-    public void onSquareUpdate(SquareEvent event) throws IOException {
+    public void onSquareUpdate(SquareEvent event) throws RemoteException {
 
     }
 }

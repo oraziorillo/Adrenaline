@@ -6,17 +6,18 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 
-import java.io.IOException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public interface ModelEventListener {
+public interface ModelEventListener extends Remote {
 
-    void onGameBoardUpdate(GameBoardEvent event) throws IOException;
+    void onGameBoardUpdate(GameBoardEvent event) throws RemoteException;
 
-    void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException;
+    void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException;
 
-    void onPcBoardUpdate(PcBoardEvent event) throws IOException;
+    void onPcBoardUpdate(PcBoardEvent event) throws RemoteException;
 
-    void onPcUpdate(PcEvent event) throws IOException;
+    void onPcUpdate(PcEvent event) throws RemoteException;
 
-    void onSquareUpdate(SquareEvent event) throws IOException;
+    void onSquareUpdate(SquareEvent event) throws RemoteException;
 }

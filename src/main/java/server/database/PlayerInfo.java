@@ -9,6 +9,7 @@ import java.util.UUID;
 class PlayerInfo {
 
     private Player player;
+    private boolean loggedIn;
     @Expose private String username;
     @Expose private PcColourEnum pcColour;
     @Expose private UUID incompleteGameID;

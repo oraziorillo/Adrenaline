@@ -6,6 +6,7 @@ import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
 import server.database.DatabaseHandler;
+import server.exceptions.PlayerAlreadyLoggedInException;
 import server.model.Pc;
 import server.model.WeaponCard;
 
@@ -22,7 +23,7 @@ import static common.Constants.*;
  */
 public class Player extends UnicastRemoteObject implements RemotePlayer {
 
-    @Expose private transient final UUID token;
+    @Expose private transient UUID token;
     private transient Pc pc;
     private transient State currState;
     private transient RemoteView view;
@@ -39,7 +40,10 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         return view;
     }
 
-    public void setView(RemoteView view) {      //PER IL DEBUG
+
+    public void setView(RemoteView view) throws PlayerAlreadyLoggedInException {
+        if (DatabaseHandler.getInstance().isLoggedIn(token))
+            throw new PlayerAlreadyLoggedInException();
         this.view = view;
     }
 

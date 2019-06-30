@@ -2,7 +2,7 @@ package common.dto_model;
 
 import common.enums.AmmoEnum;
 
-public class AmmoTileDTO {
+public class AmmoTileDTO implements DTO{
 
     private short[] ammo;
     private boolean hasPowerUp;

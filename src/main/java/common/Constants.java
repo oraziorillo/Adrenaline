@@ -5,6 +5,10 @@ package common;
  */
 public final class Constants {
 
+    // --------------> CONTROL
+    public static final String SUCCESS = "Y";
+    public static final String FAIL = "N";
+
     // --------------> RULES
 
     public static final int LIFE_POINTS = 11;

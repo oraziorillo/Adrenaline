@@ -10,15 +10,15 @@ import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Collection;
 import java.util.UUID;
 
-public abstract class ViewState implements AbstractView, ListChangeListener<String> {
+public abstract class ViewState extends AbstractView implements ListChangeListener<String> {
    protected RemotePlayer player;
    
-   public abstract ViewState nextState();
+   public abstract ViewState nextState() throws RemoteException;
    
-   public ViewState(String... previousAcks) {
+   public ViewState(String... previousAcks) throws RemoteException {
+      super();
       for(String ack: previousAcks){
          try {
             this.ack( ack );
@@ -62,26 +62,22 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    }
    
    @Override
-   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
-      nextState();
+   public ConnectionMethodEnum acquireConnectionMethod() {
       return null;
    }
 
    @Override
-   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
-      nextState();
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       return null;
    }
 
    @Override
-   public String acquireUsername() throws RemoteException {
-      nextState();
+   public String acquireUsername(){
       return null;
    }
    
    @Override
-   public UUID acquireToken() throws RemoteException {
-      nextState();
+   public UUID acquireToken() {
       return null;
    }
    
@@ -91,12 +87,12 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    }
    
    @Override
-   public boolean wantsToRegister() throws RemoteException {
+   public boolean wantsToRegister() {
       return false;
    }
    
    @Override
-   public String requestString(String message) throws RemoteException {
+   public String requestString(String message) {
       return null;
    }
    
@@ -104,13 +100,9 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
    public ModelEventListener getListener() {
       return this;
    }
-   
-   @Override
-   public Collection<String> getPendingAcks() throws RemoteException {
-      return null;//TODO:rimovibile?
-   }
-   
-   public static ViewState getFirstState(){
+
+
+   public static ViewState getFirstState() throws RemoteException {
       return new UserAuthState();
    }
 }

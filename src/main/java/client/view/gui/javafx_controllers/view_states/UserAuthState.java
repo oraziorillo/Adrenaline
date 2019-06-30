@@ -23,8 +23,12 @@ import java.util.UUID;
 import static javafx.application.Platform.runLater;
 
 public class UserAuthState extends ViewState {
-   
-   
+
+
+   public UserAuthState(String... previousAcks) throws RemoteException {
+      super(previousAcks);
+   }
+
    /**
     * Builds an alert containing the ack and shows it
     * @param message the message of the ack
@@ -45,10 +49,10 @@ public class UserAuthState extends ViewState {
          infos.show();
       } );
    }
-   
-   
+
+
    @Override
-   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
+   public ConnectionMethodEnum acquireConnectionMethod(){
       RemoteLoginController loginController;
       Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
@@ -59,7 +63,7 @@ public class UserAuthState extends ViewState {
 
 
    @Override
-   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       try {
          switch (cme) {
             case RMI:
@@ -87,7 +91,7 @@ public class UserAuthState extends ViewState {
 
 
    @Override
-   public boolean wantsToRegister() throws RemoteException {
+   public boolean wantsToRegister() {
       Alert firstTime = new Alert(
               Alert.AlertType.CONFIRMATION,
               "is this your first time?",
@@ -98,7 +102,7 @@ public class UserAuthState extends ViewState {
    }
    
    @Override
-   public String acquireUsername() throws RemoteException {
+   public String acquireUsername() {
       TextInputDialog usernameDialog = new TextInputDialog();
       usernameDialog.setTitle("Username");
       usernameDialog.setHeaderText(null);
@@ -107,7 +111,7 @@ public class UserAuthState extends ViewState {
    }
    
    @Override
-   public UUID acquireToken() throws RemoteException {
+   public UUID acquireToken() {
       TextInputDialog tokenDialog = new TextInputDialog("Login");
       tokenDialog.setHeaderText("Insert your token");
       tokenDialog.setContentText(null);
@@ -126,39 +130,39 @@ public class UserAuthState extends ViewState {
    }
    
    @Override
-   public String requestString(String message) throws RemoteException {
+   public String requestString(String message) {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
    }
    
    @Override
-   public ViewState nextState() {
+   public ViewState nextState() throws RemoteException {
       return new InGameState();
    }
 
    @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
+   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onPcUpdate(PcEvent event) throws IOException {
+   public void onPcUpdate(PcEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onSquareUpdate(SquareEvent event) throws IOException {
+   public void onSquareUpdate(SquareEvent event) throws RemoteException {
 
    }
 }

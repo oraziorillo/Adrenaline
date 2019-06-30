@@ -39,7 +39,8 @@ public class GuiController extends AbstractClientController {
             } else {
                 token = view.acquireToken();
             }
-            player = loginController.login( token, view );
+            //todo handle ex
+            // player = loginController.login( token, view );
         }catch ( IOException e ){
             try {
                 view.error( "Server unreachable" );
@@ -57,10 +58,6 @@ public class GuiController extends AbstractClientController {
         InGameState inGameView = loader.getController();
         AbstractView oldView = this.view;
         this.view = inGameView;
-        
-        for(String s: oldView.getPendingAcks()){
-            this.view.ack( s );
-        }
     
         inGameView.setHostServices(getHostServices());
         inGameView.setPlayer(player);

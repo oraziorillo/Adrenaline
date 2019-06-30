@@ -14,110 +14,108 @@ import common.remote_interfaces.RemotePlayer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.UUID;
 
-public class GuiView extends UnicastRemoteObject implements AbstractView, ModelEventListener {
+public class GuiView extends AbstractView implements ModelEventListener {
 
    private ViewState currentGui = ViewState.getFirstState();
    private ObservableList<String> acks = FXCollections.emptyObservableList();
    protected RemotePlayer player;
 
+
    public GuiView() throws RemoteException {
    }
 
-   @Override
-   public void error(String msg) throws RemoteException {
-      currentGui.error( msg );
-   }
 
    @Override
-   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
+   public ConnectionMethodEnum acquireConnectionMethod() {
       return currentGui.acquireConnectionMethod();
    }
 
 
    @Override
-   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       return currentGui.acquireConnection(cme);
    }
 
 
    @Override
-   public boolean wantsToRegister() throws RemoteException {
+   public boolean wantsToRegister() {
       return currentGui.wantsToRegister();
    }
 
-   @Override
-   public String acquireUsername() throws RemoteException {
-      String username = currentGui.acquireUsername();
-      nextState();
-      return username;
-   }
 
    @Override
-   public UUID acquireToken() throws RemoteException {
-      UUID token = currentGui.acquireToken();
-      nextState();
-      return token;
+   public String acquireUsername(){
+      return currentGui.acquireUsername();
    }
 
+
    @Override
-   public String requestString(String message) throws RemoteException {
+   public UUID acquireToken() {
+      return currentGui.acquireToken();
+   }
+
+
+   @Override
+   public String requestString(String message) {
       return currentGui.requestString( message );
    }
 
-   @Override
-   public Collection<String> getPendingAcks() throws RemoteException {
-      //TODO: rimovibile?
-      return new HashSet<>( acks );
-   }
 
-   @Override
-   public void ack(String message) throws RemoteException {
-      currentGui.ack( message );
-   }
-
-   @Override
-   public ModelEventListener getListener() {
-      return currentGui.getListener();
-   }
-
-   private void nextState(){
+   private void nextState() throws RemoteException {
       currentGui = currentGui.nextState();
    }
+
 
    public void setPlayer(RemotePlayer player) {
       this.player = player;
       currentGui.setPlayer(player);
    }
 
+
    @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
+   public void ack(String message) throws RemoteException {
+      currentGui.ack( message );
+   }
+
+
+   @Override
+   public void error(String msg) throws RemoteException {
+      currentGui.error( msg );
+   }
+
+
+   @Override
+   public ModelEventListener getListener() {
+      return currentGui.getListener();
+   }
+
+
+   @Override
+   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
+
+   }
+
+
+   @Override
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+   public void onPcUpdate(PcEvent event) throws RemoteException {
 
    }
 
    @Override
-   public void onPcUpdate(PcEvent event) throws IOException {
-
-   }
-
-   @Override
-   public void onSquareUpdate(SquareEvent event) throws IOException {
+   public void onSquareUpdate(SquareEvent event) throws RemoteException {
 
    }
 }

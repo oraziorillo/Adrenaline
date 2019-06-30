@@ -9,6 +9,8 @@ public interface RemoteView extends Remote {
 
     void ack(String message) throws RemoteException;
 
+    void error(String msg) throws RemoteException;
+
     ModelEventListener getListener() throws RemoteException;
 
 }

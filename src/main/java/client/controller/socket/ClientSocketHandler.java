@@ -14,6 +14,7 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
+import server.exceptions.PlayerAlreadyLoggedInException;
 import server.model.deserializers.ModelEventDeserializer;
 
 import java.io.*;
@@ -23,7 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import static common.Constants.REGEX;
+import static common.Constants.*;
 import static common.enums.ControllerMethodsEnum.*;
 
 public class ClientSocketHandler implements Runnable, RemoteLoginController, RemotePlayer {
@@ -71,6 +72,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
         ViewMethodsEnum viewMethod = ViewMethodsEnum.valueOf(args[0]);
         switch (viewMethod) {
             case ACK:
+            case ERROR:
                 StringBuilder builder = new StringBuilder();
                 for (String s : Arrays.copyOfRange(args, 1, args.length)) {
                     builder.append(s).append(System.lineSeparator());
@@ -126,20 +128,32 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
             stringToken = buffer.take()[0];
             return UUID.fromString(stringToken);
         } catch (InterruptedException | IllegalArgumentException invalidToken) {
+            this.view.printMessage("Connection issues: " + invalidToken.getMessage());
             return null;
         }
     }
 
 
     @Override
-    public synchronized RemotePlayer login(UUID token, RemoteView view) {
-        this.token = token;
-        new Thread(this).start();
-        out.println(LOGIN.toString() + REGEX + token);
-        out.flush();
-        //TODO: check if the login was successful
-        return this;
-
+    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException, PlayerAlreadyLoggedInException {
+        if (token != null) {
+            this.token = token;
+            new Thread(this).start();
+            out.println(LOGIN + REGEX + token);
+            out.flush();
+            try {
+                String outcome = buffer.take()[0];
+                if (outcome.equals(SUCCESS))
+                    return this;
+                else if (outcome.equals(FAIL)){
+                    throw new PlayerAlreadyLoggedInException();
+                }
+            } catch (InterruptedException e) {
+                this.view.printMessage("Connection issues: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 

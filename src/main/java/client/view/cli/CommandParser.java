@@ -65,6 +65,7 @@ public abstract class CommandParser {
                 break;
             case HELP:
                 printHelp();
+                break;
             default:
                 StringBuilder errorMessage = new StringBuilder("Unrecognized command: "+commands[0]+" with arguments: ");
                 String separator = ", ";

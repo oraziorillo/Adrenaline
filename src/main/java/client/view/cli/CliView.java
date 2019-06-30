@@ -19,17 +19,20 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.UUID;
 
-public class CliView extends UnicastRemoteObject implements AbstractView {
+public class CliView extends AbstractView {
 
     private transient InputReader inputReader;
 
+
     public CliView() throws RemoteException {
         this.inputReader = new CliInputReader();
+    }
+
+    @Override
+    public void printMessage(String msg) {
+        System.out.println(msg);
     }
 
     @Override
@@ -42,9 +45,8 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
                          "s  ->  socket" + System.lineSeparator() +
                          "r  ->  rmi")
                         .toLowerCase());
-                System.out.println();
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                printMessage(e.getMessage());
             }
         } while (cme == null);
         return cme;
@@ -52,7 +54,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
 
 
     @Override
-    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
         switch (cme) {
             case SOCKET:
                 try {
@@ -61,7 +63,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
                     new Thread(handler).start();
                     return handler;
                 } catch (IOException e) {
-                    error("Server unreachable");
+                    printMessage("Server unreachable");
                 }
                 break;
             case RMI:
@@ -69,7 +71,7 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
                     return (RemoteLoginController) registry.lookup("LoginController");
                 } catch (RemoteException | NotBoundException e) {
-                    error("Server unreachable");
+                    printMessage("Server unreachable");
                 }
                 break;
             default:
@@ -88,9 +90,8 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
                         "r  ->  register" + System.lineSeparator() +
                         "l  ->  login")
                         .toLowerCase());
-                System.out.println();
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                printMessage(e.getMessage());
             }
         } while (cmd == null);
 
@@ -112,7 +113,11 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
 
     @Override
     public UUID acquireToken() {
-        return UUID.fromString(inputReader.requestString("Insert your token"));
+        try {
+            return UUID.fromString(inputReader.requestString("Insert your token"));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
 
@@ -123,56 +128,46 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
 
 
     @Override
-    public void error(String msg) {
+    public void ack(String message) throws RemoteException{
+        printMessage(message + "\n");
+    }
+
+
+    @Override
+    public void error(String msg) throws RemoteException{
         inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
         System.exit(1);
     }
 
-    /**
-     * Cause every message is immediately displayed in the cli, no acks are pending
-     *
-     * @return an empty Collection
-     */
-    @Override
-    public Collection<String> getPendingAcks() {
-        return new HashSet<>();
-    }
-
 
     @Override
-    public void ack(String message) {
-        System.out.println(message);
-    }
-
-
-    @Override
-    public ModelEventListener getListener() {
+    public ModelEventListener getListener() throws RemoteException{
         return this;
     }
 
 
     @Override
-    public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
-        System.out.println(event);
+    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
+        printMessage(">>> " + event + "\n");
     }
 
     @Override
-    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
-        System.out.println(event);
+    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
+        printMessage(">>> " + event + "\n");
     }
 
     @Override
-    public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
-        System.out.println(event);
+    public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
+        printMessage(">>> " + event + "\n");
     }
 
     @Override
-    public void onPcUpdate(PcEvent event) throws IOException {
-        System.out.println(event);
+    public void onPcUpdate(PcEvent event) throws RemoteException {
+        printMessage(">>> " + event + "\n");
     }
 
     @Override
-    public void onSquareUpdate(SquareEvent event) throws IOException {
-        System.out.println(event);
+    public void onSquareUpdate(SquareEvent event) throws RemoteException {
+        printMessage(">>> " + event + "\n");
     }
 }

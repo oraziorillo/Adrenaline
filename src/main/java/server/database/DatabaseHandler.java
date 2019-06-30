@@ -85,32 +85,37 @@ public class DatabaseHandler {
     }
 
 
-    public boolean isRegistered(UUID token) {
+    public synchronized boolean isRegistered(UUID token) {
         return playerInfoByToken.containsKey(token);
     }
 
 
-    public boolean isRegistered(String username) {
+    public synchronized boolean isRegistered(String username) {
         return tokensByUserName.containsKey(username);
     }
 
 
-    public boolean isPendantGame(UUID gameUUID) {
+    public synchronized boolean isLoggedIn(UUID token) {
+        return playerInfoByToken.get(token).getPlayer().getView() != null;
+    }
+
+
+    public synchronized boolean isPendantGame(UUID gameUUID) {
         return gamePathByUUID.containsKey(gameUUID);
     }
 
 
-    public boolean hasPendentGame(UUID token) {
+    public synchronized boolean hasPendentGame(UUID token) {
         return playerInfoByToken.get(token).hasPendentGame();
     }
 
 
-    public String getUsername(UUID token) {
+    public synchronized String getUsername(UUID token) {
         return playerInfoByToken.get(token).getUsername();
     }
 
 
-    public Player getPlayer(UUID token) {
+    public synchronized Player getPlayer(UUID token) {
         try {
             if (playerInfoByToken.containsKey(token)) {
                 if (playerInfoByToken.get(token).getPlayer() == null) {
@@ -125,7 +130,7 @@ public class DatabaseHandler {
     }
 
 
-    public List<Lobby> getLobbies() {
+    public synchronized List<Lobby> getLobbies() {
         List<Lobby> lobbies = new ArrayList<>();
         for (UUID gameUUID : gamePathByUUID.keySet()) {
             lobbies.add(new Lobby(gameUUID));
@@ -134,21 +139,21 @@ public class DatabaseHandler {
     }
 
 
-    public UUID getGameUUID(UUID playerToken) {
+    public synchronized UUID getGameUUID(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getIncompleteGameID();
     }
 
 
-    public boolean containsGame(UUID gameUUID) {
+    public synchronized boolean containsGame(UUID gameUUID) {
         return gamePathByUUID.containsKey(gameUUID);
     }
 
 
-    public void setPlayerColour(UUID playerToken, PcColourEnum pcColour) {
+    public synchronized void setPlayerColour(UUID playerToken, PcColourEnum pcColour) {
         playerInfoByToken.get(playerToken).setPcColour(pcColour);
     }
 
-    public PcColourEnum getPlayerColour(UUID playerToken) {
+    public synchronized PcColourEnum getPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPcColour();
     }
 
@@ -168,7 +173,7 @@ public class DatabaseHandler {
 //    }
 
 
-    public void registerPlayer(UUID token, String username, Player player) {
+    public synchronized void registerPlayer(UUID token, String username, Player player) {
         tokensByUserName.put(username, token);
         playerInfoByToken.put(token, new PlayerInfo(username, player));
         overwrite(TOKENS_BY_USER_NAME);
@@ -277,4 +282,6 @@ public class DatabaseHandler {
         return "src/main/java/server/database/files/" + uuid + ".json";
     }
 
+
+    //TODO mettere view a null quando il player si disconnette
 }

@@ -2,6 +2,9 @@ package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 import common.events.ModelEvent;
+import org.modelmapper.ModelMapper;
+import server.controller.CustomizedModelMapper;
+import server.model.Pc;
 
 public abstract class PcEvent implements ModelEvent {
 
@@ -27,12 +30,13 @@ public abstract class PcEvent implements ModelEvent {
 
 
     PcDTO getCensoredDTO() {
-        PcDTO censored = new PcDTO();
-        censored.setColour(pc.getColour());
-        censored.setCurrSquare(pc.getCurrSquare());
-        censored.setAdrenaline(pc.getAdrenaline());
-        censored.setPcBoard(pc.getPcBoard());
-        return censored;
+        Pc censoredPc = new Pc(pc.getColour(), null);
+        ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
+        PcDTO censoredPcDTO = modelMapper.map(censoredPc, PcDTO.class);
+        censoredPcDTO.setCurrSquare(pc.getCurrSquare());
+        censoredPcDTO.setAdrenaline(pc.getAdrenaline());
+        censoredPcDTO.setPcBoard(pc.getPcBoard());
+        return censoredPcDTO;
     }
 
 
