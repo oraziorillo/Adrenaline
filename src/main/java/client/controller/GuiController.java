@@ -55,12 +55,9 @@ public class GuiController extends AbstractClientController {
     private void startGame(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
-        InGameState inGameView = loader.getController();
-        AbstractView oldView = this.view;
-        this.view = inGameView;
-    
-        inGameView.setHostServices(getHostServices());
-        inGameView.setPlayer(player);
+
+        ((GuiView)view).setHostServices(getHostServices());
+        ((GuiView)view).setPlayer(player);
     
         stage.setTitle( "ADRENALINE" );
         stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );

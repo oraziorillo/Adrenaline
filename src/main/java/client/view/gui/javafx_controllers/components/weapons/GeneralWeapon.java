@@ -5,6 +5,7 @@ import common.dto_model.WeaponCardDTO;
 import common.remote_interfaces.RemotePlayer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -17,7 +18,7 @@ public class GeneralWeapon {
    @FXML public GridPane contentPane;
    @FXML public StackPane mainPane;
    private RemotePlayer player;
-   private boolean enabled;
+   private boolean enabled = false;
    
    public void initialize(){
       background.imageProperty().addListener( (obs,oldV,newV)-> {
@@ -28,7 +29,7 @@ public class GeneralWeapon {
    
    @FXML
    public void setWeapon(WeaponCardDTO weapon){
-      //background.setImage( new Image( weapon.getImagePath(),true ) );
+      background.setImage( new Image( weapon.getImagePath(),true ) );
       int effect;
       for (effect = 0; effect < weapon.getBasicEffects(); effect++) {
          int e = effect;
@@ -57,7 +58,8 @@ public class GeneralWeapon {
    }
    
    public void setWeapon(PowerUpCardDTO powerUpCard){
-      //TODO
+      background.setImage( new Image( powerUpCard.getImagePath(),true ) );
+      mainPane.setOnMouseClicked( e -> usePowerup());
    }
    
    private void chooseWeapon(int index) {
@@ -76,6 +78,16 @@ public class GeneralWeapon {
             player.chooseUpgrade( index );
          } catch ( IOException e ) {
             Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(), e );
+         }
+      }
+   }
+   
+   private void usePowerup(){
+      if(enabled){
+         try {
+            player.usePowerUp();
+         } catch ( IOException ex ) {
+            Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),ex );
          }
       }
    }
