@@ -20,8 +20,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.UUID;
 
 public class CliView extends UnicastRemoteObject implements AbstractView {
@@ -127,19 +125,9 @@ public class CliView extends UnicastRemoteObject implements AbstractView {
         inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
         System.exit(1);
     }
-
-    /**
-     * Cause every message is immediately displayed in the cli, no acks are pending
-     *
-     * @return an empty Collection
-     */
-    @Override
-    public Collection<String> getPendingAcks() {
-        return new HashSet<>();
-    }
-
-
-    @Override
+   
+   
+   @Override
     public void ack(String message) {
         System.out.println(message);
     }

@@ -5,6 +5,7 @@ import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
+import javafx.application.HostServices;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Alert;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 public abstract class ViewState implements AbstractView, ListChangeListener<String> {
    protected RemotePlayer player;
+   protected HostServices hostServices;
    
    public abstract ViewState nextState();
    
@@ -61,27 +63,27 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
       this.player=player;
    }
    
+   public void setHostServices(HostServices hostServices) {
+      this.hostServices = hostServices;
+   }
+   
    @Override
    public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
-      nextState();
       return null;
    }
 
    @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
-      nextState();
       return null;
    }
 
    @Override
    public String acquireUsername() throws RemoteException {
-      nextState();
       return null;
    }
    
    @Override
    public UUID acquireToken() throws RemoteException {
-      nextState();
       return null;
    }
    
@@ -105,12 +107,8 @@ public abstract class ViewState implements AbstractView, ListChangeListener<Stri
       return this;
    }
    
-   @Override
-   public Collection<String> getPendingAcks() throws RemoteException {
-      return null;//TODO:rimovibile?
-   }
-   
    public static ViewState getFirstState(){
       return new UserAuthState();
    }
+   
 }

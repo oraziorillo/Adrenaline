@@ -1,9 +1,7 @@
 package client.controller;
 
-import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
-import client.view.gui.javafx_controllers.view_states.InGameState;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -54,16 +52,9 @@ public class GuiController extends AbstractClientController {
     private void startGame(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
-        InGameState inGameView = loader.getController();
-        AbstractView oldView = this.view;
-        this.view = inGameView;
         
-        for(String s: oldView.getPendingAcks()){
-            this.view.ack( s );
-        }
-    
-        inGameView.setHostServices(getHostServices());
-        inGameView.setPlayer(player);
+        ((GuiView)view).setHostServices(getHostServices());
+        ((GuiView)view).setPlayer(player);
     
         stage.setTitle( "ADRENALINE" );
         stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
