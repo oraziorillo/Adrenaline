@@ -2,6 +2,7 @@ package client.view.gui.javafx_controllers.components.card_spaces;
 
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;
+import common.enums.SquareColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -24,19 +25,18 @@ import java.io.IOException;
 
 
 public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
-   @FXML
-   public AnchorPane mainPane;
-   @FXML
-   private FlowPane weaponBox;
-   @FXML
-   private ImageView background;
+   @FXML public AnchorPane mainPane;
+   @FXML private FlowPane weaponBox;
+   @FXML private ImageView background;
    @FXML Double CARD_TRANSLATION;
+   @FXML private final ObjectProperty<CardinalDirectionEnum> cornerProperty = new SimpleObjectProperty<>(CardinalDirectionEnum.NORTH);
    private ParallelTransition[] showing = new ParallelTransition[3];
    private RotateTransition[] rotations = new RotateTransition[3];
    private ImageView[] cards = new ImageView[3];
-   @FXML
-   private final ObjectProperty<CardinalDirectionEnum> cornerProperty = new SimpleObjectProperty<>(CardinalDirectionEnum.NORTH);
    private RemotePlayer player;
+   private SquareColourEnum squareColor;
+   
+   
 
    public void initialize(){
       Duration duration = new Duration( 500 );
@@ -66,10 +66,11 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       test();
    }
 
-   public void setBackgroundColor(AmmoEnum color){
+   public void setColor(AmmoEnum color){
       String path = "/images/card_holders/"+color.name().toLowerCase()+".png";
       Image img = new Image( path,true );
       background.setImage( img );
+      squareColor = SquareColourEnum.valueOf( color.name() );
    }
 
    private void disappear(int cardIndex){
@@ -115,7 +116,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       }
       mainPane.setRotate( rotation );
       for(RotateTransition r: rotations){
-         double cardRotation = (rotation+180)>360?rotation-180:rotation+180;
+         double cardRotation = ((rotation+180)>360?rotation-180:rotation+180);
          r.setToAngle(cardRotation);
       }
       mainPane.translateXProperty().bind(Bindings.multiply( Bindings.add( mainPane.heightProperty(), -CARD_TRANSLATION ), 0.5*transXMult));
@@ -124,7 +125,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    }
 
    public void test(){
-      setBackgroundColor( AmmoEnum.RED );
+      setColor( AmmoEnum.RED );
       for(ImageView card: cards) {
          card.setImage( new Image( "/images/weapons/martello_ionico.png", true ) );
       }
@@ -137,25 +138,27 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       for(int i=0;i<cards.length;i++){
          int forLambda=i;
          ImageView card = this.cards[i];
-         //card.setImage( new Image( cards[i].getImagePath(),true ) );
-         card.setOnMouseClicked( e-> {
-            try {
-               player.chooseWeaponOnSpawnPoint( forLambda );
-            } catch ( IOException ex ) {
-               //TODO: call error in InGameState
-            }
-         } );
+         card.setImage( new Image( cards[i].getImagePath(),true ) );
+         card.setOnMouseClicked( e-> chooseWeaponOnSpawnPoint( forLambda ) );
       }
    }
 
    public void setPlayer(RemotePlayer player) {
       this.player = player;
    }
+   
+   private void chooseWeaponOnSpawnPoint(int i){
+      try{
+         player.chooseWeaponOnSpawnPoint( i );
+      } catch ( IOException e ) {
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
+   }
 
    @Override
    public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
       if (change.wasAdded()) {
-         if(true) {//TODO: controlla che lo spawnpoint sia giusto)
+         if(change.getValueAdded().getWeapons()!=null&&change.getValueAdded().getColour().equals(this.squareColor )) {
             this.setCards( change.getValueAdded().getWeapons() );
          }
       }

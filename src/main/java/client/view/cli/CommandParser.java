@@ -76,7 +76,17 @@ public abstract class CommandParser {
     }
 
     private static void printHelp(){
-        System.out.println("m\t" + "map\t" + "choose map\n" +
+        StringBuilder builder = new StringBuilder();
+        String tab = "\t";
+        for(ControllerMethodsEnum cm:ControllerMethodsEnum.values()){
+            for(String s: cm.getCliStrings()){
+                builder.append( s + tab );
+            }
+            builder.append( System.lineSeparator() );
+        }
+        System.out.println(builder.toString());
+        
+        /*System.out.println("m\t" + "map\t" + "choose map\n" +
                         "sk\t" + "skulls\t" + "choose number of skulls\n" +
                         "choose colour\t" + "colour\t" + "col\n" +
                         "choose colour\t" + "colour\t" + "col\n" +
@@ -101,6 +111,6 @@ public abstract class CommandParser {
                         "ch\t" + "choose power up\n" +
                         "ru\t" + "remove selectUpgrade\n" +
                         "undo\n" +
-                        "quit\t" + "q");
+                        "quit\t" + "q");*/
     }
 }

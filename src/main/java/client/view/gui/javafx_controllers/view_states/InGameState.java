@@ -6,10 +6,7 @@ import client.view.gui.javafx_controllers.components.Top;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
 import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
 import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
-import common.dto_model.PcDTO;
-import common.dto_model.PowerUpCardDTO;
-import common.dto_model.SquareDTO;
-import common.dto_model.WeaponCardDTO;
+import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
@@ -21,7 +18,9 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
@@ -30,25 +29,25 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
-import java.util.Random;
 
 
 public class InGameState extends ViewState {
-   @FXML private transient GridPane killShotTrack;
-   @FXML private transient Map mapController;
-   @FXML private transient CardHolder cardHolderLeftController;
-   @FXML private transient CardHolder cardHolderRightController;
-   @FXML private transient CardHand<WeaponCardDTO> weaponHandController;
-   @FXML private transient CardHand<PowerUpCardDTO> powerUpHandController;
-   @FXML private transient HBox underMapButtons;
-   @FXML private transient Top topController;
-   @FXML private transient Chat chatController;
-   @FXML private transient PcBoard pcBoardController;
-   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
-   private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
-   private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
+   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>();
+   @FXML private GridPane killShotTrack;
+   @FXML private Map mapController;
+   @FXML private CardHolder cardHolderLeftController;
+   @FXML private CardHolder cardHolderRightController;
+   @FXML private CardHand<WeaponCardDTO> weaponHandController;
+   @FXML private CardHand<PowerUpCardDTO> powerUpHandController;
+   @FXML private HBox underMapButtons;
+   @FXML private Top topController;
+   @FXML private Chat chatController;
+   @FXML private PcBoard pcBoardController;
+   private BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
+   private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
+   private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
+   private ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
    
    public void initialize() {
       mapController.setMap(0);
@@ -61,11 +60,13 @@ public class InGameState extends ViewState {
       squares.addListener( topController.cardHolderController );
       //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
-      cardHolderLeftController.setBackgroundColor( AmmoEnum.RED );
+      cardHolderLeftController.setColor( AmmoEnum.RED );
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
-      cardHolderRightController.setBackgroundColor( AmmoEnum.YELLOW );
+      cardHolderRightController.setColor( AmmoEnum.YELLOW );
       topController.cardHolderController.setCorner( CardinalDirectionEnum.NORTH );
-      topController.cardHolderController.setBackgroundColor( AmmoEnum.BLUE );
+      topController.cardHolderController.setColor( AmmoEnum.BLUE );
+      //pass host services
+      topController.setHostServices( hostServices );
       //make under map buttons overlap a little
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
          Node n = underMapButtons.getChildren().get(i);
@@ -75,6 +76,10 @@ public class InGameState extends ViewState {
       test();
    }
    
+   InGameState(PcColourEnum color){
+      this.color.set( color );
+   }
+
    private void test() {
       /*
       WeaponCardDTO[] weapons = new WeaponCardDTO[3];
@@ -128,33 +133,16 @@ public class InGameState extends ViewState {
    
    @FXML
    private void skipClicked(ActionEvent actionEvent) {
-      //TODO: remove following test lines
-      Random random = new Random();
-      PcColourEnum pcToMoveColor = PcColourEnum.values()[random.nextInt( PcColourEnum.values().length )];
-      PropertyChangeSupport thrower = new PropertyChangeSupport( this );
-      PcDTO pcToMove = new PcDTO();
-      SquareDTO square = new SquareDTO();
-      square.setCol( random.nextInt( 4 ) );
-      square.setRow( random.nextInt( 3 ) );
-      //TODO: mattè i model mapper non si costruiscono così, altrimenti vengono sollevate eccezioni, va usato il model mapper
-      //AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
-      //square.setAmmoTile( random.nextBoolean()?fullTile:null );
-      pcToMove.setSquareRow( square.getRow() );
-      pcToMove.setSquareCol( square.getCol() );
-      pcToMove.setColour( pcToMoveColor );
-      //WeaponCardDTO ionico = new WeaponCardDTO("martello_ionico",1,1);
-      //pcToMove.setWeapons(new WeaponCardDTO[]{ionico,ionico,ionico});
-       //TODO onPcUpdate(new AdrenalineUpEvent( pcToMove ));
-      System.out.println("skip clicked");
-      /*
       try {
          player.skip();
       } catch ( IOException e ) {
          error( "Server unreachable" );
-      }*/
+      }
    }
    
+   @Override
    public void setHostServices(HostServices hostServices) {
+      super.setHostServices(hostServices);
       topController.setHostServices(hostServices);
    }
    
@@ -182,26 +170,30 @@ public class InGameState extends ViewState {
 
     @Override
     public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
-
+      for(SquareDTO s:event.getDTO().getSquares())
+         squares.put( s,s );
     }
 
     @Override
     public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
-
+      //TODO: kill shot track update
     }
 
     @Override
     public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+      PcDTO relatedPc = pcs.get( event.getDTO().getColour() );
+      relatedPc.setPcBoard( event.getDTO() );
+      pcs.put( relatedPc.getColour(),relatedPc );
 
     }
 
     @Override
     public void onPcUpdate(PcEvent event) throws IOException {
-
+      pcs.put( event.getDTO().getColour(),event.getDTO() );
     }
 
     @Override
     public void onSquareUpdate(SquareEvent event) throws IOException {
-
+      squares.put( event.getDTO(),event.getDTO() );
     }
 }

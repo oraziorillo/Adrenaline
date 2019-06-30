@@ -6,7 +6,6 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
 
 import java.rmi.RemoteException;
-import java.util.Collection;
 import java.util.UUID;
 
 public interface AbstractView extends RemoteView, ModelEventListener {
@@ -27,6 +26,5 @@ public interface AbstractView extends RemoteView, ModelEventListener {
     UUID acquireToken() throws RemoteException;
 
     String requestString(String message) throws RemoteException;
-
-    Collection<String> getPendingAcks() throws RemoteException;
+   
 }

@@ -14,14 +14,10 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class Chat {
-   @FXML
-   private Double MESSAGGI_HEIGHT;
-   @FXML
-   private VBox messaggi;
-   @FXML
-   private TextField input;
-   @FXML
-   private AnchorPane mainPane;
+   @FXML private Double MESSAGGI_HEIGHT;
+   @FXML private VBox messaggi;
+   @FXML private TextField input;
+   @FXML private AnchorPane mainPane;
    private Duration duration= new Duration( 300 );
    private ParallelTransition transition;
    private TranslateTransition translate;
