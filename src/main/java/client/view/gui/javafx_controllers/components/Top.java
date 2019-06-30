@@ -19,6 +19,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+//TODO: implementa listeners
 public class Top {
    @FXML
    public CardHolder cardHolderController;
