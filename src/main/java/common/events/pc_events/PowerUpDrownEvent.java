@@ -24,9 +24,9 @@ public class PowerUpDrownEvent extends PcEvent {
 
     @Override
     public String toString() {
-        return isUncensored
+        return (isUncensored
                 ? "You draw a " + powerUp.getColour() + " " + powerUp.getName()
-                : "";
+                : "");
     }
 
 

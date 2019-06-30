@@ -3,7 +3,6 @@ package server.controller;
 import com.google.gson.annotations.Expose;
 import common.remote_interfaces.RemoteView;
 import server.database.DatabaseHandler;
-import server.exceptions.PlayerAlreadyLoggedInException;
 
 import javax.swing.Timer;
 import java.io.IOException;
@@ -66,9 +65,7 @@ public class Lobby {
      *
      * @param player the player to add
      */
-    void addPlayer(Player player) throws PlayerAlreadyLoggedInException {
-        if (players.contains(player))
-            throw new PlayerAlreadyLoggedInException();
+    void addPlayer(Player player) {
         players.add(player);
         ackAllPlayersExcept("Say hello to @" + databaseHandler.getUsername(player.getToken()) + System.lineSeparator() + System.lineSeparator() +
                 "There are " + players.size() + " players in this lobby now");

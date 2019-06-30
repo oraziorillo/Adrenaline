@@ -2,6 +2,7 @@ package server.model.squares;
 
 import com.google.gson.annotations.Expose;
 import common.dto_model.SquareDTO;
+import common.dto_model.WeaponCardDTO;
 import common.enums.SquareColourEnum;
 import common.events.square_events.ItemCollectedEvent;
 import common.events.square_events.SquareRefilledEvent;
@@ -11,6 +12,8 @@ import server.model.AmmoTile;
 import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
+
+import java.util.stream.Collectors;
 
 import static common.Constants.*;
 
@@ -139,7 +142,7 @@ public class SpawnPoint extends Square {
 
         //notify item collected
         events.fireEvent(new ItemCollectedEvent(
-                currPc.getColour(), modelMapper.map(this, SquareDTO.class), weaponToGrab.getName()));
+                currPc.getColour(), convertToDTO(), weaponToGrab.getName()));
 
         resetWeaponIndexes();
         
@@ -155,7 +158,30 @@ public class SpawnPoint extends Square {
         }
 
         //notify square refilled
-        events.fireEvent(new SquareRefilledEvent(modelMapper.map(this, SquareDTO.class), true));
+        events.fireEvent(new SquareRefilledEvent(convertToDTO(), true));
+    }
+
+
+    public SquareDTO convertToDTO(){
+        SquareDTO squareDTO = new SquareDTO();
+        squareDTO.setRow(getRow());
+        squareDTO.setCol(getCol());
+        squareDTO.setColour(getColour());
+        squareDTO.setTargetable(isTargetable());
+        squareDTO.setPcs(getPcs().stream().map(pc -> pc.getColour()).collect(Collectors.toSet()));
+        squareDTO.setWeapons(convertWeaponsDTO());
+        return squareDTO;
+    }
+
+
+    private WeaponCardDTO[] convertWeaponsDTO(){
+        WeaponCardDTO[] newWeaponCardsDTO = new WeaponCardDTO[MAX_WEAPONS_IN_HAND];
+        for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
+            if (weapons[i] != null) {
+                newWeaponCardsDTO[i] = weapons[i].convertToDTO();
+            }
+        }
+        return newWeaponCardsDTO;
     }
 
 }

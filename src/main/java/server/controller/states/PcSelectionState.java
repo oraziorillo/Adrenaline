@@ -62,8 +62,8 @@ public class PcSelectionState extends State {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (controller.getCurrPlayerIndex() == 0)
-            DatabaseHandler.getInstance().saveUpdates(controller);
+//        if (controller.getCurrPlayerIndex() == 0)
+//            DatabaseHandler.getInstance().saveUpdates(controller);
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 }

@@ -59,11 +59,11 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     * @throws RemoteException IDK, rmi stuff
     */
    @Override
-   public synchronized RemotePlayer login(UUID token, RemoteView view) throws RemoteException {
-      view.ack("Logging in as @" + databaseHandler.getUsername(token));
-      databaseHandler.getPlayer(token).setView(view);    //PER IL DEBUG
-      //databaseHandler.registerView( token,view );      NON PIÙ NECESSARIO
-      return databaseHandler.getPlayer(token);
+   public synchronized RemotePlayer login(UUID token, RemoteView view) throws RemoteException, PlayerAlreadyLoggedInException{
+      if (databaseHandler.isRegistered(token)) {
+         databaseHandler.getPlayer(token).setView(view);
+         return databaseHandler.getPlayer(token);
+      } else return null;
    }
 
 
@@ -72,7 +72,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
     *
     * @param token the unique identifier for a player
     */
-   public synchronized void joinLobby(UUID token) throws RemoteException, PlayerAlreadyLoggedInException {
+   public synchronized void joinLobby(UUID token) throws RemoteException {
       if (databaseHandler.isRegistered(token)) {
          if (databaseHandler.hasPendentGame(token)) {
 
@@ -98,6 +98,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
             }
             newLobby.addPlayer(databaseHandler.getPlayer(token));
          }
+         databaseHandler.getPlayer(token).getView().ack("You joined a lobby");
       }
    }
 }

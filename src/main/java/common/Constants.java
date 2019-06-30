@@ -5,6 +5,10 @@ package common;
  */
 public final class Constants {
 
+    // --------------> CONTROL
+    public static final String SUCCESS = "Y";
+    public static final String FAIL = "N";
+
     // --------------> RULES
 
     public static final int LIFE_POINTS = 11;
@@ -49,17 +53,17 @@ public final class Constants {
     public static final int KILL_SHOT_TRACK_SET = 2;
 
     //pc events
-    public static final int ADRENALINE_UP = 3;
-    public static final int MOVEMENT = 4;
-    public static final int POWER_UP_DISCARDED = 5;
-    public static final int POWER_UP_DROWN = 6;
-    public static final int SPAWN = 7;
+    public static final int PC_COLOUR_CHOSEN = 3;
+    public static final int ADRENALINE_UP = 4;
+    public static final int MOVEMENT = 5;
+    public static final int POWER_UP_DISCARDED = 6;
+    public static final int POWER_UP_DROWN = 7;
+    public static final int SPAWN = 8;
 
     //pcBoard events
-    public static final int AMMO_CHANGED = 8;
-    public static final int DAMAGE_MARKS_TAKEN = 9;
-    public static final int DEATH = 10;
-    public static final int MARKS_TAKEN = 11;
+    public static final int AMMO_CHANGED = 9;
+    public static final int DAMAGE_MARKS_TAKEN = 10;
+    public static final int DEATH = 11;
     public static final int NUMBER_OF_DEATH_INCREASED = 12;
     public static final int POINTS_INCREASED = 13;
 

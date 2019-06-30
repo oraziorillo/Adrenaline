@@ -11,6 +11,8 @@ public interface RemoteView extends Remote {
     
     void chatMessage(String message) throws RemoteException;
 
+    void error(String msg) throws RemoteException;
+
     ModelEventListener getListener() throws RemoteException;
 
 }

@@ -1,7 +1,9 @@
 package client.controller;
 
+import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
+import client.view.gui.javafx_controllers.view_states.InGameState;
 import common.enums.PcColourEnum;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -40,7 +42,8 @@ public class GuiController extends AbstractClientController {
             } else {
                 token = view.acquireToken();
             }
-            player = loginController.login( token, view );
+            //todo handle ex
+            // player = loginController.login( token, view );
         }catch ( IOException e ){
             try {
                 view.error( "Server unreachable" );
@@ -55,7 +58,7 @@ public class GuiController extends AbstractClientController {
     private void startGame(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
-        
+
         ((GuiView)view).setHostServices(getHostServices());
         ((GuiView)view).setPlayer(player);
     

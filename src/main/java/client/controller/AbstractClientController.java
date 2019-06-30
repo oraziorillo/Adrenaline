@@ -7,13 +7,12 @@ import javafx.application.Application;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.UUID;
 
 public abstract class AbstractClientController extends Application {
 
+    RemoteLoginController loginController;
     protected AbstractView view;
-    protected RemoteLoginController loginController;
     protected RemotePlayer player;
 
 
@@ -25,38 +24,46 @@ public abstract class AbstractClientController extends Application {
 
     protected void initialize() {
         try {
-            UUID token;
+            UUID token = null;
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             boolean wantsToRegister = view.wantsToRegister();
             if (wantsToRegister) {
+                String username;
                 do {
-                    token = loginController.register(view.acquireUsername(), view);
+                    username = view.acquireUsername();
+                    token = loginController.register(username, view);
                 } while (token == null);
-                view.ack("This is your token: " + token + "\nUse it to login next time\n");
-                player = loginController.login(token, view);
+                view.printMessage("Registered as @" + username +
+                        "\n\nThis is your token: " + token + "\nUse it to login next time\n");
+                player = tryLogin(token);
             } else {
-                RemotePlayer tmpPlayer;
                 do {
                     token = view.acquireToken();
-                    tmpPlayer = loginController.login(token, view);
-                } while (tmpPlayer == null);
-                player = tmpPlayer;
+                    player = tryLogin(token);
+                } while (player == null);
             }
             loginController.joinLobby(token);
-        } catch (IOException serverUnreachable) {
-            try {
-                serverUnreachable.printStackTrace();
-                view.error("Server unreachable");
-            } catch (RemoteException ignored) {
-                throw new IllegalStateException("View should be local");
-            }
-
-        } catch (PlayerAlreadyLoggedInException e) {
-            try {
-                view.ack("The account linked to that token is already logged in");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+        } catch (IOException e) {
+            view.printMessage("Server unreachable");
         }
     }
+
+
+    private RemotePlayer tryLogin(UUID token){
+        RemotePlayer tmpPlayer;
+        try {
+            tmpPlayer = loginController.login(token, view);
+            if (tmpPlayer != null)
+                view.printMessage("Logging in");
+        } catch (PlayerAlreadyLoggedInException e) {
+            view.printMessage(e.getMessage());
+            tmpPlayer = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            tmpPlayer = null;
+        }
+        return tmpPlayer;
+    }
 }
+
+

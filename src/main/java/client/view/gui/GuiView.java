@@ -12,67 +12,67 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
-public class GuiView extends UnicastRemoteObject implements AbstractView, ModelEventListener {
+public class GuiView extends AbstractView implements ModelEventListener {
 
    private transient ViewState currentGui = ViewState.getFirstState();
    protected transient RemotePlayer player;
    protected transient HostServices hostServices;
 
+
    public GuiView() throws RemoteException {
       super();
    }
 
-   @Override
-   public void error(String msg) throws RemoteException {
-      currentGui.error( msg );
-   }
 
    @Override
-   public ConnectionMethodEnum acquireConnectionMethod() throws RemoteException {
+   public ConnectionMethodEnum acquireConnectionMethod() {
       return currentGui.acquireConnectionMethod();
    }
 
 
    @Override
-   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException {
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       return currentGui.acquireConnection(cme);
    }
 
 
    @Override
-   public boolean wantsToRegister() throws RemoteException {
+   public boolean wantsToRegister() {
       return currentGui.wantsToRegister();
    }
 
+
    @Override
-   public String acquireUsername() throws RemoteException {
-      String username = currentGui.acquireUsername();
-      nextState();
-      return username;
+   public String acquireUsername(){
+      return currentGui.acquireUsername();
    }
 
    @Override
-   public UUID acquireToken() throws RemoteException {
-      UUID token = currentGui.acquireToken();
-      nextState();
-      return token;
+   public UUID acquireToken() {
+      return currentGui.acquireToken();
    }
 
    @Override
-   public String requestString(String message) throws RemoteException {
+   public String requestString(String message) {
       return currentGui.requestString( message );
    }
-   
+
    @Override
    public void ack(String message) throws RemoteException {
       currentGui.ack( message );
    }
+
+    @Override
+    public void error(String msg) throws RemoteException {
+        currentGui.error(msg);
+    }
+
    
    @Override
    public void chatMessage(String message) throws RemoteException {
@@ -84,7 +84,7 @@ public class GuiView extends UnicastRemoteObject implements AbstractView, ModelE
       return currentGui.getListener();
    }
 
-   private void nextState(){
+   private void nextState() throws RemoteException {
       currentGui = currentGui.nextState();
       currentGui.setPlayer( player );
       currentGui.setHostServices( hostServices );
@@ -94,35 +94,34 @@ public class GuiView extends UnicastRemoteObject implements AbstractView, ModelE
       this.player = player;
       currentGui.setPlayer(player);
    }
-   
+
    public void setHostServices(HostServices hostServices) {
       this.hostServices = hostServices;
       currentGui.setHostServices( hostServices );
    }
-   
+
    @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
+   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
       currentGui.onGameBoardUpdate( event );
    }
 
    @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
       currentGui.onKillShotTrackUpdate( event );
    }
 
    @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
       currentGui.onPcBoardUpdate( event );
    }
 
    @Override
-   public void onPcUpdate(PcEvent event) throws IOException {
+   public void onPcUpdate(PcEvent event) throws RemoteException {
       currentGui.onPcUpdate( event );
    }
-   
+
    @Override
-   public void onSquareUpdate(SquareEvent event) throws IOException {
+   public void onSquareUpdate(SquareEvent event) throws RemoteException {
       currentGui.onSquareUpdate( event );
    }
-   
 }

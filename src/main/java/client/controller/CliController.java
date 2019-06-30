@@ -16,7 +16,7 @@ public class CliController extends AbstractClientController {
     @Override
     public void start(Stage stage) {
         try {
-            String cmd = view.requestString("Insert command\n>>>");
+            String cmd = view.requestString(">>> Insert command\n");
             String[] commands = cmd.split("-");
             CommandParser.executeCommand(commands, player, view);
         } catch (IOException serverUnreachable) {

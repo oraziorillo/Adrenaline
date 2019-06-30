@@ -7,7 +7,6 @@ public class GameBoardDTO implements DTO {
     private int rows;
     private int columns;
     private List<SquareDTO> squares;
-    private List<SquareDTO> spawnPoints;
 
 
     public int getRows() {
@@ -34,11 +33,4 @@ public class GameBoardDTO implements DTO {
         this.squares = squares;
     }
 
-    public List<SquareDTO> getSpawnPoints() {
-        return spawnPoints;
-    }
-
-    public void setSpawnPoints(List<SquareDTO> spawnPoints) {
-        this.spawnPoints = spawnPoints;
-    }
 }

@@ -8,7 +8,7 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 import server.database.Caterpillar;
-import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class ModelEventHandler {
@@ -36,7 +36,7 @@ public class ModelEventHandler {
         listeners.values().parallelStream().forEach(l -> {
             try {
                 l.onGameBoardUpdate(event);
-            } catch (IOException e) {
+            } catch (RemoteException e) {
                 e.printStackTrace();
             }
         });
@@ -47,7 +47,7 @@ public class ModelEventHandler {
         listeners.values().parallelStream().forEach(l -> {
             try {
                 l.onKillShotTrackUpdate(event);
-            } catch (IOException e) {
+            } catch (RemoteException e) {
                 e.printStackTrace();
             }
         });
@@ -63,10 +63,11 @@ public class ModelEventHandler {
                     listeners.get(colour).onPcBoardUpdate(event.switchToPrivate());
                 }
             }
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
+
 
 
     synchronized void fireEvent(PcEvent event) {
@@ -74,11 +75,11 @@ public class ModelEventHandler {
         try {
             listeners.get(publisherColour).onPcUpdate(event);
             for (ModelEventListener listener : listeners.values()) {
-                if (!publisherColour.equals(listeners.getSecondaryKey(listener))) {
+                if (publisherColour != listeners.getSecondaryKey(listener)) {
                     listener.onPcUpdate(event.hideSensibleContent());
                 }
             }
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
@@ -98,7 +99,7 @@ public class ModelEventHandler {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }

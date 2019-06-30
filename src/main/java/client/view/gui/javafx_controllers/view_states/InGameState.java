@@ -10,6 +10,7 @@ import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
+import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;
@@ -76,10 +77,11 @@ public class InGameState extends ViewState {
       test();
    }
    
-   public InGameState(){
+   InGameState() throws RemoteException {
+       super();
       this.color.set( PcColourEnum.GREEN );
    }
-   
+
    private void test() {
       /*
       WeaponCardDTO[] weapons = new WeaponCardDTO[3];
@@ -147,7 +149,7 @@ public class InGameState extends ViewState {
    }
    
    @Override
-   public ViewState nextState() {
+   public ViewState nextState() throws RemoteException {
       return new UserAuthState();
    }
    
@@ -169,23 +171,28 @@ public class InGameState extends ViewState {
    }
    
    @Override
+   public ModelEventListener getListener() throws RemoteException {
+      return null;
+   }
+   
+   @Override
+    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException{
+      for(SquareDTO s:event.getDTO().getSquares())
+         squares.put( s,s );
+    }
+   
+   @Override
    public void chatMessage(String message) throws RemoteException {
       chatController.showUserMessage( message );
    }
    
-   @Override
-    public void onGameBoardUpdate(GameBoardEvent event) throws IOException {
-      for(SquareDTO s:event.getDTO().getSquares())
-         squares.put( s,s );
-    }
-
     @Override
-    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws IOException {
+    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
       //TODO: kill shot track update
     }
 
     @Override
-    public void onPcBoardUpdate(PcBoardEvent event) throws IOException {
+    public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
       PcDTO relatedPc = pcs.get( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );
       pcs.put( relatedPc.getColour(),relatedPc );
@@ -193,12 +200,17 @@ public class InGameState extends ViewState {
     }
 
     @Override
-    public void onPcUpdate(PcEvent event) throws IOException {
+    public void onPcUpdate(PcEvent event) throws RemoteException{
       pcs.put( event.getDTO().getColour(),event.getDTO() );
     }
 
     @Override
-    public void onSquareUpdate(SquareEvent event) throws IOException {
+    public void onSquareUpdate(SquareEvent event) throws RemoteException {
       squares.put( event.getDTO(),event.getDTO() );
     }
+   
+   @Override
+   public String requestString(String message) throws RemoteException {
+      return null;
+   }
 }

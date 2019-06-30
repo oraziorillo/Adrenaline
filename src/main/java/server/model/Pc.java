@@ -1,15 +1,13 @@
 package server.model;
 
 import com.google.gson.annotations.Expose;
-import common.dto_model.PcBoardDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
+import common.dto_model.WeaponCardDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import common.events.pc_board_events.*;
 import common.events.pc_events.*;
-import org.modelmapper.ModelMapper;
-import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
@@ -24,10 +22,7 @@ import static common.Constants.*;
  */
 public class Pc {
 
-    private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
-
     private ModelEventHandler events = new ModelEventHandler();
-
 
     private final Game currGame;
     private PcColourEnum colour;
@@ -36,6 +31,7 @@ public class Pc {
     @Expose private WeaponCard[] weapons;
     @Expose private ArrayList<PowerUpCard> powerUps;
     @Expose private Square currSquare;
+
 
     public Pc(PcColourEnum colour, Game game) {
         this.currGame = game;
@@ -100,7 +96,7 @@ public class Pc {
         pcBoard.increasePoints(earnedPoints);
 
         //notify listeners
-        events.fireEvent(new PointsIncreasedEvents(modelMapper.map(pcBoard, PcBoardDTO.class), earnedPoints));
+        events.fireEvent(new PointsIncreasedEvents(pcBoard.convertToDTO(), earnedPoints));
     }
 
 
@@ -152,7 +148,7 @@ public class Pc {
         this.currSquare.addPc(this);
 
         //notify listeners
-        events.fireEvent(new MovementEvent(modelMapper.map(this, PcDTO.class), oldPos, currSquare.toString()));
+        events.fireEvent(new MovementEvent(convertToDTO(), oldPos, currSquare.toString()));
     }
 
 
@@ -164,8 +160,8 @@ public class Pc {
 
             //notify power up drown
             events.fireEvent(new PowerUpDrownEvent(
-                    modelMapper.map(this, PcDTO.class),
-                    modelMapper.map(powerUpToDraw, PowerUpCardDTO.class)));
+                    this.convertToDTO(),
+                    powerUpToDraw.convertToDTO()));
         }
     }
 
@@ -179,8 +175,8 @@ public class Pc {
 
         //notify listeners
         events.fireEvent(new PowerUpDiscardedEvent(
-                modelMapper.map(this, PcDTO.class),
-                modelMapper.map(p, PowerUpCardDTO.class)));
+                convertToDTO(),
+                p.convertToDTO()));
     }
 
 
@@ -218,7 +214,7 @@ public class Pc {
         pcBoard.addAmmo(ammoTile);
 
         //notify ammo change
-        events.fireEvent(new AmmoChangedEvent(modelMapper.map(pcBoard, PcBoardDTO.class),
+        events.fireEvent(new AmmoChangedEvent(pcBoard.convertToDTO(),
                 ammoTile.getAmmo(), null, true));
 
         if (ammoTile.hasPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
@@ -249,7 +245,7 @@ public class Pc {
         powerUps.removeAll(powerUpsToDiscard);
 
         //notify ammo payment
-        events.fireEvent(new AmmoChangedEvent(modelMapper.map(pcBoard, PcBoardDTO.class),
+        events.fireEvent(new AmmoChangedEvent(pcBoard.convertToDTO(),
                 ammoPaid, powerUpsDiscarded, false));
 
         return true;
@@ -270,7 +266,7 @@ public class Pc {
             currGame.killOccurred(pcBoard.getColour(), overkill);
 
             //notify death
-            events.fireEvent(new DeathEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
+            events.fireEvent(new DeathEvent(pcBoard.convertToDTO()));
         }
 
         boolean adrenalineUp = false;
@@ -286,7 +282,7 @@ public class Pc {
         if (adrenalineUp)
 
             //notify adrenaline up
-            events.fireEvent(new AdrenalineUpEvent(modelMapper.map(this, PcDTO.class)));
+            events.fireEvent(new AdrenalineUpEvent(convertToDTO()));
     }
 
 
@@ -298,7 +294,7 @@ public class Pc {
 
 
     public void notifyDamageMarks(String shooterName, short damages, short marks){
-        events.fireEvent(new DamageMarksTakenEvent(modelMapper.map(pcBoard, PcBoardDTO.class), shooterName, damages, marks));
+        events.fireEvent(new DamageMarksTakenEvent(pcBoard.convertToDTO(), shooterName, damages, marks));
     }
 
 
@@ -313,7 +309,7 @@ public class Pc {
         currSquare.addPc(this);
 
         //notify listeners
-        events.fireEvent(new SpawnEvent(modelMapper.map(this, PcDTO.class)));
+        events.fireEvent(new SpawnEvent(convertToDTO()));
     }
 
 
@@ -345,12 +341,50 @@ public class Pc {
     }
 
 
-    void increaseNumberOfDeaths() {
+    public void increaseNumberOfDeaths() {
         pcBoard.increaseNumberOfDeaths();
 
         //notify listeners
-        events.fireEvent(new NumberOfDeathIncreasedEvent(modelMapper.map(pcBoard, PcBoardDTO.class)));
+        events.fireEvent(new NumberOfDeathIncreasedEvent(pcBoard.convertToDTO()));
     }
+
+
+    public PcDTO convertToDTO(){
+        PcDTO pcDTO = new PcDTO();
+        pcDTO.setColour(colour);
+        pcDTO.setPcBoard(pcBoard.convertToDTO());
+        pcDTO.setAdrenaline(adrenaline);
+        if (currSquare != null) {
+            pcDTO.setSquareRow(currSquare.getRow());
+            pcDTO.setSquareCol(currSquare.getCol());
+        }
+        pcDTO.setWeapons(convertWeaponsDTO());
+        pcDTO.setPowerUps(convertPowerUpsDTO());
+        return pcDTO;
+    }
+
+
+    private WeaponCardDTO[] convertWeaponsDTO(){
+        WeaponCardDTO[] newWeaponCardsDTO = new WeaponCardDTO[MAX_WEAPONS_IN_HAND];
+        for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
+            if (weapons[i] != null) {
+                newWeaponCardsDTO[i] = weapons[i].convertToDTO();
+            }
+        }
+        return newWeaponCardsDTO;
+    }
+
+
+    private ArrayList<PowerUpCardDTO> convertPowerUpsDTO(){
+        ArrayList<PowerUpCardDTO> powerUpCardDTOs = new ArrayList<>();
+        for (PowerUpCard powerUp: powerUps) {
+            if (powerUp != null) {
+                powerUpCardDTOs.add(powerUp.convertToDTO());
+            }
+        }
+        return powerUpCardDTOs;
+    }
+
 }
 
 

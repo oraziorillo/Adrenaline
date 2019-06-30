@@ -9,7 +9,6 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteView;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.RemoteException;
@@ -26,8 +25,15 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
 
 
    @Override
-   public void ack(String message) {
-      out.println(ACK + REGEX + message.replaceAll(System.lineSeparator(), REGEX));
+   public void ack(String msg) throws RemoteException{
+      out.println(ACK + REGEX + msg.replaceAll(System.lineSeparator(), REGEX));
+      out.flush();
+   }
+
+
+   @Override
+   public void error(String msg) throws RemoteException {
+      out.println(ERROR + REGEX + msg.replaceAll(System.lineSeparator(), REGEX));
       out.flush();
    }
    
@@ -39,37 +45,37 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    
    
    @Override
-   public void onGameBoardUpdate(GameBoardEvent event) {
+   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException{
       out.println(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) {
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
       out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
-   public void onPcBoardUpdate(PcBoardEvent event) {
+   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
       out.println(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
-   public void onPcUpdate(PcEvent event) {
+   public void onPcUpdate(PcEvent event) throws RemoteException {
       out.println(ON_PC_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
-   public void onSquareUpdate(SquareEvent event) {
+   public void onSquareUpdate(SquareEvent event) throws RemoteException {
       out.println(ON_SQUARE_UPDATE + REGEX + new Gson().toJson(event));
       out.flush();
    }
 
    @Override
-   public ModelEventListener getListener() {
+   public ModelEventListener getListener() throws RemoteException {
       return this;
    }
 }

@@ -6,25 +6,42 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
-public interface AbstractView extends RemoteView, ModelEventListener {
-    String HOST = "localhost";
-    int SOCKET_PORT = 10000;
-    int RMI_PORT = 9999;
+public abstract class AbstractView extends UnicastRemoteObject implements RemoteView, ModelEventListener {
 
-    void error(String msg) throws RemoteException;
+    protected String HOST = "localhost";
+    protected int SOCKET_PORT = 10000;
+    protected int RMI_PORT = 9999;
 
-    ConnectionMethodEnum acquireConnectionMethod() throws RemoteException;
+    protected AbstractView() throws RemoteException {
+    }
 
-    RemoteLoginController acquireConnection(ConnectionMethodEnum cme) throws RemoteException;
+    public void printMessage(String msg) {
+    }
 
-    boolean wantsToRegister() throws RemoteException;
+    public ConnectionMethodEnum acquireConnectionMethod() {
+        return null;
+    }
 
-    String acquireUsername() throws RemoteException;
+    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
+        return null;
+    }
 
-    UUID acquireToken() throws RemoteException;
+    public boolean wantsToRegister() {
+        return false;
+    }
 
-    String requestString(String message) throws RemoteException;
-   
+    public String acquireUsername() {
+        return null;
+    }
+
+    public UUID acquireToken() {
+        return null;
+    }
+
+    public String requestString(String message) {
+        return null;
+    }
 }
