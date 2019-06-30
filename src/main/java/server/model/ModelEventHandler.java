@@ -69,12 +69,13 @@ public class ModelEventHandler {
     }
 
 
+
     synchronized void fireEvent(PcEvent event) {
         PcColourEnum publisherColour = event.getDTO().getColour();
         try {
             listeners.get(publisherColour).onPcUpdate(event);
             for (ModelEventListener listener : listeners.values()) {
-                if (!publisherColour.equals(listeners.getSecondaryKey(listener))) {
+                if (publisherColour != listeners.getSecondaryKey(listener)) {
                     listener.onPcUpdate(event.hideSensibleContent());
                 }
             }

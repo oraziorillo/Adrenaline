@@ -9,10 +9,7 @@ import common.events.game_board_events.GameBoardSetEvent;
 import common.events.kill_shot_track_events.FinalFrenzyEvent;
 import common.events.kill_shot_track_events.KillShotTrackSetEvent;
 import common.events.pc_board_events.*;
-import common.events.pc_events.AdrenalineUpEvent;
-import common.events.pc_events.MovementEvent;
-import common.events.pc_events.PowerUpDiscardedEvent;
-import common.events.pc_events.SpawnEvent;
+import common.events.pc_events.*;
 import common.events.square_events.ItemCollectedEvent;
 import common.events.square_events.SquareRefilledEvent;
 import common.events.square_events.TargetableSetEvent;
@@ -33,6 +30,8 @@ public class ModelEventDeserializer implements JsonDeserializer<ModelEvent> {
                 return context.deserialize(json, FinalFrenzyEvent.class);
             case KILL_SHOT_TRACK_SET:
                 return context.deserialize(json, KillShotTrackSetEvent.class);
+            case PC_COLOUR_CHOSEN:
+                return context.deserialize(json, PcColourChosenEvent.class);
             case ADRENALINE_UP:
                 return context.deserialize(json, AdrenalineUpEvent.class);
             case MOVEMENT:

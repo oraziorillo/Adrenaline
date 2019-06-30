@@ -3,6 +3,7 @@ package server.model;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
+import common.dto_model.WeaponCardDTO;
 import common.enums.AmmoEnum;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
@@ -177,5 +178,14 @@ public class WeaponCard {
         }
         effectsToApply.clear();
         init();
+    }
+
+
+    public WeaponCardDTO convertToDTO(){
+        WeaponCardDTO weaponCardDTO = new WeaponCardDTO();
+        weaponCardDTO.setBasicEffects(fireModes.size());
+        weaponCardDTO.setUpgrades(upgrades.size());
+        weaponCardDTO.setName(name);
+        return weaponCardDTO;
     }
 }

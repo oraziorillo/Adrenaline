@@ -39,14 +39,14 @@ public class Caterpillar<PK, SK, V> {
 
 
     public V get(SK k) {
-        if (metamorphosed())
-            return values.get(secondaryKeys.indexOf(k));
-        return null;
+        return values.get(secondaryKeys.indexOf(k));
     }
 
 
     public SK getSecondaryKey(V v) {
-        return secondaryKeys.get(values.indexOf(v));
+        if(values.indexOf(v) < secondaryKeys.size())
+            return secondaryKeys.get(values.indexOf(v));
+        return null;
     }
 
 

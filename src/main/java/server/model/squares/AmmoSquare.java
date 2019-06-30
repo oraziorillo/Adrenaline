@@ -10,6 +10,8 @@ import server.model.Deck;
 import server.model.Pc;
 import server.model.WeaponCard;
 
+import java.util.stream.Collectors;
+
 /**
  * A square containing an AmmoTile
  */
@@ -67,7 +69,7 @@ public class AmmoSquare extends Square {
 
         //notify item collected
         events.fireEvent(new ItemCollectedEvent(
-                currPc.getColour(), modelMapper.map(this, SquareDTO.class), ammoTile.toString()));
+                currPc.getColour(), convertToDTO(), ammoTile.toString()));
 
         ammoTile = null;
     }
@@ -82,7 +84,19 @@ public class AmmoSquare extends Square {
         }
 
         //notify square refilled
-        events.fireEvent(new SquareRefilledEvent(modelMapper.map(this, SquareDTO.class), false));
+        events.fireEvent(new SquareRefilledEvent(convertToDTO(), false));
+    }
+
+
+    public SquareDTO convertToDTO(){
+        SquareDTO squareDTO = new SquareDTO();
+        squareDTO.setRow(getRow());
+        squareDTO.setCol(getCol());
+        squareDTO.setColour(getColour());
+        squareDTO.setTargetable(isTargetable());
+        squareDTO.setPcs(getPcs().stream().map(pc -> pc.getColour()).collect(Collectors.toSet()));
+        squareDTO.setAmmoTile(ammoTile.convertToDTO());
+        return squareDTO;
     }
 }
 

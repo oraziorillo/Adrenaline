@@ -139,7 +139,8 @@ public class InGameState extends ViewState {
       //TODO: mattè i model mapper non si costruiscono così, altrimenti vengono sollevate eccezioni, va usato il model mapper
       //AmmoTileDTO fullTile = new AmmoTileDTO(new AmmoTile(new short[]{3,0,0},false) );
       //square.setAmmoTile( random.nextBoolean()?fullTile:null );
-      pcToMove.setCurrSquare( square );
+      pcToMove.setSquareRow( square.getRow() );
+      pcToMove.setSquareCol( square.getCol() );
       pcToMove.setColour( pcToMoveColor );
       //WeaponCardDTO ionico = new WeaponCardDTO("martello_ionico",1,1);
       //pcToMove.setWeapons(new WeaponCardDTO[]{ionico,ionico,ionico});

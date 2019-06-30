@@ -1,6 +1,7 @@
 package common.dto_model;
 
 import common.enums.PcColourEnum;
+import server.model.PcBoard;
 
 public class PcBoardDTO implements DTO {
 
@@ -77,4 +78,5 @@ public class PcBoardDTO implements DTO {
     public void setPoints(short points) {
         this.points = points;
     }
+
 }

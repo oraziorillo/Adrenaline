@@ -24,7 +24,7 @@ public class SpawnEvent extends PcEvent {
         return isUncensored
                 ? "You"
                 : pc.getName()
-                + " spawned on " + pc.getCurrSquare();
+                + " spawned on row" + pc.getSquareRow() + " and " + pc.getSquareCol();
     }
 
 

@@ -1,6 +1,7 @@
 package common.dto_model;
 
 import common.enums.AmmoEnum;
+import server.model.PowerUpCard;
 
 public class PowerUpCardDTO extends AbstractCardDTO implements DTO {
     
@@ -18,16 +19,8 @@ public class PowerUpCardDTO extends AbstractCardDTO implements DTO {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public AmmoEnum getColour() {
         return colour;
-    }
-
-    public void setColour(AmmoEnum colour) {
-        this.colour = colour;
     }
     
 //    @Override
@@ -38,4 +31,13 @@ public class PowerUpCardDTO extends AbstractCardDTO implements DTO {
 //    public static PowerUpCardDTO getCardBack(){
 //        return new PowerUpCardDTO();
 //    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setColour(AmmoEnum colour) {
+        this.colour = colour;
+    }
 }

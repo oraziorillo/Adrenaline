@@ -2,6 +2,7 @@ package common.events.pc_events;
 
 import common.dto_model.PcDTO;
 import common.events.ModelEvent;
+import server.model.Pc;
 
 public abstract class PcEvent implements ModelEvent {
 
@@ -27,12 +28,14 @@ public abstract class PcEvent implements ModelEvent {
 
 
     PcDTO getCensoredDTO() {
-        PcDTO censored = new PcDTO();
-        censored.setColour(pc.getColour());
-        censored.setCurrSquare(pc.getCurrSquare());
-        censored.setAdrenaline(pc.getAdrenaline());
-        censored.setPcBoard(pc.getPcBoard());
-        return censored;
+        Pc censoredPc = new Pc(pc.getColour(), null);
+        PcDTO censoredPcDTO = censoredPc.convertToDTO();
+        censoredPcDTO.setColour(pc.getColour());
+        censoredPcDTO.setSquareRow(pc.getSquareRow());
+        censoredPcDTO.setSquareCol(pc.getSquareCol());
+        censoredPcDTO.setAdrenaline(pc.getAdrenaline());
+        censoredPcDTO.setPcBoard(pc.getPcBoard());
+        return censoredPcDTO;
     }
 
 

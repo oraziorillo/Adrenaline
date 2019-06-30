@@ -1,5 +1,7 @@
 package common.dto_model;
 
+import server.model.WeaponCard;
+
 public class WeaponCardDTO extends AbstractCardDTO implements DTO {
     
 //    private static final String DIRECTORY_NAME = "weapons/";
@@ -13,22 +15,11 @@ public class WeaponCardDTO extends AbstractCardDTO implements DTO {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setBasicEffects(int basicEffects) {
-        this.basicEffects = basicEffects;
-    }
     
     public int getBasicEffects() {
         return basicEffects;
     }
-    
-    public void setUpgrades(int upgrades) {
-        this.upgrades = upgrades;
-    }
-    
+
     public int getUpgrades() {
         return upgrades;
     }
@@ -46,5 +37,16 @@ public class WeaponCardDTO extends AbstractCardDTO implements DTO {
    public static WeaponCardDTO getCardBack() {
       return new WeaponCardDTO(DEFAULT_NAME,0,0);
    }*/
-   
+
+    public void setBasicEffects(int basicEffects) {
+        this.basicEffects = basicEffects;
+    }
+
+    public void setUpgrades(int upgrades) {
+        this.upgrades = upgrades;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

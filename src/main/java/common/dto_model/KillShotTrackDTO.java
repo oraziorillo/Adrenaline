@@ -4,22 +4,22 @@ import server.model.KillShot;
 
 public class KillShotTrackDTO implements DTO {
 
-    private KillShot[] killShotTrack;
-    private KillShot [] finalFrenzyKillShotTrack;
+    private KillShotDTO[] killShotTrack;
+    private KillShotDTO [] finalFrenzyKillShotTrack;
 
-    public KillShot[] getKillShotTrack() {
+    public KillShotDTO[] getKillShotTrack() {
         return killShotTrack;
     }
 
-    public void setKillShotTrack(KillShot[] killShotTrack) {
+    public void setKillShotTrack(KillShotDTO[] killShotTrack) {
         this.killShotTrack = killShotTrack;
     }
 
-    public KillShot[] getFinalFrenzyKillShotTrack() {
+    public KillShotDTO[] getFinalFrenzyKillShotTrack() {
         return finalFrenzyKillShotTrack;
     }
 
-    public void setFinalFrenzyKillShotTrack(KillShot[] finalFrenzyKillShotTrack) {
+    public void setFinalFrenzyKillShotTrack(KillShotDTO[] finalFrenzyKillShotTrack) {
         this.finalFrenzyKillShotTrack = finalFrenzyKillShotTrack;
     }
 }

@@ -54,7 +54,7 @@ public class DatabaseHandler {
             Type type;
             switch (file) {
                 case TOKENS_BY_USER_NAME:
-                    type = new TypeToken<HashMap<String, String>>() {
+                    type = new TypeToken<HashMap<String, UUID>>() {
                     }.getType();
                     tokensByUserName = gson.fromJson(reader, type);
                     if (tokensByUserName == null)

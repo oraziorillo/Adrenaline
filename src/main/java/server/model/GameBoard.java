@@ -1,6 +1,7 @@
 package server.model;
 
 import com.google.gson.annotations.Expose;
+import common.dto_model.GameBoardDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
 import server.model.squares.Square;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Support class for game that handles the map and the kill shot track
@@ -135,5 +137,14 @@ public class GameBoard {
 
     void addModelEventHandler(ModelEventHandler events) {
         squares.forEach(s -> s.addModelEventHandler(events));
+    }
+
+
+    public GameBoardDTO convertoTo(){
+        GameBoardDTO gameBoardDTO = new GameBoardDTO();
+        gameBoardDTO.setRows(rows);
+        gameBoardDTO.setColumns(columns);
+        gameBoardDTO.setSquares(squares.stream().map(Square::convertToDTO).collect(Collectors.toList()));
+        return  gameBoardDTO;
     }
 }
