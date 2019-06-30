@@ -1,6 +1,7 @@
 package server.model;
 
 import com.google.gson.annotations.Expose;
+import common.dto_model.AmmoTileDTO;
 
 /**
  * Represents the ammo tiles
@@ -28,6 +29,14 @@ public class AmmoTile {
 
     public boolean hasPowerUp() {
         return hasPowerUp;
+    }
+
+
+    public AmmoTileDTO convertToDTO(){
+        AmmoTileDTO ammoTileDTO = new AmmoTileDTO();
+        ammoTileDTO.setHasPowerUp(hasPowerUp);
+        ammoTileDTO.setAmmo(ammo);
+        return ammoTileDTO;
     }
 }
 

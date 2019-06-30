@@ -52,8 +52,8 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
          PcDTO oldPc = change.getValueRemoved();
          Circle circle = pcCircles.get( newPc.getColour() );
          TranslateTransition transition = new TranslateTransition(new Duration( 400 ),circle);
-         Pane newSquare = squares[newPc.getCurrSquare().getRow()][newPc.getCurrSquare().getCol()];
-         Pane oldSquare = squares[oldPc.getCurrSquare().getRow()][oldPc.getCurrSquare().getCol()];
+         Pane newSquare = squares[newPc.getSquareRow()][newPc.getSquareCol()];
+         Pane oldSquare = squares[oldPc.getSquareRow()][oldPc.getSquareCol()];
          circle.setVisible( false );
          Bounds oldBound = circle.localToScene( circle.getBoundsInLocal() );
          oldSquare.getChildren().remove( circle );
@@ -71,7 +71,7 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
          //size of the implicit grid insie a cell
          innerGridSize.setValue( Math.ceil( Math.sqrt( playersNumb + 1)) );
          PcColourEnum colour = change.getValueAdded().getColour();   //Get changing pc's color
-         Pane square = squares[change.getValueAdded().getCurrSquare().getRow()][change.getValueAdded().getCurrSquare().getCol()];   //get new square
+         Pane square = squares[change.getValueAdded().getSquareRow()][change.getValueAdded().getSquareCol()];   //get new square
          Circle circle = pcCircles.getOrDefault( colour,new Circle(0,Color.valueOf( colour.toString() )) ); //get pc circle
          pcCircles.put( colour,circle );
          //bind radius to payers number for every circle

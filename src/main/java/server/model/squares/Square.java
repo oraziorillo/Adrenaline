@@ -5,8 +5,6 @@ import common.dto_model.SquareDTO;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
 import common.events.square_events.TargetableSetEvent;
-import org.modelmapper.ModelMapper;
-import server.controller.CustomizedModelMapper;
 import server.exceptions.EmptySquareException;
 import server.exceptions.NotEnoughAmmoException;
 import server.model.*;
@@ -18,8 +16,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class Square {
-
-    ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
 
     ModelEventHandler events;
 
@@ -91,7 +87,7 @@ public abstract class Square {
         this.targetable = targetable;
 
         //notify listeners
-        events.fireEvent(new TargetableSetEvent(modelMapper.map(this, SquareDTO.class)));
+        events.fireEvent(new TargetableSetEvent(convertToDTO()));
     }
 
 
@@ -264,5 +260,8 @@ public abstract class Square {
     public String toString(){
         return "(" + this.row + "," + this.col + ")";
     }
+
+
+    public abstract SquareDTO convertToDTO();
 }
 

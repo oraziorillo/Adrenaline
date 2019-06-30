@@ -1,5 +1,6 @@
 package server.model;
 
+import common.dto_model.KillShotDTO;
 import common.enums.PcColourEnum;
 
 /**
@@ -41,5 +42,13 @@ public class KillShot {
         } else {
             throw new IllegalStateException("Can't mark two times the same killshot tab");
         }
+    }
+
+    public KillShotDTO convertToDTO(){
+        KillShotDTO killShotDTO = new KillShotDTO();
+        killShotDTO.setColour(colour);
+        killShotDTO.setOverkilled(overkilled);
+        killShotDTO.setSkulled(skulled);
+        return killShotDTO;
     }
 }

@@ -1,17 +1,17 @@
 package common.dto_model;
 
 import common.enums.PcColourEnum;
-
 import java.util.ArrayList;
 
-public class  PcDTO implements DTO {
+public class PcDTO implements DTO {
 
     private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
     private ArrayList<PowerUpCardDTO> powerUps;
-    private SquareDTO currSquare;
     private short adrenaline;
+    private int squareRow;
+    private int squareCol;
 
 
     public String getName() {
@@ -30,6 +30,22 @@ public class  PcDTO implements DTO {
         this.colour = colour;
     }
 
+    public int getSquareRow() {
+        return squareRow;
+    }
+
+    public void setSquareRow(int squareRow) {
+        this.squareRow = squareRow;
+    }
+
+    public int getSquareCol() {
+        return squareCol;
+    }
+
+    public void setSquareCol(int squareCol) {
+        this.squareCol = squareCol;
+    }
+
     public void setPcBoard(PcBoardDTO pcBoard) {
         this.pcBoard = pcBoard;
     }
@@ -38,25 +54,11 @@ public class  PcDTO implements DTO {
         return weapons;
     }
 
-    public void setWeapons(WeaponCardDTO[] weapons) {
-        this.weapons = weapons;
-    }
 
     public ArrayList<PowerUpCardDTO> getPowerUps() {
         return powerUps;
     }
 
-    public void setPowerUps(ArrayList<PowerUpCardDTO> powerUps) {
-        this.powerUps = powerUps;
-    }
-
-    public SquareDTO getCurrSquare() {
-        return currSquare;
-    }
-
-    public void setCurrSquare(SquareDTO currSquare) {
-        this.currSquare = currSquare;
-    }
 
     public short getAdrenaline() {
         return adrenaline;
@@ -64,5 +66,13 @@ public class  PcDTO implements DTO {
 
     public void setAdrenaline(short adrenaline) {
         this.adrenaline = adrenaline;
+    }
+
+    public void setWeapons(WeaponCardDTO[] weapons) {
+        this.weapons = weapons;
+    }
+
+    public void setPowerUps(ArrayList<PowerUpCardDTO> powerUps) {
+        this.powerUps = powerUps;
     }
 }

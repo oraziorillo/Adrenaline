@@ -2,7 +2,7 @@ package common.dto_model;
 
 import common.enums.AmmoEnum;
 
-public class AmmoTileDTO implements DTO{
+public class AmmoTileDTO implements DTO {
 
     private short[] ammo;
     private boolean hasPowerUp;
@@ -41,6 +41,7 @@ public class AmmoTileDTO implements DTO{
     public void setAmmo(short[] ammo) {
         this.ammo = ammo;
     }
+
 
     @Override
     public String toString() {

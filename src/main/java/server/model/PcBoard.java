@@ -1,6 +1,7 @@
 package server.model;
 
 import com.google.gson.annotations.Expose;
+import common.dto_model.PcBoardDTO;
 import common.enums.PcColourEnum;
 
 import static common.Constants.*;
@@ -74,24 +75,24 @@ public class PcBoard {
     }
 
 
-    void flipBoard(){
+    public void flipBoard(){
         pcValue = FINAL_FRENZY_PC_VALUES;
         numOfDeaths = 0;
     }
 
 
-    void increasePoints(int earnedPoints){
+    public void increasePoints(int earnedPoints){
         this.points += earnedPoints;
     }
 
 
-    void increaseNumberOfDeaths(){
+    public void increaseNumberOfDeaths(){
         if (numOfDeaths != 5)
             numOfDeaths++;
     }
 
 
-    void addDamage(PcColourEnum shooterColour, short numOfDamage){
+    public void addDamage(PcColourEnum shooterColour, short numOfDamage){
         while (numOfDamage != 0) {
             if (damageTrackIndex == LIFE_POINTS)
                 break;
@@ -102,7 +103,7 @@ public class PcBoard {
     }
 
 
-    void addMarks(PcColourEnum shooterColour, short numOfMarks) {
+    public void addMarks(PcColourEnum shooterColour, short numOfMarks) {
         if (marks[shooterColour.ordinal()] + numOfMarks > MAX_NUMBER_OF_MARKS_PER_COLOUR)
             marks[shooterColour.ordinal()] = MAX_NUMBER_OF_MARKS_PER_COLOUR;
         else
@@ -110,7 +111,7 @@ public class PcBoard {
     }
 
 
-    void addAmmo(AmmoTile ammoTile) {
+    public void addAmmo(AmmoTile ammoTile) {
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++) {
             this.ammo[i] += ammoTile.getAmmo()[i];
             if (ammo[i] > MAX_AMMO_PER_COLOUR)
@@ -119,7 +120,7 @@ public class PcBoard {
     }
 
 
-    boolean hasAtLeastOneAmmo() {
+    public boolean hasAtLeastOneAmmo() {
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             if(ammo[i] > 0)
                 return true;
@@ -132,7 +133,7 @@ public class PcBoard {
      * @param cost some ammos
      * @return ammo, where every succesfully payed ammo has been removed (so it will be a "not payed" array)
      */
-    short[] payAmmo(short[] cost) {
+    public short[] payAmmo(short[] cost) {
         for (int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             if (this.ammo[i] >= cost[i]){
                 this.ammo[i] -= cost[i];
@@ -146,8 +147,22 @@ public class PcBoard {
     }
 
 
-    void resetDamageTrack(){
+    public void resetDamageTrack(){
         damageTrackIndex = 0;
         damageTrack = new PcColourEnum[LIFE_POINTS];
+    }
+
+
+    public PcBoardDTO convertToDTO(){
+        PcBoardDTO pcBoardDTO = new PcBoardDTO();
+        pcBoardDTO.setColour(colour);
+        pcBoardDTO.setPoints(points);
+        pcBoardDTO.setDamageTrackIndex(damageTrackIndex);
+        pcBoardDTO.setAmmo(ammo);
+        pcBoardDTO.setDamageTrack(damageTrack);
+        pcBoardDTO.setMarks(marks);
+        pcBoardDTO.setPcValue(pcValue);
+        pcBoardDTO.setNumOfDeaths(numOfDeaths);
+        return pcBoardDTO;
     }
 }

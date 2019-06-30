@@ -100,7 +100,7 @@ public class UserAuthState extends ViewState {
       );
       return firstTime.showAndWait().get().getButtonData().equals(ButtonBar.ButtonData.YES);
    }
-   
+
    @Override
    public String acquireUsername() {
       TextInputDialog usernameDialog = new TextInputDialog();
@@ -128,14 +128,14 @@ public class UserAuthState extends ViewState {
       });
       return UUID.fromString(tokenDialog.showAndWait().get());
    }
-   
+
    @Override
    public String requestString(String message) {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
    }
-   
+
    @Override
    public ViewState nextState() throws RemoteException {
       return new InGameState();

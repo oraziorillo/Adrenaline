@@ -111,5 +111,5 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
    public static ViewState getFirstState() throws RemoteException {
       return new UserAuthState();
    }
-
+   
 }

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
+import common.dto_model.PowerUpCardDTO;
 import common.enums.AmmoEnum;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
@@ -56,6 +57,14 @@ public class PowerUpCard {
 
     public void setSelectedAsAmmo(boolean selectedAsAmmo) {
         this.selectedAsAmmo = selectedAsAmmo;
+    }
+
+
+    public PowerUpCardDTO convertToDTO(){
+        PowerUpCardDTO powerUpCardDTO = new PowerUpCardDTO();
+        powerUpCardDTO.setName(name);
+        powerUpCardDTO.setColour(colour);
+        return powerUpCardDTO;
     }
 
 }

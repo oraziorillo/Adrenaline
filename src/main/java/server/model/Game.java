@@ -6,8 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import common.dto_model.GameBoardDTO;
-import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
@@ -16,8 +14,6 @@ import common.events.game_board_events.GameBoardSetEvent;
 import common.events.kill_shot_track_events.FinalFrenzyEvent;
 import common.events.kill_shot_track_events.KillShotTrackSetEvent;
 import common.events.pc_events.PcColourChosenEvent;
-import org.modelmapper.ModelMapper;
-import server.controller.CustomizedModelMapper;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.GameBoardDeserializer;
@@ -33,8 +29,6 @@ import java.util.stream.Collectors;
  * This class represents an ADRENALINE game
  */
 public class Game {
-
-    private ModelMapper modelMapper = new CustomizedModelMapper().getModelMapper();
 
     private ModelEventHandler events = new ModelEventHandler();
 
@@ -162,7 +156,7 @@ public class Game {
             gameBoard.addModelEventHandler(events);
 
             //notify map set
-            events.fireEvent(new GameBoardSetEvent(modelMapper.map(gameBoard, GameBoardDTO.class), numberOfMap));
+            events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(), numberOfMap));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -178,7 +172,7 @@ public class Game {
         gameBoard.initKillShotTrack(numberOfSkulls);
 
         //notify kill shot track set
-        events.fireEvent(new KillShotTrackSetEvent(modelMapper.map(gameBoard.getKillShotTrack(), KillShotTrackDTO.class)));
+        events.fireEvent(new KillShotTrackSetEvent(gameBoard.getKillShotTrack().convertToDTO()));
     }
 
 
@@ -192,7 +186,7 @@ public class Game {
         this.finalFrenzy = finalFrenzy;
 
         //notify listeners
-        events.fireEvent(new FinalFrenzyEvent(modelMapper.map(gameBoard.getKillShotTrack(), KillShotTrackDTO.class)));
+        events.fireEvent(new FinalFrenzyEvent(gameBoard.getKillShotTrack().convertToDTO()));
     }
 
 
@@ -214,12 +208,16 @@ public class Game {
     }
 
 
+
+
     public void addPc(Pc pc) {
         events.addListenerColour(pc.getColour());
         pc.addModelEventHandler(events);
-
+        System.out.println("Fin Qui ci arrivo");
         //notify colour chosen
-        events.fireEvent(new PcColourChosenEvent(modelMapper.map(pc, PcDTO.class)));
+        PcDTO pcDTO = pc.convertToDTO();
+        System.out.println("Anche qui");
+        events.fireEvent(new PcColourChosenEvent(pcDTO));
 
         pcs.add(pc);
     }

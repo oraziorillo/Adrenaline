@@ -1,5 +1,7 @@
 package server.model;
 
+import common.dto_model.KillShotDTO;
+import common.dto_model.KillShotTrackDTO;
 import common.enums.PcColourEnum;
 
 public class KillShotTrack {
@@ -52,5 +54,21 @@ public class KillShotTrack {
             return true;
         }
         return false;
+    }
+
+
+    public KillShotTrackDTO convertToDTO(){
+        KillShotTrackDTO killShotTracksDTO = new KillShotTrackDTO();
+        KillShotDTO[] killShotDTOs = new KillShotDTO[killShotTrack.length];
+        for (int i = 0; i < killShotTrack.length; i++){
+            killShotDTOs[i] = killShotTrack[i].convertToDTO();
+        }
+        KillShotDTO[] finalFrenzykillShotDTOs = new KillShotDTO[finalFrenzyKillShotTrack.length];
+        for (int i = 0; i < finalFrenzyKillShotTrack.length; i++){
+            killShotDTOs[i] = finalFrenzyKillShotTrack[i].convertToDTO();
+        }
+        killShotTracksDTO.setKillShotTrack(killShotDTOs);
+        killShotTracksDTO.setFinalFrenzyKillShotTrack(finalFrenzykillShotDTOs);
+        return  killShotTracksDTO;
     }
 }
