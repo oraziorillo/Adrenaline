@@ -2,7 +2,6 @@ package server.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -148,9 +147,9 @@ public class Game {
             gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
             Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-            JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
-            JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-            gameBoard = customGson.fromJson(gameBoards.get(numberOfMap - 1), GameBoard.class);
+            JsonReader reader = new JsonReader(
+                    new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));
+            gameBoard = customGson.fromJson(reader, GameBoard.class);
 
             gameBoard.initSquares(weaponsDeck, ammoDeck);
             gameBoard.addModelEventHandler(events);

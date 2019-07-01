@@ -1,6 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.view_states;
 
-import client.controller.socket.ClientSocketHandler;
+import client.controller.socket.LoginControllerSocketProxy;
 import common.enums.ConnectionMethodEnum;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -8,7 +8,6 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
-import javafx.concurrent.Task;
 import javafx.scene.control.*;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ public class UserAuthState extends ViewState {
    public UserAuthState(String... previousAcks) throws RemoteException {
       super(previousAcks);
    }
+
 
    /**
     * Builds an alert containing the ack and shows it
@@ -71,7 +71,8 @@ public class UserAuthState extends ViewState {
                return (RemoteLoginController) registry.lookup("LoginController");
             case SOCKET:
             default:
-               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
+               /*
+               RemoteLoginController loginController =
                Thread thread = new Thread(new Task<>() {
                   @Override
                   protected Object call() throws Exception {
@@ -80,7 +81,8 @@ public class UserAuthState extends ViewState {
                   }
                }, "SocketHandler");
                thread.start();
-               return handler;
+                */
+                return new LoginControllerSocketProxy(new Socket(HOST, SOCKET_PORT), this);
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");

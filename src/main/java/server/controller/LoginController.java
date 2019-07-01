@@ -83,8 +83,9 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
                     .filter(l -> l.getGameUUID() == incompleteGame)
                     .findFirst()
                     .orElse(null);
-            if (lobby != null)
-               lobby.addPlayer(databaseHandler.getPlayer(token));
+             if (lobby != null) {
+                 lobby.addPlayer(databaseHandler.getPlayer(token));
+             }
             else
                throw new IllegalStateException("Old " + databaseHandler.getPlayer(token) + "'s lobby was not restored successfully");
 
@@ -98,7 +99,6 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
             }
             newLobby.addPlayer(databaseHandler.getPlayer(token));
          }
-         databaseHandler.getPlayer(token).getView().ack("You joined a lobby");
       }
    }
 }

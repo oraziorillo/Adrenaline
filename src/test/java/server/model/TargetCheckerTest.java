@@ -2,7 +2,6 @@ package server.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
 import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashSet;
@@ -27,15 +27,15 @@ public class TargetCheckerTest {
 
     @Before
     public void initMap() throws FileNotFoundException {
-        int numberOfMap = 2;
+        int numberOfMap = 3;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
-        JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-        gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
+        JsonReader reader = new JsonReader(
+                new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));
+        gameBoard = customGson.fromJson(reader, GameBoard.class);
     }
 
 
