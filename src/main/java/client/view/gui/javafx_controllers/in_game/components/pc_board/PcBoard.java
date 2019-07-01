@@ -52,7 +52,6 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    }
    @FXML
    private void disappear(){
-      System.out.println("disappear");
       translate.stop();
       translate.setRate( -1 );
       translate.play();

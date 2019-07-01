@@ -32,17 +32,20 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
    private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
    protected RemotePlayer player;
    protected HostServices hostServices;
-   protected ObservableList<String> previousAcks = FXCollections.observableArrayList();
+   protected ObservableList<String> previousAcks;
    public static Stage stage;
    
    public abstract ViewState nextState() throws IOException;
    
-   public ViewState(Stage stage, RemotePlayer player, HostServices hostServices, String... previousAcks) throws RemoteException {
+   public ViewState(Stage stage, RemotePlayer player, HostServices hostServices, ObservableList<String> observedList) throws RemoteException {
       super();
-      this.previousAcks.addAll( Arrays.asList( previousAcks ));
+      for(String s: observedList){
+         ack( s );
+      }
       this.player = player;
       this.hostServices = hostServices;
       this.stage = stage;
+      this.previousAcks = observedList;
    }
    
    public void setJavafxController(AbstractJavaFxController javafxController) {
@@ -71,8 +74,8 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
       }
    }
    
-   public static ViewState getFirstState(HostServices hostServices, Stage stage) throws RemoteException {
-      return new UserAuthState( stage, hostServices);
+   public static ViewState getFirstState(HostServices hostServices, Stage stage,ObservableList<String> previousAcks) throws RemoteException {
+      return new UserAuthState( stage, hostServices, previousAcks);
    }
    
    /**
@@ -110,7 +113,7 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
    
    @Override
    public void ack(String message) throws RemoteException {
-      previousAcks.add( message );
+      javafxController.ack( message );
    }
    
    @Override

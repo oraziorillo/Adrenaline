@@ -1,18 +1,22 @@
 package common.enums;
 
-public enum ConnectionMethodEnum {
-    SOCKET(":s"),
-    RMI(":r");
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
-    private String command;
+public enum ConnectionMethodEnum {
+    SOCKET(":s","socket"),
+    RMI(":r","rmi");
+
+    private Collection<String> command = new HashSet<>();
     
-    ConnectionMethodEnum(String command){
-        this.command = command;
+    ConnectionMethodEnum(String... command){
+        this.command.addAll( Arrays.asList( command ) );
     }
     
     public static ConnectionMethodEnum parseString(String string){
         for(ConnectionMethodEnum e: values()){
-            if(e.command.equals(string)){
+            if(e.command.contains(string)){
                 return e;
             }
         }

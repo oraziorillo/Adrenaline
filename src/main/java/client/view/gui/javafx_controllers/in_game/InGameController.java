@@ -72,7 +72,7 @@ public class InGameController extends AbstractJavaFxController {
       mapController.setMap(0);
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
-      squares.addListener( topController.squareListener );
+      pcs.addListener( topController.pcListener );
       //init squares listeners
       squares.addListener( mapController.squareObserver );
       squares.addListener( cardHolderLeftController );

@@ -4,6 +4,7 @@ import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.application.HostServices;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -11,15 +12,15 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class UserAuthState extends ViewState {
-   public UserAuthState(Stage stage, HostServices hostServices, String... previousAcks) throws RemoteException {
-      super( stage, null, hostServices );
+   public UserAuthState(Stage stage, HostServices hostServices, ObservableList<String> previousAcks) throws RemoteException {
+      super( stage, null, hostServices,previousAcks);
       javafxController = new UserAuthController();
    }
    
    
    @Override
    public ViewState nextState() throws IOException {
-      return new SetupState(stage,player,hostServices,previousAcks.toArray(new String[0]) );
+      return new SetupState(stage,player,hostServices,previousAcks );
    }
    
    @Override

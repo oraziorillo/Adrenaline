@@ -61,6 +61,7 @@ public class UserAuthController extends AbstractJavaFxController {
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");
       Optional<ButtonType> response = rmiOrSocket.showAndWait();
+      System.out.println(response.get().getText());
       return ConnectionMethodEnum.parseString(response.get().getText().toLowerCase());
    }
    
