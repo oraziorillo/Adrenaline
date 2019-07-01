@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components.card_spaces.player_hands;
+package client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands;
 
 import common.Constants;
 import common.dto_model.PowerUpCardDTO;

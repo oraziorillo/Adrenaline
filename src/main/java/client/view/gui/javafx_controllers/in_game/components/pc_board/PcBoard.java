@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components.pc_board;
+package client.view.gui.javafx_controllers.in_game.components.pc_board;
 
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
@@ -6,7 +6,6 @@ import common.enums.PcColourEnum;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
@@ -20,15 +19,15 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    static final String FRENZY_SUBDIR = "/frenzy/";
    public HBox mainPane;
    public ImageView immagine;
-   static Double HEIGHT=200d;
+   public static Double HEIGHT=200d;
    @FXML HBox translating;
    @FXML Azioni azioniController;
    @FXML Vita vitaController;
    private TranslateTransition translate;
    private PcColourEnum settedColour;
    
-   public final ChangeListener<ObjectProperty<PcColourEnum>> colorListener = (observableValue, oldV, newV) -> setPcColour( newV.get() );
-   public final ChangeListener<ObjectProperty<KillShotTrackDTO>> frenzyListener =(obs,oldV,newV) -> {
+   public final ChangeListener<PcColourEnum> colorListener = (observableValue, oldV, newV) -> setPcColour( newV );
+   public final ChangeListener<KillShotTrackDTO> frenzyListener =(obs,oldV,newV) -> {
       azioniController.changed( obs,oldV,newV );
       vitaController.changed( obs,oldV,newV );
    };

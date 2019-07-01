@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components.pc_board;
+package client.view.gui.javafx_controllers.in_game.components.pc_board;
 
 import common.Constants;
 import common.dto_model.KillShotTrackDTO;
@@ -6,7 +6,6 @@ import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,7 +22,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.Arrays;
 
-public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListener<ObjectProperty<KillShotTrackDTO>> {
+public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListener<KillShotTrackDTO> {
    @FXML private StackPane mainPane;
    @FXML private GridPane marchi;
    @FXML private TilePane danni;
@@ -140,9 +139,10 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    }
    
    @Override
-   public void changed(ObservableValue<? extends ObjectProperty<KillShotTrackDTO>> obs, ObjectProperty<KillShotTrackDTO> oldV, ObjectProperty<KillShotTrackDTO> newV) {
-      if (true) { //TODO: finalFrenzy on
-         if(true){   //TODO: la vita deve essere swappata
+   public void changed(ObservableValue<? extends KillShotTrackDTO> obs, KillShotTrackDTO oldV, KillShotTrackDTO newV) {
+      if (oldV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE].isSkulled() &&   //final frenzy wasn't on
+              !newV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE].isSkulled()) {  //final frenzy is on now
+         if(danni.getChildren().isEmpty()){   //non ho danni
             background.setImage( new Image( PcBoard.DIRECTORY+settedColor.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"vita.png",0,
                     PcBoard.HEIGHT,true,false ) );
             updateKills( 0 ); //if life is swapped, kill count is set to 0

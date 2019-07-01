@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public abstract class AbstractClientController extends Application {
-
+    
     RemoteLoginController loginController;
     protected AbstractView view;
     protected RemotePlayer player;
@@ -18,7 +18,6 @@ public abstract class AbstractClientController extends Application {
 
     AbstractClientController(AbstractView view) {
         this.view = view;
-        initialize();
     }
 
 

@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components;
+package client.view.gui.javafx_controllers.in_game.components;
 
 import common.dto_model.PcDTO;
 import common.enums.AmmoEnum;

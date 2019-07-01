@@ -1,7 +1,7 @@
-package client.view.gui.javafx_controllers.components;
+package client.view.gui.javafx_controllers.in_game.components;
 
-import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
-import client.view.gui.javafx_controllers.dialogs.SettingsMenu;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.CardHolder;
+import client.view.gui.javafx_controllers.in_game.dialogs.SettingsMenu;
 import common.Constants;
 import common.dto_model.KillShotDTO;
 import common.dto_model.KillShotTrackDTO;
@@ -12,7 +12,6 @@ import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
@@ -36,7 +35,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 
-//TODO: implementa listeners
 public class Top implements ChangeListener<KillShotTrackDTO> {
    @FXML private Ammo ammoController;
    @FXML private CardHolder cardHolderController;
@@ -48,6 +46,7 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    private PcColourEnum settedColour;
    private StackPane[] killshotTrackPanes = new StackPane[Constants.MAX_KILL_SHOT_TRACK_SIZE];
    private FlowPane frenzyTrackPane = new FlowPane();
+   public static final double KILLSHOT_HEIGHT = 100d;
    
    public final MapChangeListener<SquareDTO,SquareDTO> squareListener = c->cardHolderController.onChanged( c );
    public final MapChangeListener<PcColourEnum, PcDTO> pcListener = change -> {
@@ -58,26 +57,25 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    };
    
    public void initialize(){
-      double height =100;
-      ImageView skullImage = new ImageView( new Image( "/images/teschio_0.png",0,height,true, false) );
+      ImageView skullImage = new ImageView( new Image( "/images/teschio_0.png",0, KILLSHOT_HEIGHT,true, false) );
       StackPane circlePane = killshotTrackPanes[0] = new StackPane( );
       StackPane skullPane = new StackPane( skullImage,circlePane );
       skullImage.setPreserveRatio( true );
       killShotTrack.getChildren().add( skullPane );
       for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE-1;i++){
-         skullImage = new ImageView( new Image( "/images/teschio_i.png",0,height,true, false ) );
+         skullImage = new ImageView( new Image( "/images/teschio_i.png",0, KILLSHOT_HEIGHT,true, false ) );
          circlePane = killshotTrackPanes[i] = new StackPane(  );
          skullImage.setPreserveRatio( true );
          skullPane = new StackPane( skullImage, circlePane );
          killShotTrack.getChildren().add( skullPane );
       }
-      skullImage = new ImageView( new Image( "/images/teschio_ultimo.png",0,height,true,false ));
+      skullImage = new ImageView( new Image( "/images/teschio_ultimo.png",0, KILLSHOT_HEIGHT,true,false ));
       circlePane = killshotTrackPanes[Constants.MAX_KILL_SHOT_TRACK_SIZE] = new StackPane(  );
       skullImage.setPreserveRatio( true );
       skullPane = new StackPane( skullImage,circlePane );
       killShotTrack.getChildren().add( skullPane );
       //Final frenzy box
-      skullImage = new ImageView(new Image( "/images/killshot_box.png",0,height,true,false ) );
+      skullImage = new ImageView(new Image( "/images/killshot_box.png",0, KILLSHOT_HEIGHT,true,false ) );
       frenzyTrackPane = new FlowPane();
       skullImage.setPreserveRatio( true );
       skullPane = new StackPane( skullImage, frenzyTrackPane );

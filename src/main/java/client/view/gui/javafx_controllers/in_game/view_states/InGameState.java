@@ -1,13 +1,12 @@
-package client.view.gui.javafx_controllers.view_states;
+package client.view.gui.javafx_controllers.in_game.view_states;
 
-import client.view.gui.javafx_controllers.components.Chat;
-import client.view.gui.javafx_controllers.components.Map;
-import client.view.gui.javafx_controllers.components.Top;
-import client.view.gui.javafx_controllers.components.card_spaces.player_hands.CardHand;
-import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
-import client.view.gui.javafx_controllers.components.card_spaces.player_hands.PowerUpHand;
-import client.view.gui.javafx_controllers.components.card_spaces.player_hands.WeaponHand;
-import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
+import client.view.gui.javafx_controllers.in_game.components.Chat;
+import client.view.gui.javafx_controllers.in_game.components.Map;
+import client.view.gui.javafx_controllers.in_game.components.Top;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.CardHolder;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.PowerUpHand;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
+import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;

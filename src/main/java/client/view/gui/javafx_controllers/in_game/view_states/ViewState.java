@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.view_states;
+package client.view.gui.javafx_controllers.in_game.view_states;
 
 import client.view.AbstractView;
 import common.enums.ConnectionMethodEnum;

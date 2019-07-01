@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components;
+package client.view.gui.javafx_controllers.in_game.components;
 
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;

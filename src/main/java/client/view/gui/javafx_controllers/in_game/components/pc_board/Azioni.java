@@ -1,9 +1,9 @@
-package client.view.gui.javafx_controllers.components.pc_board;
+package client.view.gui.javafx_controllers.in_game.components.pc_board;
 
+import common.Constants;
 import common.dto_model.KillShotTrackDTO;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
-public class Azioni implements ChangeListener<ObjectProperty<KillShotTrackDTO>> {
+public class Azioni implements ChangeListener<KillShotTrackDTO> {
    @FXML private StackPane mainPane;
    @FXML private ImageView azioni;
    private RemotePlayer player;
@@ -46,8 +46,8 @@ public class Azioni implements ChangeListener<ObjectProperty<KillShotTrackDTO>> 
    }
    
    @Override
-   public void changed(ObservableValue<? extends ObjectProperty<KillShotTrackDTO>> obsTrack, ObjectProperty<KillShotTrackDTO> oldV, ObjectProperty<KillShotTrackDTO> newV) {
-      if (true) { //TODO: manca il valore della frenzy
+   public void changed(ObservableValue<? extends KillShotTrackDTO> obsTrack, KillShotTrackDTO oldV, KillShotTrackDTO newV) {
+      if (!newV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE-1].isSkulled()) {
          try {
             mainPane = new FXMLLoader(getClass().getResource( "/fxml/inGame/pc_board/frenzy/frenzyActions.fxml")).load();
             azioni.setImage( new Image( PcBoard.DIRECTORY+color.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"/azioni.png",0,PcBoard.HEIGHT,true,false ) );

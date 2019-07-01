@@ -1,18 +1,16 @@
-package client.view.gui.javafx_controllers.components.card_spaces.player_hands;
+package client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands;
 
-import client.view.gui.javafx_controllers.components.weapons.GeneralWeapon;
+import client.view.gui.javafx_controllers.in_game.components.weapons.GeneralWeapon;
 import common.dto_model.AbstractCardDTO;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
