@@ -1,7 +1,7 @@
 package client.view.gui;
 
 import client.view.AbstractView;
-import client.view.gui.javafx_controllers.view_states.ViewState;
+import client.view.gui.javafx_controllers.in_game.view_states.ViewState;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
@@ -71,8 +71,13 @@ public class GuiView extends AbstractView implements ModelEventListener {
         currentGui.error(msg);
     }
 
-
-    @Override
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      currentGui.chatMessage( message );
+   }
+   
+   @Override
    public ModelEventListener getListener() {
       return currentGui.getListener();
    }

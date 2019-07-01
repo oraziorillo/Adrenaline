@@ -1,6 +1,6 @@
-package client.view.gui.javafx_controllers.components;
+package client.view.gui.javafx_controllers.in_game.components;
 
-import client.view.gui.javafx_controllers.components.pc_board.OpponentBoard;
+import client.view.gui.javafx_controllers.in_game.components.pc_board.OpponentBoard;
 import common.dto_model.AmmoTileDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.SquareDTO;
@@ -40,7 +40,6 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
    private EnumMap<PcColourEnum,VBox> opponentBoardGraphics = new EnumMap<>( PcColourEnum.class );
    private EnumMap<PcColourEnum,OpponentBoard> opponentBoardControllers = new EnumMap<>(PcColourEnum.class);
    private ImageView[][] ammos = new ImageView[ROWS][COLS];
-   //TODO: bindalo con il numero di giocatori -> ricevi subito il numero di giocatori
    private DoubleProperty innerGridSize = new SimpleDoubleProperty();
    
    private static final int ROWS = 3;

@@ -1,37 +1,49 @@
-package client.view.gui.javafx_controllers.components.card_spaces;
+package client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands;
 
-import client.view.gui.javafx_controllers.components.weapons.GeneralWeapon;
+import client.view.gui.javafx_controllers.in_game.components.weapons.GeneralWeapon;
 import common.dto_model.AbstractCardDTO;
-import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
-import javafx.collections.MapChangeListener;
-import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
 
-//TODO: dividi in weaponHand, powerupHand
-public class CardHand <T extends AbstractCardDTO> {
-   @FXML StackPane mainPane;
-   @FXML HBox cardBox;
-   @FXML private GeneralWeapon card0Controller, card1Controller,card2Controller;
-   private GeneralWeapon[] weaponControllers;
-   private TranslateTransition[] transitions = new TranslateTransition[3];
-   private Duration duration = new Duration(300);
-   @FXML Double hiddenFraction;
-   private AbstractCardDTO[] cards= new AbstractCardDTO[3];
-   private RemotePlayer player;
-   private PcColourEnum playerColor;
+public abstract class CardHand <T extends AbstractCardDTO> {
+   protected HBox mainPane = new HBox(10);
+   protected GeneralWeapon[] weaponControllers;
+   protected TranslateTransition[] transitions;
+   protected final Duration duration = new Duration(300);
+   protected Double hiddenFraction;
+   protected AbstractCardDTO[] cards;
+   protected RemotePlayer player;
+   protected PcColourEnum playerColor;
+   private static final String FXML = "/fxml/inGame/weapons/general_weapon.fxml";
+   
+   protected CardHand(int arraySize){
+      weaponControllers = new GeneralWeapon[arraySize];
+      transitions = new TranslateTransition[arraySize];
+      cards = new AbstractCardDTO[arraySize];
+      try {
+         for (int i = 0; i < arraySize; i++) {
+            FXMLLoader loader = new FXMLLoader( getClass().getResource( FXML ) );
+            mainPane.getChildren().add( loader.load() );
+            weaponControllers[i] = loader.getController();
+         }
+      } catch ( IOException e ) {
+         IOException e1 = new IOException( "Can't load fxml" );
+         e1.setStackTrace( e.getStackTrace() );
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e1 );
+      }
+   }
    
    public void initialize() {
-      weaponControllers = new GeneralWeapon[]{card0Controller,card1Controller,card2Controller};
       for( int i = 0; i<3; i++ ){
          int j=i;
          TranslateTransition transition = new TranslateTransition( duration );
@@ -45,8 +57,7 @@ public class CardHand <T extends AbstractCardDTO> {
       }
    }
    
-   private void appear(int cardIndex){
-      choosePowerup( cardIndex );
+   protected void appear(int cardIndex){
       Transition current = transitions[cardIndex];
       current.stop();
       current.setRate( 1 );
@@ -60,7 +71,7 @@ public class CardHand <T extends AbstractCardDTO> {
       current.play();
    }
    
-   public void setCards(T[] newCards){
+   protected void setCards(T[] newCards){
       if(newCards==null){
          throw new IllegalArgumentException( "Setting null cards" );
       }
@@ -75,18 +86,10 @@ public class CardHand <T extends AbstractCardDTO> {
             cardImage.background.setImage( new Image( newCard.getImagePath(), true ) );
             cardImage.background.getImage().heightProperty().addListener( (observableValue, aDouble, t1) -> {
                mainPane.setTranslateY( t1.doubleValue() * hiddenFraction );
-               mainPane.setMaxWidth( (weaponControllers[0].background.getImage().getWidth() * cards.length) + (cardBox.getSpacing() * cards.length - 1) );
+               mainPane.setMaxWidth( (weaponControllers[0].background.getImage().getWidth() * cards.length) + (mainPane.getSpacing() * cards.length - 1) );
             } );
             transitions[i].setNode( cardImage.mainPane );
          }
-      }
-   }
-   
-   private void choosePowerup(int i){
-      try {
-         player.choosePowerUp( i );
-      } catch ( IOException e ) {
-         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
    }
    
@@ -95,6 +98,10 @@ public class CardHand <T extends AbstractCardDTO> {
       for(GeneralWeapon w: weaponControllers)
          if(w!=null)
             w.setPlayer( player );
+   }
+   
+   public Node getNode(){
+      return mainPane;
    }
 }
 

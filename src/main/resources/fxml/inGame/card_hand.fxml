@@ -3,19 +3,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.javafx_controllers.components.card_spaces.CardHand" fx:id="mainPane"
-           stylesheets="/css/style.css">
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.CardHand" fx:id="mainPane"
+      stylesheets="/css/style.css" spacing="10" alignment="BOTTOM_CENTER">
 
     <fx:define>
         <Double fx:id="hiddenFraction" fx:value=".62962963"/> <!-- usare .577777778 per mostrare tutta l'immagine-->
     </fx:define>
 
-    <HBox fx:id="cardBox" spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" alignment="BOTTOM_CENTER" >
-        <fx:include source="weapons/general_weapon.fxml" fx:id="card0"/>
-        <fx:include source="weapons/general_weapon.fxml" fx:id="card1"/>
-        <fx:include source="weapons/general_weapon.fxml" fx:id="card2"/>
-    </HBox>
+    <fx:include source="weapons/general_weapon.fxml" fx:id="card0"/>
+    <fx:include source="weapons/general_weapon.fxml" fx:id="card1"/>
+    <fx:include source="weapons/general_weapon.fxml" fx:id="card2"/>
 
 
-</StackPane>
+
+</HBox>

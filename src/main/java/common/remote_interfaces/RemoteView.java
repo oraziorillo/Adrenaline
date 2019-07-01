@@ -8,6 +8,8 @@ import java.rmi.RemoteException;
 public interface RemoteView extends Remote {
 
     void ack(String message) throws RemoteException;
+    
+    void chatMessage(String message) throws RemoteException;
 
     void error(String msg) throws RemoteException;
 

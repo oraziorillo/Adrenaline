@@ -53,4 +53,6 @@ public interface RemotePlayer extends Remote {
     
     UUID getToken() throws RemoteException;
     
+    void sendMessage(String s) throws IOException;
+    
 }

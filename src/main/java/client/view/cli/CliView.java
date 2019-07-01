@@ -131,8 +131,13 @@ public class CliView extends AbstractView {
             printMessage(message);
         }
     }
-
-
+    
+    @Override
+    public void chatMessage(String message) throws RemoteException {
+        //TODO: orazio, ho aggiunto questo metodo per differenziare i messaggi dagli utenti
+    }
+    
+    
     @Override
     public synchronized void error(String msg) throws RemoteException{
         inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");

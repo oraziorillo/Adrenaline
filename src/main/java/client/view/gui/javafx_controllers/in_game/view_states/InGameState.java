@@ -1,15 +1,17 @@
-package client.view.gui.javafx_controllers.view_states;
+package client.view.gui.javafx_controllers.in_game.view_states;
 
-import client.view.gui.javafx_controllers.components.Chat;
-import client.view.gui.javafx_controllers.components.Map;
-import client.view.gui.javafx_controllers.components.Top;
-import client.view.gui.javafx_controllers.components.card_spaces.CardHand;
-import client.view.gui.javafx_controllers.components.card_spaces.CardHolder;
-import client.view.gui.javafx_controllers.components.pc_board.PcBoard;
+import client.view.gui.javafx_controllers.in_game.components.Chat;
+import client.view.gui.javafx_controllers.in_game.components.Map;
+import client.view.gui.javafx_controllers.in_game.components.Top;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.CardHolder;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.PowerUpHand;
+import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
+import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import common.dto_model.*;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
+import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;
@@ -28,44 +30,55 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-
 public class InGameState extends ViewState {
-   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>();
+   public HBox bottom;
    @FXML private GridPane killShotTrack;
    @FXML private Map mapController;
    @FXML private CardHolder cardHolderLeftController;
    @FXML private CardHolder cardHolderRightController;
-   @FXML private CardHand<WeaponCardDTO> weaponHandController;
-   @FXML private CardHand<PowerUpCardDTO> powerUpHandController;
+   private WeaponHand weaponHandController = new WeaponHand();
+   private PowerUpHand powerUpHandController = new PowerUpHand();
    @FXML private HBox underMapButtons;
    @FXML private Top topController;
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
+   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>(PcColourEnum.GREEN);
    private BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
    private ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
    
    public void initialize() {
+      //Add player hands
+      bottom.getChildren().add( spacerFactory() );
+      bottom.getChildren().add( powerUpHandController.getNode() );
+      bottom.getChildren().add( spacerFactory() );
+      bottom.getChildren().add( weaponHandController.getNode() );
+      bottom.getChildren().add( spacerFactory() );
+      bottom.getChildren().get( 1 ).toFront();   //move chat to the right
+      //TODO: set map for test
       mapController.setMap(0);
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
+      squares.addListener( topController.squareListener );
       //init squares listeners
       squares.addListener( mapController.squareObserver );
       squares.addListener( cardHolderLeftController );
       squares.addListener( cardHolderRightController );
-      squares.addListener( topController.cardHolderController );
+      squares.addListener( topController.squareListener );
+      //init killshottrack listeners
+      killShotTrackData.addListener(topController);
       //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderLeftController.setColor( AmmoEnum.RED );
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       cardHolderRightController.setColor( AmmoEnum.YELLOW );
-      topController.cardHolderController.setCorner( CardinalDirectionEnum.NORTH );
-      topController.cardHolderController.setColor( AmmoEnum.BLUE );
       //pass host services
       topController.setHostServices( hostServices );
       //make under map buttons overlap a little
@@ -77,8 +90,17 @@ public class InGameState extends ViewState {
       test();
    }
    
-   InGameState() throws RemoteException {
+   private Region spacerFactory(){
+      Region spacer = new Region();
+      spacer.setMaxWidth( Double.MAX_VALUE );
+      HBox.setHgrow( spacer, Priority.ALWAYS );
+      return spacer;
+   }
+   
+   //TODO: momentaneamente pubblico per poter lanciare direttamente la grafica di gioco
+   public InGameState() throws RemoteException {
        super();
+      this.color.set( PcColourEnum.GREEN );
    }
 
    private void test() {
@@ -159,7 +181,6 @@ public class InGameState extends ViewState {
       chatController.setPlayer(player);
       cardHolderRightController.setPlayer( player );
       cardHolderLeftController.setPlayer( player );
-      topController.cardHolderController.setPlayer( player );
       
    }
 
@@ -168,16 +189,26 @@ public class InGameState extends ViewState {
       chatController.showServerMessage(message);
       chatController.appear();
    }
-
-    @Override
+   
+   @Override
+   public ModelEventListener getListener() {
+      return this;
+   }
+   
+   @Override
     public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException{
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );
     }
-
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      chatController.showUserMessage( message );
+   }
+   
     @Override
     public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
-      //TODO: kill shot track update
+      killShotTrackData.set( event.getDTO() );
     }
 
     @Override
@@ -185,7 +216,7 @@ public class InGameState extends ViewState {
       PcDTO relatedPc = pcs.get( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );
       pcs.put( relatedPc.getColour(),relatedPc );
-
+      //TODO: testalo, non sono sicuro che triggheri i listener
     }
 
     @Override

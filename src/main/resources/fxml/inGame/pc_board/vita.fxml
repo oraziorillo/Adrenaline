@@ -4,7 +4,8 @@
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="client.view.gui.javafx_controllers.components.pc_board.Vita">
+           fx:id="mainPane"
+           fx:controller="client.view.gui.javafx_controllers.in_game.components.pc_board.Vita" stylesheets="/css/pc_board/Pc.css">
     <ImageView fx:id="background" preserveRatio="true"/>
     <GridPane>
         <rowConstraints>
@@ -16,18 +17,18 @@
             <RowConstraints/>
         </rowConstraints>
         <columnConstraints>
-            <ColumnConstraints/>
-            <ColumnConstraints percentWidth="17.076326"/>
-            <ColumnConstraints percentWidth="38.0336352"/>
-            <ColumnConstraints percentWidth="09.5730918"/>
-            <ColumnConstraints percentWidth="33.5058215"/>
+            <ColumnConstraints percentWidth="1.5"/>
+            <ColumnConstraints percentWidth="16.5"/>
+            <ColumnConstraints percentWidth="38"/>
+            <ColumnConstraints percentWidth="9.5"/>
+            <ColumnConstraints percentWidth="33.5"/>
             <ColumnConstraints/>
         </columnConstraints>
         <Region GridPane.rowSpan="6"/>
         <Region GridPane.columnIndex="5" GridPane.rowSpan="6"/>
-        <HBox fx:id="marchi_box" GridPane.columnIndex="3" GridPane.columnSpan="2" styleClass="prova"/>
-        <GridPane fx:id="danni" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4" styleClass="prova"/>
-        <GridPane fx:id="morti" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="2" styleClass="prova"/>
+        <GridPane fx:id="marchi" alignment="BOTTOM_RIGHT" GridPane.columnIndex="3" GridPane.columnSpan="2" styleClass="prova"/>
+        <TilePane alignment="CENTER" fx:id="danni" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4" styleClass="prova"/>
+        <TilePane fx:id="morti" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="2" styleClass="prova"/>
     </GridPane>
 
 </StackPane>

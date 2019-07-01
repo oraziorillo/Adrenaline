@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.view_states;
+package client.view.gui.javafx_controllers.in_game.view_states;
 
 import client.controller.socket.LoginControllerSocketProxy;
 import common.enums.ConnectionMethodEnum;

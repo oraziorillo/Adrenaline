@@ -1,31 +1,39 @@
 package client.controller;
 
+import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
+import common.remote_interfaces.RemoteLoginController;
+import common.remote_interfaces.RemotePlayer;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
-public class GuiController extends AbstractClientController {
+public class GuiController extends Application {
 
+   RemoteLoginController loginController;
+   protected AbstractView view = new GuiView();
+   protected RemotePlayer player;
 
-    public GuiController() throws RemoteException {
-        super( new GuiView() );
+   public GuiController() throws RemoteException {
+
     }
 
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
         authUser( stage );
-        configGame(stage);
+        configGame( stage );
         startGame( stage );
     }
     
@@ -39,16 +47,20 @@ public class GuiController extends AbstractClientController {
             } else {
                 token = view.acquireToken();
             }
-            //todo handle ex
-            // player = loginController.login( token, view );
+            player = loginController.login( token, view );
         }catch ( IOException e ){
             try {
                 view.error( "Server unreachable" );
             }catch ( RemoteException ignored ){}
+        }catch ( PlayerAlreadyLoggedInException alreadyLogged ){
+           try {
+              view.error( "This player is already connected on a different machine" );
+           } catch ( RemoteException ignored ) {}
         }
     }
     
     private void configGame(Stage stage){
+
         //TODO: scegli mappa, teschi, colore
     }
     

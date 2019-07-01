@@ -36,8 +36,14 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
       out.println(ERROR + REGEX + msg.replaceAll(System.lineSeparator(), REGEX));
       out.flush();
    }
-
-
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      out.println(CHAT_MESSAGE + REGEX + message.replaceAll( System.lineSeparator(),REGEX ) );
+      out.flush();
+   }
+   
+   
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException{
       out.println(ON_GAME_BOARD_UPDATE + REGEX + new Gson().toJson(event));

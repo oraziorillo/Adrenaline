@@ -52,6 +52,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         return token;
     }
     
+    @Override
+    public void sendMessage(String s) throws IOException {
+        //TODO: manda il messaggio a tutte le view della partita (anche a quella che l'ha mandato)
+    }
+    
     
     public Pc getPc() {
         return pc;
