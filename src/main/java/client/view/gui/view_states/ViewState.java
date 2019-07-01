@@ -38,7 +38,7 @@ public abstract class ViewState extends AbstractView {
    public static Stage stage;
    protected GuiView topView;
    
-   public abstract ViewState nextState() throws IOException;
+   public abstract ViewState nextState() throws RemoteException;
    
    public ViewState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> observedList) throws RemoteException {
       super();
@@ -116,7 +116,7 @@ public abstract class ViewState extends AbstractView {
    }
    
    @Override
-   public void chatMessage(String message) throws RemoteException {throw new IllegalStateException( UNEXPECTED_CALL );}
+   public void chatMessage(String message) {throw new IllegalStateException( UNEXPECTED_CALL );}
    
    @Override
    public boolean wantsToRegister() {

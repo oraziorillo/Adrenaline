@@ -101,6 +101,7 @@ public class SetupController extends AbstractJavaFxController {
          colorImage.setPreserveRatio( true );
          pcs.getChildren().add( colorImage );
       }
+      setEnabled( false );
    }
    
    private void chooseSkulls(int n){
@@ -123,6 +124,7 @@ public class SetupController extends AbstractJavaFxController {
    private void choosePcColor(PcColourEnum colour){
       try {
          player.choosePcColour( colour.toString() );
+         player.ok();
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
@@ -135,17 +137,22 @@ public class SetupController extends AbstractJavaFxController {
    }
    
    @Override
-   public void ack(String message) throws RemoteException {
+   public void printMessage(String msg) {
+      chatController.showServerMessage( msg );
+   }
+   
+   @Override
+   public void ack(String message) {
+      printMessage( message );
+   }
+   
+   @Override
+   public void chatMessage(String message) {
    
    }
    
    @Override
-   public void chatMessage(String message) throws RemoteException {
-   
-   }
-   
-   @Override
-   public ModelEventListener getListener() throws RemoteException {
+   public ModelEventListener getListener() {
       return this;
    }
    
@@ -153,5 +160,10 @@ public class SetupController extends AbstractJavaFxController {
    public void setPlayer(RemotePlayer player) {
       super.setPlayer( player );
       chatController.setPlayer( player );
+   }
+   
+   public void setEnabled(boolean enabled){
+      mainPane.setDisable( !enabled );
+      mainPane.setOpacity( enabled?1:.5 );
    }
 }

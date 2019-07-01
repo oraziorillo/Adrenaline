@@ -31,16 +31,14 @@ import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
+   @FXML private BorderPane mainPane;
    @FXML private GridPane killShotTrack;
    @FXML private Map mapController;
    @FXML private CardHolder cardHolderLeftController;
@@ -172,23 +170,28 @@ public class InGameController extends AbstractJavaFxController {
    }
    
    @Override
-    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException{
+    public void onGameBoardUpdate(GameBoardEvent event) {
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );
     }
    
    @Override
-   public void chatMessage(String message) throws RemoteException {
+   public void setEnabled(boolean enabled) {
+      mainPane.setDisable( !enabled );
+   }
+   
+   @Override
+   public void chatMessage(String message) {
       chatController.showUserMessage( message );
    }
    
     @Override
-    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
+    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       killShotTrackData.set( event.getDTO() );
     }
 
     @Override
-    public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
+    public void onPcBoardUpdate(PcBoardEvent event) {
       PcDTO relatedPc = pcs.get( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );
       pcs.put( relatedPc.getColour(),relatedPc );
@@ -196,12 +199,12 @@ public class InGameController extends AbstractJavaFxController {
     }
 
     @Override
-    public void onPcUpdate(PcEvent event) throws RemoteException{
+    public void onPcUpdate(PcEvent event) {
       pcs.put( event.getDTO().getColour(),event.getDTO() );
     }
 
     @Override
-    public void onSquareUpdate(SquareEvent event) throws RemoteException {
+    public void onSquareUpdate(SquareEvent event) {
       squares.put( event.getDTO(),event.getDTO() );
     }
 }

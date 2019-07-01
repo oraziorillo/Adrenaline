@@ -16,20 +16,26 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class InGameState extends ViewState {
-   public InGameState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> previousAcks) throws IOException {
+   public InGameState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> previousAcks) throws RemoteException {
       super( stage, player, hostServices, previousAcks );
-      FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
-     Parent root = loader.load();
-      javafxController = loader.getController();
-      javafxController.setPlayer( player );
-      javafxController.setHostServices( hostServices );
+      try {
+         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ) );
+         Parent root = loader.load();
+         javafxController = loader.getController();
+         javafxController.setPlayer( player );
+         javafxController.setHostServices( hostServices );
    
-      stage.setTitle( "ADRENALINE" );
-      stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
-      stage.setFullScreenExitKeyCombination(new KeyCodeCombination( KeyCode.ESCAPE ));
-      stage.maximizedProperty().addListener( (observableValue, aBoolean, t1) ->  stage.setFullScreen( t1 ) );
-      stage.setScene( new Scene( root ) );
-      stage.show();
+         stage.setTitle( "ADRENALINE" );
+         stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
+         stage.setFullScreenExitKeyCombination( new KeyCodeCombination( KeyCode.ESCAPE ) );
+         stage.maximizedProperty().addListener( (observableValue, aBoolean, t1) -> stage.setFullScreen( t1 ) );
+         stage.setScene( new Scene( root ) );
+         stage.show();
+      } catch ( IOException e ) {
+         IllegalArgumentException e1 = new IllegalArgumentException( "Can't load FXML" );
+         e1.setStackTrace( e.getStackTrace() );
+         throw e1;
+      }
    }
    
    @Override

@@ -17,17 +17,17 @@ import java.io.IOException;
 
 public class Azioni implements ChangeListener<KillShotTrackDTO> {
    @FXML private StackPane mainPane;
-   @FXML private ImageView azioni;
+   @FXML private ImageView azioniImages;
    private RemotePlayer player;
    private PcColourEnum color;
    
    ReadOnlyDoubleProperty widthProperty(){
-      return azioni.getImage().widthProperty();
+      return azioniImages.getImage().widthProperty();
    }
    
    public void setColor(PcColourEnum color){
       this.color = color;
-      azioni.setImage( new Image( PcBoard.DIRECTORY+color.getName().toLowerCase()+"/azioni.png",0,PcBoard.HEIGHT,true,false ) );
+      azioniImages.setImage( new Image( PcBoard.DIRECTORY+color.getName().toLowerCase()+"/azioni.png",0,PcBoard.HEIGHT,true,false ) );
    }
    
    @FXML
@@ -50,7 +50,7 @@ public class Azioni implements ChangeListener<KillShotTrackDTO> {
       if (!newV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE-1].isSkulled()) {
          try {
             mainPane = new FXMLLoader(getClass().getResource( "/fxml/inGame/pc_board/frenzy/frenzyActions.fxml")).load();
-            azioni.setImage( new Image( PcBoard.DIRECTORY+color.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"/azioni.png",0,PcBoard.HEIGHT,true,false ) );
+            azioniImages.setImage( new Image( PcBoard.DIRECTORY+color.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"/azioniImages.png",0,PcBoard.HEIGHT,true,false ) );
          } catch ( IOException e ) {
             Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
          }

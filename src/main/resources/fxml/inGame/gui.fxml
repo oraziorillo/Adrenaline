@@ -2,7 +2,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.javafx_controllers.in_game.InGameController" stylesheets="/css/style.css">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="mainPane" fx:controller="client.view.gui.javafx_controllers.in_game.InGameController" stylesheets="/css/style.css">
     <center>
         <HBox alignment="TOP_CENTER">
             <Region HBox.hgrow="SOMETIMES"/>

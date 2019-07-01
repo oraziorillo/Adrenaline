@@ -60,6 +60,11 @@ public class UserAuthController extends AbstractJavaFxController {
       return this;
    }
    
+   @Override
+   public void setEnabled(boolean enabled) {
+      //Actually meaningless
+   }
+   
    
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){

@@ -34,10 +34,6 @@ public class GuiController extends Application {
         view = new GuiView( getHostServices(),stage );
         UUID token = authUser( stage );
         loginController.joinLobby( token );
-        view.nextState();
-        //configGame( stage );
-        view.nextState();
-        //startGame( stage );
     }
     
     private UUID authUser(Stage stage){
@@ -53,6 +49,7 @@ public class GuiController extends Application {
             }
             player = loginController.login( token, view );
             view.setPlayer( player );
+            view.nextState();
            return token;
         }catch ( IOException e ){
            try {
@@ -63,7 +60,7 @@ public class GuiController extends Application {
               view.error( "This player is already connected on a different machine" );
            } catch ( RemoteException ignored ) {}
         }
-        return null;
+        throw new IllegalStateException( "Authentication failed" );
     }
     
     private void configGame(Stage stage){
@@ -75,8 +72,8 @@ public class GuiController extends Application {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
 
-        ((GuiView)view).setHostServices(getHostServices());
-        ((GuiView)view).setPlayer(player);
+        view.setHostServices(getHostServices());
+        view.setPlayer(player);
     
         stage.setTitle( "ADRENALINE" );
         stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );

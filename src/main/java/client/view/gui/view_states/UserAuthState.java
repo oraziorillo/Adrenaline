@@ -4,7 +4,6 @@ import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.application.HostServices;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,10 +17,20 @@ public class UserAuthState extends ViewState {
       javafxController = new UserAuthController();
    }
    
+   @Override
+   public void ack(String message) {
+   }
    
    @Override
-   public ViewState nextState() throws IOException {
-      SetupState nextState = new SetupState(stage,player,hostServices,previousAcks );
+   public ViewState nextState() {
+      SetupState nextState = null;
+      try {
+         nextState = new SetupState(stage,player,hostServices,previousAcks );
+      } catch ( RemoteException never ) {
+         IllegalStateException e1 = new IllegalStateException( );
+         e1.setStackTrace( never.getStackTrace() );
+         throw e1;
+      }
       nextState.setTopView( topView );
       return nextState;
    }

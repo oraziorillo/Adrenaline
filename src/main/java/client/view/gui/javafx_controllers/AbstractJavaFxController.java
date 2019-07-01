@@ -49,32 +49,34 @@ public abstract class AbstractJavaFxController extends AbstractView {
    }
    
    @Override
-   public void onSquareUpdate(SquareEvent event) throws RemoteException {
+   public void onSquareUpdate(SquareEvent event) {
    
    }
    
    @Override
-   public void onPcUpdate(PcEvent event) throws RemoteException {
+   public void onPcUpdate(PcEvent event) {
    
    }
    
    @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
+   public void onPcBoardUpdate(PcBoardEvent event) {
    
    }
    
    @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) {
    
    }
    
    @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
+   public void onGameBoardUpdate(GameBoardEvent event) {
    
    }
    
    public void setTopView(GuiView topView) {
       this.topView = topView;
    }
+   
+   public abstract void setEnabled(boolean enabled);
    
 }

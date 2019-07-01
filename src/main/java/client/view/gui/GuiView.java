@@ -74,13 +74,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void ack(String message) throws RemoteException {
-      runLater(()->{
-         try {
-            currentGui.ack( message );
-         } catch ( RemoteException e ) {
-            e.printStackTrace();
-         }
-      });
+      runLater( ()->currentGui.printMessage( message ));
    }
 
     @Override
@@ -99,7 +93,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
       return currentGui.getListener();
    }
 
-   public void nextState() throws IOException {
+   public void nextState() throws RemoteException {
       currentGui = currentGui.nextState();
    }
 

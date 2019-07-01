@@ -8,5 +8,5 @@ public enum ViewMethodsEnum {
     ON_PC_BOARD_UPDATE,
     ON_PC_UPDATE,
     ON_SQUARE_UPDATE,
-    CHAT_MESSAGE;
+    CHAT_MESSAGE
 }
