@@ -263,6 +263,13 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
 
 
     @Override
+    public void chooseTarget(String pcColour) throws IOException {
+        out.println(CHOOSE_TARGET + REGEX + pcColour);
+        out.flush();
+    }
+
+
+    @Override
     public void chooseDirection(int index) {
         out.println(CHOOSE_DIRECTION + REGEX + index);
         out.flush();

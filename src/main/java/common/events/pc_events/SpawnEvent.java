@@ -14,17 +14,17 @@ public class SpawnEvent extends PcEvent {
     }
 
 
-    private SpawnEvent(PcDTO pc, boolean isPrivate) {
-        super(pc, isPrivate);
+    private SpawnEvent(PcDTO pc, boolean censored) {
+        super(pc, censored);
     }
 
 
     @Override
     public String toString() {
-        return (isUncensored
-                ? "You"
-                : pc.getName())
-                + " spawned on row" + pc.getSquareRow() + " and " + pc.getSquareCol();
+        return (censored
+                ? pc.getName()
+                : "You")
+                + " spawned on row " + pc.getSquareRow() + " and coloumn " + pc.getSquareCol();
     }
 
 

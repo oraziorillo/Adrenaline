@@ -21,9 +21,9 @@ public class DeathEvent extends PcBoardEvent {
 
     @Override
     public String toString() {
-        return (isUncensored
-                ? "You"
-                : pcBoard.getColour().getName())
+        return (censored
+                ? pcBoard.getColour().getName()
+                : "You")
                     + " died";
     }
 

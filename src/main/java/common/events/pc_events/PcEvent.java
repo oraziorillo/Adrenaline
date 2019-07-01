@@ -7,7 +7,7 @@ import server.model.Pc;
 public abstract class PcEvent implements ModelEvent {
 
     PcDTO pc;
-    boolean isUncensored;
+    boolean censored;
 
 
     PcEvent(PcDTO pc) {
@@ -15,9 +15,9 @@ public abstract class PcEvent implements ModelEvent {
     }
 
 
-    PcEvent(PcDTO pc, boolean isUncensored) {
+    PcEvent(PcDTO pc, boolean censored) {
         this.pc = pc;
-        this.isUncensored = isUncensored;
+        this.censored = censored;
     }
 
 

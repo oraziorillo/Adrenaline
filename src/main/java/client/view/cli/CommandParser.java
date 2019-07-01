@@ -45,6 +45,23 @@ public abstract class CommandParser {
             case SWITCH_FIRE_MODE:
                 player.switchFireMode();
                 break;
+            case CHOOSE_UPGRADE:
+                player.chooseUpgrade(Integer.parseInt( commands[1] ));
+                break;
+            case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
+                try {
+                    boolean bool = getBoolean(commands [1]);
+                    player.chooseAsynchronousEffectOrder( bool );
+                } catch (Exception e) {
+                    view.ack("Type \"b\" for using the it before the basic effect or \"a\" otherwise");
+                }
+                break;
+            case CHOOSE_TARGET:
+                player.chooseTarget( commands[1] );
+                break;
+            case CHOOSE_DIRECTION:
+                player.chooseDirection( Integer.parseInt( commands[1] ));
+                break;
             case RELOAD:
                 player.reload();
                 break;
@@ -113,5 +130,13 @@ public abstract class CommandParser {
                         "ru\t" + "remove selectUpgrade\n" +
                         "undo\n" +
                         "quit\t" + "q");*/
+    }
+
+    static boolean getBoolean(String string){
+        if (string.equalsIgnoreCase("b"))
+            return true;
+        if (string.equalsIgnoreCase("a"))
+            return false;
+        throw new IllegalArgumentException();
     }
 }

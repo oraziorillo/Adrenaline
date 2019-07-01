@@ -1,11 +1,13 @@
 package server.controller.states;
 
+import common.enums.PcColourEnum;
 import server.controller.Controller;
 import common.enums.CardinalDirectionEnum;
 import server.model.Pc;
 import server.model.WeaponCard;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 /**
  * This class represents a state of a game state diagram.
@@ -19,7 +21,7 @@ public abstract class State {
         this.controller = controller;
     }
 
-    void setTargetableToValidSquares(Pc referencePc) {}
+    void setTargetableToValidSquares(Pc referencePc) throws RemoteException {}
 
     public void selectMap(int n) {}
     
@@ -57,7 +59,7 @@ public abstract class State {
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) { print(); }
 
-    public void selectTarget(Pc targetPc) { print(); }
+    public void selectTarget(PcColourEnum pcColour) { print(); }
 
     public void selectDirection(CardinalDirectionEnum direction) { print(); }
 

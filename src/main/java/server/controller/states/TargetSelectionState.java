@@ -1,5 +1,6 @@
 package server.controller.states;
 
+import common.enums.PcColourEnum;
 import server.controller.Controller;
 import common.enums.CardinalDirectionEnum;
 import server.controller.Player;
@@ -86,7 +87,9 @@ public class TargetSelectionState extends State {
 
 
     private void setAction(){
-        controller.getGame().setTargetableSquares(targetableSquares, false);
+        if (targetableSquares != null) {
+            controller.getGame().setTargetableSquares(targetableSquares, false);
+        }
         if (!currAction.isParameterized()) {
             if (currAction.needsOldSquare())
                 currAction.selectSquare(squareToMemorize);
@@ -179,9 +182,11 @@ public class TargetSelectionState extends State {
     }
 
 
-    @Override
-    public void selectTarget(Pc targetPc) {
-        if (targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
+    public void selectTarget(PcColourEnum targetPcColour) {
+        Pc targetPc = controller.getPlayers().stream()
+                .filter(player -> player.getPc().getColour() == targetPcColour)
+                .findFirst().map(Player::getPc).orElse(null);
+        if (targetPc != null && targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
                 if (currEffect.memorizeTargetSquare() && squareToMemorize == null) {
                     squareToMemorize = targetPc.getCurrSquare();

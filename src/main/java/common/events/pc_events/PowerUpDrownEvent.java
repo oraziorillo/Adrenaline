@@ -16,17 +16,18 @@ public class PowerUpDrownEvent extends PcEvent {
     }
 
 
-    private PowerUpDrownEvent(PcDTO pc, PowerUpCardDTO powerUp, boolean isPrivate){
-        super(pc, isPrivate);
+    private PowerUpDrownEvent(PcDTO pc, PowerUpCardDTO powerUp, boolean censored){
+        super(pc, censored);
         this.powerUp = powerUp;
     }
 
 
     @Override
     public String toString() {
-        return (isUncensored
-                ? "You draw a " + powerUp.getColour() + " " + powerUp.getName()
-                : "");
+        return (censored
+                ? ""
+                : "You draw a " + powerUp.getColour() + " " + powerUp.getName() + ". Now you have " +
+                pc.getPowerUps().size() + " powerUps.");
     }
 
 

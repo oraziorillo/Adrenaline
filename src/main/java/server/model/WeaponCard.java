@@ -180,6 +180,11 @@ public class WeaponCard {
         init();
     }
 
+    @Override
+    public String toString(){
+        return name;
+    }
+
 
     public WeaponCardDTO convertToDTO(){
         WeaponCardDTO weaponCardDTO = new WeaponCardDTO();

@@ -21,9 +21,9 @@ public class AdrenalineUpEvent extends PcEvent {
 
     @Override
     public String toString() {
-        return isUncensored
-                ? "You got adrenaline level " + pc.getAdrenaline()
-                : "";
+        return censored
+                ? ""
+                : "You got adrenaline level " + pc.getAdrenaline();
     }
 
 

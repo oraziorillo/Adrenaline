@@ -27,12 +27,12 @@ public enum ControllerMethodsEnum {
     CHOOSE_POWER_UP("ch", "choose power up"),
     CHOOSE_UPGRADE("selectUpgrade", "u"),
     CHOOSE_ASYNCHRONOUS_EFFECT_ORDER("asynchronous", "ca"),
+    CHOOSE_TARGET("choose target", "cht"),
     CHOOSE_DIRECTION("choose direction", "choose dir"),
     OK("ok"),
     RELOAD("re", "reload"),
     PASS("p", "pass"),
     SKIP("skip"),
-    REMOVE_UPGRADE("ru", "remove selectUpgrade"),
     UNDO("undo"),
     QUIT("quit", "q"),
     HELP("help");

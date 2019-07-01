@@ -98,6 +98,9 @@ public class ServerSocketHandler implements Runnable {
             case SHOOT_PEOPLE:
                 player.shootPeople();
                 break;
+            case USE_POWER_UP:
+                player.usePowerUp();
+                break;
             case CHOOSE_SQUARE:
                 argInt = Integer.parseInt(args[1]);
                 int argInt2 = Integer.parseInt(args[2]);
@@ -115,18 +118,27 @@ public class ServerSocketHandler implements Runnable {
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOfMine(argInt);
                 break;
-            case QUIT:
-                player.quit();
-                break;
             case SWITCH_FIRE_MODE:
                 player.switchFireMode();
                 break;
-            //TODO case UPGRADE:
-            //    player.upgrade();
-            //    break;
+            case CHOOSE_UPGRADE:
+                argInt = Integer.parseInt(args[1]);
+                player.chooseUpgrade( argInt );
+                break;
             case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
                 boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
+                //TODO da verificare il comportamento di questo comando
+                break;
+            case CHOOSE_TARGET:
+                player.chooseTarget( args[1] );
+                break;
+            case CHOOSE_DIRECTION:
+                argInt = Integer.parseInt(args[1]);
+                player.chooseDirection( argInt );
+                break;
+            case RELOAD:
+                player.reload();
                 break;
             case UNDO:
                 player.undo();
@@ -134,11 +146,14 @@ public class ServerSocketHandler implements Runnable {
             case OK:
                 player.ok();
                 break;
-            case RELOAD:
-                player.reload();
-                break;
             case PASS:
                 player.pass();
+                break;
+            case SKIP:
+                player.skip();
+                break;
+            case QUIT:
+                player.quit();
                 break;
             default:
                 //TODO: incompleta

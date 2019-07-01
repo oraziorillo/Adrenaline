@@ -32,6 +32,12 @@ public class AmmoTile {
     }
 
 
+    @Override
+    public String toString() {
+        return "[" + ammo[0] + ", " + ammo[1] + ", " + ammo[2] + "]";
+    }
+
+
     public AmmoTileDTO convertToDTO(){
         AmmoTileDTO ammoTileDTO = new AmmoTileDTO();
         ammoTileDTO.setHasPowerUp(hasPowerUp);

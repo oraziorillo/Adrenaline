@@ -1,7 +1,6 @@
 package common.dto_model;
 
 import common.enums.PcColourEnum;
-import server.model.PcBoard;
 
 public class PcBoardDTO implements DTO {
 

@@ -10,7 +10,7 @@ public class Caterpillar<PK, SK, V> {
      * At the beginning it is used like an HashMap of V objects accessed by a PK key; you can add and remove values by using the primary key.
      * You can also add SK objects to the data structure, but they are unused at the moment.
      * The size of SKs' list is always less then or equals to the size of the list of values.
-     * When the size of List of SK values reach the size of the List of values, Caterpillar "metamorphoses" and starts to behaves like an
+     * When the size of List of SK values reaches the size of the List of values, Caterpillar "metamorphoses" and starts to behaves like an
      * HashMap in which keys are SK type objects and values are V type objects and the binding between secondary keys and values is guaranteed
      * by the order of insertions of secondary keys and values.
      */

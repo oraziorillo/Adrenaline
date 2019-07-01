@@ -1,6 +1,8 @@
 package server.controller.states;
 
+import common.enums.PcColourEnum;
 import server.controller.Controller;
+import server.controller.Player;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.actions.Action;
@@ -58,8 +60,9 @@ public class UsePowerUpState extends State {
 
 
     @Override
-    public void selectTarget(Pc targetPc) {
-        if (targetPc.getCurrSquare().isTargetable()){
+    public void selectTarget(PcColourEnum targetPcColour) {
+        Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
+        if ( targetPc != null && targetPc.getCurrSquare().isTargetable()){
             if (currAction.isAdditionalDamage()){
                 if (targetablePcs.contains(targetPc))
                     currAction.selectPc(targetPc);

@@ -94,8 +94,9 @@ public class AmmoSquare extends Square {
         squareDTO.setCol(getCol());
         squareDTO.setColour(getColour());
         squareDTO.setTargetable(isTargetable());
-        squareDTO.setPcs(getPcs().stream().map(pc -> pc.getColour()).collect(Collectors.toSet()));
-        squareDTO.setAmmoTile(ammoTile.convertToDTO());
+        squareDTO.setPcs(getPcs().stream().map(Pc::getColour).collect(Collectors.toSet()));
+        if (ammoTile != null)
+            squareDTO.setAmmoTile(ammoTile.convertToDTO());
         return squareDTO;
     }
 }

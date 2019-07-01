@@ -74,18 +74,18 @@ public class SquareDTO implements DTO {
         this.pcs = pcs;
     }
     
-//    @Override
-//    public boolean equals(Object obj) {
-//        if(obj instanceof  SquareDTO){
-//            SquareDTO s = (SquareDTO)obj;
-//            return s.col == this.col && s.row == this.row;
-//        }else {
-//            return false;
-//        }
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "(" + row + "," + col + ")";
-//    }
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof  SquareDTO){
+            SquareDTO s = (SquareDTO)obj;
+            return s.col == this.col && s.row == this.row;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "(" + row + "," + col + ")";
+    }
 }
