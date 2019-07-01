@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components.card_spaces;
+package client.view.gui.javafx_controllers.in_game.components.card_spaces;
 
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;

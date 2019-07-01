@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.dialogs;
+package client.view.gui.javafx_controllers.in_game.dialogs;
 
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;

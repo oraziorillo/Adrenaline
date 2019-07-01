@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components.weapons;
+package client.view.gui.javafx_controllers.in_game.components.weapons;
 
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.WeaponCardDTO;

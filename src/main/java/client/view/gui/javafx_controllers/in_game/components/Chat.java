@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components;
+package client.view.gui.javafx_controllers.in_game.components;
 
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;
@@ -12,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class Chat {
    @FXML private Double MESSAGGI_HEIGHT;
@@ -80,9 +82,13 @@ public class Chat {
    
    @FXML
    private synchronized void sendInput(){
-      showUserMessage( input.getText() );
-      //TODO: actually send the message
-      input.clear();
+      String msg = input.getText();
+      try {
+         player.sendMessage( msg );
+         input.clear();
+      } catch ( IOException e ) {
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
    }
    
    public void setPlayer(RemotePlayer player) {

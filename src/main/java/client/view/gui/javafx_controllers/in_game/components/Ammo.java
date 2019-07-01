@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.components;
+package client.view.gui.javafx_controllers.in_game.components;
 
 import common.dto_model.PcDTO;
 import common.enums.AmmoEnum;
@@ -55,5 +55,9 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    @Override
    public void changed(ObservableValue<? extends ObjectProperty<PcColourEnum>> observableValue, ObjectProperty<PcColourEnum> pcColourEnumObjectProperty, ObjectProperty<PcColourEnum> t1) {
       this.settedColor = t1.get();
+   }
+   
+   public void setColour(PcColourEnum colour) {
+      this.settedColor=colour;
    }
 }

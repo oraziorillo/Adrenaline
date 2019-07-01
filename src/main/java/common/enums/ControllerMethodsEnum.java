@@ -34,6 +34,7 @@ public enum ControllerMethodsEnum {
     PASS("p", "pass"),
     SKIP("skip"),
     UNDO("undo"),
+    SEND_MESSAGE("send message","sm"),
     QUIT("quit", "q"),
     HELP("help");
     

@@ -10,7 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.javafx_controllers.components.Top"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.javafx_controllers.in_game.components.Top"
       id="mainPane"
       maxHeight="${cardHolder.height}" minHeight="${cardHolder.height}" prefHeight="${cardHolder.height}" stylesheets="/css/top.css" BorderPane.alignment="TOP_CENTER" >
     <fx:define>
@@ -19,8 +19,8 @@
         <HBox HBox.hgrow="ALWAYS">
             <VBox>
                 <HBox.margin><Insets topRightBottomLeft="$padding"/> </HBox.margin>
-                <fx:include source="munizioni.fxml" VBox.vgrow="ALWAYS" />
-                <Label id="punti" text="0" alignment="TOP_CENTER"/>
+                <fx:include fx:id="ammo" source="munizioni.fxml" VBox.vgrow="ALWAYS" />
+                <Label fx:id="punti" text="0" alignment="TOP_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <HBox fx:id="killShotTrack" id="KillShotTrack" HBox.hgrow="ALWAYS" alignment="CENTER"/>

@@ -9,6 +9,7 @@ import server.exceptions.PlayerAlreadyLoggedInException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -148,6 +149,12 @@ public class ServerSocketHandler implements Runnable {
                 break;
             case PASS:
                 player.pass();
+                break;
+            case SEND_MESSAGE:
+                StringBuilder builder = new StringBuilder();
+                for(String s: Arrays.copyOfRange( args,1,args.length ))
+                    builder.append( s ).append( System.lineSeparator() );
+                player.sendMessage( builder.toString() );
                 break;
             case SKIP:
                 player.skip();
