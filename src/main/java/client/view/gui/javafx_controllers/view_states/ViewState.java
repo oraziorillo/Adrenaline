@@ -13,9 +13,15 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
+/**
+ * Abstract view state class.
+ * Most methods just throw IllegalStateException, which is non-blocking, to notify unexpected calls
+ * Concrete states will override those methods so exception is no longer thrown
+ */
 public abstract class ViewState extends AbstractView implements ListChangeListener<String> {
    protected RemotePlayer player;
    protected HostServices hostServices;
+   private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
 
    public abstract ViewState nextState() throws RemoteException;
    
@@ -47,6 +53,11 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
       }
    }
    
+   /**
+    * Utility method for not manageable errors (Such as server unreachable).
+    * Displays an error dialog and quits (performing a soft quit if possible)
+    * @param msg the text for the error dialog
+    */
    @Override
    public void error(String msg) {
       Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -56,7 +67,6 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
       errorAlert.showAndWait();
       try {player.quit();} catch ( Exception ignored ) {}
       System.exit(1);
-      //TODO: gestisci errori
    }
    
    public void setPlayer(RemotePlayer player){
@@ -69,42 +79,36 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
 
    @Override
    public ConnectionMethodEnum acquireConnectionMethod() {
-      return null;
+      throw new IllegalStateException( UNEXPECTED_CALL );
    }
 
    @Override
-   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
-      return null;
-   }
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {throw new IllegalStateException( UNEXPECTED_CALL );}
 
    @Override
    public String acquireUsername(){
-      return null;
+      throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
    @Override
    public UUID acquireToken() {
-      return null;
+      throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
    @Override
-   public void ack(String message) throws RemoteException {
-   
-   }
+   public void ack(String message) throws RemoteException {throw new IllegalStateException( UNEXPECTED_CALL );}
    
    @Override
-   public void chatMessage(String message) throws RemoteException {
-   
-   }
+   public void chatMessage(String message) throws RemoteException {throw new IllegalStateException( UNEXPECTED_CALL );}
    
    @Override
    public boolean wantsToRegister() {
-      return false;
+      throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
    @Override
    public String requestString(String message) {
-      return null;
+      throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
    @Override
