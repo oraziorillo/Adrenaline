@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
+import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -42,12 +43,15 @@ public class GuiController extends AbstractClientController {
             } else {
                 token = view.acquireToken();
             }
-            //todo handle ex
-            // player = loginController.login( token, view );
+            player = loginController.login( token, view );
         }catch ( IOException e ){
             try {
                 view.error( "Server unreachable" );
             }catch ( RemoteException ignored ){}
+        }catch ( PlayerAlreadyLoggedInException alreadyLogged ){
+           try {
+              view.error( "This player is already connected on a different machine" );
+           } catch ( RemoteException ignored ) {}
         }
     }
     

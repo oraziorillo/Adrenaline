@@ -324,4 +324,9 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     public UUID getToken() {
         return this.token;
     }
+    
+    @Override
+    public void sendMessage(String s) throws IOException {
+        //TODO: metodo per mandare messaggi in chat
+    }
 }
