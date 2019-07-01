@@ -40,7 +40,6 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
       morti.prefTileWidthProperty().bind( Bindings.subtract( Bindings.divide( morti.widthProperty(),Constants.PC_VALUES.length ),1 ) );
       morti.setAlignment( Pos.CENTER );
       morti.setTileAlignment( Pos.CENTER );
-      test();
    }
    
    public void setColor(PcColourEnum color){

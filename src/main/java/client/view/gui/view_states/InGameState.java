@@ -13,9 +13,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class InGameState extends ViewState {
-   public InGameState(Stage stage, RemotePlayer player, HostServices hostServices, ObservableList<String> previousAcks) throws IOException {
+   public InGameState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> previousAcks) throws IOException {
       super( stage, player, hostServices, previousAcks );
       FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
      Parent root = loader.load();
@@ -33,6 +34,7 @@ public class InGameState extends ViewState {
    
    @Override
    public ViewState nextState() throws RemoteException {
-      return ViewState.getFirstState(hostServices, stage,previousAcks);
+      return ViewState.getFirstState(hostServices, stage,previousAcks,topView);
    }
+   
 }

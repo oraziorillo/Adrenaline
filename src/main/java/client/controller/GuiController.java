@@ -32,34 +32,38 @@ public class GuiController extends Application {
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
         view = new GuiView( getHostServices(),stage );
-        authUser( stage );
+        UUID token = authUser( stage );
+        loginController.joinLobby( token );
         view.nextState();
         //configGame( stage );
         view.nextState();
         //startGame( stage );
     }
     
-    private void authUser(Stage stage){
+    private UUID authUser(Stage stage){
         try {
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             UUID token;
             if (view.wantsToRegister()) {
                 String username = view.acquireUsername();
                 token = loginController.register( username, view );
+                view.ack( "This is your token"+System.lineSeparator()+token );
             } else {
                 token = view.acquireToken();
             }
             player = loginController.login( token, view );
             view.setPlayer( player );
+           return token;
         }catch ( IOException e ){
-            try {
-                view.error( "Server unreachable" );
+           try {
+               view.error( "Server unreachable" );
             }catch ( RemoteException ignored ){}
         }catch ( PlayerAlreadyLoggedInException alreadyLogged ){
            try {
               view.error( "This player is already connected on a different machine" );
            } catch ( RemoteException ignored ) {}
         }
+        return null;
     }
     
     private void configGame(Stage stage){

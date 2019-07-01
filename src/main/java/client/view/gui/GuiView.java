@@ -18,21 +18,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import static javafx.application.Platform.runLater;
 
 public class GuiView extends AbstractView implements ModelEventListener {
 
    private transient ViewState currentGui;
    protected transient RemotePlayer player;
    protected transient HostServices hostServices;
-   private transient ObservableList<String> acks = FXCollections.observableArrayList();
+   private transient List<String> acks = new ArrayList<>();
 
 
    public GuiView(HostServices hostServices, Stage stage) throws RemoteException {
       super();
       this.hostServices = hostServices;
-      currentGui = ViewState.getFirstState(hostServices,stage,acks );
-      acks.addListener( currentGui );
+      currentGui = ViewState.getFirstState(hostServices,stage,acks,this );
    }
 
 
@@ -71,7 +74,13 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void ack(String message) throws RemoteException {
-      acks.add( message );
+      runLater(()->{
+         try {
+            currentGui.ack( message );
+         } catch ( RemoteException e ) {
+            e.printStackTrace();
+         }
+      });
    }
 
     @Override
@@ -91,9 +100,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
    }
 
    public void nextState() throws IOException {
-      acks.removeListener( currentGui );
       currentGui = currentGui.nextState();
-      acks.addListener( currentGui );
    }
 
    public void setPlayer(RemotePlayer player) {

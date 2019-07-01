@@ -9,10 +9,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.UUID;
 
 public class UserAuthState extends ViewState {
-   public UserAuthState(Stage stage, HostServices hostServices, ObservableList<String> previousAcks) throws RemoteException {
+   public UserAuthState(Stage stage, HostServices hostServices, List<String> previousAcks) throws RemoteException {
       super( stage, null, hostServices,previousAcks);
       javafxController = new UserAuthController();
    }
@@ -20,7 +21,9 @@ public class UserAuthState extends ViewState {
    
    @Override
    public ViewState nextState() throws IOException {
-      return new SetupState(stage,player,hostServices,previousAcks );
+      SetupState nextState = new SetupState(stage,player,hostServices,previousAcks );
+      nextState.setTopView( topView );
+      return nextState;
    }
    
    @Override
@@ -48,9 +51,4 @@ public class UserAuthState extends ViewState {
       return javafxController.wantsToRegister();
    }
    
-   @Override
-   public void ack(String message) throws RemoteException {
-      super.ack( message );
-      javafxController.ack( message );
-   }
 }

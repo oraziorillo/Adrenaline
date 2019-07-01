@@ -1,6 +1,8 @@
 package client.view.gui.javafx_controllers;
 
 import client.view.AbstractView;
+import client.view.gui.GuiView;
+import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;
@@ -17,6 +19,7 @@ public abstract class AbstractJavaFxController extends AbstractView {
    
    protected HostServices hostServices;
    protected RemotePlayer player;
+   protected GuiView topView;
    
    protected AbstractJavaFxController() throws RemoteException {
    }
@@ -38,6 +41,11 @@ public abstract class AbstractJavaFxController extends AbstractView {
    
    public void  setPlayer(RemotePlayer player) {
       this.player = player;
+   }
+   
+   @Override
+   public ModelEventListener getListener() throws RemoteException {
+      return topView;
    }
    
    @Override
@@ -64,4 +72,9 @@ public abstract class AbstractJavaFxController extends AbstractView {
    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
    
    }
+   
+   public void setTopView(GuiView topView) {
+      this.topView = topView;
+   }
+   
 }

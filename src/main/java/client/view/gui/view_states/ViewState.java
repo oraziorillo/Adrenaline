@@ -1,6 +1,7 @@
 package client.view.gui.view_states;
 
 import client.view.AbstractView;
+import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -27,21 +29,19 @@ import java.util.UUID;
  * Most methods just throw IllegalStateException, which is non-blocking, to notify unexpected calls
  * Concrete states will override those methods so exception is no longer thrown
  */
-public abstract class ViewState extends AbstractView implements ListChangeListener<String> {
+public abstract class ViewState extends AbstractView {
    protected AbstractJavaFxController javafxController;
    private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
    protected RemotePlayer player;
    protected HostServices hostServices;
-   protected ObservableList<String> previousAcks;
+   protected List<String> previousAcks;
    public static Stage stage;
+   protected GuiView topView;
    
    public abstract ViewState nextState() throws IOException;
    
-   public ViewState(Stage stage, RemotePlayer player, HostServices hostServices, ObservableList<String> observedList) throws RemoteException {
+   public ViewState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> observedList) throws RemoteException {
       super();
-      for(String s: observedList){
-         ack( s );
-      }
       this.player = player;
       this.hostServices = hostServices;
       this.stage = stage;
@@ -52,30 +52,28 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
       this.javafxController = javafxController;
       javafxController.setPlayer( player );
       javafxController.setHostServices( hostServices );
+      javafxController.setTopView( topView );
+      for(String s: previousAcks){
+         try {
+            ack( s );
+         } catch ( RemoteException ignored ) {}
+      }
+      
    }
    
    public void setHostServices(HostServices hostServices) {
       this.hostServices = hostServices;
    }
    
-   
-   @Override
-   public void onChanged(Change<? extends String> change) {
-      if(change.wasAdded()){
-         for(String ack: change.getAddedSubList()){
-            try {
-               this.ack( ack );
-            }catch ( IOException shouldntHappen ){
-               IllegalStateException neverThrown = new IllegalStateException( "Connection exception thrown on netless operation" );
-               neverThrown.setStackTrace( shouldntHappen.getStackTrace() );
-               throw neverThrown;
-            }
-         }
-      }
+   public static ViewState getFirstState(HostServices hostServices, Stage stage, List<String> previousAcks, GuiView topView) throws RemoteException {
+      UserAuthState returned = new UserAuthState( stage, hostServices, previousAcks);
+      returned.setTopView(topView);
+      return returned;
    }
    
-   public static ViewState getFirstState(HostServices hostServices, Stage stage,ObservableList<String> previousAcks) throws RemoteException {
-      return new UserAuthState( stage, hostServices, previousAcks);
+   protected void setTopView(GuiView topView){
+      this.topView = topView;
+      javafxController.setTopView( topView );
    }
    
    /**
@@ -114,6 +112,7 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
    @Override
    public void ack(String message) throws RemoteException {
       javafxController.ack( message );
+      previousAcks.add( message );
    }
    
    @Override

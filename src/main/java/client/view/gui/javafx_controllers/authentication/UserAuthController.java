@@ -2,6 +2,7 @@ package client.view.gui.javafx_controllers.authentication;
 
 import client.controller.socket.ClientSocketHandler;
 import client.controller.socket.LoginControllerSocketProxy;
+import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
@@ -15,32 +16,38 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
 import static javafx.application.Platform.runLater;
 
 public class UserAuthController extends AbstractJavaFxController {
-   
+   private HashSet<Alert> alerts = new HashSet<>();
+   private GuiView view;
    
    public UserAuthController() throws RemoteException {
    }
    
+   public void setView(GuiView view) {
+      this.view = view;
+   }
+   
    @Override
    public void ack(String message) throws RemoteException {
-      runLater( () -> {
-         Alert infos = new Alert( Alert.AlertType.INFORMATION );
-         infos.setTitle( "infos" );
-         infos.setHeaderText( null );
-         infos.setContentText( "The king of the arena says:" );
-         infos.setResizable( true );
-         TextArea messageArea = new TextArea(message);
-         messageArea.setWrapText( true );
-         messageArea.setEditable( false );
-         infos.getDialogPane().setExpandableContent( messageArea );
-         infos.getDialogPane().setExpanded( true );
-         infos.show();
-      } );
+//      Alert infos = new Alert( Alert.AlertType.INFORMATION );
+//      infos.setTitle( "infos" );
+//      infos.setHeaderText( null );
+//      infos.setContentText( "The king of the arena says:" );
+//      infos.setResizable( true );
+//      TextArea messageArea = new TextArea(message);
+//      messageArea.setWrapText( true );
+//      messageArea.setEditable( false );
+//      infos.getDialogPane().setExpandableContent( messageArea );
+//      infos.getDialogPane().setExpanded( true );
+//      infos.setOnCloseRequest( e->alerts.remove( infos ) );
+//      infos.show();
+      
    }
    
    @Override
@@ -85,7 +92,7 @@ public class UserAuthController extends AbstractJavaFxController {
 //               }, "SocketHandler");
 //               thread.start();
 //               return handler;
-               return new LoginControllerSocketProxy( new Socket( HOST,SOCKET_PORT ),this );
+               return new LoginControllerSocketProxy( new Socket( HOST,SOCKET_PORT ),topView );
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");
