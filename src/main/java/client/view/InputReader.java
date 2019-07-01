@@ -9,4 +9,6 @@ public interface InputReader {
 
     String requestString(String message);
 
+    String requestCommand(String message);
+
 }

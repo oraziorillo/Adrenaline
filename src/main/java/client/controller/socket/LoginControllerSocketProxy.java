@@ -1,5 +1,6 @@
 package client.controller.socket;
 
+import client.view.AbstractView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
@@ -8,18 +9,24 @@ import server.exceptions.PlayerAlreadyLoggedInException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import static common.Constants.*;
-import static common.Constants.REGEX;
 import static common.enums.ControllerMethodsEnum.*;
 
 public class LoginControllerSocketProxy extends AbstractSocketProxy implements RemoteLoginController {
 
-    private UUID token;
+    private AbstractView view;
+    private BlockingQueue<String[]> buffer = new PriorityBlockingQueue<>(10, (a1, a2) -> a1[0].compareToIgnoreCase(a2[0]));
 
-    LoginControllerSocketProxy(Socket socket, ) throws IOException {
+
+    public LoginControllerSocketProxy(Socket socket, AbstractView view) throws IOException {
         super(socket);
+        this.view = view;
+        new Thread(new ClientSocketHandler(socket, view, buffer)).start();
     }
+
 
     @Override
     public synchronized UUID register(String username, RemoteView view) {
@@ -39,14 +46,13 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
     @Override
     public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException, PlayerAlreadyLoggedInException {
         if (token != null) {
-            this.token = token;
-            new Thread(this).start();
+            RemotePlayer tmpPlayer = new PlayerSocketProxy(socket, token);
             out.println(LOG_IN + REGEX + token);
             out.flush();
             try {
                 String outcome = buffer.take()[0];
                 if (outcome.equals(SUCCESS))
-                    return this;
+                    return tmpPlayer;
                 else if (outcome.equals(FAIL)){
                     throw new PlayerAlreadyLoggedInException();
                 }

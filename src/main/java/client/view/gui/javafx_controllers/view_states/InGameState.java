@@ -162,8 +162,8 @@ public class InGameState extends ViewState {
       topController.cardHolderController.setPlayer( player );
       
    }
-   
-   @Override
+
+    @Override
    public void ack(String message) {
       chatController.showServerMessage(message);
       chatController.appear();

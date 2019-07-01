@@ -15,19 +15,15 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
     protected transient static final int SOCKET_PORT = 10000;
     protected transient static final int RMI_PORT = 9999;
 
-
     protected AbstractView() throws RemoteException {
     }
-
 
     public void printMessage(String msg) {
     }
 
-
-    public String[] nextCommand(){
+    public String nextCommand() {
         return null;
     }
-
 
     public ConnectionMethodEnum acquireConnectionMethod() {
         return null;

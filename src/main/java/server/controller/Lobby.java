@@ -70,12 +70,12 @@ public class Lobby {
      */
     void addPlayer(Player player) {
         players.add(player);
-        ack("Say hello to @" + databaseHandler.getUsername(player.getToken()),
-                "You joined a lobby", player);
-        ack(((players.size() > 1)
-                    ? "There are " + players.size() + " players"
-                    : "There is " + 1 + " player") + " in this lobby", null);
-        ack("Players in the room" + getAllUserNames(), null);
+        String m1 = "Say hello to @" + databaseHandler.getUsername(player.getToken());
+        String m2 = "You joined a lobby";
+        String m3 = ((players.size() > 1)
+                ? "\nThere are " + players.size() + " players"
+                : "\nThere is " + 1 + " player") + " in this lobby" + getAllUserNames();
+        ack(m1 + m3, m2 + m3, player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
             ack("The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes", null);

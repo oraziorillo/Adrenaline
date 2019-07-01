@@ -7,16 +7,18 @@ import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
+
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
+
+import static common.enums.ControllerMethodsEnum.QUIT;
 
 public class CliController {
 
     private RemoteLoginController loginController;
     protected AbstractView view;
     protected RemotePlayer player;
-
 
     public CliController() throws IOException {
         this.view = new CliView();
@@ -51,11 +53,15 @@ public class CliController {
         } catch (IOException e) {
             view.printMessage("Server unreachable");
         }
-        while (isRunnable()) {
+        view.nextCommand();
+        String[] input = null;
+        while (isRunnable() && (input == null || !input[0].equals(QUIT.getCommand()))) {
             try {
-                String[] input = view.nextCommand();
+                input = view.nextCommand().split("\\s+");
                 ControllerMethodsEnum command = ControllerMethodsEnum.parseString(input[0]);
-                CommandParser.executeCommand(command, input, player);
+                String[] args = new String[input.length - 1];
+                System.arraycopy(input, 1, args, 0, input.length - 1);
+                CommandParser.executeCommand(command, args, player);
             } catch (IOException serverUnreachable) {
                 view.printMessage("Server unreachable");
             } catch (IllegalArgumentException unsupportedCommand) {
@@ -63,6 +69,7 @@ public class CliController {
                 view.printMessage(ControllerMethodsEnum.help());
             }
         }
+        //TODO logout
     }
 
 
@@ -80,7 +87,7 @@ public class CliController {
         try {
             tmpPlayer = loginController.login(token, view);
             if (tmpPlayer != null)
-                view.printMessage("Logging in");
+                view.printMessage("\nLogging in\n");
         } catch (PlayerAlreadyLoggedInException e) {
             view.printMessage(e.getMessage());
             tmpPlayer = null;

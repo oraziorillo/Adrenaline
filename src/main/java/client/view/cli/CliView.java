@@ -1,6 +1,6 @@
 package client.view.cli;
 
-import client.controller.socket.ClientSocketHandler;
+import client.controller.socket.LoginControllerSocketProxy;
 import client.view.AbstractView;
 import client.view.InputReader;
 import common.enums.ConnectionMethodEnum;
@@ -33,9 +33,8 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public String[] nextCommand() {
-        String input = inputReader.requestString("Insert command\n");
-        return input.split(" ");
+    public String nextCommand() {
+        return inputReader.requestCommand("Insert command\n").toLowerCase();
     }
 
 
@@ -69,9 +68,9 @@ public class CliView extends AbstractView {
             switch (cme) {
                 case SOCKET:
                     Socket socket = new Socket(HOST, SOCKET_PORT);
-                    ClientSocketHandler handler = new ClientSocketHandler(socket, this);
-                    new Thread(handler).start();
-                    return handler;
+                    //ClientSocketHandler handler = new ClientSocketHandler(socket, this);
+                    //new Thread(handler).start();
+                    return new LoginControllerSocketProxy(socket, this);
                 case RMI:
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
                     return (RemoteLoginController) registry.lookup("LoginController");
@@ -125,7 +124,6 @@ public class CliView extends AbstractView {
             return null;
         }
     }
-
 
     @Override
     public synchronized void ack(String message) throws RemoteException {

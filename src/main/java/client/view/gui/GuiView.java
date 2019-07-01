@@ -12,9 +12,7 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import java.io.IOException;
+
 import java.rmi.RemoteException;
 import java.util.UUID;
 

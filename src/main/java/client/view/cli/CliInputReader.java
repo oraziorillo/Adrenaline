@@ -31,4 +31,10 @@ public class CliInputReader implements InputReader {
         System.out.println("\n>>> " + message);
         return in.next();
     }
+
+
+    @Override
+    public String requestCommand(String message) {
+        return in.nextLine();
+    }
 }
