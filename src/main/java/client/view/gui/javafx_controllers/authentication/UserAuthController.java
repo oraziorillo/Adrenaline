@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.authentication;
 
 import client.controller.socket.ClientSocketHandler;
+import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
@@ -73,16 +74,17 @@ public class UserAuthController extends AbstractJavaFxController {
                return ( RemoteLoginController ) registry.lookup("LoginController");
             case SOCKET:
             default:
-               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
-               Thread thread = new Thread(new Task<>() {
-                  @Override
-                  protected Object call() throws Exception {
-                     handler.run();
-                     return null;
-                  }
-               }, "SocketHandler");
-               thread.start();
-               return handler;
+//               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
+//               Thread thread = new Thread(new Task<>() {
+//                  @Override
+//                  protected Object call() throws Exception {
+//                     handler.run();
+//                     return null;
+//                  }
+//               }, "SocketHandler");
+//               thread.start();
+//               return handler;
+               return new LoginControllerSocketProxy( new Socket( HOST,SOCKET_PORT ),this );
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");
