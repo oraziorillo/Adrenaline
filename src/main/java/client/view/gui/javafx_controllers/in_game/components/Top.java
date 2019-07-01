@@ -70,7 +70,7 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
          killShotTrack.getChildren().add( skullPane );
       }
       skullImage = new ImageView( new Image( "/images/teschio_ultimo.png",0, KILLSHOT_HEIGHT,true,false ));
-      circlePane = killshotTrackPanes[Constants.MAX_KILL_SHOT_TRACK_SIZE] = new StackPane(  );
+      circlePane = killshotTrackPanes[Constants.MAX_KILL_SHOT_TRACK_SIZE-1] = new StackPane(  );
       skullImage.setPreserveRatio( true );
       skullPane = new StackPane( skullImage,circlePane );
       killShotTrack.getChildren().add( skullPane );

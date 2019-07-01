@@ -30,9 +30,9 @@ public abstract class ViewState extends AbstractView implements ListChangeListen
       for(String ack: previousAcks){
          try {
             this.ack( ack );
-         }catch ( IOException shouldntHappen ){
+         }catch ( IOException shouldNotHappen ){
             IllegalStateException neverThrown = new IllegalStateException( "Connection exception thrown on netless operation" );
-            neverThrown.setStackTrace( shouldntHappen.getStackTrace() );
+            neverThrown.setStackTrace( shouldNotHappen.getStackTrace() );
             throw neverThrown;
          }
       }
