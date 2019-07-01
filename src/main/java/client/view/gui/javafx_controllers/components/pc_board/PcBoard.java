@@ -8,7 +8,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -17,10 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
-   public static final String DIRECTORY = "/images/pc_board/";
+   static final String DIRECTORY = "/images/pc_board/";
+   static final String FRENZY_SUBDIR = "/frenzy/";
    public HBox mainPane;
    public ImageView immagine;
-   public static Double HEIGHT=200d;
+   static Double HEIGHT=200d;
    @FXML HBox translating;
    @FXML Azioni azioniController;
    @FXML Vita vitaController;
@@ -28,11 +28,10 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    private PcColourEnum settedColour;
    
    public final ChangeListener<ObjectProperty<PcColourEnum>> colorListener = (observableValue, oldV, newV) -> setPcColour( newV.get() );
-   public final ChangeListener<ObjectProperty<KillShotTrackDTO>> frenzyListener =(obs,oldV,newV) -> setFrenzy(newV.get());
-   
-   private void setFrenzy(KillShotTrackDTO killShotTrackDTO) {
-      //TODO: swap board
-   }
+   public final ChangeListener<ObjectProperty<KillShotTrackDTO>> frenzyListener =(obs,oldV,newV) -> {
+      azioniController.changed( obs,oldV,newV );
+      vitaController.changed( obs,oldV,newV );
+   };
    
    public void initialize(){
       setPcColour( PcColourEnum.GREEN ); //to avoid NPE
@@ -40,7 +39,7 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
       translate.setToX( 0 );
       translate.setFromX( -vitaController.widthProperty().doubleValue() );
       translating.setTranslateX( -vitaController.widthProperty().doubleValue() );
-      NumberBinding exactWidth = Bindings.add( azioniController.getImage().widthProperty(), immagine.getImage().widthProperty() );
+      NumberBinding exactWidth = Bindings.add( azioniController.widthProperty(), immagine.getImage().widthProperty() );
       mainPane.maxWidthProperty().bind( exactWidth );
       mainPane.minWidthProperty().bind( exactWidth );
       mainPane.prefWidthProperty().bind( exactWidth );
@@ -61,7 +60,7 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    
    public void setPcColour(PcColourEnum color){
       settedColour = color;
-      azioniController.setImage( new Image( DIRECTORY+color.getName().toLowerCase()+"/azioni.png",0,HEIGHT,true,false ) );
+      azioniController.setColor( color );
       vitaController.setColor( color );
       immagine.setImage( new Image( DIRECTORY+color.getName().toLowerCase()+"/immagine.png",0,HEIGHT,true,false ) );
    }

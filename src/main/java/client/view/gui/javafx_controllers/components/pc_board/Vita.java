@@ -1,11 +1,15 @@
 package client.view.gui.javafx_controllers.components.pc_board;
 
 import common.Constants;
+import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -19,7 +23,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.Arrays;
 
-public class Vita implements MapChangeListener<PcColourEnum, PcDTO> {
+public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListener<ObjectProperty<KillShotTrackDTO>> {
    @FXML private StackPane mainPane;
    @FXML private GridPane marchi;
    @FXML private TilePane danni;
@@ -35,6 +39,7 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO> {
       danni.setAlignment( Pos.CENTER_LEFT );
       morti.setPrefRows( 1 );
       morti.prefTileWidthProperty().bind( Bindings.subtract( Bindings.divide( morti.widthProperty(),Constants.PC_VALUES.length ),1 ) );
+      morti.setAlignment( Pos.CENTER );
       morti.setTileAlignment( Pos.CENTER );
       test();
    }
@@ -132,5 +137,16 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO> {
       updateMarks( new short[]{3,3,3,3,3} );
       updateKills( 6 );
       System.out.println(danni.getChildren());
+   }
+   
+   @Override
+   public void changed(ObservableValue<? extends ObjectProperty<KillShotTrackDTO>> obs, ObjectProperty<KillShotTrackDTO> oldV, ObjectProperty<KillShotTrackDTO> newV) {
+      if (true) { //TODO: finalFrenzy on
+         if(true){   //TODO: la vita deve essere swappata
+            background.setImage( new Image( PcBoard.DIRECTORY+settedColor.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"vita.png",0,
+                    PcBoard.HEIGHT,true,false ) );
+            updateKills( 0 ); //if life is swapped, kill count is set to 0
+         }
+      }
    }
 }
