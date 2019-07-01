@@ -4,7 +4,11 @@ import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.view_states.InGameState;
+import client.view.gui.javafx_controllers.view_states.ViewState;
 import common.enums.PcColourEnum;
+import common.remote_interfaces.RemoteLoginController;
+import common.remote_interfaces.RemotePlayer;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,19 +21,21 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
-public class GuiController extends AbstractClientController {
+public class GuiController extends Application {
    
-   public static PcColourEnum choosenColor;
+   RemoteLoginController loginController;
+   protected AbstractView view = new GuiView();
+   protected RemotePlayer player;
    
    public GuiController() throws RemoteException {
-        super( new GuiView() );
+    
     }
     
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
         authUser( stage );
-        configGame(stage);
+        configGame( stage );
         startGame( stage );
     }
     
@@ -56,6 +62,7 @@ public class GuiController extends AbstractClientController {
     }
     
     private void configGame(Stage stage){
+      
         //TODO: scegli mappa, teschi, colore
     }
     
