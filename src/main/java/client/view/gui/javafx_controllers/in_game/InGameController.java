@@ -1,4 +1,4 @@
-package client.view.gui.javafx_controllers.in_game.view_states;
+package client.view.gui.javafx_controllers.in_game;
 
 import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Map;
@@ -7,7 +7,10 @@ import client.view.gui.javafx_controllers.in_game.components.card_spaces.CardHol
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.PowerUpHand;
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
-import common.dto_model.*;
+import client.view.gui.javafx_controllers.AbstractJavaFxController;
+import common.dto_model.KillShotTrackDTO;
+import common.dto_model.PcDTO;
+import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
@@ -36,7 +39,7 @@ import javafx.scene.layout.Region;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-public class InGameState extends ViewState {
+public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
    @FXML private GridPane killShotTrack;
    @FXML private Map mapController;
@@ -53,6 +56,9 @@ public class InGameState extends ViewState {
    private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
    private ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
+   
+   public InGameController() throws RemoteException {
+   }
    
    public void initialize() {
       //Add player hands
@@ -87,7 +93,7 @@ public class InGameState extends ViewState {
          n.setTranslateX(2 * (size - i));
          n.setViewOrder(i);
       }
-      test();
+      setPlayer( player );
    }
    
    private Region spacerFactory(){
@@ -96,35 +102,7 @@ public class InGameState extends ViewState {
       HBox.setHgrow( spacer, Priority.ALWAYS );
       return spacer;
    }
-   
-   //TODO: momentaneamente pubblico per poter lanciare direttamente la grafica di gioco
-   public InGameState() throws RemoteException {
-       super();
-      this.color.set( PcColourEnum.GREEN );
-   }
 
-   private void test() {
-      /*
-      WeaponCardDTO[] weapons = new WeaponCardDTO[3];
-      PowerUpCardDTO[] powerups = new PowerUpCardDTO[3];
-      for (int i = 0; i < 3; i++) {
-         weapons[i] = new WeaponCardDTO( "martello_ionico", 1, 1 );
-         powerups[i] = PowerUpCardDTO.getCardBack();
-         System.out.println(powerups[i].getImagePath());
-      }
-      weaponHandController.setCards( weapons );
-      powerUpHandController.setCards( powerups );
-      for(int i=0;i<PcColourEnum.values().length;i++){
-         SquareDTO s=new SquareDTO();
-         s.setRow( 1 );
-         s.setCol( 3 );
-         PcDTO pc = new PcDTO();
-         pc.setColour( PcColourEnum.values()[i] );
-         pc.setCurrSquare( s );
-      }
-
-       */
-   }
    
    //Button methods
    @FXML
@@ -170,18 +148,16 @@ public class InGameState extends ViewState {
    }
    
    @Override
-   public ViewState nextState() throws RemoteException {
-      return new UserAuthState();
-   }
-   
-   @Override
    public void setPlayer(RemotePlayer player) {
       super.setPlayer( player );
       topController.setPlayer(player);
       chatController.setPlayer(player);
       cardHolderRightController.setPlayer( player );
       cardHolderLeftController.setPlayer( player );
-      
+      mapController.setPlayer( player );
+      pcBoardController.setPlayer(player);
+      cardHolderLeftController.setPlayer( player );
+      cardHolderRightController.setPlayer( player );
    }
    
    @Override

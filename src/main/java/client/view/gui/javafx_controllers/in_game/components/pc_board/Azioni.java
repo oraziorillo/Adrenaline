@@ -56,4 +56,8 @@ public class Azioni implements ChangeListener<KillShotTrackDTO> {
          }
       }
    }
+   
+   public void setPlayer(RemotePlayer player) {
+      this.player = player;
+   }
 }

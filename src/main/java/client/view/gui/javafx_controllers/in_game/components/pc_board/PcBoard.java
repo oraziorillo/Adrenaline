@@ -3,6 +3,7 @@ package client.view.gui.javafx_controllers.in_game.components.pc_board;
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
+import common.remote_interfaces.RemotePlayer;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -70,4 +71,7 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
             vitaController.onChanged( change );
    }
    
+   public void setPlayer(RemotePlayer player) {
+      azioniController.setPlayer(player);
+   }
 }

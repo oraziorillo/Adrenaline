@@ -1,12 +1,9 @@
-package client.view.gui.javafx_controllers.in_game.view_states;
+package client.view.gui.javafx_controllers.authentication;
 
 import client.controller.socket.ClientSocketHandler;
+import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
-import common.events.game_board_events.GameBoardEvent;
-import common.events.kill_shot_track_events.KillShotTrackEvent;
-import common.events.pc_board_events.PcBoardEvent;
-import common.events.pc_events.PcEvent;
-import common.events.square_events.SquareEvent;
+import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.concurrent.Task;
 import javafx.scene.control.*;
@@ -22,19 +19,14 @@ import java.util.UUID;
 
 import static javafx.application.Platform.runLater;
 
-public class UserAuthState extends ViewState {
-
-
-   public UserAuthState(String... previousAcks) throws RemoteException {
-      super(previousAcks);
+public class UserAuthController extends AbstractJavaFxController {
+   
+   
+   public UserAuthController() throws RemoteException {
    }
-
-   /**
-    * Builds an alert containing the ack and shows it
-    * @param message the message of the ack
-    */
+   
    @Override
-   public synchronized void ack(String message) {
+   public void ack(String message) throws RemoteException {
       runLater( () -> {
          Alert infos = new Alert( Alert.AlertType.INFORMATION );
          infos.setTitle( "infos" );
@@ -49,8 +41,18 @@ public class UserAuthState extends ViewState {
          infos.show();
       } );
    }
-
-
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      throw new IllegalStateException( "Can't write in chat" );
+   }
+   
+   @Override
+   public ModelEventListener getListener() throws RemoteException {
+      return this;
+   }
+   
+   
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
       RemoteLoginController loginController;
@@ -60,15 +62,15 @@ public class UserAuthState extends ViewState {
       Optional<ButtonType> response = rmiOrSocket.showAndWait();
       return ConnectionMethodEnum.parseString(response.get().getText().toLowerCase());
    }
-
-
+   
+   
    @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       try {
          switch (cme) {
             case RMI:
                Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
-               return (RemoteLoginController) registry.lookup("LoginController");
+               return ( RemoteLoginController ) registry.lookup("LoginController");
             case SOCKET:
             default:
                ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
@@ -88,8 +90,8 @@ public class UserAuthState extends ViewState {
          return null;    //This line won't be executed, but is needed to avoid variable initialization error on return
       }
    }
-
-
+   
+   
    @Override
    public boolean wantsToRegister() {
       Alert firstTime = new Alert(
@@ -100,7 +102,7 @@ public class UserAuthState extends ViewState {
       );
       return firstTime.showAndWait().get().getButtonData().equals(ButtonBar.ButtonData.YES);
    }
-
+   
    @Override
    public String acquireUsername() {
       TextInputDialog usernameDialog = new TextInputDialog();
@@ -128,41 +130,11 @@ public class UserAuthState extends ViewState {
       });
       return UUID.fromString(tokenDialog.showAndWait().get());
    }
-
+   
    @Override
    public String requestString(String message) {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
-   }
-
-   @Override
-   public ViewState nextState() throws RemoteException {
-      return new InGameState();
-   }
-
-   @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onPcUpdate(PcEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onSquareUpdate(SquareEvent event) throws RemoteException {
-
    }
 }

@@ -1,6 +1,5 @@
 package client.controller;
 
-import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
 import common.remote_interfaces.RemoteLoginController;
@@ -21,7 +20,7 @@ import java.util.UUID;
 public class GuiController extends Application {
    
    RemoteLoginController loginController;
-   protected AbstractView view = new GuiView();
+   protected GuiView view;
    protected RemotePlayer player;
    
    public GuiController() throws RemoteException {
@@ -31,9 +30,12 @@ public class GuiController extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
+        view = new GuiView( getHostServices(),stage );
         authUser( stage );
-        configGame( stage );
-        startGame( stage );
+        view.nextState();
+        //configGame( stage );
+        view.nextState();
+        //startGame( stage );
     }
     
     private void authUser(Stage stage){
@@ -47,6 +49,7 @@ public class GuiController extends Application {
                 token = view.acquireToken();
             }
             player = loginController.login( token, view );
+            view.setPlayer( player );
         }catch ( IOException e ){
             try {
                 view.error( "Server unreachable" );
