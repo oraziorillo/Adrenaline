@@ -67,19 +67,19 @@ public class InGameState extends ViewState {
       mapController.setMap(0);
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
+      squares.addListener( topController.squareListener );
       //init squares listeners
       squares.addListener( mapController.squareObserver );
       squares.addListener( cardHolderLeftController );
       squares.addListener( cardHolderRightController );
-      squares.addListener( topController.cardHolderController );
+      squares.addListener( topController.squareListener );
       //init killshottrack listeners
+      killShotTrackData.addListener(topController);
       //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderLeftController.setColor( AmmoEnum.RED );
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       cardHolderRightController.setColor( AmmoEnum.YELLOW );
-      topController.cardHolderController.setCorner( CardinalDirectionEnum.NORTH );
-      topController.cardHolderController.setColor( AmmoEnum.BLUE );
       //pass host services
       topController.setHostServices( hostServices );
       //make under map buttons overlap a little
@@ -182,7 +182,6 @@ public class InGameState extends ViewState {
       chatController.setPlayer(player);
       cardHolderRightController.setPlayer( player );
       cardHolderLeftController.setPlayer( player );
-      topController.cardHolderController.setPlayer( player );
       
    }
    

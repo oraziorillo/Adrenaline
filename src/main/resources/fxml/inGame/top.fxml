@@ -19,8 +19,8 @@
         <HBox HBox.hgrow="ALWAYS">
             <VBox>
                 <HBox.margin><Insets topRightBottomLeft="$padding"/> </HBox.margin>
-                <fx:include source="munizioni.fxml" VBox.vgrow="ALWAYS" />
-                <Label id="punti" text="0" alignment="TOP_CENTER"/>
+                <fx:include fx:id="ammo" source="munizioni.fxml" VBox.vgrow="ALWAYS" />
+                <Label fx:id="punti" text="0" alignment="TOP_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <HBox fx:id="killShotTrack" id="KillShotTrack" HBox.hgrow="ALWAYS" alignment="CENTER"/>

@@ -56,4 +56,8 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    public void changed(ObservableValue<? extends ObjectProperty<PcColourEnum>> observableValue, ObjectProperty<PcColourEnum> pcColourEnumObjectProperty, ObjectProperty<PcColourEnum> t1) {
       this.settedColor = t1.get();
    }
+   
+   public void setColour(PcColourEnum colour) {
+      this.settedColor=colour;
+   }
 }
