@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.Double?>
 <HBox xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-            fx:controller="client.view.gui.javafx_controllers.components.card_spaces.player_hands.CardHand" fx:id="mainPane"
-           stylesheets="/css/style.css" spacing="10" alignment="BOTTOM_CENTER">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.CardHand" fx:id="mainPane"
+      stylesheets="/css/style.css" spacing="10" alignment="BOTTOM_CENTER">
 
     <fx:define>
         <Double fx:id="hiddenFraction" fx:value=".62962963"/> <!-- usare .577777778 per mostrare tutta l'immagine-->

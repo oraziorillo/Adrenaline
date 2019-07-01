@@ -10,7 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.javafx_controllers.components.Top"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="client.view.gui.javafx_controllers.in_game.components.Top"
       id="mainPane"
       maxHeight="${cardHolder.height}" minHeight="${cardHolder.height}" prefHeight="${cardHolder.height}" stylesheets="/css/top.css" BorderPane.alignment="TOP_CENTER" >
     <fx:define>

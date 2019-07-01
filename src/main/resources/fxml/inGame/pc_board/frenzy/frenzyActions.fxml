@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml" stylesheets="/css/pc_board/Pc.css"
-           fx:controller="client.view.gui.javafx_controllers.components.pc_board.Azioni">
+           fx:controller="client.view.gui.javafx_controllers.in_game.components.pc_board.Azioni">
     <ImageView fx:id="azioni" preserveRatio="true" StackPane.alignment="BOTTOM_LEFT" />
     <GridPane StackPane.alignment="BOTTOM_LEFT">
         <rowConstraints>
