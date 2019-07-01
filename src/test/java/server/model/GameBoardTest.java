@@ -2,20 +2,17 @@ package server.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
-import common.dto_model.PcDTO;
-import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
 import org.junit.Test;
 import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.Square;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +22,7 @@ public class GameBoardTest {
 
     private static final int ROW = 2;
     private static final int COL = 3;
-    private static final int N_MAP = 3;
+    private static final int N_MAP = 4;
 
     private GameBoard gameBoard;
 
@@ -36,10 +33,9 @@ public class GameBoardTest {
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
-
-        JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-        gameBoard = customGson.fromJson(gameBoards.get(N_MAP), GameBoard.class);
+        JsonReader reader = new JsonReader(
+                new FileReader("src/main/resources/json/game_boards/gameBoard" + N_MAP + ".json"));
+        gameBoard = customGson.fromJson(reader, GameBoard.class);
     }
 
 

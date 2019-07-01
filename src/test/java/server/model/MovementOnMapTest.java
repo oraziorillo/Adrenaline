@@ -2,7 +2,6 @@ package server.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import org.junit.Before;
@@ -11,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import server.model.deserializers.GameBoardDeserializer;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -27,16 +27,15 @@ public class MovementOnMapTest {
 
     @Before
     public void init() throws FileNotFoundException {
-        int numberOfMap = 0;
+        int numberOfMap = 1;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
-        JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/gameBoards.json"));
-
-        JsonArray gameBoards = customGson.fromJson(reader, JsonArray.class);
-        gameBoard = customGson.fromJson(gameBoards.get(numberOfMap), GameBoard.class);
+        JsonReader reader = new JsonReader(
+                new FileReader("src/main/resources/json/game_boards/gameBoard" + (numberOfMap + 1) + ".json"));
+        gameBoard = customGson.fromJson(reader, GameBoard.class);
 
         pc1 = new Pc(PcColourEnum.BLUE, game);
     }

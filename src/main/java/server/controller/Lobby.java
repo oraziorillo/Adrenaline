@@ -4,9 +4,12 @@ import com.google.gson.annotations.Expose;
 import common.remote_interfaces.RemoteView;
 import server.database.DatabaseHandler;
 
-import javax.swing.Timer;
+import javax.swing.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -67,34 +70,30 @@ public class Lobby {
      */
     void addPlayer(Player player) {
         players.add(player);
-        ackAllPlayersExcept("Say hello to @" + databaseHandler.getUsername(player.getToken()) + System.lineSeparator() + System.lineSeparator() +
-                "There are " + players.size() + " players in this lobby now");
-        try {
-            player.getView().ack("Joined a lobby. There are " + players.size() + " players in this room");
-        } catch (IOException e) {
-            player.quit();
-            removePlayer(player);
-        }
-
-        ackAllPlayersExcept(getAllUserNames());
+        ack("Say hello to @" + databaseHandler.getUsername(player.getToken()),
+                "You joined a lobby", player);
+        ack(((players.size() > 1)
+                    ? "There are " + players.size() + " players"
+                    : "There is " + 1 + " player") + " in this lobby", null);
+        ack("Players in the room" + getAllUserNames(), null);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
-            ackAllPlayersExcept(players.size() + " players have joined! The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes");
+            ack("The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes", null);
         } else if (players.size() == 5) {
             timer.stop();
             startNewGame();
-            ackAllPlayersExcept(players.size() + " players have joined! Game is starting!");
+            ack("Let's start", null);
         }
     }
 
 
     private void removePlayer(Player player) {
         players.remove(player);
-        ackAllPlayersExcept("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!" + System.lineSeparator() + getAllUserNames());
+        ack("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!", null);
         if (players.size() < 3) {
             timer.stop();
-            ackAllPlayersExcept(TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds and the game would have started. Now we have to start again." + System.lineSeparator() +
-                    "Blame @" + databaseHandler.getUsername(player.getToken()) + " for this!");
+            ack(TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds and the game would have started. Now we have to start again." +
+                    System.lineSeparator() + "Blame @" + databaseHandler.getUsername(player.getToken()) + " for this!", null);
         }
     }
 
@@ -119,17 +118,20 @@ public class Lobby {
     }
 
 
-    private void ackAllPlayersExcept(String message, Player... excluded) {
-        Collection<Player> excludedColl = Arrays.asList(excluded);
-        for (Player p1 : players) {
-            if (!excludedColl.contains(p1)) {
-                try {
-                    p1.getView().ack(message);
-                } catch (IOException e) {
-                    p1.quit();
-                    removePlayer(p1);
-
-                }
+    private void ack(String m1, String m2, Player... recipientsForM2) {
+        List<UUID> rec2 = Arrays
+                .stream(recipientsForM2)
+                .map(Player::getToken)
+                .collect(Collectors.toList());
+        for (Player p : players) {
+            try {
+                if (rec2.contains(p.getToken()) && m2 != null) {
+                    p.getView().ack(m2);
+                } else if (!rec2.contains(p.getToken()) && m1 != null)
+                    p.getView().ack(m1);
+            } catch (IOException e) {
+                p.quit();
+                removePlayer(p);
             }
         }
     }
@@ -141,10 +143,10 @@ public class Lobby {
 
 
     private String getAllUserNames() {
-        StringBuilder result = new StringBuilder("Players in the room:");
+        StringBuilder result = new StringBuilder();
         String at = System.lineSeparator() + "@";
         for (Player p : players) {
-            result.append(at + databaseHandler.getUsername(p.getToken()));
+            result.append(at).append(databaseHandler.getUsername(p.getToken()));
         }
         return result.toString();
     }

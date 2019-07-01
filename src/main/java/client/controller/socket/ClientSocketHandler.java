@@ -29,12 +29,14 @@ import static common.enums.ControllerMethodsEnum.*;
 
 public class ClientSocketHandler implements Runnable, RemoteLoginController, RemotePlayer {
 
+    private Gson gson;
+
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
     private AbstractView view;
     private BlockingQueue<String[]> buffer = new PriorityBlockingQueue<>(10, (a1, a2) -> a1[0].compareToIgnoreCase(a2[0]));
-    private UUID token;
+
 
 
     public ClientSocketHandler(Socket socket, AbstractView view) throws IOException {
@@ -42,6 +44,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
         this.out = new PrintWriter(socket.getOutputStream());
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.view = view;
+        this.gson = new GsonBuilder().registerTypeAdapter(ModelEvent.class, new ModelEventDeserializer()).create();
     }
 
 
@@ -51,7 +54,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
             String[] args = null;
             try {
                 args = in.readLine().split(REGEX);
-                parseViewMethods(args);
+                handle(args);
             } catch (IllegalArgumentException notAViewMethod) {
                 buffer.add(args);
             } catch (IOException e) {
@@ -68,7 +71,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     }
 
 
-    private void parseViewMethods(String[] args) throws IOException {
+    private void handle(String[] args) throws IOException {
         ViewMethodsEnum viewMethod = ViewMethodsEnum.valueOf(args[0]);
         switch (viewMethod) {
             case ACK:
@@ -80,27 +83,27 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
                 view.ack(builder.toString());
                 break;
             case ON_GAME_BOARD_UPDATE:
-                GameBoardEvent gameBoardEvent = customGson().fromJson(
+                GameBoardEvent gameBoardEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onGameBoardUpdate(gameBoardEvent);
                 break;
             case ON_KILL_SHOT_TRACK_UPDATE:
-                KillShotTrackEvent killShotTrackEvent = customGson().fromJson(
+                KillShotTrackEvent killShotTrackEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onKillShotTrackUpdate(killShotTrackEvent);
                 break;
             case ON_PC_BOARD_UPDATE:
-                PcBoardEvent pcBoardEvent = customGson().fromJson(
+                PcBoardEvent pcBoardEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onPcBoardUpdate(pcBoardEvent);
                 break;
             case ON_PC_UPDATE:
-                PcEvent pcEvent = customGson().fromJson(
+                PcEvent pcEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onPcUpdate(pcEvent);
                 break;
             case ON_SQUARE_UPDATE:
-                SquareEvent squareEvent = customGson().fromJson(
+                SquareEvent squareEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onSquareUpdate(squareEvent);
                 break;
@@ -110,58 +113,8 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
     }
 
 
-    private Gson customGson(){
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(ModelEvent.class, new ModelEventDeserializer());
-        return gsonBuilder.create();
-    }
-
-
     //LoginController
 
-    @Override
-    public synchronized UUID register(String username, RemoteView view) {
-        out.println(REGISTER.toString() + REGEX + username);
-        out.flush();
-        String stringToken;
-        try {
-            stringToken = buffer.take()[0];
-            return UUID.fromString(stringToken);
-        } catch (InterruptedException | IllegalArgumentException invalidToken) {
-            this.view.printMessage("Connection issues: " + invalidToken.getMessage());
-            return null;
-        }
-    }
-
-
-    @Override
-    public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException, PlayerAlreadyLoggedInException {
-        if (token != null) {
-            this.token = token;
-            new Thread(this).start();
-            out.println(LOGIN + REGEX + token);
-            out.flush();
-            try {
-                String outcome = buffer.take()[0];
-                if (outcome.equals(SUCCESS))
-                    return this;
-                else if (outcome.equals(FAIL)){
-                    throw new PlayerAlreadyLoggedInException();
-                }
-            } catch (InterruptedException e) {
-                this.view.printMessage("Connection issues: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-
-    @Override
-    public synchronized void joinLobby(UUID token) {
-        out.println(JOIN_LOBBY.toString() + REGEX + token);
-        out.flush();
-    }
 
 
     @Override
@@ -229,7 +182,7 @@ public class ClientSocketHandler implements Runnable, RemoteLoginController, Rem
 
     @Override
     public void chooseWeaponOnSpawnPoint(int n) {
-        out.println(GRAB_WEAPON_ON_SPAWN_POINT + REGEX + n);
+        out.println(CHOOSE_WEAPON_ON_SPAWN_POINT + REGEX + n);
         out.flush();
     }
 

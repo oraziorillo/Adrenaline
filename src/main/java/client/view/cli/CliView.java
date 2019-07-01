@@ -27,13 +27,23 @@ public class CliView extends AbstractView {
 
 
     public CliView() throws RemoteException {
+        super();
         this.inputReader = new CliInputReader();
     }
+
+
+    @Override
+    public String[] nextCommand() {
+        String input = inputReader.requestString("Insert command\n");
+        return input.split(" ");
+    }
+
 
     @Override
     public void printMessage(String msg) {
         System.out.println(msg);
     }
+
 
     @Override
     public ConnectionMethodEnum acquireConnectionMethod() {
@@ -41,9 +51,9 @@ public class CliView extends AbstractView {
         do {
             try {
                 cme = ConnectionMethodEnum.parseString(inputReader.requestString(
-                        "Choose a connection method:" + System.lineSeparator() +
-                         "s  ->  socket" + System.lineSeparator() +
-                         "r  ->  rmi")
+                        "Please, provide a connection method:\n" +
+                                "\t:s\t\tSocket\n" +
+                                "\t:r\t\tRmi")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
                 printMessage(e.getMessage());
@@ -55,29 +65,23 @@ public class CliView extends AbstractView {
 
     @Override
     public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
-        switch (cme) {
-            case SOCKET:
-                try {
+        try {
+            switch (cme) {
+                case SOCKET:
                     Socket socket = new Socket(HOST, SOCKET_PORT);
                     ClientSocketHandler handler = new ClientSocketHandler(socket, this);
                     new Thread(handler).start();
                     return handler;
-                } catch (IOException e) {
-                    printMessage("Server unreachable");
-                }
-                break;
-            case RMI:
-                try {
+                case RMI:
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
                     return (RemoteLoginController) registry.lookup("LoginController");
-                } catch (RemoteException | NotBoundException e) {
-                    printMessage("Server unreachable");
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+                default:
+                    throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+            }
+        } catch (IOException | NotBoundException e) {
+            printMessage("Server unreachable");
+            return null;
         }
-        return acquireConnection(cme);
     }
 
 
@@ -87,8 +91,9 @@ public class CliView extends AbstractView {
         do {
             try {
                 cmd = ControllerMethodsEnum.parseString(inputReader.requestString(
-                        "r  ->  register" + System.lineSeparator() +
-                        "l  ->  login")
+                        "Are you new?\n" +
+                                "\t:s\t\tSign up\n" +
+                                "\t:l\t\tLog in")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
                 printMessage(e.getMessage());
@@ -96,20 +101,21 @@ public class CliView extends AbstractView {
         } while (cmd == null);
 
         switch (cmd) {
-            case REGISTER:
+            case SIGN_UP:
                 return true;
-            case LOGIN:
+            case LOG_IN:
                 return false;
             default:
-                throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+                throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now\n");
         }
     }
 
 
     @Override
     public String acquireUsername() {
-        return inputReader.requestString("Insert a username");
+        return inputReader.requestString("Please, provide a username");
     }
+
 
     @Override
     public UUID acquireToken() {
@@ -122,52 +128,52 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public String requestString(String message) {
-        return inputReader.requestString(message);
+    public synchronized void ack(String message) throws RemoteException {
+        if (!message.startsWith(System.lineSeparator()) && message.length() != 0) {
+            printMessage(message);
+        }
     }
 
 
     @Override
-    public void ack(String message) throws RemoteException{
-        printMessage(message + "\n");
-    }
-
-
-    @Override
-    public void error(String msg) throws RemoteException{
+    public synchronized void error(String msg) throws RemoteException{
         inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
         System.exit(1);
     }
 
 
     @Override
-    public ModelEventListener getListener() throws RemoteException{
+    public synchronized ModelEventListener getListener() throws RemoteException{
         return this;
     }
 
 
     @Override
-    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
-        printMessage(">>> " + event + "\n");
+    public synchronized void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
+        printMessage(event.toString());
     }
 
-    @Override
-    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
-        printMessage(">>> " + event + "\n");
-    }
 
     @Override
-    public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
-        printMessage(">>> " + event + "\n");
+    public synchronized void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
+        printMessage(event.toString());
     }
 
-    @Override
-    public void onPcUpdate(PcEvent event) throws RemoteException {
-        printMessage(">>> " + event + "\n");
-    }
 
     @Override
-    public void onSquareUpdate(SquareEvent event) throws RemoteException {
-        printMessage(">>> " + event + "\n");
+    public synchronized void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
+        printMessage(event.toString());
+    }
+
+
+    @Override
+    public synchronized void onPcUpdate(PcEvent event) throws RemoteException {
+        printMessage(event.toString());
+    }
+
+
+    @Override
+    public synchronized void onSquareUpdate(SquareEvent event) throws RemoteException {
+        printMessage(event.toString());
     }
 }

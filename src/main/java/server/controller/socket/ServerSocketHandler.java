@@ -61,11 +61,11 @@ public class ServerSocketHandler implements Runnable {
     private void handle(String[] args) throws IOException {
         int argInt;
         switch (ControllerMethodsEnum.valueOf(args[0])) {
-            case REGISTER:
+            case SIGN_UP:
                 out.println(loginController.register(args[1], view));
                 out.flush();
                 break;
-            case LOGIN:
+            case LOG_IN:
                 try {
                     this.player = loginController.login(UUID.fromString(args[1]), view);
                     out.println(SUCCESS);
@@ -107,7 +107,7 @@ public class ServerSocketHandler implements Runnable {
                 argInt = Integer.parseInt(args[1]);
                 player.choosePowerUp(argInt);
                 break;
-            case GRAB_WEAPON_ON_SPAWN_POINT:
+            case CHOOSE_WEAPON_ON_SPAWN_POINT:
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOnSpawnPoint(argInt);
                 break;

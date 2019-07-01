@@ -98,7 +98,6 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
             }
             newLobby.addPlayer(databaseHandler.getPlayer(token));
          }
-         databaseHandler.getPlayer(token).getView().ack("You joined a lobby");
       }
    }
 }

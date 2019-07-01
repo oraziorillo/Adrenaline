@@ -1,9 +1,7 @@
 package client.controller;
 
-import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
-import client.view.gui.javafx_controllers.view_states.InGameState;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,10 +14,12 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class GuiController extends AbstractClientController {
-    
+
+
     public GuiController() throws RemoteException {
         super( new GuiView() );
     }
+
     
     @Override
     public void start(Stage stage) throws Exception {

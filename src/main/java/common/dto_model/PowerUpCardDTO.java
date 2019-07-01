@@ -5,7 +5,6 @@ import common.enums.AmmoEnum;
 public class PowerUpCardDTO extends AbstractCardDTO {
     
     private static final String DEFAULT_NAME = "retro_powerup";
-    //private String name;
     private AmmoEnum colour;
 
     public PowerUpCardDTO() {
