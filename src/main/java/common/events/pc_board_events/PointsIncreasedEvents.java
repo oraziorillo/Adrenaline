@@ -23,9 +23,9 @@ public class PointsIncreasedEvents extends PcBoardEvent {
 
     @Override
     public String toString() {
-        return (isUncensored
-                ? "You"
-                : pcBoard.getColour().getName())
+        return (censored
+                ? pcBoard.getColour().getName()
+                : "You")
                     + " gained " + earnedPoints + " points";
     }
 

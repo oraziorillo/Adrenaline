@@ -6,18 +6,18 @@ import common.events.ModelEvent;
 public abstract class PcBoardEvent implements ModelEvent {
 
     PcBoardDTO pcBoard;
-    boolean isUncensored;
+    boolean censored;
 
 
     PcBoardEvent(PcBoardDTO pcBoard) {
         this.pcBoard = pcBoard;
-        this.isUncensored = false;
+        this.censored = false;
     }
 
 
-    PcBoardEvent(PcBoardDTO pcBoard, boolean isUncensored){
+    PcBoardEvent(PcBoardDTO pcBoard, boolean censored){
         this.pcBoard = pcBoard;
-        this.isUncensored = isUncensored;
+        this.censored = censored;
     }
 
 

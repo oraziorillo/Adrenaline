@@ -151,8 +151,8 @@ public class Pc {
         events.fireEvent(new MovementEvent(convertToDTO(), oldPos, currSquare.toString()));
     }
 
-
-    public void drawPowerUp(){
+    //TODO questo synchronized è una prova..
+    public synchronized void drawPowerUp(){
 
         PowerUpCard powerUpToDraw = currGame.drawPowerUp();
         if (powerUpToDraw != null) {
@@ -225,7 +225,7 @@ public class Pc {
     public boolean payAmmo(short[] cost) {
         if (!hasEnoughAmmo(cost))
             return false;
-        short[] remainingCost = pcBoard.payAmmo(cost);
+        short[] remainingCost = pcBoard.payAmmo(cost.clone());
 
         //ammo that was paid
         short[] ammoPaid = new short[AMMO_COLOURS_NUMBER];

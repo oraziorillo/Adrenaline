@@ -18,15 +18,16 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class GuiController extends Application {
-   
+
    RemoteLoginController loginController;
    protected GuiView view;
    protected RemotePlayer player;
-   
+
    public GuiController() throws RemoteException {
-    
+
     }
-    
+
+
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
@@ -62,7 +63,7 @@ public class GuiController extends Application {
     }
     
     private void configGame(Stage stage){
-      
+
         //TODO: scegli mappa, teschi, colore
     }
     

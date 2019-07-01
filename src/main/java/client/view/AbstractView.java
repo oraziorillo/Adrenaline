@@ -11,14 +11,18 @@ import java.util.UUID;
 
 public abstract class AbstractView extends UnicastRemoteObject implements RemoteView, ModelEventListener {
 
-    protected String HOST = "localhost";
-    protected int SOCKET_PORT = 10000;
-    protected int RMI_PORT = 9999;
+    protected transient static final String HOST = "localhost";
+    protected transient static final int SOCKET_PORT = 10000;
+    protected transient static final int RMI_PORT = 9999;
 
     protected AbstractView() throws RemoteException {
     }
 
     public void printMessage(String msg) {
+    }
+
+    public String nextCommand() {
+        return null;
     }
 
     public ConnectionMethodEnum acquireConnectionMethod() {

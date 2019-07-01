@@ -2,7 +2,6 @@ package client.view.cli;
 
 import client.view.InputReader;
 
-import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -12,12 +11,8 @@ public class CliInputReader implements InputReader {
 
     private final Scanner in;
 
-    CliInputReader(InputStream in) {
-        this.in = new Scanner(in);
-    }
-
     CliInputReader() {
-        this(System.in);
+        this.in = new Scanner(System.in);;
     }
 
     /**
@@ -26,14 +21,20 @@ public class CliInputReader implements InputReader {
      */
     @Override
     public int requestInt(String message) {
-        System.out.print(message + "\n" + ">>> ");
+        System.out.println("\n>>> " + message);
         return in.nextInt();
     }
 
 
     @Override
     public String requestString(String message) {
-        System.out.print(message + "\n" + ">>> ");
+        System.out.println("\n>>> " + message);
         return in.next();
+    }
+
+
+    @Override
+    public String requestCommand(String message) {
+        return in.nextLine();
     }
 }

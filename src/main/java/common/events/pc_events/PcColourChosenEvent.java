@@ -12,9 +12,8 @@ public class PcColourChosenEvent extends PcEvent{
         super(pc);
     }
 
-
-    private PcColourChosenEvent(PcDTO pc, boolean isUncensored) {
-        super(pc, isUncensored);
+    private PcColourChosenEvent(PcDTO pc, boolean censored) {
+        super(pc, censored);
     }
 
 

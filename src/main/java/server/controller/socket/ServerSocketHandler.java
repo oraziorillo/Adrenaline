@@ -62,11 +62,11 @@ public class ServerSocketHandler implements Runnable {
     private void handle(String[] args) throws IOException {
         int argInt;
         switch (ControllerMethodsEnum.valueOf(args[0])) {
-            case REGISTER:
+            case SIGN_UP:
                 out.println(loginController.register(args[1], view));
                 out.flush();
                 break;
-            case LOGIN:
+            case LOG_IN:
                 try {
                     this.player = loginController.login(UUID.fromString(args[1]), view);
                     out.println(SUCCESS);
@@ -99,6 +99,9 @@ public class ServerSocketHandler implements Runnable {
             case SHOOT_PEOPLE:
                 player.shootPeople();
                 break;
+            case USE_POWER_UP:
+                player.usePowerUp();
+                break;
             case CHOOSE_SQUARE:
                 argInt = Integer.parseInt(args[1]);
                 int argInt2 = Integer.parseInt(args[2]);
@@ -108,7 +111,7 @@ public class ServerSocketHandler implements Runnable {
                 argInt = Integer.parseInt(args[1]);
                 player.choosePowerUp(argInt);
                 break;
-            case GRAB_WEAPON_ON_SPAWN_POINT:
+            case CHOOSE_WEAPON_ON_SPAWN_POINT:
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOnSpawnPoint(argInt);
                 break;
@@ -116,27 +119,33 @@ public class ServerSocketHandler implements Runnable {
                 argInt = Integer.parseInt(args[1]);
                 player.chooseWeaponOfMine(argInt);
                 break;
-            case QUIT:
-                player.quit();
-                break;
             case SWITCH_FIRE_MODE:
                 player.switchFireMode();
                 break;
-            //TODO case UPGRADE:
-            //    player.upgrade();
-            //    break;
+            case CHOOSE_UPGRADE:
+                argInt = Integer.parseInt(args[1]);
+                player.chooseUpgrade( argInt );
+                break;
             case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
                 boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
+                //TODO da verificare il comportamento di questo comando
+                break;
+            case CHOOSE_TARGET:
+                player.chooseTarget( args[1] );
+                break;
+            case CHOOSE_DIRECTION:
+                argInt = Integer.parseInt(args[1]);
+                player.chooseDirection( argInt );
+                break;
+            case RELOAD:
+                player.reload();
                 break;
             case UNDO:
                 player.undo();
                 break;
             case OK:
                 player.ok();
-                break;
-            case RELOAD:
-                player.reload();
                 break;
             case PASS:
                 player.pass();
@@ -146,6 +155,12 @@ public class ServerSocketHandler implements Runnable {
                 for(String s: Arrays.copyOfRange( args,1,args.length ))
                     builder.append( s ).append( System.lineSeparator() );
                 player.sendMessage( builder.toString() );
+                break;
+            case SKIP:
+                player.skip();
+                break;
+            case QUIT:
+                player.quit();
                 break;
             default:
                 //TODO: incompleta

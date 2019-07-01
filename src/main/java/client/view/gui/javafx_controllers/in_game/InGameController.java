@@ -159,8 +159,8 @@ public class InGameController extends AbstractJavaFxController {
       cardHolderLeftController.setPlayer( player );
       cardHolderRightController.setPlayer( player );
    }
-   
-   @Override
+
+    @Override
    public void ack(String message) {
       chatController.showServerMessage(message);
       chatController.appear();

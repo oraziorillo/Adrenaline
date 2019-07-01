@@ -33,7 +33,7 @@ public class RunAroundState extends State{
       if (s != null && s.isTargetable()) {
          this.targetSquare = s;
          try {
-            controller.getCurrPlayer().getView().ack("Lo square è stato selezionato");
+            controller.getCurrPlayer().getView().ack("The square " + targetSquare.toString() + " has been selected");
          } catch (IOException e) {
             e.printStackTrace();
          }
@@ -50,20 +50,6 @@ public class RunAroundState extends State{
       targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
       targetableSquares.remove(controller.getCurrPc().getCurrSquare());
       controller.getGame().setTargetableSquares(targetableSquares, true);
-      try {
-         controller.getCurrPlayer().getView().ack(controller.getCurrPc().getCurrSquare().getRow() + " " + controller.getCurrPc().getCurrSquare().getCol());
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      for (Square s: targetableSquares) {
-         if (s.isTargetable()){
-            try {
-               controller.getCurrPlayer().getView().ack(s + "è targhettabile");
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
-         }
-      }
    }
    
    /**

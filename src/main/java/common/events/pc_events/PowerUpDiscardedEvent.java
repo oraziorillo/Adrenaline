@@ -17,17 +17,17 @@ public class PowerUpDiscardedEvent extends PcEvent {
     }
 
 
-    private PowerUpDiscardedEvent(PcDTO pc, PowerUpCardDTO powerUp, boolean isPrivate){
-        super(pc, isPrivate);
+    private PowerUpDiscardedEvent(PcDTO pc, PowerUpCardDTO powerUp, boolean censored){
+        super(pc, censored);
         this.powerUp = powerUp;
     }
 
 
     @Override
     public String toString() {
-        return (isUncensored
-                ? "You"
-                : pc.getName())
+        return (censored
+                ? pc.getName()
+                : "You")
                     + " discarded a " + powerUp.getColour() + " " + powerUp.getName();
     }
 

@@ -2,6 +2,7 @@ package server.controller;
 
 import com.google.gson.annotations.Expose;
 import common.enums.CardinalDirectionEnum;
+import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
@@ -156,9 +157,17 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
 
     @Override
+    public synchronized void chooseTarget(String pcColour){
+        if (PcColourEnum.fromString(pcColour) != null){
+            currState.selectTarget(PcColourEnum.fromString(pcColour));
+        }
+    }
+
+
+    @Override
     public synchronized void chooseSquare(int row, int col) {
         try {
-            view.ack("Ho scelto questo square" + row + col);
+            view.ack("" + row + col);
         } catch (IOException e) {
             e.printStackTrace();
         }

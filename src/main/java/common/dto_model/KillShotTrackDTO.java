@@ -1,7 +1,5 @@
 package common.dto_model;
 
-import server.model.KillShot;
-
 public class KillShotTrackDTO implements DTO {
 
     private KillShotDTO[] killShotTrack;

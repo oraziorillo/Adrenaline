@@ -4,6 +4,8 @@ import server.controller.Controller;
 import server.model.WeaponCard;
 import server.model.Effect;
 import server.model.PowerUpCard;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -58,6 +60,11 @@ public class SetupWeaponState extends State {
                     if (!upgrades.get(upgradeIndex).isAsynchronous()) {
                         weapon.addUpgrade(upgradeIndex);
                     } else {
+                        try {
+                            controller.getCurrPlayer().getView().ack("Choose if you want to use this upgrade before (true) or after (false) the basic effect.");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         waiting = true;
                         asynchronousUpgradeIndex = upgradeIndex;
                     }

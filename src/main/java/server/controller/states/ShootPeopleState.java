@@ -69,6 +69,7 @@ public class ShootPeopleState extends State {
         } else
             maxDistance = 2;
         targetableSquares = referencePc.getCurrSquare().atDistance(maxDistance);
+        targetableSquares.remove(referencePc.getCurrSquare());
         controller.getGame().setTargetableSquares(targetableSquares, true);
     }
 
@@ -76,7 +77,9 @@ public class ShootPeopleState extends State {
     @Override
     public boolean undo() {
         if (!moved){
-            controller.getGame().setTargetableSquares(targetableSquares, false);
+            if (targetableSquares != null) {
+                controller.getGame().setTargetableSquares(targetableSquares, false);
+            }
             undo = true;
             return true;
         }

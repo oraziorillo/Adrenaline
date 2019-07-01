@@ -59,7 +59,7 @@ public class ModelEventHandler {
         try {
             listeners.get(publisherColour).onPcBoardUpdate(event);
             for (PcColourEnum colour : listeners.secondaryKeySet()) {
-                if (!publisherColour.equals(colour)) {
+                if (publisherColour != colour) {
                     listeners.get(colour).onPcBoardUpdate(event.switchToPrivate());
                 }
             }
@@ -94,7 +94,7 @@ public class ModelEventHandler {
             } else {
                 listeners.get(publisherColour).onSquareUpdate(event);
                 for (PcColourEnum colour : listeners.secondaryKeySet()) {
-                    if (!publisherColour.equals(colour)) {
+                    if (publisherColour != colour) {
                         listeners.get(colour).onSquareUpdate(event.switchToPrivate());
                     }
                 }

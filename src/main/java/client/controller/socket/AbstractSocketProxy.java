@@ -12,10 +12,6 @@ public abstract class AbstractSocketProxy {
     protected final PrintWriter out;
     protected final BufferedReader in;
 
-    public AbstractSocketProxy(String host, int port) throws IOException {
-        this(new Socket(host, port));
-    }
-
 
     public AbstractSocketProxy(Socket socket) throws IOException {
         this.socket = socket;

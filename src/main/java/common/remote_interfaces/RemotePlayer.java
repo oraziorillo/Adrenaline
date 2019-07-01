@@ -35,6 +35,8 @@ public interface RemotePlayer extends Remote {
 
     void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
 
+    void chooseTarget(String pcColour) throws IOException;
+
     void chooseDirection(int cardinalDirectionIndex) throws IOException;
 
     void skip() throws IOException;
