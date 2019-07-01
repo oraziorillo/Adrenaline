@@ -182,4 +182,10 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
     public synchronized UUID getToken() {
         return this.token;
     }
+
+
+    @Override
+    public void sendMessage(String s) throws IOException {
+        //TODO
+    }
 }

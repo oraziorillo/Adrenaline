@@ -30,9 +30,11 @@ public enum ControllerMethodsEnum {
     SKIP(":skip", "skip the action (if optional) for which your are selecting targets"),
     REMOVE_UPGRADE(":ru", "remove upgrade"),
     UNDO(":undo", "undo last action"),
+    SEND_MESSAGE(":msg", "send message"),
     QUIT(":q", "quit"),
     HELP(":h", "print help");
-    
+
+
     private String command;
     private String description;
     
