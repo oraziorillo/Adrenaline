@@ -10,12 +10,12 @@ import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Alert;
 
 import java.rmi.RemoteException;
-import java.util.List;
 
-public abstract class AbstractJavaFxController extends AbstractView {
+public abstract class AbstractJavaFxController extends AbstractView implements ChangeListener<Number> {
    
    protected HostServices hostServices;
    protected RemotePlayer player;
@@ -49,6 +49,11 @@ public abstract class AbstractJavaFxController extends AbstractView {
    }
    
    @Override
+   public void ack(String message) {
+   
+   }
+   
+   @Override
    public void onSquareUpdate(SquareEvent event) {
    
    }
@@ -76,7 +81,5 @@ public abstract class AbstractJavaFxController extends AbstractView {
    public void setTopView(GuiView topView) {
       this.topView = topView;
    }
-   
-   public abstract void setEnabled(boolean enabled);
    
 }

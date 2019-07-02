@@ -56,7 +56,7 @@ public class AmmoChangedEvent extends PcBoardEvent {
 
 
     @Override
-    public PcBoardEvent switchToPrivate() {
+    public PcBoardEvent censor() {
         return new AmmoChangedEvent(pcBoard, ammoDifference, powerUpsDiscarded, isEarned, true);
     }
 }

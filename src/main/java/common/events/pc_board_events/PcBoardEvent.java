@@ -27,5 +27,5 @@ public abstract class PcBoardEvent implements ModelEvent {
     }
 
 
-    public abstract PcBoardEvent switchToPrivate();
+    public abstract PcBoardEvent censor();
 }

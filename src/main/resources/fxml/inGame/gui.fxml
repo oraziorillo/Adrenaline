@@ -9,7 +9,7 @@
             <VBox alignment="CENTER" HBox.hgrow="SOMETIMES" maxWidth="${map.maxWidth}"> <!--Map and buttons-->
                 <fx:include source="mappa.fxml" fx:id="map" VBox.vgrow="ALWAYS" viewOrder="-1"/>
                 <HBox fx:id="underMapButtons" alignment="TOP_RIGHT" translateY = "-5">
-                    <Button text="Apply" onAction="#applyClicked"/><Button text="Undo"/><Button text="Reload" onAction="#reloadClicked"/><Button text="Pass" onAction="#passClicked"/><Button text="Skip" onAction="#skipClicked"/>
+                    <Button text="Apply" onAction="#applyClicked"/><Button text="Undo" onAction="#undoClicked"/><Button text="Reload" onAction="#reloadClicked"/><Button text="Pass" onAction="#passClicked"/><Button text="Skip" onAction="#skipClicked"/>
                 </HBox>
             </VBox>
             <Region HBox.hgrow="SOMETIMES"/>

@@ -1,5 +1,6 @@
 package server.model.squares;
 
+import com.google.gson.annotations.Expose;
 import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
 import common.events.square_events.ItemCollectedEvent;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class AmmoSquare extends Square {
 
-    private AmmoTile ammoTile;
+    @Expose private AmmoTile ammoTile;
     private Deck<AmmoTile> ammoDeck;
 
 

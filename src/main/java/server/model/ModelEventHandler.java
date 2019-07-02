@@ -60,7 +60,7 @@ public class ModelEventHandler {
             listeners.get(publisherColour).onPcBoardUpdate(event);
             for (PcColourEnum colour : listeners.secondaryKeySet()) {
                 if (publisherColour != colour) {
-                    listeners.get(colour).onPcBoardUpdate(event.switchToPrivate());
+                    listeners.get(colour).onPcBoardUpdate(event.censor());
                 }
             }
         } catch (RemoteException e) {
@@ -95,7 +95,7 @@ public class ModelEventHandler {
                 listeners.get(publisherColour).onSquareUpdate(event);
                 for (PcColourEnum colour : listeners.secondaryKeySet()) {
                     if (publisherColour != colour) {
-                        listeners.get(colour).onSquareUpdate(event.switchToPrivate());
+                        listeners.get(colour).onSquareUpdate(event.censor());
                     }
                 }
             }

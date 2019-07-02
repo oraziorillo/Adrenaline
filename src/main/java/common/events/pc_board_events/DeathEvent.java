@@ -29,7 +29,7 @@ public class DeathEvent extends PcBoardEvent {
 
 
     @Override
-    public PcBoardEvent switchToPrivate() {
+    public PcBoardEvent censor() {
         return new DeathEvent(pcBoard, true);
     }
 }

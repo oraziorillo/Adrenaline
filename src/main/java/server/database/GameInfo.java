@@ -1,14 +1,12 @@
 package server.database;
 
 import com.google.gson.annotations.Expose;
-import server.controller.Player;
 import server.model.Game;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-class GameInfo {
+public class GameInfo {
 
     private boolean active;
     @Expose private Game game;
@@ -18,11 +16,8 @@ class GameInfo {
 
     GameInfo(){}
 
-    GameInfo(List<Player> players){
-        this.playersTokens = players
-                .stream()
-                .map(Player::getToken)
-                .collect(Collectors.toList());
+    GameInfo(List<UUID> tokens){
+        this.playersTokens = tokens;
     }
 
     boolean isActive() {

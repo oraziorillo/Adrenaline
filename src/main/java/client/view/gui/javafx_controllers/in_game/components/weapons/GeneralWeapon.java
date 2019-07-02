@@ -29,31 +29,36 @@ public class GeneralWeapon {
    
    @FXML
    public void setWeapon(WeaponCardDTO weapon){
-      background.setImage( new Image( weapon.getImagePath(),true ) );
-      int effect;
-      for (effect = 0; effect < weapon.getBasicEffects(); effect++) {
-         int e = effect;
-         Button effectButton = new Button();
-         effectButton.setText( "effect " + effect );
-         effectButton.setBackground( null ); //transparent
-         effectButton.setMaxHeight( Double.MAX_VALUE );  //can grow without limits
-         effectButton.setMaxWidth( Double.MAX_VALUE );
-         effectButton.setOnAction( evt -> chooseWeapon( e ) );
-         GridPane.setVgrow( effectButton, Priority.ALWAYS );   //fill cell
-         GridPane.setHgrow( effectButton, Priority.ALWAYS );
-         contentPane.add( effectButton, 0, effect, weapon.getUpgrades() + 1, 1 );
-      }
-      effect++;
-      for (int upgrade = 0; upgrade < weapon.getUpgrades(); upgrade++) {
-         int u = upgrade;
-         Button upgradeButton = new Button();
-         upgradeButton.setBackground( null );
-         upgradeButton.setMaxHeight( Double.MAX_VALUE );
-         upgradeButton.setMaxWidth( Double.MAX_VALUE );
-         upgradeButton.setOnAction( e -> chooseUpgrade( u ) );
-         GridPane.setVgrow( upgradeButton, Priority.ALWAYS );
-         GridPane.setHgrow( upgradeButton, Priority.ALWAYS );
-         contentPane.add( upgradeButton, upgrade, effect );
+      if(weapon!=null) {
+         background.setImage( new Image( weapon.getImagePath(), true ) );
+         int effect;
+         for (effect = 0; effect < weapon.getBasicEffects(); effect++) {
+            int e = effect;
+            Button effectButton = new Button();
+            effectButton.setText( "effect " + effect );
+            effectButton.setBackground( null ); //transparent
+            effectButton.setMaxHeight( Double.MAX_VALUE );  //can grow without limits
+            effectButton.setMaxWidth( Double.MAX_VALUE );
+            effectButton.setOnAction( evt -> chooseWeapon( e ) );
+            GridPane.setVgrow( effectButton, Priority.ALWAYS );   //fill cell
+            GridPane.setHgrow( effectButton, Priority.ALWAYS );
+            contentPane.add( effectButton, 0, effect, weapon.getUpgrades() + 1, 1 );
+         }
+         effect++;
+         for (int upgrade = 0; upgrade < weapon.getUpgrades(); upgrade++) {
+            int u = upgrade;
+            Button upgradeButton = new Button();
+            upgradeButton.setBackground( null );
+            upgradeButton.setMaxHeight( Double.MAX_VALUE );
+            upgradeButton.setMaxWidth( Double.MAX_VALUE );
+            upgradeButton.setOnAction( e -> chooseUpgrade( u ) );
+            GridPane.setVgrow( upgradeButton, Priority.ALWAYS );
+            GridPane.setHgrow( upgradeButton, Priority.ALWAYS );
+            contentPane.add( upgradeButton, upgrade, effect );
+         }
+         mainPane.setVisible( true );
+      }else {
+         mainPane.setVisible( false );
       }
    }
    

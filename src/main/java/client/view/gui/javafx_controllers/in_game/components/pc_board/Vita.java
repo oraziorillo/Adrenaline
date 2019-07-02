@@ -32,14 +32,9 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    
    
    public void initialize(){
-      danni.setPrefRows( 1 );
       danni.prefTileWidthProperty().bind( Bindings.subtract( Bindings.divide( danni.widthProperty(),Constants.LIFE_POINTS+1 ),Bindings.add( danni.hgapProperty(),1 )) );
       danni.prefHeightProperty().bind( danni.prefTileWidthProperty() );
-      danni.setAlignment( Pos.CENTER_LEFT );
-      morti.setPrefRows( 1 );
       morti.prefTileWidthProperty().bind( Bindings.subtract( Bindings.divide( morti.widthProperty(),Constants.PC_VALUES.length ),1 ) );
-      morti.setAlignment( Pos.CENTER );
-      morti.setTileAlignment( Pos.CENTER );
    }
    
    public void setColor(PcColourEnum color){

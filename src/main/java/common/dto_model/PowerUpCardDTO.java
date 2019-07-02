@@ -27,7 +27,9 @@ public class PowerUpCardDTO extends AbstractCardDTO {
     }
 
     public static PowerUpCardDTO getCardBack(){
-        return new PowerUpCardDTO();
+        PowerUpCardDTO back = new PowerUpCardDTO();
+        back.setName( DEFAULT_NAME );
+        return back;
     }
 
 

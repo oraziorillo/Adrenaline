@@ -32,5 +32,5 @@ public abstract class SquareEvent implements ModelEvent {
    }
 
 
-   public abstract SquareEvent switchToPrivate();
+   public abstract SquareEvent censor();
 }

@@ -31,9 +31,13 @@ public class WeaponCardDTO extends AbstractCardDTO {
         return name.equals( DEFAULT_NAME );
     }
 
-//   public static WeaponCardDTO getCardBack() {
-//      return new WeaponCardDTO(DEFAULT_NAME,0,0);
-//   }
+   public static WeaponCardDTO getCardBack() {
+        WeaponCardDTO back = new WeaponCardDTO();
+        back.setName( DEFAULT_NAME );
+        back.setBasicEffects( 0 );
+        back.setUpgrades( 0 );
+        return back;
+   }
 
     public void setBasicEffects(int basicEffects) {
         this.basicEffects = basicEffects;

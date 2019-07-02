@@ -5,8 +5,6 @@ import common.enums.PcColourEnum;
 import server.database.DatabaseHandler;
 import server.model.Pc;
 
-import java.io.IOException;
-
 /**
  * Each player selects a Pc
  */
@@ -58,7 +56,7 @@ public class PcSelectionState extends State {
     public State nextState() {
         controller.nextTurn();
         if (controller.getCurrPlayerIndex() == 0)
-            DatabaseHandler.getInstance().saveUpdates(controller);
+            DatabaseHandler.getInstance().save(controller);
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 }

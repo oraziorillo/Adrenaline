@@ -48,47 +48,33 @@ public class Game {
     }
 
 
-    private Game(UUID gameUUID) {
-    }
-
-    public static Game getGame(UUID gameUUID) {
-        Game game;
-        if (gameUUID != null){
-            game = new Game(gameUUID);
-            game.initDecks(gameUUID);
-        }
-        else {
-            game = new Game();
-            game.initDecks();
-        }
+    public static Game getGame() {
+        Game game = new Game();
+        game.initDecks();
         return game;
     }
 
 
     private void initDecks(){
-        initWeaponsDeck();
-        initPowerUpsDeck();
-        initAmmoDeck();
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
+        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        initWeaponsDeck(customGson);
+        initPowerUpsDeck(customGson);
+        initAmmoDeck(customGson);
     }
 
 
-    private void initDecks(UUID gameUUID){
-
-    }
-
-
-
-    private void initWeaponsDeck() {
+    private void initWeaponsDeck(Gson gson) {
         try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
-            Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
             Type weaponArrayListType = new TypeToken<ArrayList<WeaponCard>>() {
             }.getType();
 
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
-            ArrayList<WeaponCard> weapons = customGson.fromJson(reader, weaponArrayListType);
+            ArrayList<WeaponCard> weapons = gson.fromJson(reader, weaponArrayListType);
 
             weapons.forEach(w -> {
                 w.init();
@@ -101,17 +87,14 @@ public class Game {
     }
 
 
-    private void initPowerUpsDeck(){
+    private void initPowerUpsDeck(Gson gson){
         try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
-            Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
             Type powerUpArrayListType = new TypeToken<ArrayList<PowerUpCard>>() {
             }.getType();
 
             JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
-            ArrayList<PowerUpCard> powerUps = customGson.fromJson(reader, powerUpArrayListType);
+            ArrayList<PowerUpCard> powerUps = gson.fromJson(reader, powerUpArrayListType);
 
             powerUps.forEach(p -> powerUpsDeck.add(p));
 
@@ -121,9 +104,8 @@ public class Game {
     }
 
 
-    private void initAmmoDeck(){
+    private void initAmmoDeck(Gson gson){
         try {
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
             Type ammoTileArrayListType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
 
@@ -145,7 +127,10 @@ public class Game {
         try {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
-            Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+            Gson customGson = gsonBuilder
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .serializeNulls()
+                    .create();
 
             JsonReader reader = new JsonReader(
                     new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));

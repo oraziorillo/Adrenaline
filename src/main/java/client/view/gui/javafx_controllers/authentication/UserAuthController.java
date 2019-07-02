@@ -1,13 +1,13 @@
 package client.view.gui.javafx_controllers.authentication;
 
-import client.controller.socket.ClientSocketHandler;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemoteLoginController;
-import javafx.concurrent.Task;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 
 import java.io.IOException;
@@ -19,8 +19,6 @@ import java.rmi.registry.Registry;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
-
-import static javafx.application.Platform.runLater;
 
 public class UserAuthController extends AbstractJavaFxController {
    private HashSet<Alert> alerts = new HashSet<>();
@@ -34,7 +32,7 @@ public class UserAuthController extends AbstractJavaFxController {
    }
    
    @Override
-   public void ack(String message) throws RemoteException {
+   public void ack(String message) {
 //      Alert infos = new Alert( Alert.AlertType.INFORMATION );
 //      infos.setTitle( "infos" );
 //      infos.setHeaderText( null );
@@ -49,6 +47,12 @@ public class UserAuthController extends AbstractJavaFxController {
 //      infos.show();
       
    }
+
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
+   }
    
    @Override
    public void chatMessage(String message) throws RemoteException {
@@ -59,12 +63,6 @@ public class UserAuthController extends AbstractJavaFxController {
    public ModelEventListener getListener() throws RemoteException {
       return this;
    }
-   
-   @Override
-   public void setEnabled(boolean enabled) {
-      //Actually meaningless
-   }
-   
    
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
@@ -151,5 +149,10 @@ public class UserAuthController extends AbstractJavaFxController {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
+   }
+   
+   @Override
+   public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+      //nothing to observe
    }
 }

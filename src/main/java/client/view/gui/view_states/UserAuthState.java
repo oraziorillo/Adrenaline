@@ -2,11 +2,11 @@ package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.application.HostServices;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
@@ -19,8 +19,14 @@ public class UserAuthState extends ViewState {
    
    @Override
    public void ack(String message) {
-   }
    
+   }
+
+   @Override
+   public void notifyEvent(LobbyEvent event) {
+
+   }
+
    @Override
    public ViewState nextState() {
       SetupState nextState = null;
@@ -60,4 +66,5 @@ public class UserAuthState extends ViewState {
       return javafxController.wantsToRegister();
    }
    
+   //TODO: ricevi un qualche dto e cambia stato
 }

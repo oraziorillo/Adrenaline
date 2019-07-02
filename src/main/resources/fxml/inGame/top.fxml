@@ -33,7 +33,7 @@
                 <HBox.margin><Insets topRightBottomLeft="$padding"/></HBox.margin>
                 <Image url="/images/deck_holders/powerup.png" preserveRatio="true" requestedWidth="100"/>
             </ImageView>
-            <Button id="settingsButton" HBox.hgrow="ALWAYS" minWidth="${settingsButton.height}" onMouseClicked="#showSettings">
+            <Button fx:id="settingsButton" HBox.hgrow="ALWAYS" minWidth="${settingsButton.height}" onMouseClicked="#showSettings">
                 <HBox.margin><Insets topRightBottomLeft="35"/> </HBox.margin>
             </Button>
         </HBox>

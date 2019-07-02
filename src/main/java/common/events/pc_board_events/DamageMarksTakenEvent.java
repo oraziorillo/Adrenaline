@@ -53,7 +53,7 @@ public class DamageMarksTakenEvent extends PcBoardEvent{
 
 
     @Override
-    public PcBoardEvent switchToPrivate() {
+    public PcBoardEvent censor() {
         return new DamageMarksTakenEvent(pcBoard, shooter, damage, marks,true);
     }
 }

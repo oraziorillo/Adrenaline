@@ -79,7 +79,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Machine Gun",
@@ -207,7 +208,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "T.H.O.R.",
@@ -308,7 +310,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Plasma Gun",
@@ -411,7 +414,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Whisper",
@@ -457,7 +461,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Electroscythe",
@@ -530,7 +535,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Tractor Beam",
@@ -654,7 +660,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Vortex Cannon",
@@ -802,7 +809,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Furnace",
@@ -891,7 +899,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Heatseeker",
@@ -938,7 +947,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Hellion",
@@ -1067,7 +1077,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Flamethrower",
@@ -1183,7 +1194,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Grenade Launcher",
@@ -1286,7 +1298,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Rocket Launcher",
@@ -1428,7 +1441,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Railgun",
@@ -1509,7 +1523,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Cyberblade",
@@ -1628,7 +1643,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "ZX-2",
@@ -1709,7 +1725,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Shotgun",
@@ -1817,7 +1834,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Power Glove",
@@ -2003,7 +2021,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Shockwave",
@@ -2094,7 +2113,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "SledgeHammer",
@@ -2201,6 +2221,7 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   }
 ]

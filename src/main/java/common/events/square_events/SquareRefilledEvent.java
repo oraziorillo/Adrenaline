@@ -33,7 +33,7 @@ public class SquareRefilledEvent extends SquareEvent {
 
 
     @Override
-    public SquareEvent switchToPrivate() {
+    public SquareEvent censor() {
         return new SquareRefilledEvent(square, isSpawnPoint, true);
     }
 }

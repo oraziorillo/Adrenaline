@@ -15,6 +15,7 @@ import java.util.Set;
 
 public abstract class Action {
 
+    @Expose boolean isMovement;
     @Expose private boolean optional;
     @Expose private boolean necessaryForNextAction;
     @Expose private boolean parameterized;

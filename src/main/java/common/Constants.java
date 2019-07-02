@@ -45,6 +45,9 @@ public final class Constants {
 
     // --------------> EVENTS
 
+    //lobby events
+    public static final int PLAYER_JOINED = -1;
+
     //game board events
     public static final int GAME_BOARD_SET = 0;
 

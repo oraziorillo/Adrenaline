@@ -2,16 +2,24 @@ package server.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
+import server.database.GameInfo;
 import server.model.Game;
+import server.model.GameBoard;
 import server.model.Pc;
 import server.model.WeaponCard;
+import server.model.actions.Action;
+import server.model.deserializers.ActionDeserializer;
+import server.model.deserializers.GameBoardDeserializer;
 import server.model.squares.Square;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -44,17 +52,33 @@ public class Controller{
     }
 
 
-    public void initGame(UUID gameUUID){
-        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-        game = Game.getGame(gameUUID);
-        addListenersToGame();
-        players.forEach(player -> player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken()))));
+    public void initGame(UUID gameUUID) {
+        try {
+            DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+            Gson gson = new GsonBuilder()
+                    .serializeNulls()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .registerTypeAdapter(Action.class, new ActionDeserializer())
+                    .registerTypeAdapter(GameBoard.class, new GameBoardDeserializer())
+                    .create();
+
+            JsonReader reader = new JsonReader(new FileReader(databaseHandler.getGamePath(gameUUID)));
+            GameInfo gameInfo = gson.fromJson(reader, GameInfo.class);
+
+            game = gameInfo.getGame();
+            currPlayerIndex = gameInfo.getCurrPlayerIndex();
+            lastPlayerIndex = gameInfo.getLastPlayerIndex();
+            addListenersToModel();
+            players.forEach(player -> player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken()))));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void initGame(){
-        game = Game.getGame(null);
-        addListenersToGame();
+        game = Game.getGame();
+        addListenersToModel();
         for (Player p: players) {
             if (players.get(0) == p)
                 p.setCurrState(new SetupMapState(this));
@@ -70,7 +94,7 @@ public class Controller{
     }
 
 
-    private void addListenersToGame(){
+    private void addListenersToModel(){
         players.forEach(p -> {
             ModelEventListener listener = null;
             try {
@@ -126,6 +150,9 @@ public class Controller{
         return currPlayerIndex;
     }
 
+    public int getLastPlayerIndex() {
+        return lastPlayerIndex;
+    }
 
     public int getRemainingActions() {
         return remainingActions;
