@@ -26,7 +26,7 @@ public class NumberOfDeathIncreasedEvent extends PcBoardEvent {
 
 
     @Override
-    public PcBoardEvent switchToPrivate() {
+    public PcBoardEvent censor() {
         return new NumberOfDeathIncreasedEvent(pcBoard, true);
     }
 }

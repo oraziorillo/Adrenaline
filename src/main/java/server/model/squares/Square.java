@@ -19,6 +19,7 @@ public abstract class Square {
 
     ModelEventHandler events;
 
+    @Expose boolean isSpawnPoint;
     @Expose private int row;
     @Expose private int col;
     @Expose private SquareColourEnum colour;

@@ -1,9 +1,9 @@
 package client.view.gui.view_states;
 
 import client.controller.GuiController;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,5 +42,9 @@ public class InGameState extends ViewState {
    public ViewState nextState() throws RemoteException {
       return ViewState.getFirstState(hostServices, stage,previousAcks,topView);
    }
-   
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
+   }
 }

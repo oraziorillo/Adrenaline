@@ -37,7 +37,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
            ]
           }
@@ -73,13 +73,14 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Machine Gun",
@@ -119,7 +120,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -207,7 +208,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "T.H.O.R.",
@@ -242,7 +244,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -273,7 +275,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -302,13 +304,14 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Plasma Gun",
@@ -343,7 +346,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -411,7 +414,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Whisper",
@@ -446,7 +450,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -457,7 +461,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Electroscythe",
@@ -530,7 +535,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Tractor Beam",
@@ -586,7 +592,7 @@
             "maxNumberOfTargets": 1,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ],
             "destinationChecker": [
@@ -654,7 +660,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Vortex Cannon",
@@ -694,7 +701,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -802,7 +809,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Furnace",
@@ -842,7 +850,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "differentRoom"
@@ -891,7 +899,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Heatseeker",
@@ -938,7 +947,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Hellion",
@@ -978,7 +988,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -1036,7 +1046,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -1067,7 +1077,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Flamethrower",
@@ -1183,7 +1194,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Grenade Launcher",
@@ -1223,7 +1235,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           },
@@ -1280,13 +1292,14 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Rocket Launcher",
@@ -1326,7 +1339,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -1428,7 +1441,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "Railgun",
@@ -1509,7 +1523,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Cyberblade",
@@ -1628,7 +1643,8 @@
           }
         ]
       }
-    ]
+    ],
+    "effectsToApply": []
   },
   {
     "name": "ZX-2",
@@ -1668,7 +1684,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -1702,14 +1718,15 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Shotgun",
@@ -1817,7 +1834,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Power Glove",
@@ -2003,7 +2021,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "Shockwave",
@@ -2094,7 +2113,8 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   },
   {
     "name": "SledgeHammer",
@@ -2175,7 +2195,7 @@
             ]
           },
           {
-            "optional": true,
+            "optional": false,
             "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,
@@ -2201,6 +2221,7 @@
         ]
       }
     ],
-    "upgrades": []
+    "upgrades": [],
+    "effectsToApply": []
   }
 ]

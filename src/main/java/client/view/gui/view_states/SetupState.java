@@ -8,6 +8,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
@@ -111,5 +112,10 @@ public class SetupState extends ViewState {
          e1.setStackTrace( e.getStackTrace() );
          throw e1;
       }
+   }
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
    }
 }

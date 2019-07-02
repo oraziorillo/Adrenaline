@@ -13,7 +13,6 @@ import javafx.application.HostServices;
 import javafx.scene.control.Alert;
 
 import java.rmi.RemoteException;
-import java.util.List;
 
 public abstract class AbstractJavaFxController extends AbstractView {
    

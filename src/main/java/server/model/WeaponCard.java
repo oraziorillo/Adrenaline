@@ -20,14 +20,13 @@ public class WeaponCard {
     @Expose private short[] ammo;
     @Expose private List<Effect> fireModes;
     @Expose private List<Effect> upgrades;
+    @Expose private LinkedList<Effect> effectsToApply;
     private boolean loaded;
-    private LinkedList<Effect> effectsToApply;
     private short[] currentCost;
 
 
     WeaponCard(){
         this.loaded = true;
-        this.effectsToApply = new LinkedList<>();
         this.currentCost = new short[AMMO_COLOURS_NUMBER];
     }
 
@@ -53,7 +52,7 @@ public class WeaponCard {
         this.upgrades = customGson.fromJson(jsonWeaponCard.get("upgrades"), effectsType);
     }
 
-    public void init(){
+    public void init() {
         selectFireMode(0);
     }
 

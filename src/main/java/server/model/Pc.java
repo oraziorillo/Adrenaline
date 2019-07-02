@@ -25,7 +25,7 @@ public class Pc {
     private ModelEventHandler events = new ModelEventHandler();
 
     private final Game currGame;
-    private PcColourEnum colour;
+    @Expose private PcColourEnum colour;
     @Expose private PcBoard pcBoard;
     @Expose private short adrenaline;
     @Expose private WeaponCard[] weapons;

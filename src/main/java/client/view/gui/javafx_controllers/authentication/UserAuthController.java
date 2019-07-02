@@ -1,13 +1,12 @@
 package client.view.gui.javafx_controllers.authentication;
 
-import client.controller.socket.ClientSocketHandler;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemoteLoginController;
-import javafx.concurrent.Task;
 import javafx.scene.control.*;
 
 import java.io.IOException;
@@ -19,8 +18,6 @@ import java.rmi.registry.Registry;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
-
-import static javafx.application.Platform.runLater;
 
 public class UserAuthController extends AbstractJavaFxController {
    private HashSet<Alert> alerts = new HashSet<>();
@@ -49,6 +46,12 @@ public class UserAuthController extends AbstractJavaFxController {
 //      infos.show();
       
    }
+
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
+   }
    
    @Override
    public void chatMessage(String message) throws RemoteException {
@@ -64,8 +67,7 @@ public class UserAuthController extends AbstractJavaFxController {
    public void setEnabled(boolean enabled) {
       //Actually meaningless
    }
-   
-   
+
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
       RemoteLoginController loginController;

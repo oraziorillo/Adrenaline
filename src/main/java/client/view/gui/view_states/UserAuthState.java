@@ -2,6 +2,7 @@ package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.application.HostServices;
 import javafx.stage.Stage;
@@ -20,7 +21,12 @@ public class UserAuthState extends ViewState {
    public void ack(String message) {
    
    }
-   
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
+   }
+
    @Override
    public ViewState nextState() {
       SetupState nextState = null;

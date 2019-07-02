@@ -8,6 +8,7 @@ import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
 import org.junit.Test;
 import server.model.deserializers.GameBoardDeserializer;
+import server.model.squares.SpawnPoint;
 import server.model.squares.Square;
 
 import java.io.FileNotFoundException;
@@ -31,7 +32,10 @@ public class GameBoardTest {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
-        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+        Gson customGson = gsonBuilder
+                .serializeNulls()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
         JsonReader reader = new JsonReader(
                 new FileReader("src/main/resources/json/game_boards/gameBoard" + N_MAP + ".json"));
@@ -42,9 +46,16 @@ public class GameBoardTest {
     @Test
     public void getSpawnPointWorksFine(){
         AmmoEnum ammoEnum = AmmoEnum.RED;
-        Square s = gameBoard.getSpawnPoint(ammoEnum.toSquareColour());
+        SpawnPoint s = (SpawnPoint) gameBoard.getSpawnPoint(ammoEnum.toSquareColour());
+        boolean works = true;
+        for (WeaponCard w : s.getWeapons())
+            if (w != null)
+                works = false;
+        if (works)
+            System.out.println("FUNZIONA");
         System.out.println(s.getColour());
     }
+
 
     @Test
     public void atDistanceWorksFine(){

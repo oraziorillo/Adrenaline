@@ -17,6 +17,7 @@ import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
@@ -184,8 +185,14 @@ public class InGameController extends AbstractJavaFxController {
    public void chatMessage(String message) {
       chatController.showUserMessage( message );
    }
-   
-    @Override
+
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
+   }
+
+   @Override
     public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       killShotTrackData.set( event.getDTO() );
     }

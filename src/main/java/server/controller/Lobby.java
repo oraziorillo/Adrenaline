@@ -1,11 +1,15 @@
 package server.controller;
 
 import com.google.gson.annotations.Expose;
+import common.dto_model.LobbyDTO;
+import common.events.lobby_events.LobbyEvent;
+import common.events.lobby_events.PlayerJoinedEvent;
 import common.remote_interfaces.RemoteView;
 import server.database.DatabaseHandler;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,12 +74,7 @@ public class Lobby {
      */
     void addPlayer(Player player) {
         players.add(player);
-        String m1 = "Say hello to @" + databaseHandler.getUsername(player.getToken());
-        String m2 = "You joined a lobby";
-        String m3 = ((players.size() > 1)
-                ? "\nThere are " + players.size() + " players"
-                : "\nThere is " + 1 + " player") + " in this lobby" + getAllUserNames();
-        ack(m1 + m3, m2 + m3, player);
+        publishEvent(new PlayerJoinedEvent(new LobbyDTO(players)), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
             ack("The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes", null);
@@ -106,7 +105,7 @@ public class Lobby {
         } else {
             controller.initGame();
         }
-        databaseHandler.saveUpdates(controller);
+        databaseHandler.save(controller);
         getViews().forEach(v -> {
             try {
                 v.ack("Game Started");
@@ -134,6 +133,25 @@ public class Lobby {
                 removePlayer(p);
             }
         }
+    }
+
+
+    private void publishEvent(LobbyEvent event, Player recipientOfUncensored) {
+        try {
+            recipientOfUncensored.getView().notifyEvent(event);
+        } catch (RemoteException e) {
+            recipientOfUncensored.quit();
+            removePlayer(recipientOfUncensored);
+        }
+        LobbyEvent censored = event.censor();
+        for (Player p : players)
+            try {
+                if (!p.getToken().equals(recipientOfUncensored.getToken()))
+                    p.getView().notifyEvent(censored);
+            } catch (RemoteException e) {
+                p.quit();
+                removePlayer(p);
+            }
     }
 
 

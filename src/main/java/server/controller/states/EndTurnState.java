@@ -46,7 +46,7 @@ class EndTurnState extends State {
         if(toReload)
             return new ReloadState(controller);
         controller.nextTurn();
-     //   DatabaseHandler.getInstance().save(controller);
+        DatabaseHandler.getInstance().save(controller);
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

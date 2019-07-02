@@ -1,16 +1,17 @@
 package client.view.gui.javafx_controllers.game_setup;
 
 import client.view.gui.ImageCache;
+import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Top;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
-import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.Constants;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_events.PcEvent;
+import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -201,5 +202,10 @@ public class SetupController extends AbstractJavaFxController {
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
       //TODO: aspetta di avere l'indice della mappa
+   }
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
    }
 }

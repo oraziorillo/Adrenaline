@@ -15,13 +15,14 @@ import server.model.WeaponCard;
 
 import java.util.stream.Collectors;
 
-import static common.Constants.*;
+import static common.Constants.CARDS_ON_SPAWN_POINT;
+import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 public class SpawnPoint extends Square {
 
-    @Expose private int weaponToGrabIndex;
-    @Expose private int weaponToDropIndex;
-    private WeaponCard[] weapons;
+    @Expose private WeaponCard[] weapons;
+    private int weaponToGrabIndex;
+    private int weaponToDropIndex;
     private Deck<WeaponCard> weaponsDeck;
 
 
@@ -42,7 +43,6 @@ public class SpawnPoint extends Square {
     @Override
     public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.weaponsDeck = weaponsDeck;
-        weapons = new WeaponCard[CARDS_ON_SPAWN_POINT];
         for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++)
             weapons[i] = weaponsDeck.draw();
     }
