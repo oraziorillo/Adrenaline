@@ -139,7 +139,6 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       }
       this.frenzyTrackPane.getChildren().clear();
       double circles= Math.ceil( Math.sqrt( track.getFinalFrenzyKillShotTrack().length ) );
-      System.out.println(circles);
       for(KillShotDTO k:track.getFinalFrenzyKillShotTrack()){
          Circle c = new Circle(0,Color.valueOf( k.getColour().toString() ));
          c.radiusProperty().bind( Bindings.subtract( Bindings.divide( Bindings.min( frenzyTrackPane.heightProperty(),frenzyTrackPane.widthProperty() ),2*circles ),1 ) );
