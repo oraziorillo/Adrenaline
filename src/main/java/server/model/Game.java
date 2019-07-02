@@ -155,7 +155,7 @@ public class Game {
             gameBoard.addModelEventHandler(events);
 
             //notify map set
-            events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(), numberOfMap));
+            events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(numberOfMap), numberOfMap));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

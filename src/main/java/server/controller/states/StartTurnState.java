@@ -52,7 +52,7 @@ public class StartTurnState extends State {
     public boolean usePowerUp() {
         for (PowerUpCard powerUp: controller.getCurrPlayer().getPc().getPowerUps()) {
             if (powerUp != null) {
-                nextState = new UsePowerUpState(controller, null);
+                nextState = new UsePowerUpState(controller);
                 return true;
             }
         }

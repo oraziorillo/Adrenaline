@@ -1,6 +1,7 @@
 package server.controller;
 
 import com.google.gson.annotations.Expose;
+import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
@@ -54,7 +55,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
     
     @Override
-    public void sendMessage(String s) throws IOException {
+    public void sendMessage(String s) {
         //TODO: manda il messaggio a tutte le view della partita (anche a quella che l'ha mandato)
     }
     
@@ -99,8 +100,8 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-    public void setAttacked(int playerIndex){
-        currState.hasBeenAttacked(playerIndex);
+    public void setAttacked(){
+        currState.hasBeenAttacked(this);
     }
 
 
@@ -217,6 +218,13 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
 
     @Override
+    public synchronized void chooseAmmo(String ammoColour){
+        if (AmmoEnum.fromString(ammoColour) != null){
+            currState.selectAmmo(AmmoEnum.fromString(ammoColour));
+        }
+    }
+
+    @Override
     public synchronized void chooseDirection(int cardinalDirectionIndex){
         for (CardinalDirectionEnum cardinalDirection: CardinalDirectionEnum.values()) {
             if (cardinalDirection.ordinal() == cardinalDirectionIndex)
@@ -227,7 +235,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void skip() {
-        if (currState.skipAction())
+        if (currState.skip())
             currState = currState.nextState();
     }
 
@@ -242,7 +250,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     @Override
     public synchronized void ok() {
         try {
-            view.ack("questo è il mio stato attuale" + currState);
+            view.ack("questo è il mio stato attuale " + currState);
         } catch (IOException e) {
             e.printStackTrace();
         }

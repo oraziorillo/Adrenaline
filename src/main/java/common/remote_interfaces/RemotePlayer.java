@@ -1,60 +1,61 @@
 package common.remote_interfaces;
 
-import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
 public interface RemotePlayer extends Remote {
 
-    void chooseMap(int n) throws IOException;
+    void chooseMap(int n) throws RemoteException;
 
-    void chooseNumberOfSkulls(int n) throws IOException;
+    void chooseNumberOfSkulls(int n) throws RemoteException;
 
-    void choosePcColour(String colour) throws IOException;
+    void choosePcColour(String colour) throws RemoteException;
 
-    void runAround() throws IOException;
+    void runAround() throws RemoteException;
 
-    void grabStuff() throws IOException;
+    void grabStuff() throws RemoteException;
 
-    void usePowerUp() throws IOException;
+    void usePowerUp() throws RemoteException;
 
-    void shootPeople() throws IOException;
+    void shootPeople() throws RemoteException;
 
-    void chooseSquare(int x, int y) throws IOException;
+    void chooseSquare(int x, int y) throws RemoteException;
 
-    void choosePowerUp(int index) throws IOException;
+    void choosePowerUp(int index) throws RemoteException;
 
-    void chooseWeaponOnSpawnPoint(int index) throws IOException;
+    void chooseWeaponOnSpawnPoint(int index) throws RemoteException;
 
-    void chooseWeaponOfMine(int index) throws IOException;
+    void chooseWeaponOfMine(int index) throws RemoteException;
 
-    void switchFireMode() throws IOException;
+    void switchFireMode() throws RemoteException;
 
-    void chooseUpgrade(int index) throws IOException;
+    void chooseUpgrade(int index) throws RemoteException;
 
-    void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws IOException;
+    void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) throws RemoteException;
 
-    void chooseTarget(String pcColour) throws IOException;
+    void chooseTarget(String pcColour) throws RemoteException;
 
-    void chooseDirection(int cardinalDirectionIndex) throws IOException;
+    void chooseAmmo(String ammoColour) throws RemoteException;
 
-    void skip() throws IOException;
+    void chooseDirection(int cardinalDirectionIndex) throws RemoteException;
 
-    void undo() throws IOException;
+    void skip() throws RemoteException;
 
-    void ok() throws IOException;
+    void undo() throws RemoteException;
 
-    void reload() throws IOException;
+    void ok() throws RemoteException;
 
-    void pass() throws IOException;
+    void reload() throws RemoteException;
 
-    void quit() throws IOException;
+    void pass() throws RemoteException;
+
+    void quit() throws RemoteException;
     
     boolean isConnected() throws RemoteException;
     
     UUID getToken() throws RemoteException;
     
-    void sendMessage(String s) throws IOException;
+    void sendMessage(String s) throws RemoteException;
     
 }
