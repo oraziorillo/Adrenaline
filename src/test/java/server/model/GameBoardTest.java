@@ -7,7 +7,11 @@ import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
 import org.junit.Test;
-import server.model.deserializers.GameBoardDeserializer;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import server.model.deserializers.SquareDeserializer;
 import server.model.squares.SpawnPoint;
 import server.model.squares.Square;
 
@@ -18,7 +22,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class GameBoardTest {
 
     private static final int ROW = 2;
@@ -26,12 +30,21 @@ public class GameBoardTest {
     private static final int N_MAP = 4;
 
     private GameBoard gameBoard;
+    @Mock Deck<WeaponCard> weaponsDeck;
+    @Mock Deck<AmmoTile> ammoDeck;
+
 
     @Before
     public void initFine() throws FileNotFoundException {
 
+        Mockito.when(weaponsDeck.draw()).thenReturn(new WeaponCard());
+        short[] ammo = new short[3];
+        ammo[1] = 1;
+        ammo[2] = 2;
+        Mockito.when(ammoDeck.draw()).thenReturn(new AmmoTile(ammo, false));
+
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
+        gsonBuilder.registerTypeAdapter(Square.class, new SquareDeserializer());
         Gson customGson = gsonBuilder
                 .serializeNulls()
                 .excludeFieldsWithoutExposeAnnotation()
@@ -40,6 +53,7 @@ public class GameBoardTest {
         JsonReader reader = new JsonReader(
                 new FileReader("src/main/resources/json/game_boards/gameBoard" + N_MAP + ".json"));
         gameBoard = customGson.fromJson(reader, GameBoard.class);
+        gameBoard.init(weaponsDeck, ammoDeck);
     }
 
 
@@ -47,12 +61,6 @@ public class GameBoardTest {
     public void getSpawnPointWorksFine(){
         AmmoEnum ammoEnum = AmmoEnum.RED;
         SpawnPoint s = (SpawnPoint) gameBoard.getSpawnPoint(ammoEnum.toSquareColour());
-        boolean works = true;
-        for (WeaponCard w : s.getWeapons())
-            if (w != null)
-                works = false;
-        if (works)
-            System.out.println("FUNZIONA");
         System.out.println(s.getColour());
     }
 
@@ -131,7 +139,5 @@ public class GameBoardTest {
             squaresOnDir.add(gameBoard.getSquare(ROW, j));
         assertEquals(squaresOnDir, mySquare.allSquaresOnDirection(null));
         squaresOnDir.clear();
-
-        System.out.println("THE KING IN THE NORTH");
     }
 }

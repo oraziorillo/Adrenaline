@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader;
 import common.enums.CardinalDirectionEnum;
 import org.junit.Before;
 import org.junit.Test;
-import server.model.deserializers.GameBoardDeserializer;
+import server.model.deserializers.SquareDeserializer;
 import server.model.squares.Square;
 import server.model.target_checkers.*;
 
@@ -30,7 +30,7 @@ public class TargetCheckerTest {
         int numberOfMap = 3;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
+        gsonBuilder.registerTypeAdapter(Square.class, new SquareDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
         JsonReader reader = new JsonReader(

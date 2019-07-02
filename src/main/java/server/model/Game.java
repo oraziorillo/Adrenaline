@@ -15,7 +15,7 @@ import common.events.kill_shot_track_events.KillShotTrackSetEvent;
 import common.events.pc_events.PcColourChosenEvent;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
-import server.model.deserializers.GameBoardDeserializer;
+import server.model.deserializers.SquareDeserializer;
 import server.model.squares.Square;
 
 import java.io.FileNotFoundException;
@@ -32,7 +32,7 @@ public class Game {
     private ModelEventHandler events = new ModelEventHandler();
 
     @Expose private GameBoard gameBoard;
-    @Expose private Set<Pc> pcs;
+    private Set<Pc> pcs;
     @Expose private Deck<WeaponCard> weaponsDeck;
     @Expose private Deck<PowerUpCard> powerUpsDeck;
     @Expose private Deck<AmmoTile> ammoDeck;
@@ -56,6 +56,38 @@ public class Game {
 
 
     private void initDecks(){
+
+        /* da valutare se cambiarlo
+        try {
+            JsonReader reader;
+            Type deckType = new TypeToken<Deck>(){}.getType();
+            Gson gson = new GsonBuilder()
+                    .serializeNulls()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .registerTypeAdapter(Action.class, new ActionDeserializer())
+                    .registerTypeAdapter(deckType, new DeckDeserializer<>())
+                    .create();
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
+            weaponsDeck = gson.fromJson(reader, deckType);
+            weaponsDeck.getCards().parallelStream().forEach(WeaponCard::init);
+            weaponsDeck.shuffle();
+            reader.close();
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
+            powerUpsDeck = gson.fromJson(reader, deckType);
+            powerUpsDeck.shuffle();
+            reader.close();
+
+            reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
+            ammoDeck = gson.fromJson(reader, deckType);
+            ammoDeck.shuffle();
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         */
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
@@ -125,18 +157,17 @@ public class Game {
      */
     public void initMap(int numberOfMap) {
         try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
-            Gson customGson = gsonBuilder
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Square.class, new SquareDeserializer())
                     .excludeFieldsWithoutExposeAnnotation()
                     .serializeNulls()
                     .create();
 
             JsonReader reader = new JsonReader(
                     new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));
-            gameBoard = customGson.fromJson(reader, GameBoard.class);
+            gameBoard = gson.fromJson(reader, GameBoard.class);
 
-            gameBoard.initSquares(weaponsDeck, ammoDeck);
+            gameBoard.init(weaponsDeck, ammoDeck);
             gameBoard.addModelEventHandler(events);
 
             //notify map set
@@ -147,6 +178,12 @@ public class Game {
         }
     }
 
+
+    public void restore(){
+        gameBoard.init(weaponsDeck, ammoDeck);
+        for (Square s : gameBoard.getSquares())
+            pcs.addAll(s.getPcs());
+    }
 
     /**
      * Inits the KillShotTrack with the given number of skulls

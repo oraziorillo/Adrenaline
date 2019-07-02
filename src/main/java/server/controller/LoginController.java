@@ -80,14 +80,13 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
             UUID incompleteGame = databaseHandler.getGameUUID(token);
             lobby = lobbies
                     .stream()
-                    .filter(l -> l.getGameUUID() == incompleteGame)
+                    .filter(l -> l.getGameUUID().equals(incompleteGame))
                     .findFirst()
                     .orElse(null);
-             if (lobby != null) {
-                 lobby.addPlayer(databaseHandler.getPlayer(token));
-             }
-            else
-               throw new IllegalStateException("Old " + databaseHandler.getPlayer(token) + "'s lobby was not restored successfully");
+            if (lobby != null) {
+               lobby.addPlayer(databaseHandler.getPlayer(token));
+            } else
+               databaseHandler.getPlayer(token).getView().ack("Your old lobby was not restored successfully");
 
          } else {
 

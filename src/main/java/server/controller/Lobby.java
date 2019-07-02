@@ -102,10 +102,11 @@ public class Lobby {
         controller = new Controller(gameUUID, players);
         if (databaseHandler.containsGame(gameUUID)) {
             controller.initGame(gameUUID);
+            ack("Game restored!", null);
         } else {
             controller.initGame();
+            databaseHandler.save(controller);
         }
-        databaseHandler.save(controller);
         getViews().forEach(v -> {
             try {
                 v.ack("Game Started");
@@ -157,16 +158,6 @@ public class Lobby {
 
     private List<RemoteView> getViews(){
         return players.stream().map(Player::getView).collect(Collectors.toList());
-    }
-
-
-    private String getAllUserNames() {
-        StringBuilder result = new StringBuilder();
-        String at = System.lineSeparator() + "@";
-        for (Player p : players) {
-            result.append(at).append(databaseHandler.getUsername(p.getToken()));
-        }
-        return result.toString();
     }
 
 }

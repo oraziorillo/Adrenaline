@@ -9,11 +9,11 @@ import java.util.Random;
 /**
  * This class models a deck of objects by decorating an arraylist
  * @param <E> the Type of the cards
- * @see ArrayList
+ * @see List
  */
 public class Deck<E> {
 
-    private ArrayList<E> cards;
+    private List<E> cards;
 
     /**
      * used for random insertion
@@ -21,14 +21,18 @@ public class Deck<E> {
     private Random random;
 
 
-    Deck() {
+    public Deck() {
         cards = new ArrayList<>();
         random = new Random();
     }
 
 
-    List<E> getCards() {
+    public List<E> getCards() {
         return cards;
+    }
+
+    public void setCards(List<E> cards) {
+        this.cards = cards;
     }
 
     /**
@@ -117,7 +121,7 @@ public class Deck<E> {
     protected Object clone() throws CloneNotSupportedException {
         Deck<E> clone = new Deck<>();
         try {
-            clone.cards = ( ArrayList<E> ) this.cards.clone();
+            clone.cards = (ArrayList<E>)((ArrayList<E>)this.cards).clone();
             clone.random = this.random;
         }catch ( ClassCastException e ){
             e.printStackTrace();

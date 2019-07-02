@@ -8,10 +8,12 @@ import common.enums.PcColourEnum;
 import server.controller.Controller;
 import server.controller.Lobby;
 import server.controller.Player;
-import server.model.GameBoard;
+import server.model.Deck;
 import server.model.actions.Action;
-import server.model.deserializers.ActionDeserializer;
-import server.model.deserializers.GameBoardDeserializer;
+import server.model.serializers.ActionSerializer;
+import server.model.serializers.DeckSerializer;
+import server.model.serializers.TargetCheckerSerializer;
+import server.model.target_checkers.TargetChecker;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -32,11 +34,14 @@ public class DatabaseHandler {
     private HashMap<UUID, PlayerInfo> playerInfoByToken;
     private HashMap<UUID, String> gamePathByUUID;
 
+    private Type deckType = new TypeToken<Deck>(){}.getType();
+
     private Gson gson = new GsonBuilder()
             .serializeNulls()
             .excludeFieldsWithoutExposeAnnotation()
-            .registerTypeAdapter(Action.class, new ActionDeserializer())
-            .registerTypeAdapter(GameBoard.class, new GameBoardDeserializer())
+            .registerTypeAdapter(Action.class, new ActionSerializer())
+            .registerTypeAdapter(TargetChecker.class, new TargetCheckerSerializer())
+            .registerTypeAdapter(deckType, new DeckSerializer<>())
             .create();
 
 
@@ -47,7 +52,7 @@ public class DatabaseHandler {
     }
 
 
-    public static DatabaseHandler getInstance() {
+    public synchronized static DatabaseHandler getInstance() {
         if (instance == null) {
             instance = new DatabaseHandler();
         }
@@ -55,7 +60,7 @@ public class DatabaseHandler {
     }
 
 
-    private void initFromFile(FileEnum file, Gson gson) {
+    private synchronized void initFromFile(FileEnum file, Gson gson) {
         try (JsonReader reader = new JsonReader(new FileReader(file.getFilePath()))) {
             Type type;
             switch (file) {
@@ -124,10 +129,11 @@ public class DatabaseHandler {
     public synchronized Player getPlayer(UUID token) {
         try {
             if (playerInfoByToken.containsKey(token)) {
-                if (playerInfoByToken.get(token).getPlayer() == null) {
-                    playerInfoByToken.get(token).setPlayer(new Player(token));
+                PlayerInfo pi = playerInfoByToken.get(token);
+                if (pi.getPlayer() == null) {
+                    pi.setPlayer(new Player(token));
                 }
-                return playerInfoByToken.get(token).getPlayer();
+                return pi.getPlayer();
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -150,7 +156,7 @@ public class DatabaseHandler {
     }
 
 
-    public String getGamePath(UUID gameUUID) {
+    public synchronized String getGamePath(UUID gameUUID) {
         return gamePathByUUID.get(gameUUID);
     }
 
@@ -167,21 +173,6 @@ public class DatabaseHandler {
     public synchronized PcColourEnum getPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPcColour();
     }
-
-
-//    public Lobby getMyOldLobby(UUID playerToken) {
-//        UUID incompleteGameID = playerInfoByToken.get(playerToken).getIncompleteGameID();
-//        GameInfo incompleteGameInfo = gameInfoByUUID.get(incompleteGameID);
-//        if (incompleteGameInfo.isActive()) {
-//            //if the lobby is still active return back the lobby
-//            return incompleteGameInfo.getLobby();
-//        } else {
-//            //if the server had crushed and the lobby was gone create a new one
-//            Lobby newLobby = new Lobby(incompleteGameID);
-//            incompleteGameInfo.setLobby(newLobby);
-//            return newLobby;
-//        }
-//    }
 
 
     public synchronized void registerPlayer(UUID token, String username, Player player) {
@@ -258,16 +249,6 @@ public class DatabaseHandler {
     }
 
 
-    //to use in case you want to clear data
-    private synchronized void resetAllData() {
-        tokensByUserName = new HashMap<>();
-        overwrite(TOKENS_BY_USER_NAME);
-        playerInfoByToken = new HashMap<>();
-        overwrite(PLAYER_INFO_BY_TOKEN);
-        gamePathByUUID = new HashMap<>();
-        overwrite(GAME_PATH_BY_UUID);
-    }
-
     private synchronized void resetFile(FileEnum file) {
         switch (file) {
             case TOKENS_BY_USER_NAME:
@@ -287,7 +268,7 @@ public class DatabaseHandler {
 
 
     private synchronized String generateFilePath(UUID uuid) {
-        return "src/main/java/server/database/files/" + uuid + ".json";
+        return "src/main/java/server/database/files/game_infos/" + uuid + ".json";
     }
 
 

@@ -2,7 +2,6 @@ package server.controller.states;
 
 import server.controller.Controller;
 import server.controller.Player;
-import server.model.Effect;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.actions.Action;
@@ -31,6 +30,7 @@ public class InactiveState extends State {
     }
 
 
+    @Override
     public void setHasToRespawn(boolean hasToRespawn) {
         this.hasToRespawn = hasToRespawn;
     }

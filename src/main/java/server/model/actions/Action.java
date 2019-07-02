@@ -15,7 +15,7 @@ import java.util.Set;
 
 public abstract class Action {
 
-    @Expose boolean isMovement;
+    @Expose private boolean isMovement;
     @Expose private boolean optional;
     @Expose private boolean necessaryForNextAction;
     @Expose private boolean parameterized;
@@ -25,8 +25,10 @@ public abstract class Action {
     Set<Pc> targets;
     Square targetSquare;
 
+    public Action(){}
 
-    Action (JsonObject jsonAction){
+    public Action (JsonObject jsonAction){
+        this.isMovement = jsonAction.get("isMovement").getAsBoolean();
         this.optional = jsonAction.get("optional").getAsBoolean();
         this.necessaryForNextAction = jsonAction.get("necessaryForNextAction").getAsBoolean();
         this.parameterized = jsonAction.get("parameterized").getAsBoolean();
@@ -73,13 +75,20 @@ public abstract class Action {
     }
 
 
+    public boolean isMovement() {
+        return isMovement;
+    }
+
+
     public boolean isOptional() {
         return optional;
     }
 
+
     public boolean isNecessaryForNextAction() {
         return necessaryForNextAction;
     }
+
 
     public boolean isParameterized() {
         return parameterized;
