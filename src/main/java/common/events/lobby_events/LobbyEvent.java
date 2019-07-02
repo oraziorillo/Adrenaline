@@ -23,5 +23,5 @@ public abstract class LobbyEvent implements Serializable {
         return lobby;
     }
 
-    public abstract PlayerJoinedEvent censor();
+    public abstract LobbyEvent censor();
 }

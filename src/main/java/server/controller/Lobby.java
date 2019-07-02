@@ -74,7 +74,7 @@ public class Lobby {
      */
     void addPlayer(Player player) {
         players.add(player);
-        publishEvent(new PlayerJoinedEvent(new LobbyDTO(players)), player);
+        publishEvent(new PlayerJoinedEvent(new LobbyDTO(players, false, false )), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
             ack("The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes", null);

@@ -10,7 +10,7 @@ public class LobbyDTO implements DTO {
 
     private List<String> players;
 
-    public LobbyDTO(List<Player> players){
+    public LobbyDTO(List<Player> players, boolean gameStarted, boolean playing){
         this.players = new ArrayList<>();
         players.stream()
                 .map(p -> DatabaseHandler.getInstance().getUsername(p.getToken()))

@@ -9,4 +9,11 @@ public class WeaponHand extends CardHand<WeaponCardDTO> {
       super( Constants.MAX_WEAPONS_IN_HAND );
       super.initialize();
    }
+   
+   public void setCards(WeaponCardDTO[] cards){
+      super.setCards( cards );
+      for (int i=0;i<cards.length;i++){
+         weaponControllers[i].setWeapon( cards[i] );
+      }
+   }
 }

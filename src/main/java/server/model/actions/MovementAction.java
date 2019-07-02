@@ -48,6 +48,11 @@ public class MovementAction extends Action {
     }
 
     @Override
+    public boolean isMovement() {
+        return true;
+    }
+
+    @Override
     public boolean isSelfMovement() {
         return selfMovement;
     }
@@ -98,9 +103,9 @@ public class MovementAction extends Action {
         if (selfMovement)
             targets.add(shooter);
         if (!isComplete())
-            return null;
+            return new HashSet<>();
         targets.forEach(pc -> pc.moveTo(targetSquare));
-        return null;
+        return new HashSet<>();
     }
 
 

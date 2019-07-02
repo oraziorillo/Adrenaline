@@ -10,6 +10,7 @@ import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
+import common.dto_model.PowerUpCardDTO;
 import common.dto_model.SquareDTO;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
@@ -27,6 +28,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
@@ -72,6 +74,7 @@ public class InGameController extends AbstractJavaFxController {
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
       pcs.addListener( topController.pcListener );
+      pcs.addListener( pcBoardController );
       //init squares listeners
       squares.addListener( mapController.squareObserver );
       squares.addListener( cardHolderLeftController );
@@ -140,6 +143,15 @@ public class InGameController extends AbstractJavaFxController {
       }
    }
    
+   @FXML
+   private void undoClicked(){
+      try {
+         player.undo();
+      } catch ( IOException e ) {
+         error( "Server unreachable" );
+      }
+   }
+   
    @Override
    public void setHostServices(HostServices hostServices) {
       super.setHostServices(hostServices);
@@ -157,6 +169,8 @@ public class InGameController extends AbstractJavaFxController {
       pcBoardController.setPlayer(player);
       cardHolderLeftController.setPlayer( player );
       cardHolderRightController.setPlayer( player );
+      powerUpHandController.setPlayer( player );
+      weaponHandController.setPlayer( player );
    }
 
     @Override
@@ -177,18 +191,13 @@ public class InGameController extends AbstractJavaFxController {
     }
    
    @Override
-   public void setEnabled(boolean enabled) {
-      mainPane.setDisable( !enabled );
-   }
-   
-   @Override
    public void chatMessage(String message) {
       chatController.showUserMessage( message );
    }
 
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
 
    }
 
@@ -207,11 +216,24 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onPcUpdate(PcEvent event) {
-      pcs.put( event.getDTO().getColour(),event.getDTO() );
+       PcColourEnum color = event.getDTO().getColour();
+       if(!event.isCensored()) {
+         topController.setColour( color );
+         pcBoardController.setPcColour( color );
+         powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[0]));
+         weaponHandController.setCards( event.getDTO().getWeapons() );
+         //mapController.setColor
+      }
+      pcs.put( color,event.getDTO() );
     }
 
     @Override
     public void onSquareUpdate(SquareEvent event) {
       squares.put( event.getDTO(),event.getDTO() );
     }
+   
+   @Override
+   public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+      //TODO
+   }
 }

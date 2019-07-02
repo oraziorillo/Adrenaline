@@ -35,7 +35,10 @@ public abstract class PcEvent implements ModelEvent {
         censoredPcDTO.setPcBoard(pc.getPcBoard());
         return censoredPcDTO;
     }
-
-
+    
+    public boolean isCensored() {
+        return censored;
+    }
+    
     public abstract PcEvent hideSensibleContent();
 }

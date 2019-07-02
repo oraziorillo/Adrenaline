@@ -152,8 +152,9 @@ public class GameBoard {
     }
 
 
-    public GameBoardDTO convertoTo(){
+    public GameBoardDTO convertoTo(int numberOfMap){
         GameBoardDTO gameBoardDTO = new GameBoardDTO();
+        gameBoardDTO.setNumberOfMap(numberOfMap);
         gameBoardDTO.setRows(rows);
         gameBoardDTO.setColumns(columns);
         gameBoardDTO.setSquares(squares.stream().map(Square::convertToDTO).collect(Collectors.toList()));

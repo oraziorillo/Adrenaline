@@ -71,22 +71,23 @@ public class GuiView extends AbstractView implements ModelEventListener {
    }
 
    @Override
-   public void ack(String message) throws RemoteException {
-      runLater( ()->currentGui.printMessage( message ));
+   public void ack(String message) {
+      runLater( ()->currentGui.ack( message ));
    }
 
     @Override
-    public void error(String msg) throws RemoteException {
+    public void error(String msg) {
       currentGui.error(msg);
     }
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
+      currentGui.notifyEvent( event );
    }
 
 
    @Override
-   public void chatMessage(String message) throws RemoteException {
+   public void chatMessage(String message) {
       currentGui.chatMessage( message );
    }
    
@@ -95,8 +96,12 @@ public class GuiView extends AbstractView implements ModelEventListener {
       return currentGui.getListener();
    }
 
-   public void nextState() throws RemoteException {
-      currentGui = currentGui.nextState();
+   public void nextState() {
+      try {
+         currentGui = currentGui.nextState();
+      }catch ( RemoteException e ){
+         throw new IllegalStateException( "Unexpected RemoteException" );
+      }
    }
 
    public void setPlayer(RemotePlayer player) {

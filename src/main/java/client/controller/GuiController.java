@@ -23,7 +23,7 @@ public class GuiController extends Application {
    protected GuiView view;
    protected RemotePlayer player;
 
-   public GuiController() throws RemoteException {
+   public GuiController() {
 
     }
 
@@ -52,34 +52,11 @@ public class GuiController extends Application {
             view.nextState();
            return token;
         }catch ( IOException e ){
-           try {
-               view.error( "Server unreachable" );
-            }catch ( RemoteException ignored ){}
+           view.error( "Server unreachable" );
         }catch ( PlayerAlreadyLoggedInException alreadyLogged ){
-           try {
-              view.error( "This player is already connected on a different machine" );
-           } catch ( RemoteException ignored ) {}
+           view.error( "This player is already connected on a different machine" );
         }
         throw new IllegalStateException( "Authentication failed" );
     }
     
-    private void configGame(Stage stage){
-
-        //TODO: scegli mappa, teschi, colore
-    }
-    
-    private void startGame(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
-        Parent root = loader.load();
-
-        view.setHostServices(getHostServices());
-        view.setPlayer(player);
-    
-        stage.setTitle( "ADRENALINE" );
-        stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );
-        stage.setFullScreenExitKeyCombination(new KeyCodeCombination( KeyCode.ESCAPE ));
-        stage.maximizedProperty().addListener( (observableValue, aBoolean, t1) ->  stage.setFullScreen( t1 ) );
-        stage.setScene( new Scene( root ) );
-        stage.show();
-    }
 }

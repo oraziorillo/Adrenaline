@@ -19,10 +19,11 @@ public class UserAuthState extends ViewState {
    
    @Override
    public void ack(String message) {
+   
    }
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
 
    }
 
@@ -65,4 +66,5 @@ public class UserAuthState extends ViewState {
       return javafxController.wantsToRegister();
    }
    
+   //TODO: ricevi un qualche dto e cambia stato
 }

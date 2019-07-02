@@ -21,4 +21,11 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
    }
+   
+   public void setCards(PowerUpCardDTO[] cards){
+      super.setCards( cards );
+      for(int i=0; i<cards.length;i++){
+         weaponControllers[i].setWeapon( cards[i] );
+      }
+   }
 }

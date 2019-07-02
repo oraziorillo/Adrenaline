@@ -26,9 +26,9 @@
         </columnConstraints>
         <Region GridPane.rowSpan="6"/>
         <Region GridPane.columnIndex="5" GridPane.rowSpan="6"/>
-        <GridPane fx:id="marchi" alignment="BOTTOM_RIGHT" GridPane.columnIndex="3" GridPane.columnSpan="2" styleClass="prova"/>
-        <TilePane alignment="CENTER" fx:id="danni" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4" styleClass="prova"/>
-        <TilePane fx:id="morti" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="2" styleClass="prova"/>
+        <GridPane fx:id="marchi" alignment="BOTTOM_RIGHT" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
+        <TilePane fx:id="danni" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4" alignment="CENTER_LEFT" prefRows="1" />
+        <TilePane fx:id="morti" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="2" alignment="CENTER_LEFT" prefRows="1"/>
     </GridPane>
 
 </StackPane>

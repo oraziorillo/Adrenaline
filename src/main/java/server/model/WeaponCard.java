@@ -73,7 +73,7 @@ public class WeaponCard {
     }
 
     public short[] getAmmo() {
-        return ammo;
+        return ammo.clone();
     }
 
     public AmmoEnum getColour() {

@@ -118,8 +118,15 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
     }
 
     @Override
-    public void chooseTarget(String pcColour) throws IOException {
+    public void chooseTarget(String pcColour)  {
         out.println(CHOOSE_TARGET + REGEX + pcColour);
+        out.flush();
+    }
+
+
+    @Override
+    public void chooseAmmo(String ammoColour) {
+        out.println(CHOOSE_AMMO + REGEX + ammoColour);
         out.flush();
     }
 
@@ -191,7 +198,7 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
 
 
     @Override
-    public void sendMessage(String s) throws IOException {
+    public void sendMessage(String s) {
         //TODO
     }
 }

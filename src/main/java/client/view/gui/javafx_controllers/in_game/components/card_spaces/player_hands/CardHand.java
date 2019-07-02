@@ -7,6 +7,7 @@ import common.remote_interfaces.RemotePlayer;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -16,11 +17,11 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public abstract class CardHand <T extends AbstractCardDTO> {
-   protected HBox mainPane = new HBox(10);
+   @FXML protected HBox mainPane = new HBox(10);
    protected GeneralWeapon[] weaponControllers;
    protected TranslateTransition[] transitions;
    protected final Duration duration = new Duration(300);
-   protected Double hiddenFraction;
+   @FXML protected Double hiddenFraction = .62962963;
    protected AbstractCardDTO[] cards;
    protected RemotePlayer player;
    protected PcColourEnum playerColor;
@@ -85,7 +86,7 @@ public abstract class CardHand <T extends AbstractCardDTO> {
             cards[i] = newCard;
             cardImage.background.setImage( new Image( newCard.getImagePath(), true ) );
             cardImage.background.getImage().heightProperty().addListener( (observableValue, aDouble, t1) -> {
-               mainPane.setTranslateY( t1.doubleValue() * hiddenFraction );
+               mainPane.setTranslateY(t1.doubleValue() * hiddenFraction );
                mainPane.setMaxWidth( (weaponControllers[0].background.getImage().getWidth() * cards.length) + (mainPane.getSpacing() * cards.length - 1) );
             } );
             transitions[i].setNode( cardImage.mainPane );

@@ -13,8 +13,7 @@ import javafx.scene.paint.Color;
 
 
 public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListener<ObjectProperty<PcColourEnum>> {
-   @FXML
-   GridPane grid;
+   @FXML GridPane grid;
    private static final int MAX_AMMOS_PER_COLOR = 3;
    private static final int INITIAL_AMMOS_PER_COLOR = 1;
    private Region[][] ammos = new Region[AmmoEnum.values().length][MAX_AMMOS_PER_COLOR];
@@ -39,11 +38,9 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    }
    
    public void setAmmos(short[] ammos) {
-      for(int color=0;color<AmmoEnum.values().length;color++)
-         for(int i=0;i<MAX_AMMOS_PER_COLOR;i++)
-            this.ammos[color][i].setDisable( i>ammos[color] );
-         
-      
+      for(AmmoEnum color: AmmoEnum.values())
+         for(int i=0; i<MAX_AMMOS_PER_COLOR;i++)
+            this.ammos[color.ordinal()][i].setOpacity( i<ammos[color.ordinal()]?.6:.05 );
    }
    
    @Override

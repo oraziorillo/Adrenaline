@@ -23,6 +23,7 @@ public enum ControllerMethodsEnum {
     CHOOSE_POWER_UP("cpu", "choose a power up"),
     CHOOSE_TARGET("ct", "choose a target for your card"),
     CHOOSE_UPGRADE("up", "choose an upgrade"),
+    CHOOSE_AMMO("ca", "choose an ammo for the targeting scope"),
     CHOOSE_ASYNCHRONOUS_EFFECT_ORDER("async", "choose the order of the selected asynchronous upgrade"),
     CHOOSE_DIRECTION("dir", "choose a direction"),
     OK("ok", "confirm your command"),
@@ -76,6 +77,7 @@ public enum ControllerMethodsEnum {
                         "\t" + CHOOSE_WEAPON_OF_MINE.getCommand() + "\t\t" + CHOOSE_WEAPON_OF_MINE.getDescription() + "\n" +
                         "\t" + SWITCH_FIRE_MODE.getCommand() + "\t\t" + SWITCH_FIRE_MODE.getDescription() + "\n" +
                         "\t" + CHOOSE_TARGET.getCommand() + "\t\t" + CHOOSE_TARGET.getDescription() + "\n" +
+                        "\t" + CHOOSE_AMMO.getCommand() + "\t\t" + CHOOSE_AMMO.getDescription() + "\n" +
                         "\t" + CHOOSE_POWER_UP.getCommand() + "\t\t" + CHOOSE_POWER_UP.getDescription() + "\n" +
                         "\t" + CHOOSE_UPGRADE.getCommand() + "\t\t\t" + CHOOSE_UPGRADE.getDescription() + "\n" +
                         "\t" + CHOOSE_ASYNCHRONOUS_EFFECT_ORDER.getCommand() + "\t\t" + CHOOSE_ASYNCHRONOUS_EFFECT_ORDER.getDescription() + "\n" +

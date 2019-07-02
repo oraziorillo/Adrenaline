@@ -1,8 +1,10 @@
 package server.controller.states;
 
+import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import server.controller.Controller;
 import common.enums.CardinalDirectionEnum;
+import server.controller.Player;
 import server.model.Pc;
 import server.model.WeaponCard;
 
@@ -59,15 +61,17 @@ public abstract class State {
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) { print(); }
 
+    public void selectAmmo(AmmoEnum fromString) { print(); }
+
     public void selectTarget(PcColourEnum pcColour) { print(); }
 
     public void selectDirection(CardinalDirectionEnum direction) { print(); }
 
     public void setHasToRespawn(boolean hasToRespawn) {}
 
-    public void hasBeenAttacked(int playerIndex) {}
+    public void hasBeenAttacked(Player attackedPlayer) {}
 
-    public boolean skipAction() {
+    public boolean skip() {
         return false;
     }
 
@@ -102,5 +106,4 @@ public abstract class State {
             e.printStackTrace();
         }
     }
-
 }
