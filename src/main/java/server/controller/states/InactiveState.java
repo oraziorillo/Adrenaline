@@ -37,11 +37,11 @@ public class InactiveState extends State {
 
 
     @Override
-    public void hasBeenAttacked(int playerIndex){
+    public void hasBeenAttacked(Player attackedPlayer){
         attacked = true;
         attackingPc = controller.getCurrPc();
-        attackedPlayer = controller.getPlayers().get(playerIndex);
-        //TODO mandare messaggio al giocatore per chiedergli se vuole usare il powerUp che applica il marchio
+        this.attackedPlayer = attackedPlayer;
+        //TODO da rivedere
     }
 
     @Override

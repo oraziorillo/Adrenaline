@@ -4,10 +4,18 @@ import java.util.List;
 
 public class GameBoardDTO implements DTO {
 
+    private int numberOfMap;
     private int rows;
     private int columns;
     private List<SquareDTO> squares;
 
+    public int getNumberOfMap() {
+        return numberOfMap;
+    }
+
+    public void setNumberOfMap(int numberOfMap) {
+        this.numberOfMap = numberOfMap;
+    }
 
     public int getRows() {
         return rows;

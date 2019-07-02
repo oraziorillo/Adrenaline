@@ -58,6 +58,9 @@ public interface CommandParser {
                 case CHOOSE_TARGET:
                     player.chooseTarget(args[0]);
                     break;
+                case CHOOSE_AMMO:
+                    player.chooseAmmo(args[0]);
+                    break;
                 case CHOOSE_DIRECTION:
                     player.chooseDirection( Integer.parseInt(args[0]));
                     break;

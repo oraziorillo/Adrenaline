@@ -8,6 +8,7 @@ import server.model.PowerUpCard;
 import server.model.actions.Action;
 import server.model.squares.Square;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Set;
 
@@ -16,12 +17,10 @@ public class UsePowerUpState extends State {
     private boolean undo = false;
     private PowerUpCard currPowerUp;
     private Action currAction;
-    private List<Pc> targetablePcs;
     private Set<Square> targetableSquares;
 
-    UsePowerUpState(Controller controller, List<Pc> targetables) {
+    UsePowerUpState(Controller controller) {
         super(controller);
-        this.targetablePcs = targetables;
     }
 
 
@@ -32,27 +31,31 @@ public class UsePowerUpState extends State {
         try {
             powerUp = controller.getCurrPc().getPowerUpCard(index);
             powerUpAction = powerUp.getAction();
-            if (powerUp.getAction().isParameterized()) {
+            if (powerUpAction.isParameterized() && !powerUpAction.isAdditionalDamage()) {
                 currPowerUp = powerUp;
                 currAction = powerUpAction;
-                if (!currAction.isAdditionalDamage())
-                    setTargetableToValidSquares(controller.getCurrPc());
-                else {
-                    //TODO stampare a video la lista di targetablesPcs
-                }
+                setTargetableToValidSquares(controller.getCurrPc());
             } else {
-                //TODO stampa a video il messaggio non può usare quel power up in quel momento
+                try {
+                    controller.getCurrPlayer().getView().ack("You can't use this powerUp now!");
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        catch (IllegalArgumentException e){
-            //TODO stampa a video un errore poichè ha selezionato un powerUp in una casella vuota
+        catch (IllegalArgumentException ex){
+            try {
+                controller.getCurrPlayer().getView().ack("You have to select a powerUp!");  //TODO meglio
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
-        if(!targetableSquares.isEmpty())
+        if(targetableSquares != null && !targetableSquares.isEmpty())
             controller.getGame().setTargetableSquares(targetableSquares, false);
         targetableSquares = currAction.validSquares(referencePc.getCurrSquare());
         controller.getGame().setTargetableSquares(targetableSquares, true);
@@ -63,11 +66,7 @@ public class UsePowerUpState extends State {
     public void selectTarget(PcColourEnum targetPcColour) {
         Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
         if ( targetPc != null && targetPc.getCurrSquare().isTargetable()){
-            if (currAction.isAdditionalDamage()){
-                if (targetablePcs.contains(targetPc))
-                    currAction.selectPc(targetPc);
-            } else
-                currAction.selectPc(targetPc);
+            currAction.selectPc(targetPc);
         }
     }
 
@@ -92,9 +91,10 @@ public class UsePowerUpState extends State {
     @Override
     public boolean ok() {
         if (currAction.isComplete()) {
+            controller.getGame().setTargetableSquares(targetableSquares, false);
             currPowerUp.useAction(controller.getCurrPc());
+            currAction.resetAction();
             controller.getCurrPc().discardPowerUp(currPowerUp);
-            //TODO bisogna aggiungere il pagamento dell'ammocard nel caso del mirino
             return true;
         }
         return false;

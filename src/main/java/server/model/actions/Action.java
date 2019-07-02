@@ -20,6 +20,7 @@ public abstract class Action {
     @Expose private boolean necessaryForNextAction;
     @Expose private boolean parameterized;
     @Expose private boolean needsOldSquare;    //per il rocket laucher
+    private boolean movement;           //PER IL DEBUG
     @Expose int maxNumberOfTargets;
     @Expose TargetChecker targetChecker;
     Set<Pc> targets;
@@ -72,6 +73,7 @@ public abstract class Action {
         }
     }
 
+    public boolean isMovement(){ return false; }
 
     public boolean isOptional() {
         return optional;

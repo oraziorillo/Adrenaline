@@ -597,7 +597,7 @@
             ],
             "destinationChecker": [
               {
-                "type": "maxDistanceFromVisible",
+                "type": "maxDistance",
                 "maxDistance": 2
               }
             ]
@@ -1455,7 +1455,7 @@
     ],
     "fireModes": [
       {
-        "oriented": true,
+        "oriented": false,
         "beyondWalls": true,
         "asynchronous": false,
         "sameTarget": false,
@@ -1482,7 +1482,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": ""
+                "type": "straightLine"
               }
             ]
           }
