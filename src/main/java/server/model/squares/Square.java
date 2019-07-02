@@ -23,9 +23,9 @@ public abstract class Square {
     @Expose private int row;
     @Expose private int col;
     @Expose private SquareColourEnum colour;
+    @Expose private HashSet<Pc> pcs;
     private boolean targetable;
     private boolean marked;
-    private HashSet<Pc> pcs;
     private HashSet<Square> visibles;
 
 

@@ -21,6 +21,10 @@ public class DamageMarksAction extends Action {
     private TargetChecker orientedTargetChecker;
 
 
+    public DamageMarksAction() {
+        super();
+    }
+
     public DamageMarksAction(JsonObject jsonAction) {
         super(jsonAction);
         this.damage = jsonAction.get("damage").getAsShort();
@@ -37,6 +41,7 @@ public class DamageMarksAction extends Action {
     public boolean isComplete() {
         return !isParameterized() || !targets.isEmpty();
     }
+
 
     @Override
     public boolean isSelfMovement() {

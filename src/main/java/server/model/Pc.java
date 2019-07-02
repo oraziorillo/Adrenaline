@@ -30,7 +30,7 @@ public class Pc {
     @Expose private short adrenaline;
     @Expose private WeaponCard[] weapons;
     @Expose private ArrayList<PowerUpCard> powerUps;
-    @Expose private Square currSquare;
+    private Square currSquare;
 
 
     public Pc(PcColourEnum colour, Game game) {

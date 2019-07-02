@@ -1,9 +1,5 @@
 package server.model.target_checkers;
 
-import server.model.squares.Square;
-
-import java.util.Set;
-
 public abstract class TargetCheckerDecorator implements TargetChecker {
 
     TargetChecker base;
@@ -14,5 +10,22 @@ public abstract class TargetCheckerDecorator implements TargetChecker {
     }
 
 
-    public abstract Set<Square> validSquares(Square referenceSquare);
+    @Override
+    public TargetChecker getbase() {
+        return base;
+    }
+
+
+    @Override
+    public int propertyValue() {
+        return -1;
+    }
+
+
+    @Override
+    public String propertyName() {
+        return null;
+    }
+
+
 }

@@ -9,7 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import server.model.deserializers.GameBoardDeserializer;
+import server.model.deserializers.SquareDeserializer;
+import server.model.squares.Square;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -30,7 +31,7 @@ public class MovementOnMapTest {
         int numberOfMap = 1;
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(GameBoard.class, new GameBoardDeserializer());
+        gsonBuilder.registerTypeAdapter(Square.class, new SquareDeserializer());
         Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
         JsonReader reader = new JsonReader(

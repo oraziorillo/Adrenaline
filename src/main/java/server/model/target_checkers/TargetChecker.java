@@ -7,6 +7,14 @@ public interface TargetChecker {
 
     Set<Square> validSquares(Square referenceSquare);
 
+    TargetChecker getbase();
+
+    int propertyValue();
+
+    String propertyName();
+
+    String type();
+
 }
 
 

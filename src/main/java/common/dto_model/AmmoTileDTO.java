@@ -47,9 +47,9 @@ public class AmmoTileDTO implements DTO {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (AmmoEnum a : AmmoEnum.values())
-            stringBuilder.append("+ ").append(ammo[a.ordinal()]).append(" ").append(a).append("\n");
+            stringBuilder.append("\n").append("+ ").append(ammo[a.ordinal()]).append(" ").append(a);
         if (hasPowerUp)
-            stringBuilder.append("+ 1 Power Up");
+            stringBuilder.append("\n").append("+ 1 Power Up");
         return stringBuilder.toString();
     }
 }

@@ -190,6 +190,7 @@ public class WeaponCard {
         weaponCardDTO.setBasicEffects(fireModes.size());
         weaponCardDTO.setUpgrades(upgrades.size());
         weaponCardDTO.setName(name);
+        weaponCardDTO.setLoaded(loaded);
         return weaponCardDTO;
     }
 }

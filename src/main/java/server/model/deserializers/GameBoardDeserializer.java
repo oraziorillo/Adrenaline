@@ -1,11 +1,12 @@
 package server.model.deserializers;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import server.model.GameBoard;
-import server.model.squares.Square;
+
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class GameBoardDeserializer implements JsonDeserializer<GameBoard> {
 
@@ -13,9 +14,13 @@ public class GameBoardDeserializer implements JsonDeserializer<GameBoard> {
     public GameBoard deserialize(JsonElement jsonGameBoard, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
 
+        /*
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Square.class, new SquareDeserializer());
-        Gson customGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+        Gson customGson = gsonBuilder
+                .registerTypeAdapter(Action.class, new ActionDeserializer())
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
         Type squaresType = new TypeToken<ArrayList<Square>>(){}.getType();
 
@@ -25,5 +30,8 @@ public class GameBoardDeserializer implements JsonDeserializer<GameBoard> {
                 customGson.fromJson(jsonGameBoard.getAsJsonObject().get("squares"), squaresType),
                 customGson.fromJson(jsonGameBoard.getAsJsonObject().get("doors"), int[].class)
         );
+
+         */
+        return null;
     }
 }

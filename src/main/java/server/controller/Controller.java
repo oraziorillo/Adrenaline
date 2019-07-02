@@ -2,6 +2,7 @@ package server.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
@@ -9,18 +10,15 @@ import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
 import server.database.GameInfo;
-import server.model.Game;
-import server.model.GameBoard;
-import server.model.Pc;
-import server.model.WeaponCard;
+import server.model.*;
 import server.model.actions.Action;
-import server.model.deserializers.ActionDeserializer;
-import server.model.deserializers.GameBoardDeserializer;
+import server.model.deserializers.*;
 import server.model.squares.Square;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,31 +50,42 @@ public class Controller{
     }
 
 
-    public void initGame(UUID gameUUID) {
+    void initGame(UUID gameUUID) {
         try {
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+            Type weaponsDeckType = new TypeToken<Deck<WeaponCard>>(){}.getType();
+            Type ammoDeckType = new TypeToken<Deck<AmmoTile>>(){}.getType();
+            Type powerUpDeckType = new TypeToken<Deck<PowerUpCard>>(){}.getType();
             Gson gson = new GsonBuilder()
                     .serializeNulls()
                     .excludeFieldsWithoutExposeAnnotation()
                     .registerTypeAdapter(Action.class, new ActionDeserializer())
-                    .registerTypeAdapter(GameBoard.class, new GameBoardDeserializer())
+                    .registerTypeAdapter(Square.class, new SquareDeserializer())
+                    .registerTypeAdapter(weaponsDeckType, new WeaponsDeckDeserializer())
+                    .registerTypeAdapter(ammoDeckType, new AmmoDeckDeserializer())
+                    .registerTypeAdapter(powerUpDeckType, new PowerUpsDeckDeserializer())
                     .create();
 
             JsonReader reader = new JsonReader(new FileReader(databaseHandler.getGamePath(gameUUID)));
             GameInfo gameInfo = gson.fromJson(reader, GameInfo.class);
 
             game = gameInfo.getGame();
+            game.restore();
             currPlayerIndex = gameInfo.getCurrPlayerIndex();
             lastPlayerIndex = gameInfo.getLastPlayerIndex();
             addListenersToModel();
-            players.forEach(player -> player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken()))));
+            players.forEach(player -> {
+                player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken())));
+                player.setCurrState(new InactiveState(this, 2));
+            });
+            nextTurn();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void initGame(){
+    void initGame(){
         game = Game.getGame();
         addListenersToModel();
         for (Player p: players) {
@@ -110,6 +119,7 @@ public class Controller{
     public UUID getGameUUID() {
         return gameUUID;
     }
+
 
     public boolean isFinalFrenzy() {
         return game.isFinalFrenzy();
@@ -150,9 +160,11 @@ public class Controller{
         return currPlayerIndex;
     }
 
+
     public int getLastPlayerIndex() {
         return lastPlayerIndex;
     }
+
 
     public int getRemainingActions() {
         return remainingActions;
@@ -167,8 +179,6 @@ public class Controller{
     public Set<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
-
-
 
 
     public void setLastPlayerIndex(int index) {
@@ -231,6 +241,7 @@ public class Controller{
         }
     }
 
+
     public void increaseCurrPlayerIndex(){
         if (currPlayerIndex == players.size() - 1)
             currPlayerIndex = 0;
@@ -248,13 +259,5 @@ public class Controller{
     public boolean isNextOnDuty(Player player){
         return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
                 currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
-    }
-
-    public synchronized void saveUpdates() {
-        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-        Gson gson = new GsonBuilder()
-                .serializeNulls()
-                .excludeFieldsWithoutExposeAnnotation()
-                .create();
     }
 }
