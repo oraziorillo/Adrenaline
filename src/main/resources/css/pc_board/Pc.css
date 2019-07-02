@@ -6,7 +6,7 @@ GridPane{
 Button{
     -fx-max-width: infinity;
     -fx-max-height: infinity;
-    -fx-opacity: 0.5;
+    -fx-background-color: transparent;
 }
 
 #morti{
