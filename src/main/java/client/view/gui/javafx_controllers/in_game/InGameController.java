@@ -53,10 +53,10 @@ public class InGameController extends AbstractJavaFxController {
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
    private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>(PcColourEnum.GREEN);
-   private BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
-   private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
-   private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
-   private ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
+   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
+   private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
+   private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
+   private transient ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
    
    public InGameController() throws RemoteException {
    }
@@ -208,10 +208,9 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onPcBoardUpdate(PcBoardEvent event) {
-      PcDTO relatedPc = pcs.get( event.getDTO().getColour() );
+      PcDTO relatedPc = pcs.remove( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );
       pcs.put( relatedPc.getColour(),relatedPc );
-      //TODO: testalo, non sono sicuro che triggheri i listener
     }
 
     @Override
