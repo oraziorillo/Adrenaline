@@ -12,6 +12,7 @@ import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
@@ -116,22 +117,32 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       ammoController.setColour(colour);
    }
    
+   //TODO setta max size dei vari stackpane
+   
    @Override
    public void changed(ObservableValue<? extends KillShotTrackDTO> obs, KillShotTrackDTO oldV, KillShotTrackDTO track) {
-      for(int i=0;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){
-         StackPane circlePane = this.killshotTrackPanes[i];
+      KillShotDTO[] killShotTrack = track.getKillShotTrack();
+      for(int i=0, iOnTrack=Constants.MAX_KILL_SHOT_TRACK_SIZE-killShotTrack.length;iOnTrack<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++,iOnTrack++){
+         StackPane circlePane = this.killshotTrackPanes[iOnTrack];
          circlePane.getChildren().clear();
-         Color color = track.getKillShotTrack()[i].isSkulled()?Color.RED:Color.valueOf( track.getKillShotTrack()[i].getColour().toString() );
-         int circleNumb = track.getKillShotTrack()[i].isOverkilled()?2:1;
+         Color color = killShotTrack[i].isSkulled()?Color.RED:Color.valueOf( killShotTrack[i].getColour().toString() );
+         int circleNumb = (killShotTrack[i].isOverkilled()&&!killShotTrack[i].isSkulled())?2:1;
          for(int j=0;j<circleNumb;j++){
-            Circle added = new Circle( circlePane.getWidth()/2,color );
-            added.setTranslateY( circlePane.getWidth()/4 );
+            Circle added = new Circle( 0,color );
+            added.radiusProperty().bind( Bindings.subtract( Bindings.divide( Bindings.min( circlePane.heightProperty(),circlePane.widthProperty() ),2 ), 1 ));
+            added.setStroke( Color.BLACK );
+            added.setOpacity( killShotTrack[i].isSkulled()?.5:1 );
+            added.translateYProperty().bind( Bindings.multiply( added.radiusProperty(),-.5*j) );
+            circlePane.getChildren().add( added );
+            added.toBack();
          }
       }
       this.frenzyTrackPane.getChildren().clear();
       double circles= Math.ceil( Math.sqrt( track.getFinalFrenzyKillShotTrack().length ) );
+      System.out.println(circles);
       for(KillShotDTO k:track.getFinalFrenzyKillShotTrack()){
-         Circle c = new Circle((Math.min( frenzyTrackPane.getHeight(),frenzyTrackPane.getWidth() )/circles)-1,Color.valueOf( k.getColour().toString() ));
+         Circle c = new Circle(0,Color.valueOf( k.getColour().toString() ));
+         c.radiusProperty().bind( Bindings.subtract( Bindings.divide( Bindings.min( frenzyTrackPane.heightProperty(),frenzyTrackPane.widthProperty() ),2*circles ),1 ) );
          c.setStroke( Color.BLACK );
          this.frenzyTrackPane.getChildren().add( c );
       }
