@@ -15,7 +15,7 @@ public class AmmoTileDTO implements DTO {
     }
 
     public String getImagePath() {
-        StringBuilder pathBuilder = new StringBuilder();
+        StringBuilder pathBuilder = new StringBuilder(DIR);
         if (hasPowerUp) {
             pathBuilder.append("p");
         }
@@ -23,6 +23,7 @@ public class AmmoTileDTO implements DTO {
             AmmoEnum color = AmmoEnum.values()[i];
             pathBuilder.append(color.toString().toLowerCase());
         }
+        pathBuilder.append( EXTENSION );
         return pathBuilder.toString();
     }
 
