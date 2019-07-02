@@ -41,7 +41,7 @@ public abstract class PcEvent implements ModelEvent {
         WeaponCardDTO tmp;
         for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
             tmp = pc.getWeapons()[i];
-            if (tmp != null && !tmp.isLoaded())
+            if (tmp != null && tmp.isLoaded())
                 censoredWeapons[i] = WeaponCardDTO.getCardBack();
             else
                 censoredWeapons[i] = tmp;
