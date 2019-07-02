@@ -1,7 +1,6 @@
 package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.in_game.components.Map;
-import common.Constants;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
