@@ -58,6 +58,7 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    };
    
    public void initialize(){
+      //Init killshottrack
       ImageView skullImage = new ImageView( new Image( "/images/teschio_0.png",0, KILLSHOT_HEIGHT,true, false) );
       StackPane circlePane = killshotTrackPanes[0] = new StackPane( );
       StackPane skullPane = new StackPane( skullImage,circlePane );
@@ -79,10 +80,10 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       skullImage = new ImageView(new Image( "/images/killshot_box.png",0, KILLSHOT_HEIGHT,true,false ) );
       frenzyTrackPane = new FlowPane();
       frenzyTrackPane.setMaxSize( skullImage.getImage().getWidth(),skullImage.getImage().getHeight() );
-      
       skullImage.setPreserveRatio( true );
       skullPane = new StackPane( skullImage, frenzyTrackPane );
       killShotTrack.getChildren().add( skullPane );
+      //card holders
       cardHolderController.setCorner( CardinalDirectionEnum.NORTH );
       cardHolderController.setColor( AmmoEnum.BLUE );
    }
@@ -110,14 +111,13 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    public void setPlayer(RemotePlayer player) {
       this.player = player;
       cardHolderController.setPlayer( player );
+      ammoController.setPlayer(player);
    }
    
    public void setColour(PcColourEnum colour){
       settedColour = colour;
       ammoController.setColour(colour);
    }
-   
-   //TODO setta max size dei vari stackpane
    
    @Override
    public void changed(ObservableValue<? extends KillShotTrackDTO> obs, KillShotTrackDTO oldV, KillShotTrackDTO track) {

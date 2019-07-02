@@ -35,7 +35,6 @@ public class GeneralWeapon {
          for (effect = 0; effect < weapon.getBasicEffects(); effect++) {
             int e = effect;
             Button effectButton = new Button();
-            effectButton.setText( "effect " + effect );
             effectButton.setBackground( null ); //transparent
             effectButton.setMaxHeight( Double.MAX_VALUE );  //can grow without limits
             effectButton.setMaxWidth( Double.MAX_VALUE );

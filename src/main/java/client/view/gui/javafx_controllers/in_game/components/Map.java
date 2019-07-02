@@ -73,7 +73,9 @@ public class Map {
          PcColourEnum colour = change.getValueAdded().getColour();   //Get changing pc's color
          Pane square = squares[change.getValueAdded().getSquareRow()][change.getValueAdded().getSquareCol()];   //get new square
          Circle circle = pcCircles.getOrDefault( colour,new Circle(0,Color.valueOf( colour.toString() )) ); //get pc circle
+         Pane oldSquare = (Pane)circle.getParent();
          pcCircles.put( colour,circle );
+         if(oldSquare!=null) oldSquare.getChildren().remove( circle );
          //bind radius to payers number for every circle
          NumberBinding radius = Bindings.subtract( Bindings.divide(Bindings.min( square.widthProperty(),square.heightProperty()),Bindings.multiply( 2,innerGridSize )),1);
          for(ImageView[] array:ammos){
@@ -100,8 +102,6 @@ public class Map {
             c.radiusProperty().bind( radius );
          }
          circle.setVisible( true );
-      }else{
-         throw new IllegalArgumentException( "Squares shouldn't be removed" );
       }
    };
    
