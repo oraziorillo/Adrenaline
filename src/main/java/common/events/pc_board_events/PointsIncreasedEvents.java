@@ -31,7 +31,7 @@ public class PointsIncreasedEvents extends PcBoardEvent {
 
 
     @Override
-    public PcBoardEvent switchToPrivate() {
+    public PcBoardEvent censor() {
         return new PointsIncreasedEvents(pcBoard, earnedPoints, true);
     }
 }

@@ -30,7 +30,7 @@ public class TargetableSetEvent extends SquareEvent {
 
 
     @Override
-    public SquareEvent switchToPrivate() {
+    public SquareEvent censor() {
         return new TargetableSetEvent(square, true);
     }
 }

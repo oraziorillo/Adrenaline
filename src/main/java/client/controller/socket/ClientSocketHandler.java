@@ -8,6 +8,8 @@ import common.enums.ViewMethodsEnum;
 import common.events.ModelEvent;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.lobby_events.LobbyEvent;
+import common.events.lobby_events.PlayerJoinedEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
@@ -79,6 +81,11 @@ public class ClientSocketHandler implements Runnable {
                     error.append(s).append(System.lineSeparator());
                 }
                 view.error(error.toString());
+                break;
+            case NOTIFY_EVENT:
+                LobbyEvent lobbyEvent = gson.fromJson(
+                        new JsonReader(new StringReader(args[1])), PlayerJoinedEvent.class);
+                view.notifyEvent(lobbyEvent);
                 break;
             case ON_GAME_BOARD_UPDATE:
                 GameBoardEvent gameBoardEvent = gson.fromJson(

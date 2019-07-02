@@ -14,6 +14,7 @@ import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
@@ -205,8 +206,13 @@ public class InGameState extends ViewState {
    public void chatMessage(String message) throws RemoteException {
       chatController.showUserMessage( message );
    }
-   
-    @Override
+
+   @Override
+   public void notifyEvent(LobbyEvent event) throws RemoteException {
+
+   }
+
+   @Override
     public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
       killShotTrackData.set( event.getDTO() );
     }

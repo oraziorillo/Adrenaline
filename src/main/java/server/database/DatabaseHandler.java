@@ -8,6 +8,10 @@ import common.enums.PcColourEnum;
 import server.controller.Controller;
 import server.controller.Lobby;
 import server.controller.Player;
+import server.model.GameBoard;
+import server.model.actions.Action;
+import server.model.deserializers.ActionDeserializer;
+import server.model.deserializers.GameBoardDeserializer;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -31,6 +35,8 @@ public class DatabaseHandler {
     private Gson gson = new GsonBuilder()
             .serializeNulls()
             .excludeFieldsWithoutExposeAnnotation()
+            .registerTypeAdapter(Action.class, new ActionDeserializer())
+            .registerTypeAdapter(GameBoard.class, new GameBoardDeserializer())
             .create();
 
 
@@ -144,6 +150,11 @@ public class DatabaseHandler {
     }
 
 
+    public String getGamePath(UUID gameUUID) {
+        return gamePathByUUID.get(gameUUID);
+    }
+
+
     public synchronized boolean containsGame(UUID gameUUID) {
         return gamePathByUUID.containsKey(gameUUID);
     }
@@ -181,21 +192,22 @@ public class DatabaseHandler {
     }
 
 
-    public synchronized void saveUpdates(Controller controller) {
+    public synchronized void save(Controller controller) {
         UUID gameUUID = controller.getGameUUID();
+        List<Player> players = controller.getPlayers();
         if (!gamePathByUUID.containsKey(gameUUID)) {
-            //if the starting game is a new one, then add to the db the corresponding data
-            //TODO scrivere il file con le informazioni del game
             String filePath = generateFilePath(gameUUID);
             gamePathByUUID.put(gameUUID, filePath);
-            controller.getPlayers().forEach(p -> {
-                playerInfoByToken.get(p.getToken()).setIncompleteGameID(gameUUID);
-            });
+            players.forEach(p -> playerInfoByToken.get(p.getToken()).setIncompleteGameID(gameUUID));
         }
-        GameInfo gameInfo = new GameInfo(controller.getPlayers());
+        GameInfo gameInfo = new GameInfo(
+                players
+                .stream()
+                .map(Player::getToken)
+                .collect(Collectors.toList()));
         gameInfo.gameStarted();
-        gameInfo.setCurrPlayerIndex(0);
-        gameInfo.setLastPlayerIndex(-1);
+        gameInfo.setCurrPlayerIndex(controller.getCurrPlayerIndex());
+        gameInfo.setLastPlayerIndex(controller.getLastPlayerIndex());
         gameInfo.setGame(controller.getGame());
         overWrite(gameInfo, gameUUID);
         overwrite(GAME_PATH_BY_UUID);
@@ -203,12 +215,8 @@ public class DatabaseHandler {
     }
 
 
-    public synchronized void save(Controller controller) {
-        UUID gameUUID = controller.getGameUUID();
-    }
-
-
     public synchronized void gameEnded(Controller controller) {
+        //Todo da rivedere e usare
         List<UUID> playersInGame = controller.getPlayers().stream().map(Player::getToken).collect(Collectors.toList());
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded());
         File gameFile = new File(generateFilePath(controller.getGameUUID()));

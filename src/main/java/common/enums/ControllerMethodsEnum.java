@@ -66,7 +66,7 @@ public enum ControllerMethodsEnum {
         return ">>> Available commands:\n" +
                         "\t" + CHOOSE_MAP.getCommand()+ "\t\t"+ CHOOSE_MAP.getDescription() + "\n" +
                         "\t" + CHOOSE_NUMBER_OF_SKULLS.getCommand() + "\t\t" + CHOOSE_NUMBER_OF_SKULLS.getDescription() + "\n" +
-                        "\t" + CHOOSE_PC_COLOUR.getCommand() + "\t\t" + CHOOSE_NUMBER_OF_SKULLS.getDescription() + "\n" +
+                        "\t" + CHOOSE_PC_COLOUR.getCommand() + "\t\t" + CHOOSE_PC_COLOUR.getDescription() + "\n" +
                         "\t" + SHOW_COMMENT.getCommand() + "\t\t" + SHOW_COMMENT.getDescription() + "\n" +
                         "\t" + RUN_AROUND.getCommand() + "\t\t" + RUN_AROUND.getDescription() + "\n" +
                         "\t" + GRAB_STUFF.getCommand() + "\t\t" + GRAB_STUFF.getDescription() + "\n" +

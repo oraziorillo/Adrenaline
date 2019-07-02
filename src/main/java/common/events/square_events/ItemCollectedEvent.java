@@ -42,7 +42,7 @@ public class ItemCollectedEvent extends SquareEvent {
 
 
     @Override
-    public SquareEvent switchToPrivate() {
+    public SquareEvent censor() {
         return new ItemCollectedEvent(pcColour, square, item, true);
     }
 }
