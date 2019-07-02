@@ -2,7 +2,6 @@ package server.controller;
 
 import com.google.gson.annotations.Expose;
 import common.dto_model.LobbyDTO;
-import common.events.lobby_events.GameStartedEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.lobby_events.PlayerJoinedEvent;
 import common.remote_interfaces.RemoteView;
@@ -101,7 +100,6 @@ public class Lobby {
     private void startNewGame() {
         timer.stop();
         controller = new Controller(gameUUID, players);
-        publishEvent( new GameStartedEvent(new LobbyDTO( players,true,false )),players.get( 0 ) );
         if (databaseHandler.containsGame(gameUUID)) {
             controller.initGame(gameUUID);
         } else {
