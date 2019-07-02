@@ -50,8 +50,7 @@ public class SetupState extends ViewState {
             topView.nextState();
             try {
                topView.onGameBoardUpdate( mapSelection );
-            } catch ( RemoteException ignored ) {
-            }
+            } catch ( RemoteException ignored ) {}
          }
       } );
       beforeMyTurn.addListener( javafxController );
@@ -78,7 +77,6 @@ public class SetupState extends ViewState {
       javafxController.onPcUpdate( event );
       stillChoosing.set( stillChoosing.get()-1 );
       beforeMyTurn.set( beforeMyTurn.get()-1 );
-      
    }
    
    @Override
@@ -98,7 +96,7 @@ public class SetupState extends ViewState {
 
    @Override
    public void notifyEvent(LobbyEvent event) {
-      if(beforeMyTurn.get()==Double.NEGATIVE_INFINITY){
+      if(beforeMyTurn.get()==Double.NEGATIVE_INFINITY ){//TODO: &&lobbyDTO.isSetup()
          beforeMyTurn.set((double)(event.getDTO().size()-1));
       }
       stillChoosing.set(event.getDTO().size());

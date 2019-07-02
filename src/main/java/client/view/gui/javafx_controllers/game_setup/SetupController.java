@@ -63,18 +63,18 @@ public class SetupController extends AbstractJavaFxController {
       skullImage.setPreserveRatio( true );
       skullTrack.getChildren().add( new StackPane( skullImage, circle) );
       reactiveSkulls.add( skullImage );
-      for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){
+      for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE-1;i++){
          int skullIndex = i+1;
          skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_i.png", Top.KILLSHOT_HEIGHT ));
          circle = circles[i] = new Circle( skullImage.getImage().getWidth()/2,Color.RED );
          circle.setStroke( Color.BLACK );
          circle.setOpacity( .5 );
          if(i>=Constants.MIN_KILL_SHOT_TRACK_SIZE) {
-            skullImage.setOnMouseClicked( e -> chooseSkulls( skullIndex ) );
+            skullImage.setOnMouseClicked( e -> chooseSkulls( skullIndex ) );   //skullindex refers to array inded, choose skull refers to skull number
             skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( skullIndex ) );
+            reactiveSkulls.add( skullImage );
             circle.setVisible( false );
          }
-         reactiveSkulls.add( skullImage );
          skullImage.setPreserveRatio( true );
          skullTrack.getChildren().add( new StackPane( skullImage, circle) );
       }
@@ -214,8 +214,7 @@ public class SetupController extends AbstractJavaFxController {
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       int l=event.getDTO().getKillShotTrack().length;
       disableSkullsSelection(  );
-      for(int i=0;i<circles.length;i++)
-         circles[i].setVisible( i<l );
+      showCirclesBeforeIndex( l );
    }
    
    @Override
