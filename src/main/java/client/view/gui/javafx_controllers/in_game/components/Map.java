@@ -17,6 +17,7 @@ import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -28,7 +29,7 @@ import java.io.IOException;
 import java.util.EnumMap;
 
 
-public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
+public class Map {
    @FXML
    GridPane grid;
    private RemotePlayer player;
@@ -110,6 +111,9 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
       }
       if(change.wasAdded()){
          SquareDTO newSquare = change.getValueAdded();
+         stackPanes[newSquare.getRow()][newSquare.getCol()].setEffect(
+                 newSquare.isTargetable()?new DropShadow( 10,0,0,Color.LIGHTGREEN ):null
+         );
          ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
          if(change.getValueAdded().getAmmoTile()!=null) {
             AmmoTileDTO ammoTileDTO = change.getValueAdded().getAmmoTile();
@@ -119,28 +123,6 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
          }
       }
    };
-   
-   @Override
-   public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
-      if(change.wasRemoved()&&!change.wasAdded()){
-         throw new IllegalStateException( "Squares shouldn't be just removed, they should be modified or added" );
-      }
-      if(change.wasAdded()){
-         updateAmmos( change.getValueAdded() );
-         
-      }
-   }
-   
-   private void updateAmmos(SquareDTO newSquare){
-      ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
-      if (newSquare.getAmmoTile() == null) {
-         currAmmo.setImage( new Image( AmmoTileDTO.getEmptyPath() ) );
-      } else {
-         AmmoTileDTO ammoTileDTO = newSquare.getAmmoTile();
-         currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
-      }
-   }
-   
    
    public void initialize() {
       //force columns to stay same sized
@@ -255,7 +237,4 @@ public class Map implements MapChangeListener<SquareDTO,SquareDTO>{
    public void setPlayer(RemotePlayer player) {
       this.player = player;
    }
-   
-   
-   
 }

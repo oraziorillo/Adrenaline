@@ -51,7 +51,7 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    public final MapChangeListener<SquareDTO,SquareDTO> squareListener = c->cardHolderController.onChanged( c );
    public final MapChangeListener<PcColourEnum, PcDTO> pcListener = change -> {
       ammoController.onChanged( change );
-      if(change.wasAdded() && change.getValueAdded().getColour().equals( settedColour )){
+      if(change.wasAdded() && settedColour.equals( change.getValueAdded().getColour() )){
          punti.setText( Short.toString( change.getValueAdded().getPcBoard().getPoints()) );
       }
    };
@@ -77,6 +77,8 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       //Final frenzy box
       skullImage = new ImageView(new Image( "/images/killshot_box.png",0, KILLSHOT_HEIGHT,true,false ) );
       frenzyTrackPane = new FlowPane();
+      frenzyTrackPane.setMaxSize( skullImage.getImage().getWidth(),skullImage.getImage().getHeight() );
+      
       skullImage.setPreserveRatio( true );
       skullPane = new StackPane( skullImage, frenzyTrackPane );
       killShotTrack.getChildren().add( skullPane );
@@ -130,6 +132,7 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       double circles= Math.ceil( Math.sqrt( track.getFinalFrenzyKillShotTrack().length ) );
       for(KillShotDTO k:track.getFinalFrenzyKillShotTrack()){
          Circle c = new Circle((Math.min( frenzyTrackPane.getHeight(),frenzyTrackPane.getWidth() )/circles)-1,Color.valueOf( k.getColour().toString() ));
+         c.setStroke( Color.BLACK );
          this.frenzyTrackPane.getChildren().add( c );
       }
       
