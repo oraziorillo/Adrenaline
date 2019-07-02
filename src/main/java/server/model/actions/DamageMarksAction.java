@@ -42,6 +42,7 @@ public class DamageMarksAction extends Action {
         return !isParameterized() || !targets.isEmpty();
     }
 
+
     @Override
     public boolean isSelfMovement() {
         return false;

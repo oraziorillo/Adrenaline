@@ -15,8 +15,6 @@ public class SquareDTO implements DTO {
     private AmmoTileDTO ammoTile;
     private WeaponCardDTO[] weapons;
 
-
-
     public WeaponCardDTO[] getWeapons() {
         return weapons;
     }
@@ -24,7 +22,6 @@ public class SquareDTO implements DTO {
     public void setWeapons(WeaponCardDTO[] weapons) {
         this.weapons = weapons;
     }
-
 
     public AmmoTileDTO getAmmoTile() {
         return ammoTile;
@@ -73,7 +70,7 @@ public class SquareDTO implements DTO {
     public void setPcs(Set<PcColourEnum> pcs) {
         this.pcs = pcs;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof  SquareDTO){
@@ -83,9 +80,19 @@ public class SquareDTO implements DTO {
             return false;
         }
     }
-
     @Override
     public String toString() {
         return "(" + row + "," + col + ")";
+    }
+
+    public String description(){
+        StringBuilder description = new StringBuilder(ammoTile == null ? "SpawnPoint " : "AmmoSquare ");
+        description.append("(").append(row).append(",").append(col).append(")");
+        if (ammoTile == null)
+            for (WeaponCardDTO w : weapons)
+                description.append("\n").append(w.getName());
+        else
+            description.append(ammoTile.toString());
+        return description.toString();
     }
 }

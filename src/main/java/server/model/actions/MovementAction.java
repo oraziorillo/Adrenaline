@@ -9,18 +9,20 @@ import server.model.squares.Square;
 import server.model.target_checkers.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class MovementAction extends Action {
 
     @Expose private boolean selfMovement;
-    @Expose private boolean linkedChecker;          //per il tractor beam
+    @Expose private boolean linkedChecker;
     @Expose private TargetChecker destinationChecker;
 
 
     public MovementAction() {
         super();
     }
+
 
     public MovementAction(JsonObject jsonAction) {
         super(jsonAction);
@@ -47,15 +49,12 @@ public class MovementAction extends Action {
         }
     }
 
-    @Override
-    public boolean isMovement() {
-        return true;
-    }
 
     @Override
     public boolean isSelfMovement() {
         return selfMovement;
     }
+
 
     @Override
     public void selectPc(Pc targetPc) {
