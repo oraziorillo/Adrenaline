@@ -2,6 +2,7 @@ package server.controller;
 
 import com.google.gson.annotations.Expose;
 import common.dto_model.LobbyDTO;
+import common.events.lobby_events.GameStartedEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.lobby_events.PlayerJoinedEvent;
 import common.remote_interfaces.RemoteView;
@@ -74,7 +75,7 @@ public class Lobby {
      */
     void addPlayer(Player player) {
         players.add(player);
-        publishEvent(new PlayerJoinedEvent(new LobbyDTO(players)), player);
+        publishEvent(new PlayerJoinedEvent(new LobbyDTO(players, false, false )), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
             ack("The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes", null);
@@ -100,6 +101,7 @@ public class Lobby {
     private void startNewGame() {
         timer.stop();
         controller = new Controller(gameUUID, players);
+        publishEvent( new GameStartedEvent(new LobbyDTO( players,true,false )),players.get( 0 ) );
         if (databaseHandler.containsGame(gameUUID)) {
             controller.initGame(gameUUID);
         } else {
