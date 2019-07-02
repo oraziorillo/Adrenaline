@@ -1,7 +1,7 @@
 package client.view.gui;
 
 import client.view.AbstractView;
-import client.view.gui.javafx_controllers.in_game.view_states.ViewState;
+import client.view.gui.view_states.ViewState;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
@@ -13,19 +13,27 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import static javafx.application.Platform.runLater;
 
 public class GuiView extends AbstractView implements ModelEventListener {
 
-   private transient ViewState currentGui = ViewState.getFirstState();
+   private transient ViewState currentGui;
    protected transient RemotePlayer player;
    protected transient HostServices hostServices;
+   private transient List<String> acks = new ArrayList<>();
 
 
-   public GuiView() throws RemoteException {
+   public GuiView(HostServices hostServices, Stage stage) throws RemoteException {
       super();
+      this.hostServices = hostServices;
+      currentGui = ViewState.getFirstState(hostServices,stage,acks,this );
    }
 
 
@@ -64,7 +72,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void ack(String message) throws RemoteException {
-      currentGui.ack( message );
+      runLater( ()->currentGui.printMessage( message ));
    }
 
     @Override
@@ -87,10 +95,8 @@ public class GuiView extends AbstractView implements ModelEventListener {
       return currentGui.getListener();
    }
 
-   private void nextState() throws RemoteException {
+   public void nextState() throws RemoteException {
       currentGui = currentGui.nextState();
-      currentGui.setPlayer( player );
-      currentGui.setHostServices( hostServices );
    }
 
    public void setPlayer(RemotePlayer player) {

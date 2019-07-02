@@ -12,7 +12,7 @@ public class CliInputReader implements InputReader {
     private final Scanner in;
 
     CliInputReader() {
-        this.in = new Scanner(System.in);;
+        this.in = new Scanner(System.in);
     }
 
     /**

@@ -40,7 +40,6 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
       morti.prefTileWidthProperty().bind( Bindings.subtract( Bindings.divide( morti.widthProperty(),Constants.PC_VALUES.length ),1 ) );
       morti.setAlignment( Pos.CENTER );
       morti.setTileAlignment( Pos.CENTER );
-      test();
    }
    
    public void setColor(PcColourEnum color){
@@ -141,12 +140,10 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    @Override
    public void changed(ObservableValue<? extends KillShotTrackDTO> obs, KillShotTrackDTO oldV, KillShotTrackDTO newV) {
       if (oldV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE].isSkulled() &&   //final frenzy wasn't on
-              !newV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE].isSkulled()) {  //final frenzy is on now
-         if(danni.getChildren().isEmpty()){   //non ho danni
-            background.setImage( new Image( PcBoard.DIRECTORY+settedColor.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"vita.png",0,
-                    PcBoard.HEIGHT,true,false ) );
+     !newV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE].isSkulled() &&  //final frenzy is on now
+      danni.getChildren().isEmpty()){   //non ho danni
+            background.setImage( new Image( PcBoard.DIRECTORY+settedColor.getName().toLowerCase()+PcBoard.FRENZY_SUBDIR+"vita.png",0, PcBoard.HEIGHT,true,false ) );
             updateKills( 0 ); //if life is swapped, kill count is set to 0
-         }
       }
    }
 }

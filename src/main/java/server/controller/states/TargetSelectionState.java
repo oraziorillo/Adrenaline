@@ -44,18 +44,24 @@ public class TargetSelectionState extends State {
     }
 
 
-    private void nextAction(){
+    private boolean nextAction(){
         if(actionIndex == currEffect.getActions().size() -1){
-            nextEffect();
+            effectIndex++;
+            actionIndex = 0;
+            executeEffect();
+            currEffect = effectsToApply.get(effectIndex);
         } else {
             actionIndex++;
-            currAction = currEffect.getActionAtIndex(actionIndex);
-            setAction();
         }
+        currAction = currEffect.getActionAtIndex(actionIndex);
+        setAction();
+        if (!currAction.isParameterized() && !hasNextAction())
+            return true;
+        return false;
     }
 
 
-    private void nextEffect() {
+    private void executeEffect() {
         controller.getCurrPc().payAmmo(currEffect.getCost());
 
         LinkedList<Pc> justShotPc = new LinkedList<>(currEffect.execute(controller.getCurrPc()));
@@ -64,7 +70,7 @@ public class TargetSelectionState extends State {
             for (Pc pc: justShotPc) {
                 players.forEach(player -> {
                     if (player.getPc() == pc){
-                        player.setAttacked(players.indexOf(pc));
+                        player.setAttacked(players.indexOf(controller.getCurrPlayer()));
                         //TODO qui dovremmo notificare tutti i player attaccati per il powerUp
                     }
                 });
@@ -77,12 +83,6 @@ public class TargetSelectionState extends State {
                     shotTargets.add(pc);
             }
         }
-        effectIndex++;
-        actionIndex = 0;
-        currEffect = effectsToApply.get(effectIndex);
-        currAction = currEffect.getActionAtIndex(actionIndex);
-
-        setAction();
     }
 
 
@@ -100,7 +100,6 @@ public class TargetSelectionState extends State {
             }
             else
                 currAction.selectSquare(controller.getCurrPc().getCurrSquare());    //tractor beam  e electroscyte
-            ok();   //qui bisogna aggiungere un nextState??
             return;
         }
         if (controller.getCurrWeapon().isChained()) {
@@ -139,7 +138,7 @@ public class TargetSelectionState extends State {
             if (currAction.isOptional())
                 skipAction();
             else
-                nextEffect();       //da rivedere
+                executeEffect();       //da rivedere
         } else
             controller.getCurrPlayer().setCurrState(nextState());
             //TODO display the list of valid Targets
@@ -214,6 +213,7 @@ public class TargetSelectionState extends State {
                         currAction.selectPc(targetPc);
                     }
                 } else {
+
                     currAction.selectPc(targetPc);
                 }
             }
@@ -239,7 +239,7 @@ public class TargetSelectionState extends State {
                 if (effectIndex == effectsToApply.size() - 1)
                     return true;
                 else
-                    nextEffect();
+                    executeEffect();
                 return false;
             }
             if (!hasNextAction()) {
@@ -268,11 +268,9 @@ public class TargetSelectionState extends State {
             return false;
         if (currAction.isComplete()) {
             if (hasNextAction()) {
-                nextAction();
-                return false;
+                return nextAction();
             } else {
-                controller.getCurrPc().payAmmo(currEffect.getCost());
-                currEffect.execute(controller.getCurrPc());
+                executeEffect();
                 controller.getCurrWeapon().reset();
                 controller.getGame().setTargetableSquares(targetableSquares, false);
                 setDeadPlayers();
@@ -285,10 +283,12 @@ public class TargetSelectionState extends State {
 
     @Override
     public State nextState() {
-        controller.setCurrWeapon(null);
-        if (undo)
+        if (undo) {
+            controller.setCurrWeapon(null);
             return new StartTurnState(controller);
+        }
         controller.getCurrWeapon().setLoaded(false);
+        controller.setCurrWeapon(null);
         controller.decreaseRemainingActions();
         for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
             if (p.getAction().isAdditionalDamage() &&

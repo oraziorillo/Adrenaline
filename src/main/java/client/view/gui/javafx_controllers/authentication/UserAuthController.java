@@ -1,13 +1,11 @@
-package client.view.gui.javafx_controllers.in_game.view_states;
+package client.view.gui.javafx_controllers.authentication;
 
 import client.controller.socket.LoginControllerSocketProxy;
+import client.view.gui.GuiView;
+import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
-import common.events.game_board_events.GameBoardEvent;
-import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
-import common.events.pc_board_events.PcBoardEvent;
-import common.events.pc_events.PcEvent;
-import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.scene.control.*;
 
@@ -17,45 +15,58 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
-import static javafx.application.Platform.runLater;
-
-public class UserAuthState extends ViewState {
-
-
-   public UserAuthState(String... previousAcks) throws RemoteException {
-      super(previousAcks);
+public class UserAuthController extends AbstractJavaFxController {
+   private HashSet<Alert> alerts = new HashSet<>();
+   private GuiView view;
+   
+   public UserAuthController() throws RemoteException {
    }
-
-
-   /**
-    * Builds an alert containing the ack and shows it
-    * @param message the message of the ack
-    */
+   
+   public void setView(GuiView view) {
+      this.view = view;
+   }
+   
    @Override
-   public synchronized void ack(String message) {
-      runLater( () -> {
-         Alert infos = new Alert( Alert.AlertType.INFORMATION );
-         infos.setTitle( "infos" );
-         infos.setHeaderText( null );
-         infos.setContentText( "The king of the arena says:" );
-         infos.setResizable( true );
-         TextArea messageArea = new TextArea(message);
-         messageArea.setWrapText( true );
-         messageArea.setEditable( false );
-         infos.getDialogPane().setExpandableContent( messageArea );
-         infos.getDialogPane().setExpanded( true );
-         infos.show();
-      } );
+   public void ack(String message) throws RemoteException {
+//      Alert infos = new Alert( Alert.AlertType.INFORMATION );
+//      infos.setTitle( "infos" );
+//      infos.setHeaderText( null );
+//      infos.setContentText( "The king of the arena says:" );
+//      infos.setResizable( true );
+//      TextArea messageArea = new TextArea(message);
+//      messageArea.setWrapText( true );
+//      messageArea.setEditable( false );
+//      infos.getDialogPane().setExpandableContent( messageArea );
+//      infos.getDialogPane().setExpanded( true );
+//      infos.setOnCloseRequest( e->alerts.remove( infos ) );
+//      infos.show();
+      
    }
+
 
    @Override
    public void notifyEvent(LobbyEvent event) throws RemoteException {
 
    }
-
+   
+   @Override
+   public void chatMessage(String message) throws RemoteException {
+      throw new IllegalStateException( "Can't write in chat" );
+   }
+   
+   @Override
+   public ModelEventListener getListener() throws RemoteException {
+      return this;
+   }
+   
+   @Override
+   public void setEnabled(boolean enabled) {
+      //Actually meaningless
+   }
 
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
@@ -64,31 +75,31 @@ public class UserAuthState extends ViewState {
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");
       Optional<ButtonType> response = rmiOrSocket.showAndWait();
+      System.out.println(response.get().getText());
       return ConnectionMethodEnum.parseString(response.get().getText().toLowerCase());
    }
-
-
+   
+   
    @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       try {
          switch (cme) {
             case RMI:
                Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
-               return (RemoteLoginController) registry.lookup("LoginController");
+               return ( RemoteLoginController ) registry.lookup("LoginController");
             case SOCKET:
             default:
-               /*
-               RemoteLoginController loginController =
-               Thread thread = new Thread(new Task<>() {
-                  @Override
-                  protected Object call() throws Exception {
-                     handler.run();
-                     return null;
-                  }
-               }, "SocketHandler");
-               thread.start();
-                */
-                return new LoginControllerSocketProxy(new Socket(HOST, SOCKET_PORT), this);
+//               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
+//               Thread thread = new Thread(new Task<>() {
+//                  @Override
+//                  protected Object call() throws Exception {
+//                     handler.run();
+//                     return null;
+//                  }
+//               }, "SocketHandler");
+//               thread.start();
+//               return handler;
+               return new LoginControllerSocketProxy( new Socket( HOST,SOCKET_PORT ),topView );
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");
@@ -96,8 +107,8 @@ public class UserAuthState extends ViewState {
          return null;    //This line won't be executed, but is needed to avoid variable initialization error on return
       }
    }
-
-
+   
+   
    @Override
    public boolean wantsToRegister() {
       Alert firstTime = new Alert(
@@ -108,7 +119,7 @@ public class UserAuthState extends ViewState {
       );
       return firstTime.showAndWait().get().getButtonData().equals(ButtonBar.ButtonData.YES);
    }
-
+   
    @Override
    public String acquireUsername() {
       TextInputDialog usernameDialog = new TextInputDialog();
@@ -136,41 +147,11 @@ public class UserAuthState extends ViewState {
       });
       return UUID.fromString(tokenDialog.showAndWait().get());
    }
-
+   
    @Override
    public String requestString(String message) {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
-   }
-
-   @Override
-   public ViewState nextState() throws RemoteException {
-      return new InGameState();
-   }
-
-   @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onPcUpdate(PcEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void onSquareUpdate(SquareEvent event) throws RemoteException {
-
    }
 }

@@ -15,6 +15,7 @@ public class GuiExceptionHandler implements Thread.UncaughtExceptionHandler {
    
    @Override
    public void uncaughtException(Thread thread, Throwable throwable) {
+      throwable.printStackTrace();
       Alert errorAlert = new Alert(Alert.AlertType.ERROR);
       errorAlert.setTitle("ERROR");
       errorAlert.setContentText(throwable.getMessage());

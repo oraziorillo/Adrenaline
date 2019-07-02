@@ -1,6 +1,5 @@
 package client.controller;
 
-import client.view.AbstractView;
 import client.view.gui.GuiExceptionHandler;
 import client.view.gui.GuiView;
 import common.remote_interfaces.RemoteLoginController;
@@ -21,7 +20,7 @@ import java.util.UUID;
 public class GuiController extends Application {
 
    RemoteLoginController loginController;
-   protected AbstractView view = new GuiView();
+   protected GuiView view;
    protected RemotePlayer player;
 
    public GuiController() throws RemoteException {
@@ -32,31 +31,36 @@ public class GuiController extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
-        authUser( stage );
-        configGame( stage );
-        startGame( stage );
+        view = new GuiView( getHostServices(),stage );
+        UUID token = authUser( stage );
+        loginController.joinLobby( token );
     }
     
-    private void authUser(Stage stage){
+    private UUID authUser(Stage stage){
         try {
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             UUID token;
             if (view.wantsToRegister()) {
                 String username = view.acquireUsername();
                 token = loginController.register( username, view );
+                view.ack( "This is your token"+System.lineSeparator()+token );
             } else {
                 token = view.acquireToken();
             }
             player = loginController.login( token, view );
+            view.setPlayer( player );
+            view.nextState();
+           return token;
         }catch ( IOException e ){
-            try {
-                view.error( "Server unreachable" );
+           try {
+               view.error( "Server unreachable" );
             }catch ( RemoteException ignored ){}
         }catch ( PlayerAlreadyLoggedInException alreadyLogged ){
            try {
               view.error( "This player is already connected on a different machine" );
            } catch ( RemoteException ignored ) {}
         }
+        throw new IllegalStateException( "Authentication failed" );
     }
     
     private void configGame(Stage stage){
@@ -68,8 +72,8 @@ public class GuiController extends Application {
         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ));
         Parent root = loader.load();
 
-        ((GuiView)view).setHostServices(getHostServices());
-        ((GuiView)view).setPlayer(player);
+        view.setHostServices(getHostServices());
+        view.setPlayer(player);
     
         stage.setTitle( "ADRENALINE" );
         stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );

@@ -52,7 +52,7 @@ public class WeaponCard {
         this.upgrades = customGson.fromJson(jsonWeaponCard.get("upgrades"), effectsType);
     }
 
-    public void init(){
+    public void init() {
         selectFireMode(0);
     }
 

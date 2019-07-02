@@ -19,6 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class WeaponsDeckTest {
 
     private Deck<WeaponCard> deck;
@@ -37,6 +39,14 @@ public class WeaponsDeckTest {
         deck = new Deck<>();
         weapons.forEach(w -> deck.add(w));
     }
+
+    @Test
+    public void testOnWeaponDrawnFromDeck(){
+        WeaponCard weaponCard = deck.draw();
+        assertTrue (weaponCard.getEffectsToApply().size() >= 0);
+        weaponCard.getFireModes().get(0).getActions().get(0);
+    }
+
 
     @Test
     public void printDeck(){

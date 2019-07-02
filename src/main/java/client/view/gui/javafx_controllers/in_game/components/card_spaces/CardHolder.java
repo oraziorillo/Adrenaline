@@ -138,7 +138,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       for(int i=0;i<cards.length;i++){
          int forLambda=i;
          ImageView card = this.cards[i];
-         //card.setImage( new Image( cards[i].getImagePath(),true ) );
+         card.setImage( new Image( cards[i].getImagePath(),true ) );
          card.setOnMouseClicked( e-> chooseWeaponOnSpawnPoint( forLambda ) );
       }
    }
@@ -157,10 +157,8 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
 
    @Override
    public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
-      if (change.wasAdded()) {
-         if(change.getValueAdded().getWeapons()!=null&&change.getValueAdded().getColour().equals(this.squareColor )) {
+      if (change.wasAdded() && change.getValueAdded().getWeapons()!=null&&change.getValueAdded().getColour().equals(this.squareColor ))
             this.setCards( change.getValueAdded().getWeapons() );
-         }
-      }
+      
    }
 }
