@@ -34,7 +34,7 @@ public class UserAuthController extends AbstractJavaFxController {
    }
    
    @Override
-   public void ack(String message) throws RemoteException {
+   public void ack(String message) {
 //      Alert infos = new Alert( Alert.AlertType.INFORMATION );
 //      infos.setTitle( "infos" );
 //      infos.setHeaderText( null );

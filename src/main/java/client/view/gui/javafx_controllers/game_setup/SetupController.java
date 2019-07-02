@@ -8,6 +8,9 @@ import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.Constants;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
+import common.events.game_board_events.GameBoardEvent;
+import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.pc_events.PcEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -23,6 +26,9 @@ import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class SetupController extends AbstractJavaFxController {
    
@@ -33,6 +39,8 @@ public class SetupController extends AbstractJavaFxController {
    @FXML private transient Chat chatController;
    private Circle[] circles = new Circle[Constants.MAX_KILL_SHOT_TRACK_SIZE];
    private int selectedSkulls = Constants.MIN_KILL_SHOT_TRACK_SIZE;
+   private EnumMap<PcColourEnum,ImageView> pcViews = new EnumMap<>(PcColourEnum.class );
+   private HashSet<ImageView> reactiveSkulls = new HashSet<>();
    
    
    
@@ -50,6 +58,7 @@ public class SetupController extends AbstractJavaFxController {
       circle.setOpacity( .5 );
       skullImage.setPreserveRatio( true );
       skullTrack.getChildren().add( new StackPane( skullImage, circle) );
+      reactiveSkulls.add( skullImage );
       for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE-1;i++){
          int forLambda = i;
          skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_i.png", Top.KILLSHOT_HEIGHT ));
@@ -61,12 +70,14 @@ public class SetupController extends AbstractJavaFxController {
             skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( forLambda ) );
             circle.setVisible( false );
          }
+         reactiveSkulls.add( skullImage );
          skullImage.setPreserveRatio( true );
          skullTrack.getChildren().add( new StackPane( skullImage, circle) );
       }
       skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_ultimo.png", Top.KILLSHOT_HEIGHT ));
       skullImage.setOnMouseClicked( e -> chooseSkulls( Constants.MAX_KILL_SHOT_TRACK_SIZE-1 ) );
       skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( Constants.MAX_KILL_SHOT_TRACK_SIZE-1 ) );
+      reactiveSkulls.add( skullImage );
       skullImage.setPreserveRatio( true );
       circle = circles[Constants.MAX_KILL_SHOT_TRACK_SIZE-1] = new Circle( skullImage.getImage().getWidth()/2,Color.RED );
       circle.setStroke( Color.BLACK );
@@ -86,7 +97,6 @@ public class SetupController extends AbstractJavaFxController {
          int forLambda = i;
          ImageView mapImage = new ImageView( ImageCache.loadImage( prefix+i+postfix, 0) );
          mapImage.fitHeightProperty().bind(Bindings.divide(mainPane.heightProperty(),2*sqrtMaps) );
-         
          mapImage.setPreserveRatio( true );
          mapImage.setOnMouseClicked( e -> chooseMap( forLambda ) );
          maps.getChildren().add( mapImage );
@@ -100,6 +110,7 @@ public class SetupController extends AbstractJavaFxController {
          colorImage.setOnMouseClicked( e -> choosePcColor( colour ) );
          colorImage.setPreserveRatio( true );
          pcs.getChildren().add( colorImage );
+         pcViews.put( colour,colorImage );
       }
       setEnabled( false );
    }
@@ -165,5 +176,30 @@ public class SetupController extends AbstractJavaFxController {
    public void setEnabled(boolean enabled){
       mainPane.setDisable( !enabled );
       mainPane.setOpacity( enabled?1:.5 );
+   }
+   
+   @Override
+   public void onPcUpdate(PcEvent event) {
+      ImageView pcView = pcViews.get( event.getDTO().getColour() );
+      pcView.setDisable( true );
+      pcView.setOpacity( .4 );
+   }
+   
+   @Override
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) {
+      for(ImageView img: reactiveSkulls){
+         img.setOnMouseEntered( null );
+         img.setOnMouseClicked( null );
+      }
+      skullTrack.setOnMouseExited( null );
+      for(int i=0;i<event.getDTO().getKillShotTrack().length;i++)
+         circles[i].setVisible( true );
+      for(int i=event.getDTO().getKillShotTrack().length;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++)
+         circles[i].setVisible( false );
+   }
+   
+   @Override
+   public void onGameBoardUpdate(GameBoardEvent event) {
+      //TODO: aspetta di avere l'indice della mappa
    }
 }

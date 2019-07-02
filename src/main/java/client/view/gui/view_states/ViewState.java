@@ -53,11 +53,8 @@ public abstract class ViewState extends AbstractView {
       javafxController.setPlayer( player );
       javafxController.setHostServices( hostServices );
       javafxController.setTopView( topView );
-      for(String s: previousAcks){
-         try {
-            ack( s );
-         } catch ( RemoteException ignored ) {}
-      }
+      for(String s: previousAcks)
+         ack( s );
       
    }
    
@@ -110,7 +107,7 @@ public abstract class ViewState extends AbstractView {
    }
    
    @Override
-   public void ack(String message) throws RemoteException {
+   public void ack(String message) {
       javafxController.ack( message );
       previousAcks.add( message );
    }

@@ -49,6 +49,11 @@ public abstract class AbstractJavaFxController extends AbstractView {
    }
    
    @Override
+   public void ack(String message) {
+   
+   }
+   
+   @Override
    public void onSquareUpdate(SquareEvent event) {
    
    }

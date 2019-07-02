@@ -6,7 +6,6 @@ import common.remote_interfaces.RemoteLoginController;
 import javafx.application.HostServices;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +18,7 @@ public class UserAuthState extends ViewState {
    
    @Override
    public void ack(String message) {
+   
    }
    
    @Override
@@ -60,4 +60,5 @@ public class UserAuthState extends ViewState {
       return javafxController.wantsToRegister();
    }
    
+   //TODO: ricevi un qualche dto e cambia stato
 }
