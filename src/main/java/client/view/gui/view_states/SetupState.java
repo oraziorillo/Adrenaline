@@ -1,6 +1,7 @@
 package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.in_game.components.Map;
+import common.Constants;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
@@ -10,9 +11,7 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -96,8 +95,8 @@ public class SetupState extends ViewState {
 
    @Override
    public void notifyEvent(LobbyEvent event) {
-      if(beforeMyTurn.get()==Double.NEGATIVE_INFINITY ){//TODO: &&lobbyDTO.isSetup()
-         beforeMyTurn.set((double)(event.getDTO().size()-1));
+      if(beforeMyTurn.get()==Double.NEGATIVE_INFINITY && event.getDTO().size()>= 3/*MIN_PLAYER_NUMBER*/){
+         beforeMyTurn.set((double)(event.getDTO().size()-1));  //excluded yourself
       }
       stillChoosing.set(event.getDTO().size());
    }
