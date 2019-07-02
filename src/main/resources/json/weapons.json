@@ -37,7 +37,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
            ]
           }
@@ -73,7 +73,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -119,7 +119,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -242,7 +242,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -273,7 +273,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -302,7 +302,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -343,7 +343,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -446,7 +446,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -586,7 +586,7 @@
             "maxNumberOfTargets": 1,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ],
             "destinationChecker": [
@@ -694,7 +694,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -842,7 +842,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "differentRoom"
@@ -978,7 +978,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -1036,7 +1036,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -1223,7 +1223,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           },
@@ -1280,7 +1280,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -1326,7 +1326,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               },
               {
                 "type": "minDistance",
@@ -1668,7 +1668,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -1702,7 +1702,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "visible"
+                "type": "visibility"
               }
             ]
           }
@@ -2175,7 +2175,7 @@
             ]
           },
           {
-            "optional": true,
+            "optional": false,
             "necessaryForNextAction": false,
             "parameterized": true,
             "needsOldSquare": false,

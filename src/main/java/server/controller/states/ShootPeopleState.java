@@ -76,7 +76,7 @@ public class ShootPeopleState extends State {
 
     @Override
     public boolean undo() {
-        if (!moved){
+        if (!moved && !reloadDone){
             if (targetableSquares != null) {
                 controller.getGame().setTargetableSquares(targetableSquares, false);
             }
@@ -102,7 +102,7 @@ public class ShootPeopleState extends State {
     @Override
     public State nextState() {
         if (undo)
-            return new ShootPeopleState(controller, false, false);
+            return new StartTurnState(controller);
         if (weaponSelected)
             return new SetupWeaponState(controller);
         if (wantsToReload)

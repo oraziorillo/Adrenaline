@@ -25,12 +25,6 @@ public abstract class Action {
     Square targetSquare;
 
 
-    Action(){
-        this.maxNumberOfTargets = 1;
-        targets = new HashSet<>();
-    }
-
-
     Action (JsonObject jsonAction){
         this.optional = jsonAction.get("optional").getAsBoolean();
         this.necessaryForNextAction = jsonAction.get("necessaryForNextAction").getAsBoolean();
@@ -38,6 +32,7 @@ public abstract class Action {
         this.needsOldSquare = jsonAction.get("needsOldSquare").getAsBoolean();
         this.maxNumberOfTargets = jsonAction.get("maxNumberOfTargets").getAsInt();
         this.targetChecker = new EmptyChecker();
+        this.targets = new HashSet<>();
 
         JsonArray json = jsonAction.get("targetChecker").getAsJsonArray();
         for (JsonElement checker : json) {
@@ -76,10 +71,10 @@ public abstract class Action {
         }
     }
 
+
     public boolean isOptional() {
         return optional;
     }
-
 
     public boolean isNecessaryForNextAction() {
         return necessaryForNextAction;

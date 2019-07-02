@@ -24,6 +24,7 @@ public class MovementAction extends Action {
         super(jsonAction);
         this.selfMovement = jsonAction.get("selfMovement").getAsBoolean();
         this.linkedChecker = jsonAction.get("linkedChecker").getAsBoolean();
+        this.destinationChecker = new EmptyChecker();
 
         JsonArray json = jsonAction.get("destinationChecker").getAsJsonArray();
         for(JsonElement checker : json) {
