@@ -3,6 +3,7 @@ package client.view.gui.javafx_controllers.in_game.components.pc_board;
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
+import common.remote_interfaces.RemotePlayer;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -17,12 +18,12 @@ import javafx.util.Duration;
 public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    static final String DIRECTORY = "/images/pc_board/";
    static final String FRENZY_SUBDIR = "/frenzy/";
-   public HBox mainPane;
-   public ImageView immagine;
-   public static Double HEIGHT=200d;
+   @FXML private HBox mainPane;
+   @FXML private ImageView immagine;
+   public static final Double HEIGHT=200d;
    @FXML HBox translating;
-   @FXML Azioni azioniController;
-   @FXML Vita vitaController;
+   @FXML private Azioni azioniController;
+   @FXML private Vita vitaController;
    private TranslateTransition translate;
    private PcColourEnum settedColour;
    
@@ -51,7 +52,6 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    }
    @FXML
    private void disappear(){
-      System.out.println("disappear");
       translate.stop();
       translate.setRate( -1 );
       translate.play();
@@ -70,4 +70,7 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
             vitaController.onChanged( change );
    }
    
+   public void setPlayer(RemotePlayer player) {
+      azioniController.setPlayer(player);
+   }
 }

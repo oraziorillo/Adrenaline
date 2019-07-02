@@ -1,17 +1,16 @@
-package client.view.gui.javafx_controllers.in_game.view_states;
+package client.view.gui.javafx_controllers.game_setup;
 
 import client.view.gui.ImageCache;
+import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Top;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
+import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.Constants;
 import common.enums.PcColourEnum;
-import common.events.game_board_events.GameBoardEvent;
-import common.events.kill_shot_track_events.KillShotTrackEvent;
-import common.events.pc_board_events.PcBoardEvent;
-import common.events.pc_events.PcEvent;
-import common.events.square_events.SquareEvent;
+import common.events.ModelEventListener;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.binding.Bindings;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.image.ImageView;
@@ -25,24 +24,21 @@ import javafx.scene.shape.Circle;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-public class Setup extends ViewState {
+public class SetupController extends AbstractJavaFxController {
    
-   public GridPane mainPane;
-   public HBox skullTrack;
-   public TilePane maps;
-   public HBox pcs;
-   private RemotePlayer player;
-   private StackPane[] cirlePanes = new StackPane[Constants.MAX_KILL_SHOT_TRACK_SIZE];
+   @FXML private transient GridPane mainPane;
+   @FXML private transient HBox skullTrack;
+   @FXML private transient TilePane maps;
+   @FXML private transient HBox pcs;
+   @FXML private transient Chat chatController;
    private Circle[] circles = new Circle[Constants.MAX_KILL_SHOT_TRACK_SIZE];
    private int selectedSkulls = Constants.MIN_KILL_SHOT_TRACK_SIZE;
    
-   public Setup() throws RemoteException {
-      super();
+   
+   
+   public SetupController() throws RemoteException {
    }
    
-   public Setup(String... previousAcks) throws RemoteException {
-      super( previousAcks );
-   }
    
    public void initialize(){
       GridPane.setValignment( maps,VPos.CENTER );
@@ -78,7 +74,7 @@ public class Setup extends ViewState {
       circle.setVisible( false );
       skullTrack.getChildren().add( new StackPane( skullImage, circle) );
       skullTrack.setOnMouseExited( e->showCirclesBeforeIndex( selectedSkulls ) );
-   
+      
       //init maps selection
       int sqrtMaps = ( int ) Math.ceil( Math.sqrt( Constants.LAST_MAP ) );
       maps.setPrefRows( sqrtMaps );
@@ -90,12 +86,12 @@ public class Setup extends ViewState {
          int forLambda = i;
          ImageView mapImage = new ImageView( ImageCache.loadImage( prefix+i+postfix, 0) );
          mapImage.fitHeightProperty().bind(Bindings.divide(mainPane.heightProperty(),2*sqrtMaps) );
-      
+         
          mapImage.setPreserveRatio( true );
          mapImage.setOnMouseClicked( e -> chooseMap( forLambda ) );
          maps.getChildren().add( mapImage );
       }
-   
+      
       //init Pc
       prefix  = "/images/pc_board/";
       postfix = "/immagine.png";
@@ -105,6 +101,7 @@ public class Setup extends ViewState {
          colorImage.setPreserveRatio( true );
          pcs.getChildren().add( colorImage );
       }
+      setEnabled( false );
    }
    
    private void chooseSkulls(int n){
@@ -127,6 +124,7 @@ public class Setup extends ViewState {
    private void choosePcColor(PcColourEnum colour){
       try {
          player.choosePcColour( colour.toString() );
+         player.ok();
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
@@ -139,36 +137,33 @@ public class Setup extends ViewState {
    }
    
    @Override
-   public ViewState nextState() throws RemoteException {
-      return new InGameState();
+   public void printMessage(String msg) {
+      chatController.showServerMessage( msg );
    }
    
+   @Override
+   public void ack(String message) {
+      printMessage( message );
+   }
+   
+   @Override
+   public void chatMessage(String message) {
+   
+   }
+   
+   @Override
+   public ModelEventListener getListener() {
+      return this;
+   }
+   
+   @Override
    public void setPlayer(RemotePlayer player) {
-      this.player = player;
+      super.setPlayer( player );
+      chatController.setPlayer( player );
    }
    
-   @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
-      nextState();
-   }
-   
-   @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
-      nextState();
-   }
-   
-   @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
-      nextState();
-   }
-   
-   @Override
-   public void onPcUpdate(PcEvent event) throws RemoteException {
-      nextState();
-   }
-   
-   @Override
-   public void onSquareUpdate(SquareEvent event) throws RemoteException {
-      nextState();
+   public void setEnabled(boolean enabled){
+      mainPane.setDisable( !enabled );
+      mainPane.setOpacity( enabled?1:.5 );
    }
 }

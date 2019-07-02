@@ -40,8 +40,7 @@ public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
    
    @Override
    public void onChanged(Change<? extends PcColourEnum, ? extends PcDTO> change) {
-      if(change.getKey().equals( this.settedColor )){
-         if(change.wasAdded()) {
+      if(change.getKey().equals( this.settedColor ) && change.wasAdded()) {
             weapons.getChildren().clear();
             powerups.getChildren().clear();
             if(change.getValueAdded().getWeapons()!=null)
@@ -67,7 +66,6 @@ public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
             if(change.getValueAdded().getPcBoard()!=null&&change.getValueAdded().getPcBoard().getAmmo()!=null)
                ammosController.setAmmos( change.getValueAdded().getPcBoard().getAmmo() );
             
-         }
       }
    }
    
