@@ -23,7 +23,7 @@ public class UserAuthState extends ViewState {
    }
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
 
    }
 

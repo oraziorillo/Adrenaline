@@ -7,6 +7,7 @@ import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
@@ -132,27 +133,30 @@ public abstract class ViewState extends AbstractView {
    }
    
    @Override
-   public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
+   public void onGameBoardUpdate(GameBoardEvent event) {
    
    }
    
    @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) {
    
    }
    
    @Override
-   public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
+   public void onPcBoardUpdate(PcBoardEvent event) {
    
    }
    
    @Override
-   public void onPcUpdate(PcEvent event) throws RemoteException {
+   public void onPcUpdate(PcEvent event) {
    
    }
    
    @Override
-   public void onSquareUpdate(SquareEvent event) throws RemoteException {
+   public void onSquareUpdate(SquareEvent event) {
    
    }
+   
+   @Override
+   public void notifyEvent(LobbyEvent event) {}
 }

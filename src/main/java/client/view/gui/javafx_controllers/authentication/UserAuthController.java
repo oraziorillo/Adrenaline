@@ -7,6 +7,7 @@ import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemoteLoginController;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 
 import java.io.IOException;
@@ -63,11 +64,6 @@ public class UserAuthController extends AbstractJavaFxController {
       return this;
    }
    
-   @Override
-   public void setEnabled(boolean enabled) {
-      //Actually meaningless
-   }
-
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
       RemoteLoginController loginController;
@@ -153,5 +149,10 @@ public class UserAuthController extends AbstractJavaFxController {
       TextInputDialog input = new TextInputDialog("Gimme strinnngs");
       input.setHeaderText(null);
       return input.showAndWait().orElse( "" );
+   }
+   
+   @Override
+   public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+      //nothing to observe
    }
 }

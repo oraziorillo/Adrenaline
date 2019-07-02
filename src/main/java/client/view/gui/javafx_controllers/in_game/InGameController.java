@@ -27,6 +27,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
@@ -177,11 +178,6 @@ public class InGameController extends AbstractJavaFxController {
     }
    
    @Override
-   public void setEnabled(boolean enabled) {
-      mainPane.setDisable( !enabled );
-   }
-   
-   @Override
    public void chatMessage(String message) {
       chatController.showUserMessage( message );
    }
@@ -214,4 +210,9 @@ public class InGameController extends AbstractJavaFxController {
     public void onSquareUpdate(SquareEvent event) {
       squares.put( event.getDTO(),event.getDTO() );
     }
+   
+   @Override
+   public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+      //TODO
+   }
 }

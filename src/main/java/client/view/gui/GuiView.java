@@ -76,17 +76,18 @@ public class GuiView extends AbstractView implements ModelEventListener {
    }
 
     @Override
-    public void error(String msg) throws RemoteException {
+    public void error(String msg) {
       currentGui.error(msg);
     }
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
+      currentGui.notifyEvent( event );
    }
 
 
    @Override
-   public void chatMessage(String message) throws RemoteException {
+   public void chatMessage(String message) {
       currentGui.chatMessage( message );
    }
    

@@ -23,7 +23,7 @@ public class GuiController extends Application {
    protected GuiView view;
    protected RemotePlayer player;
 
-   public GuiController() throws RemoteException {
+   public GuiController() {
 
     }
 
@@ -52,13 +52,9 @@ public class GuiController extends Application {
             view.nextState();
            return token;
         }catch ( IOException e ){
-           try {
-               view.error( "Server unreachable" );
-            }catch ( RemoteException ignored ){}
+           view.error( "Server unreachable" );
         }catch ( PlayerAlreadyLoggedInException alreadyLogged ){
-           try {
-              view.error( "This player is already connected on a different machine" );
-           } catch ( RemoteException ignored ) {}
+           view.error( "This player is already connected on a different machine" );
         }
         throw new IllegalStateException( "Authentication failed" );
     }

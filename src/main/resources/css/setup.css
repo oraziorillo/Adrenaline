@@ -1,0 +1,7 @@
+HBox{
+    -fx-background-color: black;
+}
+
+.selectable{
+    -fx-effect: dropshadow(three-pass-box, lightgreen, 5, 0, 0, 0);
+}

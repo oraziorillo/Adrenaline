@@ -44,7 +44,7 @@ public class InGameState extends ViewState {
    }
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
 
    }
 }

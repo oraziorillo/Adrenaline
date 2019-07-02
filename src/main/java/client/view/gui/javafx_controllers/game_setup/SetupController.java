@@ -14,9 +14,12 @@ import common.events.pc_events.PcEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -28,7 +31,6 @@ import javafx.scene.shape.Circle;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class SetupController extends AbstractJavaFxController {
@@ -53,6 +55,7 @@ public class SetupController extends AbstractJavaFxController {
       GridPane.setValignment( maps,VPos.CENTER );
       GridPane.setValignment( pcs, VPos.BOTTOM );
       //init skulls track
+      
       ImageView skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_0.png", Top.KILLSHOT_HEIGHT ));
       Circle circle = circles[0] = new Circle( skullImage.getImage().getWidth()/2, Color.RED );
       circle.setStroke( Color.BLACK );
@@ -60,15 +63,15 @@ public class SetupController extends AbstractJavaFxController {
       skullImage.setPreserveRatio( true );
       skullTrack.getChildren().add( new StackPane( skullImage, circle) );
       reactiveSkulls.add( skullImage );
-      for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE-1;i++){
-         int forLambda = i;
+      for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){
+         int skullIndex = i+1;
          skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_i.png", Top.KILLSHOT_HEIGHT ));
          circle = circles[i] = new Circle( skullImage.getImage().getWidth()/2,Color.RED );
          circle.setStroke( Color.BLACK );
          circle.setOpacity( .5 );
          if(i>=Constants.MIN_KILL_SHOT_TRACK_SIZE) {
-            skullImage.setOnMouseClicked( e -> chooseSkulls( forLambda ) );
-            skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( forLambda ) );
+            skullImage.setOnMouseClicked( e -> chooseSkulls( skullIndex ) );
+            skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( skullIndex ) );
             circle.setVisible( false );
          }
          reactiveSkulls.add( skullImage );
@@ -76,7 +79,7 @@ public class SetupController extends AbstractJavaFxController {
          skullTrack.getChildren().add( new StackPane( skullImage, circle) );
       }
       skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_ultimo.png", Top.KILLSHOT_HEIGHT ));
-      skullImage.setOnMouseClicked( e -> chooseSkulls( Constants.MAX_KILL_SHOT_TRACK_SIZE-1 ) );
+      skullImage.setOnMouseClicked( e -> chooseSkulls( Constants.MAX_KILL_SHOT_TRACK_SIZE ) );
       skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( Constants.MAX_KILL_SHOT_TRACK_SIZE-1 ) );
       reactiveSkulls.add( skullImage );
       skullImage.setPreserveRatio( true );
@@ -120,6 +123,8 @@ public class SetupController extends AbstractJavaFxController {
       try {
          player.chooseNumberOfSkulls( n );
          selectedSkulls = n;
+         disableSkullsSelection();
+         player.ok();
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
@@ -128,6 +133,8 @@ public class SetupController extends AbstractJavaFxController {
    private void chooseMap(int n){
       try {
          player.chooseMap( n );
+         disableMapSelection();
+         player.ok();
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
@@ -155,12 +162,12 @@ public class SetupController extends AbstractJavaFxController {
    
    @Override
    public void ack(String message) {
-      printMessage( message );
+      chatController.showServerMessage( message );
    }
    
    @Override
    public void chatMessage(String message) {
-   
+      chatController.showUserMessage( message );
    }
    
    @Override
@@ -174,9 +181,25 @@ public class SetupController extends AbstractJavaFxController {
       chatController.setPlayer( player );
    }
    
-   public void setEnabled(boolean enabled){
+   private void setEnabled(boolean enabled){
       mainPane.setDisable( !enabled );
       mainPane.setOpacity( enabled?1:.5 );
+   }
+   
+   private void disableSkullsSelection(){
+      skullTrack.setEffect( null );
+      for(ImageView img: reactiveSkulls){
+         img.setOnMouseEntered( null );
+         img.setOnMouseClicked( null );
+      }
+      skullTrack.setOnMouseExited( null );
+   }
+   
+   private void disableMapSelection(){
+      maps.setEffect( null );
+      maps.setOnMouseClicked( null );
+      for(Node n:maps.getChildren())
+         n.setOnMouseClicked( null );
    }
    
    @Override
@@ -184,19 +207,15 @@ public class SetupController extends AbstractJavaFxController {
       ImageView pcView = pcViews.get( event.getDTO().getColour() );
       pcView.setDisable( true );
       pcView.setOpacity( .4 );
+      pcView.setEffect( null );
    }
    
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-      for(ImageView img: reactiveSkulls){
-         img.setOnMouseEntered( null );
-         img.setOnMouseClicked( null );
-      }
-      skullTrack.setOnMouseExited( null );
-      for(int i=0;i<event.getDTO().getKillShotTrack().length;i++)
-         circles[i].setVisible( true );
-      for(int i=event.getDTO().getKillShotTrack().length;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++)
-         circles[i].setVisible( false );
+      int l=event.getDTO().getKillShotTrack().length;
+      disableSkullsSelection(  );
+      for(int i=0;i<circles.length;i++)
+         circles[i].setVisible( i<l );
    }
    
    @Override
@@ -205,7 +224,24 @@ public class SetupController extends AbstractJavaFxController {
    }
 
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
+   public void notifyEvent(LobbyEvent event) {
 
+   }
+   
+   /**
+    * Listens the number of players before my turn
+    * @param obs the property
+    * @param oldV initially -inf
+    * @param newV new number of players before my turn (after set can only decrement)
+    */
+   @Override
+   public void changed(ObservableValue<? extends Number> obs, Number oldV, Number newV) {
+      if(oldV.equals( Double.NEGATIVE_INFINITY )) {
+         setEnabled( true );
+         if(!newV.equals( 0 )){
+            disableSkullsSelection();
+            disableMapSelection();
+         }
+      }
    }
 }
