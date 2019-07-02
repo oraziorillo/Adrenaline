@@ -63,8 +63,13 @@ public class GeneralWeapon {
    }
    
    public void setWeapon(PowerUpCardDTO powerUpCard){
-      background.setImage( new Image( powerUpCard.getImagePath(),true ) );
-      mainPane.setOnMouseClicked( e -> usePowerup());
+      if(powerUpCard!=null) {
+         background.setImage( new Image( powerUpCard.getImagePath(), true ) );
+         mainPane.setOnMouseClicked( e -> usePowerup() );
+         mainPane.setVisible( true );
+      }else {
+         mainPane.setVisible( false );
+      }
    }
    
    private void chooseWeapon(int index) {
