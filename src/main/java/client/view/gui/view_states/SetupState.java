@@ -45,12 +45,6 @@ public class SetupState extends ViewState {
       beforeMyTurn.addListener( getJavafxController() );
    }
    
-   
-   @Override
-   public void ack(String msg) {
-      getJavafxController().ack( msg );
-   }
-   
    @Override
    public ViewState nextState() throws RemoteException {
       InGameState returned = new InGameState();
@@ -62,13 +56,13 @@ public class SetupState extends ViewState {
    
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-      getJavafxController().onKillShotTrackUpdate( event );
+      super.onKillShotTrackUpdate( event );
       killShotToPass.add( event );
    }
    
    @Override
    public void onPcUpdate(PcEvent event) {
-      getJavafxController().onPcUpdate( event );
+      super.onPcUpdate( event );
       stillChoosing.set( stillChoosing.get()-1 );
       beforeMyTurn.set( beforeMyTurn.get()-1 );
       pcToPass.add( event );

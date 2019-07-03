@@ -123,29 +123,37 @@ public abstract class ViewState extends AbstractView {
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-   
+      javafxController.onGameBoardUpdate( event );
    }
    
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-   
+      javafxController.onKillShotTrackUpdate( event );
    }
    
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
-   
+      javafxController.onPcBoardUpdate( event );
    }
    
    @Override
    public void onPcUpdate(PcEvent event) {
-   
+      javafxController.onPcUpdate( event );
    }
    
    @Override
    public void onSquareUpdate(SquareEvent event) {
-   
+      javafxController.onSquareUpdate( event );
    }
    
    @Override
-   public void notifyEvent(LobbyEvent event) {}
+   public void notifyEvent(LobbyEvent event) {
+      try {
+         javafxController.notifyEvent( event );
+      } catch ( RemoteException e ) {
+         IllegalStateException e1 = new IllegalStateException( "RemoteException on netless operation" );
+         e1.setStackTrace( e.getStackTrace() );
+         throw e1;
+      }
+   }
 }

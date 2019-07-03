@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
 import static javafx.application.Platform.runLater;
 
 public class InGameState extends ViewState {
-   public InGameState() throws RemoteException {
+   InGameState() throws RemoteException {
       super();
       try {
          FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ) );
@@ -40,10 +40,5 @@ public class InGameState extends ViewState {
    @Override
    public ViewState nextState() throws RemoteException {
       return ViewState.getFirstState(hostServices, stage,topView);
-   }
-
-   @Override
-   public void notifyEvent(LobbyEvent event) {
-
    }
 }

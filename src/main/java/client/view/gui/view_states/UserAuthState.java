@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class UserAuthState extends ViewState {
-   public UserAuthState() throws RemoteException {
+   UserAuthState() throws RemoteException {
       super();
       setJavafxController( new UserAuthController() );
    }
