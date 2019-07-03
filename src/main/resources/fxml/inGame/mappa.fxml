@@ -4,5 +4,16 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="client.view.gui.javafx_controllers.in_game.components.Map" stylesheets="/css/mappa.css" alignment="BOTTOM_RIGHT"
-          fx:id="grid" id="grid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.halignment="RIGHT">
+          fx:id="grid" id="grid">
+    <rowConstraints>
+        <RowConstraints percentHeight="32" vgrow="ALWAYS"/>
+        <RowConstraints vgrow="ALWAYS"/> <!--fill remaining space-->
+        <RowConstraints percentHeight="31" vgrow="ALWAYS"/>
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="22.5" hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="ALWAYS"/> <!--fill remaining space-->
+        <ColumnConstraints percentWidth="27" hgrow="ALWAYS"/>
+        <ColumnConstraints percentWidth="22.5" hgrow="ALWAYS"/>
+    </columnConstraints>
 </GridPane>
