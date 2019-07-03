@@ -11,7 +11,6 @@ import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 
 import java.lang.reflect.Type;
-import java.util.LinkedList;
 
 /**
  * Represents a power up card
@@ -41,19 +40,24 @@ public class PowerUpCard {
         return name;
     }
 
+
     public boolean isSelectedAsAmmo() {
         return selectedAsAmmo;
     }
 
+
     public AmmoEnum getColour(){ return this.colour; }
+
 
     public Action getAction() {
         return action;
     }
 
+
     public void useAction(Pc shooter) {
         action.apply(shooter);
     }
+
 
     public void setSelectedAsAmmo(boolean selectedAsAmmo) {
         this.selectedAsAmmo = selectedAsAmmo;
@@ -67,5 +71,10 @@ public class PowerUpCard {
         return powerUpCardDTO;
     }
 
+
+    @Override
+    public String toString() {
+        return colour + " " + name;
+    }
 }
 

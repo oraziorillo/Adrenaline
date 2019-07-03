@@ -22,6 +22,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.UUID;
 
+import static common.Constants.WRONG_TIME;
+
 public class CliView extends AbstractView {
 
     private transient InputReader inputReader;
@@ -41,7 +43,8 @@ public class CliView extends AbstractView {
 
     @Override
     public void printMessage(String msg) {
-        System.out.println(msg);
+        if(msg.length() != 0)
+            System.out.println(msg);
     }
 
 
@@ -76,7 +79,7 @@ public class CliView extends AbstractView {
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
                     return (RemoteLoginController) registry.lookup("LoginController");
                 default:
-                    throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+                    throw new IllegalArgumentException(WRONG_TIME);
             }
         } catch (IOException | NotBoundException e) {
             printMessage("Server unreachable");
@@ -106,7 +109,7 @@ public class CliView extends AbstractView {
             case LOG_IN:
                 return false;
             default:
-                throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now\n");
+                throw new IllegalArgumentException(WRONG_TIME);
         }
     }
 
@@ -128,7 +131,7 @@ public class CliView extends AbstractView {
 
     @Override
     public synchronized void ack(String message) throws RemoteException {
-        if (!message.startsWith(System.lineSeparator()) && message.length() != 0) {
+        if (message.length() != 0) {
             printMessage(message);
         }
     }
@@ -147,7 +150,7 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public void notifyEvent(LobbyEvent event) throws RemoteException {
+    public synchronized void notifyEvent(LobbyEvent event) throws RemoteException {
         printMessage(event.toString());
     }
 
@@ -162,7 +165,6 @@ public class CliView extends AbstractView {
     public synchronized void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
         printMessage(event.toString());
         event.getDTO().getSquares().forEach(s -> printMessage( "\n" + s.description()));
-        printMessage("\n");
     }
 
 

@@ -4,7 +4,6 @@ import server.controller.Controller;
 import server.model.Pc;
 import server.model.squares.Square;
 
-import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -32,11 +31,7 @@ public class RunAroundState extends State{
       Square s = controller.getGame().getSquare(row, column);
       if (s != null && s.isTargetable()) {
          this.targetSquare = s;
-         try {
-            controller.getCurrPlayer().getView().ack("The square " + targetSquare.toString() + " has been selected");
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
+         controller.ackCurrent("\nSo you want to move to " + s.toString() + "...Don't you like this one?!");
       }
    }
    
@@ -60,11 +55,6 @@ public class RunAroundState extends State{
    public boolean undo() {
       controller.getGame().setTargetableSquares(targetableSquares, false);
       undo = true;
-      try {
-         controller.getCurrPlayer().getView().ack("Qua sta facendo undo");
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
       return true;
    }
    
@@ -77,11 +67,6 @@ public class RunAroundState extends State{
       if (targetSquare != null) {
          controller.getCurrPc().moveTo(targetSquare);
          controller.getGame().setTargetableSquares(targetableSquares, false);
-         try {
-            controller.getCurrPlayer().getView().ack("Il pc si è spostato, fiiiiiga");
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
          return true;
       }
       return false;

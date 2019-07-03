@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static common.Constants.WRONG_TIME;
+
 public enum ConnectionMethodEnum {
     SOCKET(":s","socket"),
     RMI(":r","rmi");
@@ -20,6 +22,6 @@ public enum ConnectionMethodEnum {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+        throw new IllegalArgumentException(WRONG_TIME);
     }
 }

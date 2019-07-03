@@ -8,8 +8,6 @@ import server.model.PowerUpCard;
 import server.model.actions.Action;
 import server.model.squares.Square;
 
-import java.rmi.RemoteException;
-import java.util.List;
 import java.util.Set;
 
 public class UsePowerUpState extends State {
@@ -35,20 +33,10 @@ public class UsePowerUpState extends State {
                 currPowerUp = powerUp;
                 currAction = powerUpAction;
                 setTargetableToValidSquares(controller.getCurrPc());
-            } else {
-                try {
-                    controller.getCurrPlayer().getView().ack("You can't use this powerUp now!");
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                controller.ackCurrent("\nLet's make some moves");
             }
-        }
-        catch (IllegalArgumentException ex){
-            try {
-                controller.getCurrPlayer().getView().ack("You have to select a powerUp!");  //TODO meglio
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+        } catch (IllegalArgumentException e) {
+            controller.ackCurrent(e.getMessage());
         }
     }
 
@@ -67,6 +55,7 @@ public class UsePowerUpState extends State {
         Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
         if ( targetPc != null && targetPc.getCurrSquare().isTargetable()){
             currAction.selectPc(targetPc);
+            controller.ackCurrent("Is it that you want to move?");
         }
     }
 

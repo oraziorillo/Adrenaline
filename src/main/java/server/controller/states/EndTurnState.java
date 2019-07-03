@@ -23,6 +23,7 @@ class EndTurnState extends State {
     @Override
     public boolean reload() {
         toReload = true;
+        controller.ackCurrent("\nOhw! You really want to reload? You will have to pay all of your ammo!");
         return true;
     }
     
@@ -34,6 +35,7 @@ class EndTurnState extends State {
     public boolean pass() {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
+        controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
         return true;
     }
     
@@ -45,8 +47,8 @@ class EndTurnState extends State {
     public State nextState() {
         if(toReload)
             return new ReloadState(controller);
-        controller.nextTurn();
         DatabaseHandler.getInstance().save(controller);
+        controller.nextTurn();
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

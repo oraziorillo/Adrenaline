@@ -2,6 +2,7 @@ package server.model;
 
 import com.google.gson.annotations.Expose;
 import common.dto_model.AmmoTileDTO;
+import common.enums.AmmoEnum;
 
 /**
  * Represents the ammo tiles
@@ -34,7 +35,10 @@ public class AmmoTile {
 
     @Override
     public String toString() {
-        return "[" + ammo[0] + ", " + ammo[1] + ", " + ammo[2] + "]";
+        StringBuilder ammoString = new StringBuilder();
+        for (AmmoEnum a : AmmoEnum.values())
+            ammoString.append("\n+" + ammo[a.ordinal()] + " " + a.toString() + " ammo");
+        return ammoString.toString();
     }
 
 

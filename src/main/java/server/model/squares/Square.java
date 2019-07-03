@@ -263,6 +263,13 @@ public abstract class Square {
     }
 
 
+    public String description(){
+        return (isSpawnPoint ? "\nSpawnPoint " : "\nAmmoSquare ") + "(" + row + "," + col + ")";
+    }
+
+    public abstract String itemToString();
+
+
     public abstract SquareDTO convertToDTO();
 }
 

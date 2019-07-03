@@ -80,17 +80,21 @@ public class SquareDTO implements DTO {
             return false;
         }
     }
+
+
     @Override
     public String toString() {
         return "(" + row + "," + col + ")";
     }
 
+
     public String description(){
-        StringBuilder description = new StringBuilder(ammoTile == null ? "SpawnPoint " : "AmmoSquare ");
+        StringBuilder description = new StringBuilder();
         description.append("(").append(row).append(",").append(col).append(")");
+        description.append("\n").append(colour).append("\n").append(ammoTile == null ? "Spawn point\nWeapons:" : "Ammo square\nAmmo tile:");
         if (ammoTile == null)
             for (WeaponCardDTO w : weapons)
-                description.append("\n").append(w.getName());
+                description.append("\n> ").append(w.getName());
         else
             description.append(ammoTile.toString());
         return description.toString();

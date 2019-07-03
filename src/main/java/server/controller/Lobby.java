@@ -77,11 +77,11 @@ public class Lobby {
         publishEvent(new PlayerJoinedEvent(new LobbyDTO(players, false, false )), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
-            ack("The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes", null);
+            ack("\nThe game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes...", null);
         } else if (players.size() == 5) {
             timer.stop();
             startNewGame();
-            ack("Let's start", null);
+            ack("\nThe game is starting", null);
         }
     }
 
@@ -102,18 +102,10 @@ public class Lobby {
         controller = new Controller(gameUUID, players);
         if (databaseHandler.containsGame(gameUUID)) {
             controller.initGame(gameUUID);
-            ack("Game restored!", null);
         } else {
             controller.initGame();
             databaseHandler.save(controller);
         }
-        getViews().forEach(v -> {
-            try {
-                v.ack("Game Started");
-            } catch (IOException e) {
-                //todo fare qualcosa
-            }
-        });
         gameStarted = true;
     }
 
