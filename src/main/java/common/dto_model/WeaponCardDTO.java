@@ -3,7 +3,7 @@ package common.dto_model;
 public class WeaponCardDTO extends AbstractCardDTO {
 
     private static final String DIRECTORY_NAME = "weapons/";
-    private static final String DEFAULT_NAME = "retro_arma";
+    private static final String DEFAULT_NAME = "Back";
     private int basicEffects;
     private int upgrades;
     private boolean loaded;
