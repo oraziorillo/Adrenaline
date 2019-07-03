@@ -5,6 +5,7 @@ import common.dto_model.LobbyDTO;
 import common.events.lobby_events.LobbyEvent;
 import common.events.lobby_events.PlayerJoinedEvent;
 import common.remote_interfaces.RemoteView;
+import server.ServerPropertyLoader;
 import server.database.DatabaseHandler;
 
 import javax.swing.*;
@@ -22,8 +23,7 @@ import java.util.stream.Collectors;
  */
 public class Lobby {
 
-    //TODO: timer preso dal file di config
-    private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(10));
+    private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis( ServerPropertyLoader.getInstance().getLobbyTimer() ));
 
     @Expose private Controller controller;
     @Expose private UUID gameUUID;
