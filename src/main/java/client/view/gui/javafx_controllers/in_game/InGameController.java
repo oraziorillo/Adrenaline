@@ -69,8 +69,6 @@ public class InGameController extends AbstractJavaFxController {
       bottom.getChildren().add( weaponHandController.getNode() );
       bottom.getChildren().add( spacerFactory() );
       bottom.getChildren().get( 1 ).toFront();   //move chat to the right
-      //TODO: set map for test
-      mapController.setMap(0);
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
       pcs.addListener( topController.pcListener );
@@ -188,6 +186,7 @@ public class InGameController extends AbstractJavaFxController {
     public void onGameBoardUpdate(GameBoardEvent event) {
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );
+      mapController.setMap( event.getDTO().getNumberOfMap() );
     }
    
    @Override
