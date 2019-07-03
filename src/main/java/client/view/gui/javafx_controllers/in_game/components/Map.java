@@ -163,9 +163,12 @@ public class Map {
             
             ImageView ammoTile = new ImageView();
             ammoTile.setPreserveRatio( true );
+            ammoTile.fitWidthProperty().bind( ammoTile.fitHeightProperty() );
+   
             ammos[r][c] = ammoTile;
             
             StackPane stackPane = new StackPane( pcsPane,ammoTile );
+            ammoTile.fitHeightProperty().bind( Bindings.divide( stackPane.heightProperty(),2 ) );
             stackPane.maxWidthProperty().bind( Bindings.divide( grid.widthProperty(),COLS ) );
             stackPane.maxHeightProperty().bind( Bindings.divide( grid.heightProperty(),ROWS ) );
             StackPane.setAlignment( pcsPane,Pos.TOP_LEFT );
