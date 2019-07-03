@@ -34,8 +34,8 @@ import java.util.EnumMap;
 
 public class Map {
    private static final Paint TARGETABLECOLOR = Color.rgb( 45, 200, 45, 0.3 );
-   @FXML
-   GridPane grid;
+   
+   @FXML GridPane grid;
    private RemotePlayer player;
    
    private Pane[][] squares = new Pane[ROWS][COLS];
@@ -89,18 +89,18 @@ public class Map {
                ammo.fitHeightProperty().bind( radius );
             }
          }
-   
+         
          OpponentBoard created = loadNewBoard(colour);
          change.getMap().addListener( created );
          for(OpponentBoard c:opponentBoardControllers.values()){
             c.onChanged( change );
          }
          created.heightProperty().bind( Bindings.multiply( circle.radiusProperty(),2) );
-   
+         
          //add the circle to the square
          square.getChildren().add( circle );
          square.setMinSize( 0,0 );
-   
+         
          //update class data structures and show
          for(Circle c:pcCircles.values()){
             c.radiusProperty().unbind();
@@ -138,8 +138,22 @@ public class Map {
    };
    
    public void initialize() {
-      //setup cells
+      //force columns to stay same sized
+      for(int c=0;c<COLS;c++){
+         ColumnConstraints cc = new ColumnConstraints();
+         cc.setPercentWidth( 100/COLS );
+         cc.setHalignment( HPos.CENTER );
+         cc.setHgrow( Priority.ALWAYS );
+         grid.getColumnConstraints().add( cc );
+      }
       for(int r=0;r<ROWS;r++){
+         //force rows to stay same sized
+         RowConstraints rc = new RowConstraints();
+         rc.setPercentHeight( 100/ROWS );
+         rc.setVgrow( Priority.ALWAYS );
+         rc.setValignment( VPos.CENTER );
+         grid.getRowConstraints().add( rc );
+         //setup cells
          for(int c=0;c<COLS;c++){
             int row=r,column=c;
             FlowPane pcsPane = new FlowPane( Orientation.HORIZONTAL );
@@ -149,12 +163,9 @@ public class Map {
             
             ImageView ammoTile = new ImageView();
             ammoTile.setPreserveRatio( true );
-            ammoTile.fitWidthProperty().bind( ammoTile.fitHeightProperty() );
-   
             ammos[r][c] = ammoTile;
-   
+            
             StackPane stackPane = new StackPane( pcsPane,ammoTile );
-            ammoTile.fitHeightProperty().bind( Bindings.divide( stackPane.heightProperty(),2 ) );
             stackPane.maxWidthProperty().bind( Bindings.divide( grid.widthProperty(),COLS ) );
             stackPane.maxHeightProperty().bind( Bindings.divide( grid.heightProperty(),ROWS ) );
             StackPane.setAlignment( pcsPane,Pos.TOP_LEFT );
@@ -233,7 +244,7 @@ public class Map {
       grid.setBackground( new Background( bi ) );
       grid.maxWidthProperty().bind( Bindings.multiply( ratio,grid.heightProperty() ) );
       grid.minWidthProperty().bind( Bindings.multiply( ratio,grid.heightProperty() ) );
-   
+      
    }
    
    public void setPlayer(RemotePlayer player) {
