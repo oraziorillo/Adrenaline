@@ -43,7 +43,7 @@ public class DamageMarksTakenEvent extends PcBoardEvent{
         else if (damage > 0 && marks == 0)
             builder.append(damage).append(" damages from ");
         else
-            builder.append(damage).append(" marks from ");
+            builder.append(marks).append(" marks from ");
         builder.append(shooter)
                 .append("\n\n")
                 .append(Arrays.toString(pcBoard.getDamageTrack()));

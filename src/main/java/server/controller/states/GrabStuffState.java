@@ -107,7 +107,7 @@ class GrabStuffState extends State{
     @Override
     public void selectPowerUp(int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
-        if (powerUp != null && powerUp.isSelectedAsAmmo())
+        if (powerUp != null && !powerUp.isSelectedAsAmmo())
             powerUp.setSelectedAsAmmo(true);
     }
 
