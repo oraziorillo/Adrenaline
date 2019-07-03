@@ -4,6 +4,8 @@ import client.view.AbstractView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
@@ -24,7 +26,11 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
     public LoginControllerSocketProxy(Socket socket, AbstractView view) throws IOException {
         super(socket);
         this.view = view;
-        new Thread(new ClientSocketHandler(socket, view, buffer)).start();
+        Thread handler = new Thread( new ClientSocketHandler( socket,view,buffer ));
+        handler.setName( getClass().getName() );
+        handler.setDaemon( true );
+        handler.start();
+        
     }
 
 

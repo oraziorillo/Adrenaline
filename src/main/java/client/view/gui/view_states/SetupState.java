@@ -29,31 +29,39 @@ public class SetupState extends ViewState {
    SetupState() throws RemoteException {
       super();
       try {
-         FXMLLoader loader = new FXMLLoader( Map.class.getResource( "fxml/gameSetup/setup.fxml" ) );
+         FXMLLoader loader = new FXMLLoader( SetupState.class.getResource( "/fxml/gameSetup/setup.fxml" ) );
          Parent root = loader.load();
          setJavafxController( loader.getController() );
          stage.setScene( new Scene( root ) );
+         stage.setAlwaysOnTop( true );
          stage.show();
-      }catch ( IOException e ){
+      }catch ( IOException shouldNotHappen ){
          IllegalArgumentException e1 = new IllegalArgumentException( "Cannot load fxml file" );
-         e1.setStackTrace( e.getStackTrace() );
-         throw e1;
+         shouldNotHappen.printStackTrace();
+//         e1.initCause( shouldNotHappen );
+//         throw e1;
       }
       stillChoosing.addListener( (obs, oldV, newV) -> {
-         if (newV.intValue() == 0)
+         if (newV.doubleValue() == 0)
             topView.nextState();
+         
       } );
       beforeMyTurn.addListener( getJavafxController() );
       stillChoosing.addListener( getJavafxController() );
    }
    
    @Override
+   public void ack(String message) {
+   
+   }
+   
+   @Override
    public ViewState nextState() throws RemoteException {
       InGameState returned = new InGameState();
+      for(KillShotTrackEvent e:killShotToPass) returned.onKillShotTrackUpdate( e );
       for(GameBoardEvent e: gameBoardToPass) returned.onGameBoardUpdate( e );
       for (PcEvent e:pcToPass) returned.onPcUpdate( e );
-      for(KillShotTrackEvent e:killShotToPass) returned.onKillShotTrackUpdate( e );
-      return new InGameState();
+      return returned;
    }
    
    @Override
@@ -65,13 +73,14 @@ public class SetupState extends ViewState {
    @Override
    public void onPcUpdate(PcEvent event) {
       super.onPcUpdate( event );
+      pcToPass.add( event );
       stillChoosing.set( stillChoosing.get()-1 );
       beforeMyTurn.set( beforeMyTurn.get()-1 );
-      pcToPass.add( event );
    }
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
+      super.onGameBoardUpdate( event );
       gameBoardToPass.add( event );
    }
    
@@ -91,10 +100,5 @@ public class SetupState extends ViewState {
          beforeMyTurn.set((double)(event.getDTO().size()-1));  //excluded yourself
       }
       stillChoosing.set(event.getDTO().size());
-   }
-
-   @Override
-   public void request(Request request) throws RemoteException {
-
    }
 }

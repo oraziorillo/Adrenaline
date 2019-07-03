@@ -2,8 +2,6 @@ package client;
 
 import common.PropertyLoader;
 
-import java.io.IOException;
-
 public class ClientPropertyLoader extends PropertyLoader {
    
    private static ClientPropertyLoader instance;
@@ -18,6 +16,6 @@ public class ClientPropertyLoader extends PropertyLoader {
    }
    
    public String getHostAddress(){
-      return properties.getProperty( "server.host" );
+      return properties.getProperty( "client.host" );
    }
 }

@@ -11,11 +11,6 @@ public final class Constants {
     public static final String SUCCESS = "Y";
     public static final String FAIL = "N";
 
-    // --------------> TIMER
-
-    public static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(10));
-    public static final int REQUEST_TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(30));
-
     // --------------> RULES
 
     public static final int LIFE_POINTS = 11;
