@@ -27,7 +27,7 @@ import java.util.UUID;
  * Concrete states will override those methods so exception is no longer thrown
  */
 public abstract class ViewState extends AbstractView {
-   private AbstractJavaFxController javafxController;
+   private static AbstractJavaFxController javafxController;
    private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
    protected static transient RemotePlayer player;
    static transient HostServices hostServices;
@@ -42,7 +42,7 @@ public abstract class ViewState extends AbstractView {
    }
    
    protected void setJavafxController(AbstractJavaFxController javafxController) {
-      this.javafxController = javafxController;
+      ViewState.javafxController = javafxController;
       javafxController.setPlayer( player );
       javafxController.setHostServices( hostServices );
       javafxController.setTopView( topView );
@@ -59,8 +59,13 @@ public abstract class ViewState extends AbstractView {
       ViewState returned = new UserAuthState();
       ViewState.stage = stage;
       ViewState.hostServices = hostServices;
-      ViewState.topView = topView;
+      setTopView( topView );
       return returned;
+   }
+   
+   public static void setTopView(GuiView topView) {
+      ViewState.topView = topView;
+      if(javafxController!=null) javafxController.setTopView( topView );
    }
    
    /**
