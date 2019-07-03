@@ -18,7 +18,6 @@ import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -240,7 +239,7 @@ public class Map {
    
    public void setMap(int mapIndex){
       //load map image
-      Image image = new Image( "/images/maps/map_"+mapIndex+".png" );
+      Image image = ImageCache.loadImage( "/images/maps/map_"+mapIndex+".png",-1 );
       BackgroundImage bi = new BackgroundImage( image,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize( 1,1,false,false,true,false ) );
       //setup image and map to preserve aspect ratio
       double ratio = image.getWidth()/image.getHeight();

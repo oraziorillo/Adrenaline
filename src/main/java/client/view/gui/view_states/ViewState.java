@@ -10,6 +10,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -104,7 +105,6 @@ public abstract class ViewState extends AbstractView {
    @Override
    public void ack(String message) {
       previousAcks.add( message );
-      if(javafxController!=null) javafxController.ack( message );
    }
    
    @Override
@@ -161,4 +161,10 @@ public abstract class ViewState extends AbstractView {
          throw e1;
       }
    }
+   
+   @Override
+   public void request(Request request) throws RemoteException {
+   
+   }
+   
 }

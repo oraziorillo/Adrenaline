@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.requests.Request;
+import server.ServerPropertyLoader;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -50,7 +51,7 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-        this.requestTimer = new Timer(REQUEST_TIME, actionEvent -> {
+        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
             try {
                 requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
                 requestRecipient.getView().ack("Time to decide is up!");

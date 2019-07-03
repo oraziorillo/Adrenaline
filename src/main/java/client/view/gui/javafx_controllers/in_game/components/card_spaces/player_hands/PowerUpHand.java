@@ -8,7 +8,7 @@ import java.io.IOException;
 public class PowerUpHand extends CardHand<PowerUpCardDTO> {
    
    public PowerUpHand(){
-      super(Constants.MAX_POWER_UPS_IN_HAND);
+      super(Constants.MAX_POWER_UPS_IN_HAND+1); //For a short time user can have an extra powerup in his hand
       super.initialize();
    }
    

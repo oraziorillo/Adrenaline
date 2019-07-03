@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import common.events.requests.Request;
+import server.ServerPropertyLoader;
 import server.controller.Controller;
 import server.controller.Player;
 import server.model.Pc;
@@ -11,8 +12,6 @@ import server.model.target_checkers.VisibilityDecorator;
 
 import javax.swing.*;
 import java.util.ArrayList;
-
-import static common.Constants.REQUEST_TIME;
 
 public class InactiveState extends State {
 
@@ -32,7 +31,7 @@ public class InactiveState extends State {
     public InactiveState(Controller controller, int nextState) {
         super(controller);
         this.nextState = nextState;
-        this.powerUpTimer = new Timer(REQUEST_TIME, actionEvent -> useFirstTagbackGrenade());
+        this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> useFirstTagbackGrenade());
         this.powerUpTimer.stop();
     }
 

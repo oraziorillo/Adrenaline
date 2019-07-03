@@ -21,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -33,7 +35,8 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
-import java.util.HashSet;
+
+import static javafx.application.Platform.runLater;
 
 public class SetupController extends AbstractJavaFxController {
    
@@ -42,10 +45,12 @@ public class SetupController extends AbstractJavaFxController {
    @FXML private transient TilePane maps;
    @FXML private transient HBox pcs;
    @FXML private transient Chat chatController;
-   private Circle[] circles = new Circle[Constants.MAX_KILL_SHOT_TRACK_SIZE];
+   private static final int LENGHT = Constants.MAX_KILL_SHOT_TRACK_SIZE;
+   private Circle[] circles = new Circle[LENGHT];
    private int selectedSkulls = Constants.MIN_KILL_SHOT_TRACK_SIZE;
    private EnumMap<PcColourEnum,ImageView> pcViews = new EnumMap<>(PcColourEnum.class );
-   private HashSet<ImageView> reactiveSkulls = new HashSet<>();
+   private StackPane[] skullPanes = new StackPane[LENGHT];
+   private static final Effect selectableEffect = new DropShadow( 10,Color.LIGHTGREEN );
    
    
    
@@ -56,41 +61,33 @@ public class SetupController extends AbstractJavaFxController {
    public void initialize(){
       GridPane.setValignment( maps,VPos.CENTER );
       GridPane.setValignment( pcs, VPos.BOTTOM );
-      //init skulls track
       
-      ImageView skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_0.png", Top.KILLSHOT_HEIGHT ));
-      Circle circle = circles[0] = new Circle( skullImage.getImage().getWidth()/2, Color.RED );
-      circle.setStroke( Color.BLACK );
-      circle.setOpacity( .5 );
-      skullImage.setPreserveRatio( true );
-      skullTrack.getChildren().add( new StackPane( skullImage, circle) );
-      reactiveSkulls.add( skullImage );
-      for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE-1;i++){
-         int skullIndex = i+1;
-         skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_i.png", Top.KILLSHOT_HEIGHT ));
-         circle = circles[i] = new Circle( skullImage.getImage().getWidth()/2,Color.RED );
-         circle.setStroke( Color.BLACK );
-         circle.setOpacity( .5 );
-         if(i>=Constants.MIN_KILL_SHOT_TRACK_SIZE) {
-            skullImage.setOnMouseClicked( e -> chooseSkulls( skullIndex ) );   //skullindex refers to array inded, choose skull refers to skull number
-            skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( skullIndex ) );
-            reactiveSkulls.add( skullImage );
-            circle.setVisible( false );
-         }
-         skullImage.setPreserveRatio( true );
-         skullTrack.getChildren().add( new StackPane( skullImage, circle) );
+      //init stack panes
+      for(int i=0;i<LENGHT;i++) {
+         skullPanes[i] = new StackPane();
+         skullTrack.getChildren().add( skullPanes[i] );
       }
-      skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_ultimo.png", Top.KILLSHOT_HEIGHT ));
-      skullImage.setOnMouseClicked( e -> chooseSkulls( Constants.MAX_KILL_SHOT_TRACK_SIZE ) );
-      skullImage.setOnMouseEntered( e->showCirclesBeforeIndex( Constants.MAX_KILL_SHOT_TRACK_SIZE-1 ) );
-      reactiveSkulls.add( skullImage );
-      skullImage.setPreserveRatio( true );
-      circle = circles[Constants.MAX_KILL_SHOT_TRACK_SIZE-1] = new Circle( skullImage.getImage().getWidth()/2,Color.RED );
-      circle.setStroke( Color.BLACK );
-      circle.setOpacity( .5 );
-      circle.setVisible( false );
-      skullTrack.getChildren().add( new StackPane( skullImage, circle) );
-      skullTrack.setOnMouseExited( e->showCirclesBeforeIndex( selectedSkulls ) );
+      
+      //init skulls images
+      ImageView[] images = new ImageView[LENGHT];
+      images[0] = new ImageView( ImageCache.loadImage( "/images/teschio_0.png", Top.KILLSHOT_HEIGHT ));
+      images[LENGHT-1] = new ImageView( ImageCache.loadImage( "/images/teschio_ultimo.png", Top.KILLSHOT_HEIGHT ));
+      for(int i=1;i<LENGHT-1;i++)
+         images[i] = new ImageView( ImageCache.loadImage( "/images/teschio_i.png", Top.KILLSHOT_HEIGHT ));
+      for(int i=0;i<LENGHT;i++){
+         images[i].setPreserveRatio( true );
+         skullPanes[i].setMaxWidth( images[i].getImage().getWidth() );
+         skullPanes[i].getChildren().add( images[i] );
+      }
+      
+      //init circles
+      for(int i=0;i<LENGHT;i++){
+         Circle c = circles[i] = new Circle(images[i].getImage().getWidth()/2,Color.RED);
+         c.setStroke( Color.BLACK );
+         c.setOpacity( .5 );
+         c.setVisible( i<Constants.MIN_KILL_SHOT_TRACK_SIZE );
+         skullPanes[i].getChildren().add( c );
+      }
       
       //init maps selection
       int sqrtMaps = ( int ) Math.ceil( Math.sqrt( Constants.LAST_MAP ) );
@@ -99,12 +96,10 @@ public class SetupController extends AbstractJavaFxController {
       maps.setTileAlignment( Pos.CENTER );
       String prefix = "/images/maps/map_";
       String postfix = ".png";
-      for(int i=Constants.FIRST_MAP-1;i<Constants.LAST_MAP;i++){
-         int forLambda = i;
+      for(int i=Constants.FIRST_MAP;i<=Constants.LAST_MAP;i++){
          ImageView mapImage = new ImageView( ImageCache.loadImage( prefix+i+postfix, 0) );
          mapImage.fitHeightProperty().bind(Bindings.divide(mainPane.heightProperty(),2*sqrtMaps) );
          mapImage.setPreserveRatio( true );
-         mapImage.setOnMouseClicked( e -> chooseMap( forLambda ) );
          maps.getChildren().add( mapImage );
       }
       
@@ -123,9 +118,8 @@ public class SetupController extends AbstractJavaFxController {
    
    private void chooseSkulls(int n){
       try {
-         player.chooseNumberOfSkulls( n );
          selectedSkulls = n;
-         disableSkullsSelection();
+         player.chooseNumberOfSkulls( n );
          player.ok();
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
@@ -135,7 +129,6 @@ public class SetupController extends AbstractJavaFxController {
    private void chooseMap(int n){
       try {
          player.chooseMap( n );
-         disableMapSelection();
          player.ok();
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
@@ -152,8 +145,8 @@ public class SetupController extends AbstractJavaFxController {
    }
    
    private void showCirclesBeforeIndex(int index){
-      for(int i=0;i<circles.length;i++){
-         circles[i].setVisible( i<=index );
+      for(int i=0;i<LENGHT;i++){
+         circles[i].setVisible( i<index );
       }
    }
    
@@ -188,20 +181,23 @@ public class SetupController extends AbstractJavaFxController {
       mainPane.setOpacity( enabled?1:.5 );
    }
    
-   private void disableSkullsSelection(){
-      skullTrack.setEffect( null );
-      for(ImageView img: reactiveSkulls){
-         img.setOnMouseEntered( null );
-         img.setOnMouseClicked( null );
+   private void setSkullSelectionEnabled(boolean enable){
+      skullTrack.setEffect( enable?selectableEffect :null );
+      for(int i=Constants.MIN_KILL_SHOT_TRACK_SIZE-1;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){ //constants does not refer to array indexes
+         int param = i+1;
+         System.out.println(i);
+         skullPanes[i].setOnMouseClicked( enable?e->chooseSkulls( param ):null );
+         skullPanes[i].setOnMouseEntered( enable?e->showCirclesBeforeIndex( param ):null );
       }
-      skullTrack.setOnMouseExited( null );
+      skullTrack.setOnMouseExited( enable?e->showCirclesBeforeIndex( selectedSkulls ):null );
    }
    
-   private void disableMapSelection(){
-      maps.setEffect( null );
-      maps.setOnMouseClicked( null );
-      for(Node n:maps.getChildren())
-         n.setOnMouseClicked( null );
+   private void setMapSelectable(boolean selectable){
+      maps.setEffect( selectable?selectableEffect:null );
+      for(int i=Constants.FIRST_MAP;i<=Constants.LAST_MAP;i++){
+         int i1=i;
+         maps.getChildren().get( i ).setOnMouseClicked( selectable?e->chooseMap( i1 ):null );
+      }
    }
    
    @Override
@@ -215,24 +211,33 @@ public class SetupController extends AbstractJavaFxController {
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       int l=event.getDTO().getKillShotTrack().length;
-      disableSkullsSelection(  );
+      setSkullSelectionEnabled( false );
       showCirclesBeforeIndex( l );
    }
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      int mapIndex = event.getDTO().getNumberOfMap();
-      ImageView toKeep = ( ImageView ) maps.getChildren().remove( mapIndex );
-      ScaleTransition scale = new ScaleTransition( new Duration( 500 ),toKeep );
-      scale.setOnFinished( e -> {
-         maps.getChildren().clear();
-         maps.getChildren().add( toKeep );
-         toKeep.setTranslateX( 0 ); toKeep.setTranslateY( 0 );
-      } );
-      toKeep.setTranslateX( toKeep.getImage().getWidth()/2 );
-      toKeep.setTranslateY( toKeep.getImage().getHeight()/2 );
-      scale.play();
-      //TODO: da testare
+      setMapSelectable( false );
+      runLater(()-> {
+         maps.setTileAlignment( Pos.CENTER );
+         maps.setHgap( 0 );
+         maps.setVgap( 0 );
+         int mapIndex = event.getDTO().getNumberOfMap()-1;
+         ImageView toKeep = ( ImageView ) maps.getChildren().remove( mapIndex );
+         ScaleTransition scale = new ScaleTransition( new Duration( 500 ), toKeep );
+         scale.setByX( 1 );
+         scale.setByY( 1 );
+         scale.setOnFinished( e -> {
+            maps.getChildren().clear();
+            maps.getChildren().add( toKeep );
+            toKeep.setTranslateX( 0 );
+            toKeep.setTranslateY( 0 );
+         } );
+         toKeep.setTranslateX( toKeep.getImage().getWidth() / 2 );
+         toKeep.setTranslateY( toKeep.getImage().getHeight() / 2 );
+         scale.play();
+         //TODO: da testare
+      });
    }
 
    @Override
@@ -254,9 +259,9 @@ public class SetupController extends AbstractJavaFxController {
    @Override
    public void changed(ObservableValue<? extends Number> obs, Number oldV, Number newV) {
       if(oldV.equals( Double.NEGATIVE_INFINITY )) {
+         setSkullSelectionEnabled( newV.doubleValue()==0 );
          if(!(newV.doubleValue()==0)){
-            disableSkullsSelection();
-            disableMapSelection();
+            setMapSelectable( false );
          }
       }else if(newV.doubleValue() >= 3 /*MIN_PLAYERS*/){
          setEnabled( true );
