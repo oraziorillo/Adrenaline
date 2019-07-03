@@ -33,6 +33,7 @@ public class InGameState extends ViewState {
       } catch ( IOException e ) {
          IllegalArgumentException e1 = new IllegalArgumentException( "Can't load FXML" );
          e1.setStackTrace( e.getStackTrace() );
+         e1.initCause( e );
          throw e1;
       }
    }

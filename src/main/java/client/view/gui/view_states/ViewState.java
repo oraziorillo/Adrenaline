@@ -104,7 +104,6 @@ public abstract class ViewState extends AbstractView {
    @Override
    public void ack(String message) {
       previousAcks.add( message );
-      if(javafxController!=null) javafxController.ack( message );
    }
    
    @Override

@@ -35,15 +35,22 @@ public class SetupState extends ViewState {
          stage.show();
       }catch ( IOException e ){
          IllegalArgumentException e1 = new IllegalArgumentException( "Cannot load fxml file" );
-         e1.setStackTrace( e.getStackTrace() );
+         System.out.println(e.getMessage());
+         e1.initCause( e );
          throw e1;
       }
       stillChoosing.addListener( (obs, oldV, newV) -> {
-         if (newV.intValue() == 0)
+         if (newV.doubleValue() == 0)
             topView.nextState();
+         
       } );
       beforeMyTurn.addListener( getJavafxController() );
       stillChoosing.addListener( getJavafxController() );
+   }
+   
+   @Override
+   public void ack(String message) {
+   
    }
    
    @Override
@@ -71,6 +78,7 @@ public class SetupState extends ViewState {
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
+      super.onGameBoardUpdate( event );
       gameBoardToPass.add( event );
    }
    
