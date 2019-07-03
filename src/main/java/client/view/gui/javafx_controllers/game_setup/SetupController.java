@@ -14,10 +14,13 @@ import common.events.lobby_events.LobbyEvent;
 import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
 import common.remote_interfaces.RemotePlayer;
+import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
@@ -230,26 +233,26 @@ public class SetupController extends AbstractJavaFxController {
    public void onGameBoardUpdate(GameBoardEvent event) {
       setMapSelectable( false );
       setSkullsSelectable( firstPlayer );
-      runLater(()-> {
-         maps.setTileAlignment( Pos.CENTER );
-         maps.setHgap( 0 );
-         maps.setVgap( 0 );
-         int mapIndex = event.getDTO().getNumberOfMap()-1;
-         ImageView toKeep = ( ImageView ) maps.getChildren().remove( mapIndex );
-         ScaleTransition scale = new ScaleTransition( new Duration( 500 ), toKeep );
-         scale.setByX( 1 );
-         scale.setByY( 1 );
-         scale.setOnFinished( e -> {
-            maps.getChildren().clear();
-            maps.getChildren().add( toKeep );
-            toKeep.setTranslateX( 0 );
-            toKeep.setTranslateY( 0 );
-         } );
-         toKeep.setTranslateX( toKeep.getImage().getWidth() / 2 );
-         toKeep.setTranslateY( toKeep.getImage().getHeight() / 2 );
-         scale.play();
-         //TODO: da testare
-      });
+      maps.setHgap( 0 );
+      maps.setVgap( 0 );
+      int mapIndex = event.getDTO().getNumberOfMap()-1;
+      ImageView toKeep = ( ImageView ) maps.getChildren().get( mapIndex );
+      ScaleTransition scale = new ScaleTransition( new Duration( 500 ), toKeep );
+      TranslateTransition move = new TranslateTransition(new Duration( 500 ),toKeep );
+      ParallelTransition complex = new ParallelTransition( scale,move );
+      scale.setByX( 1.5 ); scale.setByY( 1.5 );
+      move.setByX( (maps.localToScene( maps.getBoundsInLocal() ).getCenterX()-toKeep.localToScene( toKeep.getBoundsInLocal()).getCenterX())/2 );
+      move.setByY( (maps.localToScene( maps.getBoundsInLocal() ).getCenterY()-toKeep.localToParent( toKeep.getBoundsInLocal() ).getCenterY())/2 );
+      toKeep.setViewOrder( -1 );
+      complex.setOnFinished( e -> {
+         maps.getChildren().remove( toKeep );
+         maps.getChildren().clear();
+         maps.getChildren().add( toKeep );
+         toKeep.setTranslateX( 0 );
+         toKeep.setTranslateY( 0 );
+      } );
+      complex.play();
+      
    }
 
    @Override
