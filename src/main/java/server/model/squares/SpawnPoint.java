@@ -77,7 +77,7 @@ public class SpawnPoint extends Square {
         if (weaponToGrabIndex >= 0 && weaponToGrabIndex < CARDS_ON_SPAWN_POINT && weapons[weaponToGrabIndex] != null)
             this.weaponToGrabIndex = weaponToGrabIndex;
         else
-            throw new NullPointerException("You have to choose a weapon to grab");
+            throw new NullPointerException("Did anyone teach you to read?");
     }
 
 
@@ -159,6 +159,18 @@ public class SpawnPoint extends Square {
 
         //notify square refilled
         events.fireEvent(new SquareRefilledEvent(convertToDTO(), true));
+    }
+
+
+    @Override
+    public String itemToString() {
+        StringBuilder items = new StringBuilder();
+        int i = 1;
+        for (WeaponCard w : weapons) {
+            items.append("\n> ").append(i).append(" ").append(w.toString());
+            i++;
+        }
+        return items.toString();
     }
 
 

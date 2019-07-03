@@ -8,9 +8,11 @@ public class PcColourChosenEvent extends PcEvent{
 
     private int eventID = PC_COLOUR_CHOSEN;
 
+
     public PcColourChosenEvent(PcDTO pc) {
         super(pc);
     }
+
 
     private PcColourChosenEvent(PcDTO pc, boolean censored) {
         super(pc, censored);
@@ -25,6 +27,6 @@ public class PcColourChosenEvent extends PcEvent{
 
     @Override
     public String toString() {
-        return pc.getName() + " chosen";
+        return "";
     }
 }

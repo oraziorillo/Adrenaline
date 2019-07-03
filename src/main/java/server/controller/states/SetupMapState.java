@@ -26,8 +26,11 @@ public class SetupMapState extends State{
      */
     @Override
     public void selectMap(int mapIndex) {
-        if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP)
+        if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
             this.mapIndex = mapIndex;
+            controller.ackCurrent("\nThis is the Game Board you chose, do you like it?");
+            controller.ackCurrent(controller.getGame().preLoadedGameBoardToString(mapIndex));
+        }
     }
 
 
@@ -51,6 +54,7 @@ public class SetupMapState extends State{
      */
     @Override
     public State nextState() {
+        controller.ackCurrent("\nI'll let you choose even the number of skulls to place on the killshot track (5 to 8)");
         return new SetupKillShotTrackState(controller);
     }
 

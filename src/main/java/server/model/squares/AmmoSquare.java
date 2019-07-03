@@ -89,6 +89,12 @@ public class AmmoSquare extends Square {
     }
 
 
+    @Override
+    public String itemToString() {
+        return ammoTile.toString();
+    }
+
+
     public SquareDTO convertToDTO(){
         SquareDTO squareDTO = new SquareDTO();
         squareDTO.setRow(getRow());

@@ -27,6 +27,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Expose private transient UUID token;
     private transient Pc pc;
+    private transient boolean onLine;
     private transient State currState;
     private transient RemoteView view;
     private transient WeaponCard currWeapon;
@@ -35,6 +36,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public Player(UUID token) throws RemoteException {
         super();
         this.token = token;
+        this.onLine = true;
     }
 
 
@@ -53,13 +55,9 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public UUID getToken() {
         return token;
     }
-    
-    @Override
-    public void sendMessage(String s) {
-        //TODO: manda il messaggio a tutte le view della partita (anche a quella che l'ha mandato)
-    }
-    
-    
+
+
+
     public Pc getPc() {
         return pc;
     }
@@ -100,8 +98,22 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    public void setOnLine(boolean onLine) {
+        this.onLine = onLine;
+    }
+
+
+    public boolean isOnLine() { return onLine; }
+
+
     public void setAttacked(){
         currState.hasBeenAttacked(this);
+    }
+
+
+    @Override
+    public void sendMessage(String s) {
+        //TODO: manda il messaggio a tutte le view della partita (anche a quella che l'ha mandato)
     }
 
 
@@ -278,7 +290,8 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void quit() {
         //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
     }
-    
+
+
     @Override
     public boolean isConnected() throws RemoteException{
         return true;

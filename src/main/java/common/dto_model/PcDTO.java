@@ -75,4 +75,15 @@ public class PcDTO implements DTO {
     public void setPowerUps(ArrayList<PowerUpCardDTO> powerUps) {
         this.powerUps = powerUps;
     }
+
+    public String powerUpsToString() {
+        StringBuilder powerUpsString = new StringBuilder("\nYour power ups:");
+        int i = 0;
+        for (PowerUpCardDTO p : this.powerUps) {
+            powerUpsString.append("\n[").append(i + 1).append("]").append(" ")
+                    .append(p.getColour()).append(p.getColour().getTabs()).append(p.getName());
+            i++;
+        }
+        return powerUpsString.toString();
+    }
 }

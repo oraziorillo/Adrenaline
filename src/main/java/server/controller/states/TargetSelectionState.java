@@ -27,6 +27,7 @@ public class TargetSelectionState extends State {
     private LinkedList<Pc> targetsShotTwice;    //per la machine gun....
     private Set<Square> targetableSquares;
 
+
     TargetSelectionState(Controller controller) {
         super(controller);
         this.shotTargets = new LinkedList<>();
@@ -55,8 +56,10 @@ public class TargetSelectionState extends State {
         }
         currAction = currEffect.getActionAtIndex(actionIndex);
         setAction();
-        if (!currAction.isParameterized() && !hasNextAction())
+        if (!currAction.isParameterized() && !hasNextAction()){
+            executeEffect();
             return true;
+        }
         return false;
     }
 
@@ -102,10 +105,12 @@ public class TargetSelectionState extends State {
                 currAction.selectSquare(controller.getCurrPc().getCurrSquare());    //tractor beam  e electroscyte
             return;
         }
-        if (controller.getCurrWeapon().isChained()) {
-            if (squareToMemorize != null)
+        if (controller.getCurrWeapon().isChained() && !currEffect.isAsynchronous()) {
+            if (squareToMemorize != null) {
                 setTargettableSquares(squareToMemorize);
-            else if (shotTargets != null)
+                squareToMemorize = null;
+            }
+            else if (shotTargets != null && !shotTargets.isEmpty())
                 setTargetableToValidSquares(shotTargets.getLast());
             else
                 setTargetableToValidSquares(controller.getCurrPc());        //verificare per le chained
@@ -117,7 +122,7 @@ public class TargetSelectionState extends State {
 
     private void setDeadPlayers(){
         controller.getPlayers().stream().forEach(player -> {
-            if (player.getPc().getDamageTrack()[10] != null)
+            if (player.getPc().getDamageTrack()[10] != null)     //TODO sostituire l'indice dell'array: da 2 a 10
                 controller.addDeadPlayer(player);
         });
     }
@@ -170,11 +175,14 @@ public class TargetSelectionState extends State {
             if (controller.getCurrWeapon().isChained() && effectIndex == 0){            //per il vortex
                 for (Effect effect: effectsToApply) {
                     for (Action action: effect.getActions()) {
-                        action.selectSquare(s);
+                        if (!action.isSelfMovement())
+                            action.selectSquare(s);
                     }
                 }
-                squareToMemorize = s;
-                nextAction();
+                if (hasNextAction() && !currEffect.memorizeTargetSquare() && currEffect.hasSameTarget()) {
+                    squareToMemorize = s;
+                    nextAction();           //qui fa next per bypassare isComplete
+                }
             }
             else if ((!currEffect.isOriented() || directionSelected) && s.isTargetable()) {
                 currAction.selectSquare(s);
@@ -187,7 +195,7 @@ public class TargetSelectionState extends State {
         Pc targetPc = controller.getPlayers().stream()
                 .filter(player -> player.getPc().getColour() == targetPcColour)
                 .findFirst().map(Player::getPc).orElse(null);
-        if (targetPc != null && targetPc.getCurrSquare().isTargetable() && controller.getCurrPc() != targetPc) {    // da rivedere
+        if (targetPc != null && controller.getCurrPc() != targetPc && (targetPc.getCurrSquare().isTargetable() || currAction.isAdditionalDamage() || currAction.isExclusiveForOldTargets())) {    // da rivedere
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
                 if (currEffect.memorizeTargetSquare() && squareToMemorize == null) {
                     squareToMemorize = targetPc.getCurrSquare();
@@ -274,7 +282,8 @@ public class TargetSelectionState extends State {
             } else {
                 executeEffect();
                 controller.getCurrWeapon().reset();
-                controller.getGame().setTargetableSquares(targetableSquares, false);
+                if (targetableSquares != null)
+                    controller.getGame().setTargetableSquares(targetableSquares, false);
                 setDeadPlayers();
                 return true;
             }

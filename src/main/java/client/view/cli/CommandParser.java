@@ -36,19 +36,19 @@ public interface CommandParser {
                     player.chooseSquare(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
                     break;
                 case CHOOSE_POWER_UP:
-                    player.choosePowerUp(Integer.parseInt(args[0]));
+                    player.choosePowerUp(Integer.parseInt(args[0]) - 1);
                     break;
                 case CHOOSE_WEAPON_ON_SPAWN_POINT:
-                    player.chooseWeaponOnSpawnPoint(Integer.parseInt(args[0]));
+                    player.chooseWeaponOnSpawnPoint(Integer.parseInt(args[0]) - 1);
                     break;
                 case CHOOSE_WEAPON_OF_MINE:
-                    player.chooseWeaponOfMine(Integer.parseInt(args[0]));
+                    player.chooseWeaponOfMine(Integer.parseInt(args[0]) - 1);
                     break;
                 case SWITCH_FIRE_MODE:
                     player.switchFireMode();
                     break;
                 case CHOOSE_UPGRADE:
-                    player.chooseUpgrade(Integer.parseInt( args[0] ));
+                    player.chooseUpgrade(Integer.parseInt( args[0] ) - 1);
                     break;
                 case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
                     //TODO MEGLIO
@@ -62,7 +62,7 @@ public interface CommandParser {
                     player.chooseAmmo(args[0]);
                     break;
                 case CHOOSE_DIRECTION:
-                    player.chooseDirection( Integer.parseInt(args[0]));
+                    player.chooseDirection( Integer.parseInt(args[0]));     //TODO DA RIVEDERE COME DEVONO ESSERE PASSATE
                     break;
                 case RELOAD:
                     player.reload();

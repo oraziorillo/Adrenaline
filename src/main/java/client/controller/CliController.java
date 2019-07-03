@@ -26,32 +26,34 @@ public class CliController {
 
 
     public void run(){
-        try {
-            view.printMessage("\t\tWELCOME TO ADRENALINE!");
-            UUID token;
-            while (this.loginController == null) {
-                tryAcquireConnection();
-            }
-            boolean wantsToRegister = view.wantsToRegister();
-            if (wantsToRegister) {
-                String username;
-                do {
-                    username = view.acquireUsername();
-                    token = loginController.register(username, view);
-                } while (token == null);
-                view.printMessage("Signed up as @" + username +
-                        "\nThis is your token: " + token +
-                        "\nUse it to login next time");
-                player = tryLogin(token);
-            } else {
-                do {
-                    token = view.acquireToken();
+        view.printMessage("\t\tWELCOME TO ADRENALINE!");
+        while (this.loginController == null) {
+            try {
+                UUID token;
+                while (this.loginController == null) {
+                    tryAcquireConnection();
+                }
+                boolean wantsToRegister = view.wantsToRegister();
+                if (wantsToRegister) {
+                    String username;
+                    do {
+                        username = view.acquireUsername();
+                        token = loginController.register(username, view);
+                    } while (token == null);
+                    view.printMessage("Signed up as @" + username +
+                            "\nThis is your token: " + token +
+                            "\nUse it to login next time");
                     player = tryLogin(token);
-                } while (player == null);
+                } else {
+                    do {
+                        token = view.acquireToken();
+                        player = tryLogin(token);
+                    } while (player == null);
+                }
+                loginController.joinLobby(token);
+            } catch (IOException e) {
+                view.printMessage("Server unreachable");
             }
-            loginController.joinLobby(token);
-        } catch (IOException e) {
-            view.printMessage("Server unreachable");
         }
         view.nextCommand();
         String[] input = null;
@@ -87,7 +89,7 @@ public class CliController {
         try {
             tmpPlayer = loginController.login(token, view);
             if (tmpPlayer != null)
-                view.printMessage("\nLogging in\n");
+                view.printMessage("\nLogging in");
         } catch (PlayerAlreadyLoggedInException e) {
             view.printMessage(e.getMessage());
             tmpPlayer = null;

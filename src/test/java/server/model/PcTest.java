@@ -74,7 +74,7 @@ public class PcTest {
     public void getPowerUpCardReturnsPowerUpAtTheSelectedIndex() {
         PowerUpCard powerUp = Mockito.mock(PowerUpCard.class);
         when(game.drawPowerUp()).thenReturn(powerUp);
-        tested.drawPowerUp();
+        tested.drawPowerUp(1);
         assertSame(powerUp, tested.getPowerUpCard(0) );
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> tested.getPowerUpCard(1) );
     }
@@ -108,7 +108,7 @@ public class PcTest {
     public void drawPowerUpWorksFine() {
         PowerUpCard powerUp = Mockito.mock(PowerUpCard.class);
         when(game.drawPowerUp()).thenReturn(powerUp);
-        tested.drawPowerUp();
+        tested.drawPowerUp(1);
         assertSame(powerUp, tested.getPowerUpCard(0));
     }
 
@@ -116,7 +116,7 @@ public class PcTest {
     public void discardPowerUpRemoveTheGivenPowerUpIfPresent() {
         PowerUpCard powerUp = Mockito.mock(PowerUpCard.class);
         when(game.drawPowerUp()).thenReturn(powerUp);
-        tested.drawPowerUp();
+        tested.drawPowerUp(1);
         assertEquals(1, tested.getPowerUps().size());
         assertSame(powerUp, tested.getPowerUpCard(0));
         tested.discardPowerUp(powerUp);
@@ -171,8 +171,8 @@ public class PcTest {
         assertTrue(tested.hasAtLeastOneAvailableAmmo());
         tested.payAmmo(ammoToPay);
         assertFalse(tested.hasAtLeastOneAvailableAmmo());
-        tested.drawPowerUp();
-        tested.drawPowerUp();
+        tested.drawPowerUp(1);
+        tested.drawPowerUp(1);
         assertTrue(tested.hasAtLeastOneAvailableAmmo());
     }
 
@@ -186,8 +186,8 @@ public class PcTest {
         when(powerUp2.getColour()).thenReturn(AmmoEnum.RED);
         short [] ammo = new short []{2,1,1};
         short [] ammo2 = new short []{1,2,1};
-        tested.drawPowerUp();
-        tested.drawPowerUp();
+        tested.drawPowerUp(1);
+        tested.drawPowerUp(1);
         assertFalse(tested.hasEnoughAmmo(ammo));
         assertTrue(tested.hasEnoughAmmo(ammo2));
     }
@@ -201,7 +201,7 @@ public class PcTest {
         short [] ammo = new short []{2,1,1};
         short [] ammo2 = new short []{1,2,1};
         short [] resultAmmo = new short []{0,0,0};
-        tested.drawPowerUp();
+        tested.drawPowerUp(1);
         assertTrue(tested.hasEnoughAmmo(ammo));
         assertFalse(tested.hasEnoughAmmo(ammo2));
         tested.payAmmo(ammo);

@@ -1,5 +1,6 @@
 package server.controller.states;
 
+import common.enums.PcColourEnum;
 import server.controller.Controller;
 
 import static common.Constants.MAX_KILL_SHOT_TRACK_SIZE;
@@ -28,6 +29,13 @@ public class SetupKillShotTrackState extends State{
     public void selectNumberOfSkulls(int n) {
         if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE) {
             this.killShotTrackIndex = n;
+            if (n == MIN_KILL_SHOT_TRACK_SIZE)
+                controller.ackCurrent("\nJust " + MIN_KILL_SHOT_TRACK_SIZE + " kills?! That's for cowards!");
+            else if (n < MAX_KILL_SHOT_TRACK_SIZE)
+                controller.ackCurrent("\nThat sounds good. Fair enough.");
+            else
+                controller.ackCurrent("\nYour testosterone level is nearly as high as DOZER's one!!");
+
         }
     }
 
@@ -52,6 +60,11 @@ public class SetupKillShotTrackState extends State{
      */
     @Override
     public State nextState(){
+        StringBuilder colourChoice = new StringBuilder("\nAnd finally choose your character, each of them is particular in its own way:");
+        for (PcColourEnum c : PcColourEnum.values()) {
+            colourChoice.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
+        }
+        controller.ackCurrent(colourChoice.toString());
         return new PcSelectionState(controller);
     }
 }

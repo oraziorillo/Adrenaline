@@ -7,6 +7,8 @@ import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
 
+import java.rmi.RemoteException;
+
 public class RespawnState extends State {
 
     private Player deadPlayer;
@@ -22,7 +24,7 @@ public class RespawnState extends State {
         deadPlayer = controller.getDeadPlayers().poll();
         if (controller.getGame().scoreDeath(deadPlayer.getPc(), controller.getDeadPlayers().size() == 1))
             controller.setLastPlayerIndex(controller.getCurrPlayerIndex());
-        deadPlayer.getPc().drawPowerUp();
+        deadPlayer.getPc().drawPowerUp(1);
     }
 
 
@@ -44,6 +46,11 @@ public class RespawnState extends State {
             pcToRespawn.spawn(s);
             pcToRespawn.discardPowerUp(powerUp);
             oldSquare.getPcs().remove(pcToRespawn);
+            try {
+                deadPlayer.getView().ack("\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         return false;

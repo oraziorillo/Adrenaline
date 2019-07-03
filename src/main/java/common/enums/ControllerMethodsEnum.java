@@ -1,5 +1,7 @@
 package common.enums;
 
+import static common.Constants.WRONG_TIME;
+
 /**
  * Contains the possible actions an user can perform.
  * Support enum for hand-made socket stubs
@@ -50,7 +52,7 @@ public enum ControllerMethodsEnum {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Oak's words echoed... There's a time and place for everything, but not now");
+        throw new IllegalArgumentException(WRONG_TIME);
     }
 
     public String getCommand(){

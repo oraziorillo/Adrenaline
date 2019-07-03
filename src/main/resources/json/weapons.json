@@ -497,8 +497,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "maxDistance",
-                "maxDistance": 0
+                "type": ""
               }
             ]
           }
@@ -514,7 +513,7 @@
           {
             "optional": false,
             "necessaryForNextAction": false,
-            "parameterized": true,
+            "parameterized": false,
             "needsOldSquare": false,
             "isMovement": false,
             "damage": 2,
@@ -527,8 +526,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": "maxDistance",
-                "maxDistance": 0
+                "type": ""
               }
             ]
           }
@@ -1118,6 +1116,9 @@
             "targetsOnDifferentSquares": true,
             "targetChecker": [
               {
+                "type": "straightLine"
+              },
+              {
                 "type": "maxDistance",
                 "maxDistance": 2
               },
@@ -1529,7 +1530,7 @@
   {
     "name": "Cyberblade",
     "colour":"YELLOW",
-    "chained": true,
+    "chained": false,
     "ammo": [
       0,
       1,
@@ -2176,7 +2177,7 @@
           {
             "optional": false,
             "necessaryForNextAction": false,
-            "parameterized": false,
+            "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
             "damage": 3,

@@ -18,8 +18,8 @@ public class PlayerJoinedEvent extends LobbyEvent{
 
     @Override
     public String toString() {
-        String m1 = "Say hello to @" + lobby.lastPlayerAddedName();
-        String m2 = "You joined a lobby";
+        String m1 = "\nSay hello to @" + lobby.lastPlayerAddedName();
+        String m2 = "\nYou joined a lobby";
         StringBuilder m3 = new StringBuilder(((lobby.size() > 1)
                 ? "\nThere are " + lobby.size() + " players"
                 : "\nThere is " + 1 + " player") + " in this lobby");

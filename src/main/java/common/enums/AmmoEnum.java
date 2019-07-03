@@ -8,12 +8,17 @@ import com.google.gson.annotations.SerializedName;
  */
 public enum AmmoEnum {
     @SerializedName("BLUE")
-    BLUE,
+    BLUE("\t"),
     @SerializedName("RED")
-    RED,
+    RED("\t\t"),
     @SerializedName("YELLOW")
-    YELLOW;
+    YELLOW("\t");
 
+    private String tabs;
+
+    AmmoEnum(String tabs){
+        this.tabs = tabs;
+    }
 
     public static AmmoEnum fromString(String stringed) {
         for(AmmoEnum e: values()){
@@ -30,6 +35,11 @@ public enum AmmoEnum {
      */
     public SquareColourEnum toSquareColour(){
         return SquareColourEnum.valueOf(this.toString());
+    }
+
+
+    public String getTabs() {
+        return tabs;
     }
 }
 

@@ -32,7 +32,10 @@ public class ShootPeopleState extends State {
         Square s = controller.getGame().getSquare(row, column);
         if (!moved && s != null && s.isTargetable()) {
             this.targetSquare = s;
-        }
+        } else if (moved) {
+            controller.ackCurrent("You can't move twice, it's time to shoot now! Just choose a weapon.");
+        } else
+            controller.ackCurrent("You can't move there!");
     }
 
 
@@ -42,6 +45,7 @@ public class ShootPeopleState extends State {
         if (currWeapon != null && currWeapon.isLoaded()) {
             controller.setCurrWeapon(currWeapon);
             this.weaponSelected = true;
+            controller.ackCurrent("Ohoh! That hurts!");
         }
     }
 
@@ -51,7 +55,10 @@ public class ShootPeopleState extends State {
         if (controller.isFinalFrenzy() && !reloadDone) {
             this.wantsToReload = true;
             return true;
-        }
+        } else if (reloadDone)
+            controller.ackCurrent("You just reloaded!");
+        else
+            controller.ackCurrent("Not in final frenzy, yet. First shoot, then reload!");
         return false;
     }
 

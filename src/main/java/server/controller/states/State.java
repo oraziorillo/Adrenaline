@@ -1,15 +1,16 @@
 package server.controller.states;
 
 import common.enums.AmmoEnum;
+import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import server.controller.Controller;
-import common.enums.CardinalDirectionEnum;
 import server.controller.Player;
 import server.model.Pc;
 import server.model.WeaponCard;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
+
+import static common.Constants.WRONG_TIME;
 
 /**
  * This class represents a state of a game state diagram.
@@ -25,67 +26,112 @@ public abstract class State {
 
     void setTargetableToValidSquares(Pc referencePc) throws RemoteException {}
 
-    public void selectMap(int n) {}
+    public void selectMap(int n) {
+        controller.ackCurrent(WRONG_TIME);
+    }
     
-    public void selectNumberOfSkulls(int n) {}
+    public void selectNumberOfSkulls(int n) {
+        controller.ackCurrent(WRONG_TIME);
+    }
     
-    public void selectPcColour(String pcColour) {}
+    public void selectPcColour(String pcColour) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void spawnPc(Pc pc, int powerUpToDropIndex) {}
+    public void spawnPc(Pc pc, int powerUpToDropIndex) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
     public boolean runAround(){
+        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
     public boolean grabStuff(){
+        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
     public boolean shootPeople(){
+        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
-    public boolean usePowerUp() { return false; }
+    public boolean usePowerUp() {
+        controller.ackCurrent(WRONG_TIME);
+        return false;
+    }
 
-    public void selectSquare(int row, int col) {}
+    public void selectSquare(int row, int col) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectPowerUp(int index) { print(); }
+    public void selectPowerUp(int index) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectWeaponOnBoard(int index) { print(); }
+    public void selectWeaponOnBoard(int index) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectWeaponOfMine(int index) { print(); }
+    public void selectWeaponOfMine(int index) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void switchFireMode(WeaponCard weapon) { print(); }
+    public void switchFireMode(WeaponCard weapon) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectUpgrade(WeaponCard weapon, int index) { print(); }
+    public void selectUpgrade(WeaponCard weapon, int index) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) { print(); }
+    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectAmmo(AmmoEnum fromString) { print(); }
+    public void selectAmmo(AmmoEnum fromString) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectTarget(PcColourEnum pcColour) { print(); }
+    public void selectTarget(PcColourEnum pcColour) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void selectDirection(CardinalDirectionEnum direction) { print(); }
+    public void selectDirection(CardinalDirectionEnum direction) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void setHasToRespawn(boolean hasToRespawn) {}
+    public void setHasToRespawn(boolean hasToRespawn) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
-    public void hasBeenAttacked(Player attackedPlayer) {}
+    public void hasBeenAttacked(Player attackedPlayer) {
+        controller.ackCurrent(WRONG_TIME);
+    }
 
     public boolean skip() {
+        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
-    public boolean undo() { return false; }
+    public boolean undo() {
+        controller.ackCurrent(WRONG_TIME);
+        return false;
+    }
 
     public boolean ok() {
+        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
     public boolean reload() {
+        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
     public boolean pass() {
+        controller.ackCurrent("No regrets. No going back.");
         return false;
     }
 
@@ -98,12 +144,4 @@ public abstract class State {
      * @return The next expected state
      */
     public abstract State nextState();
-
-    void print(){
-        try {
-            controller.getCurrPlayer().getView().ack("Using this command now is useless");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

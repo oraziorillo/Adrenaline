@@ -60,7 +60,6 @@ public class ClientSocketHandler implements Runnable {
                 } catch (IOException ignore) {
                 }
             }
-
         }
     }
 

@@ -81,6 +81,11 @@ public final class Constants {
     public static final String REGEX = "#";
 
 
+    // --------------> MESSAGES
+
+    public static final String WRONG_TIME = "\nOak's words echoed... There's a time and place for everything, but not now";
+
+
     Constants() {
     }
 }
