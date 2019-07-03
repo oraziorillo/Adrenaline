@@ -6,6 +6,7 @@ import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
+import common.events.requests.Request;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
@@ -53,7 +54,12 @@ public class UserAuthController extends AbstractJavaFxController {
    public void notifyEvent(LobbyEvent event) throws RemoteException {
 
    }
-   
+
+   @Override
+   public void request(Request request) throws RemoteException {
+
+   }
+
    @Override
    public void chatMessage(String message) throws RemoteException {
       throw new IllegalStateException( "Can't write in chat" );

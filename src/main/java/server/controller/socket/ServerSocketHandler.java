@@ -129,7 +129,6 @@ public class ServerSocketHandler implements Runnable {
             case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
                 boolean beforeBasicEffect = Boolean.getBoolean(args[1]);
                 player.chooseAsynchronousEffectOrder(beforeBasicEffect);
-                //TODO da verificare il comportamento di questo comando
                 break;
             case CHOOSE_TARGET:
                 player.chooseTarget( args[1] );

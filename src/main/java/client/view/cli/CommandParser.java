@@ -1,5 +1,6 @@
 package client.view.cli;
 
+import common.enums.CardinalDirectionEnum;
 import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemotePlayer;
 
@@ -10,7 +11,6 @@ public interface CommandParser {
     static void executeCommand(ControllerMethodsEnum command, String[] args, RemotePlayer player) throws IOException {
         try {
             switch (command) {
-                //TODO: aggiungi i comandi restanti
                 case CHOOSE_MAP:
                     player.chooseMap(Integer.parseInt(args[0]));
                     break;
@@ -48,12 +48,13 @@ public interface CommandParser {
                     player.switchFireMode();
                     break;
                 case CHOOSE_UPGRADE:
-                    player.chooseUpgrade(Integer.parseInt( args[0] ));
+                    player.chooseUpgrade(Integer.parseInt(args[0]));
                     break;
                 case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
-                    //TODO MEGLIO
-                    boolean bool = getBoolean(args[0]);
-                    player.chooseAsynchronousEffectOrder( bool );
+                    if (args[0].equals("before"))
+                        player.chooseAsynchronousEffectOrder(true);
+                    else if (args[0].equals("after"))
+                        player.chooseAsynchronousEffectOrder(false);
                     break;
                 case CHOOSE_TARGET:
                     player.chooseTarget(args[0]);
@@ -62,7 +63,12 @@ public interface CommandParser {
                     player.chooseAmmo(args[0]);
                     break;
                 case CHOOSE_DIRECTION:
-                    player.chooseDirection( Integer.parseInt(args[0]));
+                    CardinalDirectionEnum dir = CardinalDirectionEnum.parseString(args[0]);
+                    if (dir != null)
+                        player.chooseDirection(Integer.parseInt(args[0]));
+                    break;
+                case RESPONSE:
+                    player.response(args[0]);
                     break;
                 case RELOAD:
                     player.reload();
@@ -91,14 +97,5 @@ public interface CommandParser {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("You missed some info about the command you gave to me");
         }
-
-    }
-
-    static boolean getBoolean(String string){
-        if (string.equalsIgnoreCase("b"))
-            return true;
-        if (string.equalsIgnoreCase("a"))
-            return false;
-        throw new IllegalArgumentException();
     }
 }

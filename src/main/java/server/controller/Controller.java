@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
+import common.events.requests.Request;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -15,6 +16,7 @@ import server.model.actions.Action;
 import server.model.deserializers.*;
 import server.model.squares.Square;
 
+import javax.swing.Timer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
@@ -22,8 +24,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
-import static common.Constants.ACTIONS_PER_TURN;
+import static common.Constants.*;
 
 public class Controller{
 
@@ -36,6 +37,9 @@ public class Controller{
     private Set<PcColourEnum> availablePcColours;
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
+    private boolean locked;
+    private Timer requestTimer;
+    private Player requestRecipient;
 
 
     public Controller(UUID gameUUID, List<Player> players) {
@@ -46,6 +50,15 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
+        this.requestTimer = new Timer(REQUEST_TIME, actionEvent -> {
+            try {
+                requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
+                requestRecipient.getView().ack("Time to decide is up!");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+        this.requestTimer.stop();
     }
 
 
@@ -110,6 +123,11 @@ public class Controller{
             }
             game.addModelEventListener(p.getToken(), listener);
         });
+    }
+
+
+    public boolean isLocked() {
+        return locked;
     }
 
 
@@ -259,6 +277,27 @@ public class Controller{
     }
 
 
+    public void sendRequest(Request request, Player recipient) {
+        try {
+            locked = true;
+            requestRecipient = recipient;
+            recipient.getView().request(request);
+            requestTimer.start();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void ackRequestRecipient(String msg) {
+        try {
+            requestRecipient.getView().ack(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void ackCurrent(String msg){
         try {
             getCurrPlayer().getView().ack(msg);
@@ -285,6 +324,16 @@ public class Controller{
             availableColours.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
         }
         return availableColours.toString();
+    }
+
+
+    public void stopRequestTimer() {
+        this.requestTimer.stop();
+    }
+
+
+    public void unlock() {
+
     }
 
 

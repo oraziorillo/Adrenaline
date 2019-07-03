@@ -66,48 +66,44 @@ public abstract class State {
         controller.ackCurrent(WRONG_TIME);
     }
 
+    public void response(String response) {}
+
     public void selectPowerUp(int index) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void selectWeaponOnBoard(int index) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void selectWeaponOfMine(int index) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void switchFireMode(WeaponCard weapon) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void selectUpgrade(WeaponCard weapon, int index) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void selectAmmo(AmmoEnum fromString) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void selectTarget(PcColourEnum pcColour) {
-        controller.ackCurrent(WRONG_TIME);
+
     }
 
     public void selectDirection(CardinalDirectionEnum direction) {
-        controller.ackCurrent(WRONG_TIME);
     }
 
     public void setHasToRespawn(boolean hasToRespawn) {
-        controller.ackCurrent(WRONG_TIME);
-    }
-
-    public void hasBeenAttacked(Player attackedPlayer) {
-        controller.ackCurrent(WRONG_TIME);
     }
 
     public boolean skip() {
@@ -116,7 +112,7 @@ public abstract class State {
     }
 
     public boolean undo() {
-        controller.ackCurrent(WRONG_TIME);
+        //controller.ackCurrent("No regrets. No going back.");
         return false;
     }
 
@@ -126,14 +122,16 @@ public abstract class State {
     }
 
     public boolean reload() {
-        controller.ackCurrent(WRONG_TIME);
         return false;
     }
 
     public boolean pass() {
-        controller.ackCurrent("No regrets. No going back.");
         return false;
     }
+
+
+    public void checkTagbackGrenadeConditions(Player damagedPlayer){}
+
 
     public boolean isInactive() {
         return false;

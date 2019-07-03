@@ -11,6 +11,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 
@@ -72,8 +73,6 @@ public class CliView extends AbstractView {
             switch (cme) {
                 case SOCKET:
                     Socket socket = new Socket(HOST, SOCKET_PORT);
-                    //ClientSocketHandler handler = new ClientSocketHandler(socket, this);
-                    //new Thread(handler).start();
                     return new LoginControllerSocketProxy(socket, this);
                 case RMI:
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
@@ -129,6 +128,7 @@ public class CliView extends AbstractView {
         }
     }
 
+
     @Override
     public synchronized void ack(String message) throws RemoteException {
         if (message.length() != 0) {
@@ -152,6 +152,12 @@ public class CliView extends AbstractView {
     @Override
     public synchronized void notifyEvent(LobbyEvent event) throws RemoteException {
         printMessage(event.toString());
+    }
+
+
+    @Override
+    public void request(Request request) throws RemoteException {
+        printMessage(request.toString());
     }
 
 
