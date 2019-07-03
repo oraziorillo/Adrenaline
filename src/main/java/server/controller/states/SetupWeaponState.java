@@ -98,7 +98,7 @@ public class SetupWeaponState extends State {
     @Override
     public void selectPowerUp(int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
-        if (powerUp != null && powerUp.isSelectedAsAmmo()) {
+        if (powerUp != null && !powerUp.isSelectedAsAmmo()) {
             powerUp.setSelectedAsAmmo(true);
             controller.ackCurrent("You'll lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo");
         }

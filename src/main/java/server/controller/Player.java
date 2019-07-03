@@ -28,6 +28,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Expose private transient UUID token;
     private transient Pc pc;
+    private transient boolean onLine;
     private transient State currState;
     private transient RemoteView view;
     private transient WeaponCard currWeapon;
@@ -37,6 +38,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public Player(UUID token) throws RemoteException {
         super();
         this.token = token;
+        this.onLine = true;
     }
 
 
@@ -111,6 +113,14 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public void notifyDamaged() {
         currState.checkTagbackGrenadeConditions(this);
     }
+
+
+    public void setOnLine(boolean onLine) {
+        this.onLine = onLine;
+    }
+
+
+    public boolean isOnLine() { return onLine; }
 
 
     @Override

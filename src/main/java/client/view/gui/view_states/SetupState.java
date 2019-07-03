@@ -23,7 +23,7 @@ public class SetupState extends ViewState {
    private transient HashSet<GameBoardEvent> gameBoardToPass = new HashSet<>();
    private transient HashSet<PcEvent> pcToPass = new HashSet<>();
    private transient HashSet<KillShotTrackEvent> killShotToPass = new HashSet<>();
-   private transient DoubleProperty stillChoosing = new SimpleDoubleProperty( Double.NEGATIVE_INFINITY );
+   private transient DoubleProperty stillChoosing = new SimpleDoubleProperty( Double.POSITIVE_INFINITY );
    private transient DoubleProperty beforeMyTurn = new SimpleDoubleProperty( Double.NEGATIVE_INFINITY );
    
    SetupState() throws RemoteException {
@@ -44,6 +44,7 @@ public class SetupState extends ViewState {
             topView.nextState();
       } );
       beforeMyTurn.addListener( getJavafxController() );
+      stillChoosing.addListener( getJavafxController() );
    }
    
    @Override
@@ -86,7 +87,7 @@ public class SetupState extends ViewState {
 
    @Override
    public void notifyEvent(LobbyEvent event) {
-      if(beforeMyTurn.get()==Double.NEGATIVE_INFINITY && event.getDTO().size()>= 3/*MIN_PLAYER_NUMBER*/){
+      if(beforeMyTurn.get()==Double.NEGATIVE_INFINITY){
          beforeMyTurn.set((double)(event.getDTO().size()-1));  //excluded yourself
       }
       stillChoosing.set(event.getDTO().size());

@@ -254,11 +254,12 @@ public class SetupController extends AbstractJavaFxController {
    @Override
    public void changed(ObservableValue<? extends Number> obs, Number oldV, Number newV) {
       if(oldV.equals( Double.NEGATIVE_INFINITY )) {
-         setEnabled( true );
-         if(!newV.equals( 0 )){
+         if(!(newV.doubleValue()==0)){
             disableSkullsSelection();
             disableMapSelection();
          }
+      }else if(newV.doubleValue() >= 3 /*MIN_PLAYERS*/){
+         setEnabled( true );
       }
    }
 }

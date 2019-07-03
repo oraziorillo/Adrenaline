@@ -5,6 +5,7 @@ import common.dto_model.LobbyDTO;
 import common.events.lobby_events.LobbyEvent;
 import common.events.lobby_events.PlayerJoinedEvent;
 import common.remote_interfaces.RemoteView;
+import server.ServerPropertyLoader;
 import server.database.DatabaseHandler;
 
 import javax.swing.*;
@@ -98,14 +99,30 @@ public class Lobby {
 
     private void startNewGame() {
         timer.stop();
-        controller = new Controller(gameUUID, players);
-        if (databaseHandler.containsGame(gameUUID)) {
-            controller.initGame(gameUUID);
-        } else {
-            controller.initGame();
-            databaseHandler.save(controller);
+        if (gameCanStart()) {
+            controller = new Controller(gameUUID, players);
+            if (databaseHandler.containsGame(gameUUID)) {
+                controller.initGame(gameUUID);
+            } else {
+                controller.initGame();
+                databaseHandler.save(controller);
+            }
+            gameStarted = true;
         }
-        gameStarted = true;
+    }
+
+
+    private boolean gameCanStart() {
+        players = players.stream().filter(player -> {
+            try {
+                return player.getView().isReachable();
+            } catch (RemoteException e) {
+                return false;
+            }
+        }).collect(Collectors.toList());
+        if (players.size() > 2)
+            return true;
+        return false;
     }
 
 

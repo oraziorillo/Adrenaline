@@ -117,6 +117,7 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
         out.flush();
     }
 
+
     @Override
     public void chooseTarget(String pcColour)  {
         out.println(CHOOSE_TARGET + REGEX + pcColour);

@@ -1,5 +1,6 @@
 package client.view;
 
+import client.ClientPropertyLoader;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
@@ -11,11 +12,13 @@ import java.util.UUID;
 
 public abstract class AbstractView extends UnicastRemoteObject implements RemoteView, ModelEventListener {
 
-    protected transient static final String HOST = "localhost";
-    protected transient static final int SOCKET_PORT = 10000;
-    protected transient static final int RMI_PORT = 9999;
+    protected static transient final String HOST = ClientPropertyLoader.getInstance().getHostAddress();
+    protected static transient final int SOCKET_PORT = ClientPropertyLoader.getInstance().getSocketPort();
+    protected static transient final int RMI_PORT = ClientPropertyLoader.getInstance().getRmiPort();
 
     protected AbstractView() throws RemoteException {
+        super();
+        
     }
 
     public void printMessage(String msg) {
@@ -47,5 +50,10 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
 
     public String requestString(String message) {
         return null;
+    }
+    
+    @Override
+    public boolean isReachable() throws RemoteException {
+        return true;
     }
 }

@@ -337,4 +337,9 @@ public class Controller{
     }
 
 
+    public void checkGameStatus() {
+        if (players.stream().filter(Player::isOnLine).count() < 3){
+            //TODO
+        }
+    }
 }

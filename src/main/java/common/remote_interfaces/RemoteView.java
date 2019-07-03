@@ -21,4 +21,6 @@ public interface RemoteView extends Remote {
 
     ModelEventListener getListener() throws RemoteException;
 
+    boolean isReachable() throws RemoteException;
+
 }

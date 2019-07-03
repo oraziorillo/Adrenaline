@@ -1,22 +1,9 @@
 GENERAL NOTES:
+
 - gesitre caso in cui l'upgrade non può essere eseguito
 
 - aggiungere timer ai turni
 
-- gestire le carte scoperte
-
-- aggiungere la possibilità di poter scegliere il power up targeting scope più volte
-
-- cambiare il costruttore di ammoTile in modo da fargli prendere solo l'array di ammo e poi setta da solo il contains powerUp1
-
-- valutare se nei DTO servono gli indici degli array
-
-- cambiare gestione ack pre-gioco (i messaggi vengono troncati)
-
-
-REGOLE:
-
-- un giocatore può usare il powerUp1 asincrono più volte se viene attaccato con effetti diversi??
 
 
 ARMI:
@@ -31,8 +18,6 @@ ARMI:
 
 - controllare tutti i controlli effettuati quando isParameterized è false
 
-- rimettere a posto il test di ammoTile
-
 
 CONNESSIONE
 - gestire la disconnessione del player
@@ -40,11 +25,8 @@ CONNESSIONE
 
 
 OPZIONALI:
-- fase iniziale di login e play
 
 - migliorare granade launcher
-
-- usare logger
 
 - mettere singleton le classi di controllo della view
 
@@ -55,9 +37,7 @@ ROBA DA CONTROLLER
  - considerare l'utilizzo di undo quando è final frenzy and in shootpeopleState seleziona l'arma
 
  - considerare di dover rimischiare il deck di ammoTile se finisce
- 
- - far saltare il turno dopo tot tempo di inattività
- 
+
 
 REGOLE DA IMPLEMENTARE:
 

@@ -36,19 +36,19 @@ public interface CommandParser {
                     player.chooseSquare(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
                     break;
                 case CHOOSE_POWER_UP:
-                    player.choosePowerUp(Integer.parseInt(args[0]));
+                    player.choosePowerUp(Integer.parseInt(args[0]) - 1);
                     break;
                 case CHOOSE_WEAPON_ON_SPAWN_POINT:
-                    player.chooseWeaponOnSpawnPoint(Integer.parseInt(args[0]));
+                    player.chooseWeaponOnSpawnPoint(Integer.parseInt(args[0]) - 1);
                     break;
                 case CHOOSE_WEAPON_OF_MINE:
-                    player.chooseWeaponOfMine(Integer.parseInt(args[0]));
+                    player.chooseWeaponOfMine(Integer.parseInt(args[0]) - 1);
                     break;
                 case SWITCH_FIRE_MODE:
                     player.switchFireMode();
                     break;
                 case CHOOSE_UPGRADE:
-                    player.chooseUpgrade(Integer.parseInt(args[0]));
+                    player.chooseUpgrade(Integer.parseInt(args[0]) - 1);
                     break;
                 case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
                     if (args[0].equals("before"))
