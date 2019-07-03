@@ -160,7 +160,7 @@ public class SetupController extends AbstractJavaFxController {
    
    private void showCirclesBeforeIndex(int index){
       for(int i=0;i<circles.length;i++){
-         circles[i].setVisible( i<=index );
+         circles[i].setVisible( i<index );
       }
    }
    
@@ -230,6 +230,9 @@ public class SetupController extends AbstractJavaFxController {
    public void onGameBoardUpdate(GameBoardEvent event) {
       disableMapSelection();
       runLater(()-> {
+         maps.setTileAlignment( Pos.CENTER );
+         maps.setHgap( 0 );
+         maps.setVgap( 0 );
          int mapIndex = event.getDTO().getNumberOfMap()-1;
          ImageView toKeep = ( ImageView ) maps.getChildren().remove( mapIndex );
          ScaleTransition scale = new ScaleTransition( new Duration( 500 ), toKeep );

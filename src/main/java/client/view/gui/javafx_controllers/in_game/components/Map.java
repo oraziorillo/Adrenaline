@@ -241,7 +241,7 @@ public class Map {
    
    public void setMap(int mapIndex){
       //load map image
-      Image image = new Image( "/images/maps/map_"+mapIndex+".png" );
+      Image image = ImageCache.loadImage( "/images/maps/map_"+mapIndex+".png",-1 );
       BackgroundImage bi = new BackgroundImage( image,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.CENTER,new BackgroundSize( 1,1,false,false,true,false ) );
       //setup image and map to preserve aspect ratio
       double ratio = image.getWidth()/image.getHeight();

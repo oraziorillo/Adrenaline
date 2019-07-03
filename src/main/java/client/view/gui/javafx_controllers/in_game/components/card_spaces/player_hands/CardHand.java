@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands;
 
+import client.view.gui.ImageCache;
 import client.view.gui.javafx_controllers.in_game.components.weapons.GeneralWeapon;
 import common.dto_model.AbstractCardDTO;
 import common.enums.PcColourEnum;
@@ -45,6 +46,7 @@ public abstract class CardHand <T extends AbstractCardDTO> {
    }
    
    public void initialize() {
+      mainPane.translateYProperty().bind( Bindings.multiply( mainPane.heightProperty(),hiddenFraction ) );
       for( int i = 0; i<3; i++ ){
          int j=i;
          TranslateTransition transition = new TranslateTransition( duration );
@@ -84,11 +86,10 @@ public abstract class CardHand <T extends AbstractCardDTO> {
             GeneralWeapon cardImage = weaponControllers[i];
             T newCard = newCards[i];
             cards[i] = newCard;
-            cardImage.background.setImage( new Image( newCard.getImagePath(), true ) );
-            cardImage.background.getImage().heightProperty().addListener( (observableValue, aDouble, t1) -> {
-               mainPane.setTranslateY(t1.doubleValue() * hiddenFraction );
-               mainPane.setMaxWidth( (weaponControllers[0].background.getImage().getWidth() * cards.length) + (mainPane.getSpacing() * cards.length - 1) );
-            } );
+            cardImage.background.setImage( ImageCache.loadImage( newCard.getImagePath(), -1 ) );
+//            cardImage.background.imageProperty().addListener( (obs,oldV,newV)->{
+//               mainPane.setMaxWidth( newV.getWidth()*cards.length + mainPane.getSpacing() * (cards.length-1) );
+//            });
             transitions[i].setNode( cardImage.mainPane );
          }
       }

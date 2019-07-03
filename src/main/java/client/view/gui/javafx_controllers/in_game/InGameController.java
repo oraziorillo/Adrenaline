@@ -8,6 +8,7 @@ import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
+import common.Constants;
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
@@ -52,7 +53,6 @@ public class InGameController extends AbstractJavaFxController {
    @FXML private Top topController;
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
-   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>(PcColourEnum.GREEN);
    private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
@@ -93,7 +93,6 @@ public class InGameController extends AbstractJavaFxController {
          n.setTranslateX(2 * (size - i));
          n.setViewOrder(i);
       }
-      setPlayer( player );
    }
    
    private Region spacerFactory(){
@@ -214,15 +213,15 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onPcUpdate(PcEvent event) {
-       PcColourEnum color = event.getDTO().getColour();
+       PcColourEnum eventColor = event.getDTO().getColour();
        if(!event.isCensored()) {
-         topController.setColour( color );
-         pcBoardController.setPcColour( color );
-         powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[0]));
+         topController.setColour( eventColor );
+         pcBoardController.setPcColour( eventColor );
+         powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[Constants.MAX_POWER_UPS_IN_HAND+1]));
          weaponHandController.setCards( event.getDTO().getWeapons() );
          //mapController.setColor
       }
-      pcs.put( color,event.getDTO() );
+      pcs.put( eventColor,event.getDTO() );
     }
 
     @Override

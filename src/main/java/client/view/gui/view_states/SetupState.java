@@ -56,10 +56,10 @@ public class SetupState extends ViewState {
    @Override
    public ViewState nextState() throws RemoteException {
       InGameState returned = new InGameState();
+      for(KillShotTrackEvent e:killShotToPass) returned.onKillShotTrackUpdate( e );
       for(GameBoardEvent e: gameBoardToPass) returned.onGameBoardUpdate( e );
       for (PcEvent e:pcToPass) returned.onPcUpdate( e );
-      for(KillShotTrackEvent e:killShotToPass) returned.onKillShotTrackUpdate( e );
-      return new InGameState();
+      return returned;
    }
    
    @Override
@@ -71,9 +71,9 @@ public class SetupState extends ViewState {
    @Override
    public void onPcUpdate(PcEvent event) {
       super.onPcUpdate( event );
+      pcToPass.add( event );
       stillChoosing.set( stillChoosing.get()-1 );
       beforeMyTurn.set( beforeMyTurn.get()-1 );
-      pcToPass.add( event );
    }
    
    @Override
