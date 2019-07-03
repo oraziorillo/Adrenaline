@@ -13,19 +13,22 @@ public class StartTurnState extends State {
 
     StartTurnState(Controller controller) {
         super(controller);
+        controller.ackCurrent("You can:\n> run around\n> grab stuff\n> shoot people\n> use a power up");
     }
+
 
     @Override
     public boolean runAround(){
+        controller.ackCurrent("\nJust run? Well, you can move on:");
         nextState = new RunAroundState(controller);
-        controller.ackCurrent("\nJust run?");
         return true;
     }
 
+
     @Override
     public boolean grabStuff(){
+        controller.ackCurrent("\nShopping time! You can grab on:");
         nextState = new GrabStuffState(controller);
-        controller.ackCurrent("\nShopping time!");
         return true;
     }
 
@@ -35,7 +38,10 @@ public class StartTurnState extends State {
         for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
             if (weaponCards[i] != null && weaponCards[i].isLoaded()) {
                 nextState = new ShootPeopleState(controller, false, false);
-                controller.ackCurrent("FINALLY! It's showtime!");
+                if (controller.getCurrPc().getAdrenaline() == 2)
+                    controller.ackCurrent("FINALLY! It's showtime! You can move on:");
+                else
+                    controller.ackCurrent("FINALLY! It's showtime!");
                 return true;
             }
         }

@@ -19,6 +19,7 @@ public class FirstTurnState extends State{
         powerUpToDropIndex = -1;
         this.pcToSpawn = controller.getCurrPc();
         this.pcToSpawn.drawPowerUp(2);
+        controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
     }
 
     
@@ -59,8 +60,6 @@ public class FirstTurnState extends State{
     @Override
     public State nextState() {
         controller.nextTurn();
-        if (controller.getCurrPlayerIndex() != 0)
-            controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

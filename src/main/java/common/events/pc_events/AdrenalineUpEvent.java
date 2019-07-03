@@ -14,8 +14,8 @@ public class AdrenalineUpEvent extends PcEvent {
     }
 
 
-    private AdrenalineUpEvent(PcDTO censored, boolean isPrivate) {
-        super(censored, isPrivate);
+    private AdrenalineUpEvent(PcDTO censoredPc, boolean censored) {
+        super(censoredPc, censored);
     }
 
 

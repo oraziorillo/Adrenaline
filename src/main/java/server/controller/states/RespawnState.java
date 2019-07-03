@@ -1,13 +1,11 @@
 package server.controller.states;
 
+import common.enums.AmmoEnum;
 import server.controller.Controller;
 import server.controller.Player;
-import common.enums.AmmoEnum;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
-
-import java.rmi.RemoteException;
 
 public class RespawnState extends State {
 
@@ -43,14 +41,10 @@ public class RespawnState extends State {
             AmmoEnum respawnColour = powerUp.getColour();
             Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
             Square oldSquare = pcToRespawn.getCurrSquare();
-            pcToRespawn.spawn(s);
             pcToRespawn.discardPowerUp(powerUp);
+            pcToRespawn.spawn(s);
             oldSquare.getPcs().remove(pcToRespawn);
-            try {
-                deadPlayer.getView().ack("\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            controller.ackPlayer(deadPlayer, "\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
             return true;
         }
         return false;

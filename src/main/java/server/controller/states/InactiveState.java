@@ -145,7 +145,6 @@ public class InactiveState extends State {
             case FIRST_TURN_STATE:
                 return new FirstTurnState(controller);
             case START_TURN_STATE:
-                controller.ackCurrent("You can:\n> run around\n> grab stuff\n> shoot people\n> use a power up");
                 return new StartTurnState(controller);
             default:
                 return this;

@@ -124,8 +124,8 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
 
     @Override
-    public void sendMessage(String s) {
-        //TODO: manda il messaggio a tutte le view della partita (anche a quella che l'ha mandato)
+    public void sendMessage(String msg) {
+        currState.sendChatMessage(msg);
     }
 
 
@@ -191,11 +191,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void chooseSquare(int row, int col) {
-        try {
-            view.ack("" + row + col);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         currState.selectSquare(row, col);
     }
 

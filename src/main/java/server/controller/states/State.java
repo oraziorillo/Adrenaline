@@ -142,4 +142,8 @@ public abstract class State {
      * @return The next expected state
      */
     public abstract State nextState();
+
+    public void sendChatMessage(String msg) {
+        controller.sendChatMessage(msg);
+    }
 }

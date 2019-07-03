@@ -24,7 +24,7 @@ public class Pc {
 
     private ModelEventHandler events = new ModelEventHandler();
 
-    private final Game currGame;
+    private Game currGame;
     @Expose private PcColourEnum colour;
     @Expose private PcBoard pcBoard;
     @Expose private short adrenaline;
@@ -64,6 +64,11 @@ public class Pc {
 
     public PcColourEnum getColour() {
         return colour;
+    }
+
+
+    public void setCurrGame(Game currGame) {
+        this.currGame = currGame;
     }
 
 
@@ -107,6 +112,11 @@ public class Pc {
 
     public Square getCurrSquare() {
         return this.currSquare;
+    }
+
+
+    public void setCurrSquare(Square currSquare) {
+        this.currSquare = currSquare;
     }
 
 

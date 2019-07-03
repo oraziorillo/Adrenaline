@@ -72,7 +72,7 @@ public class ModelEventHandler {
 
 
 
-    synchronized void fireEvent(PcEvent event) {
+    public synchronized void fireEvent(PcEvent event) {
         PcColourEnum publisherColour = event.getDTO().getColour();
         try {
             listeners.get(publisherColour).onPcUpdate(event);

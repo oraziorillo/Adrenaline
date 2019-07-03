@@ -42,6 +42,8 @@ public class ModelEventDeserializer implements JsonDeserializer<ModelEvent> {
                 return context.deserialize(json, PowerUpDrownEvent.class);
             case SPAWN:
                 return context.deserialize(json, SpawnEvent.class);
+            case COLLECT_EVENT:
+                return context.deserialize(json, CollectEvent.class);
             case AMMO_CHANGED:
                 return context.deserialize(json, AmmoChangedEvent.class);
             case DAMAGE_MARKS_TAKEN:

@@ -1,10 +1,12 @@
 package server.controller.states;
 
+import common.events.requests.Request;
 import server.controller.Controller;
 import server.model.Effect;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +62,10 @@ public class SetupWeaponState extends State {
                         weapon.addUpgrade(upgradeIndex);
                         controller.ackCurrent("\nNow you weapon is huge");
                     } else {
-                        controller.ackCurrent("\nYou can use it *before* or *after* the basic effect. So tell me, what do you prefer?");
+                        List<String> possibilities = new ArrayList<>();
+                        possibilities.add("before");
+                        possibilities.add("after");
+                        controller.sendNonBlockingRequest(new Request("\nYou can use it *before* or *after* the basic effect. So tell me, what do you prefer?", possibilities));
                         waiting = true;
                         asynchronousUpgradeIndex = upgradeIndex;
                     }

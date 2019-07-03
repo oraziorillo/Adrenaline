@@ -86,12 +86,12 @@ public class Controller{
             currPlayerIndex = gameInfo.getCurrPlayerIndex();
             lastPlayerIndex = gameInfo.getLastPlayerIndex();
             addListenersToModel();
+            ackAll("Game restored!");
             players.forEach(player -> {
                 player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken())));
                 player.setCurrState(new InactiveState(this, 2));
             });
             nextTurn();
-            ackAll("Game restored!");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -289,9 +289,27 @@ public class Controller{
     }
 
 
+    public void sendNonBlockingRequest(Request request) {
+        try {
+            getCurrPlayer().getView().request(request);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void ackRequestRecipient(String msg) {
         try {
             requestRecipient.getView().ack(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void ackPlayer(Player p, String msg) {
+        try {
+            p.getView().ack(msg);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -341,5 +359,16 @@ public class Controller{
         if (players.stream().filter(Player::isOnLine).count() < 3){
             //TODO
         }
+    }
+
+
+    public void sendChatMessage(String msg) {
+        players.parallelStream().forEach(p -> {
+            try {
+                p.getView().chatMessage(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

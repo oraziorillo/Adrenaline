@@ -64,7 +64,6 @@ public class PcSelectionState extends State {
             controller.ackCurrent("\nGood Choice!");
             controller.ackAll("\nLet's start!");
             controller.nextTurn();
-            controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
             DatabaseHandler.getInstance().save(controller);
         } else {
             controller.ackCurrent("\nGood choice! Now wait for the others choosing their character...");
