@@ -13,6 +13,7 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
@@ -81,18 +82,18 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void notifyEvent(LobbyEvent event) {
-      currentGui.notifyEvent( event );
+      Platform.runLater(  ()->currentGui.notifyEvent( event ));
    }
 
 
    @Override
    public void chatMessage(String message) {
-      currentGui.chatMessage( message );
+      Platform.runLater( ()->currentGui.chatMessage( message ));
    }
    
    @Override
    public ModelEventListener getListener() {
-      return currentGui.getListener();
+      return this;
    }
    
    
@@ -111,26 +112,26 @@ public class GuiView extends AbstractView implements ModelEventListener {
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
-      currentGui.onGameBoardUpdate( event );
+      Platform.runLater( ()->currentGui.onGameBoardUpdate( event ));
    }
 
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) throws RemoteException {
-      currentGui.onKillShotTrackUpdate( event );
+      Platform.runLater( ()-> currentGui.onKillShotTrackUpdate( event ));
    }
 
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) throws RemoteException {
-      currentGui.onPcBoardUpdate( event );
+      Platform.runLater( ()->currentGui.onPcBoardUpdate( event ) );
    }
 
    @Override
    public void onPcUpdate(PcEvent event) throws RemoteException {
-      currentGui.onPcUpdate( event );
+      Platform.runLater( ()->currentGui.onPcUpdate( event ) );
    }
 
    @Override
    public void onSquareUpdate(SquareEvent event) throws RemoteException {
-      currentGui.onSquareUpdate( event );
+      Platform.runLater( ()->currentGui.onSquareUpdate( event ) );
    }
 }

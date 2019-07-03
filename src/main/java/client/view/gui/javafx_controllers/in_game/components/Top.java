@@ -12,6 +12,7 @@ import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -49,12 +50,13 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    private FlowPane frenzyTrackPane = new FlowPane();
    public static final double KILLSHOT_HEIGHT = 100d;
    
-   public final MapChangeListener<SquareDTO,SquareDTO> squareListener = c->cardHolderController.onChanged( c );
+   public final MapChangeListener<SquareDTO,SquareDTO> squareListener = c->Platform.runLater( ()->cardHolderController.onChanged( c ));
    public final MapChangeListener<PcColourEnum, PcDTO> pcListener = change -> {
-      ammoController.onChanged( change );
-      if(change.wasAdded() && settedColour.equals( change.getValueAdded().getColour() )){
-         punti.setText( Short.toString( change.getValueAdded().getPcBoard().getPoints()) );
-      }
+      Platform.runLater( ()-> {
+         ammoController.onChanged( change );
+         if (change.wasAdded() && settedColour.equals( change.getValueAdded().getColour() ))
+            punti.setText( Short.toString( change.getValueAdded().getPcBoard().getPoints() ) );
+      });
    };
    
    public void initialize(){
