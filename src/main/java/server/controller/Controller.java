@@ -97,7 +97,9 @@ public class Controller{
         try {
             getCurrPlayer().getView().ack("It's your turn!!");
         } catch (IOException e) {
-            e.printStackTrace();
+            getCurrPlayer().setOnLine(false);
+            checkGameStatus();
+
         }
 
     }
@@ -109,7 +111,8 @@ public class Controller{
             try {
                 listener = p.getView().getListener();
             } catch (RemoteException e) {
-                e.printStackTrace();
+                p.setOnLine(false);
+                checkGameStatus();
             }
             game.addModelEventListener(p.getToken(), listener);
         });
@@ -251,7 +254,8 @@ public class Controller{
         try {
             getCurrPlayer().getView().ack("You are the current player now!");
         } catch (IOException e) {
-            e.printStackTrace();
+            getCurrPlayer().setOnLine(false);
+            checkGameStatus();
         }
     }
 
@@ -259,5 +263,12 @@ public class Controller{
     public boolean isNextOnDuty(Player player){
         return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
                 currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
+    }
+
+
+    public void checkGameStatus() {
+        if (players.stream().filter(Player::isOnLine).count() < 3){
+            //TODO
+        }
     }
 }

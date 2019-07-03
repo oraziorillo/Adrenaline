@@ -159,6 +159,12 @@ public class CliView extends AbstractView {
 
 
     @Override
+    public boolean isReachable() throws RemoteException {
+        return true;
+    }
+
+
+    @Override
     public synchronized void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
         printMessage(event.toString());
         event.getDTO().getSquares().forEach(s -> printMessage( "\n" + s.description()));
