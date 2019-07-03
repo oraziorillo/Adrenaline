@@ -3,13 +3,18 @@ package client.view.gui.javafx_controllers.in_game.components;
 import common.dto_model.PcDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
+import common.remote_interfaces.RemotePlayer;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
+import java.rmi.RemoteException;
 
 
 public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListener<ObjectProperty<PcColourEnum>> {
@@ -18,14 +23,17 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    private static final int INITIAL_AMMOS_PER_COLOR = 1;
    private Region[][] ammos = new Region[AmmoEnum.values().length][MAX_AMMOS_PER_COLOR];
    private PcColourEnum settedColor;
+   private RemotePlayer player;
    
    public void initialize(){
       grid.maxWidthProperty().bind( grid.heightProperty() );
       grid.minWidthProperty().bind( grid.heightProperty() );
       for(int i=0; i<AmmoEnum.values().length*MAX_AMMOS_PER_COLOR;i++){
          int color = i/MAX_AMMOS_PER_COLOR;
+         AmmoEnum colorEnum = AmmoEnum.values()[color];
          int index = i%MAX_AMMOS_PER_COLOR;
          Region current = ammos[color][index] = new Region();
+         current.setOnMouseClicked( e-> selectAmmo(AmmoEnum.values()[color]));
          current.setBackground( new Background( new BackgroundFill( Color.valueOf( AmmoEnum.values()[color].toString() ) ,null,null) ));
          current.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
          GridPane.setHgrow( current, Priority.ALWAYS );
@@ -36,6 +44,15 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
          grid.add( current,index,color );
       }
    }
+   
+   private void selectAmmo(AmmoEnum value) {
+      try {
+         player.chooseAmmo( value.toString() );
+      } catch ( RemoteException e ) {
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
+   }
+   
    
    public void setAmmos(short[] ammos) {
       for(AmmoEnum color: AmmoEnum.values())
@@ -56,5 +73,9 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    
    public void setColour(PcColourEnum colour) {
       this.settedColor=colour;
+   }
+   
+   public void setPlayer(RemotePlayer player) {
+      this.player = player;
    }
 }

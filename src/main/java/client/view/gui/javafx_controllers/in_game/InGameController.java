@@ -53,10 +53,10 @@ public class InGameController extends AbstractJavaFxController {
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
    private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>(PcColourEnum.GREEN);
-   private BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
-   private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
-   private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
-   private ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
+   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
+   private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
+   private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
+   private transient ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
    
    public InGameController() throws RemoteException {
    }
@@ -69,8 +69,6 @@ public class InGameController extends AbstractJavaFxController {
       bottom.getChildren().add( weaponHandController.getNode() );
       bottom.getChildren().add( spacerFactory() );
       bottom.getChildren().get( 1 ).toFront();   //move chat to the right
-      //TODO: set map for test
-      mapController.setMap(0);
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
       pcs.addListener( topController.pcListener );
@@ -188,6 +186,7 @@ public class InGameController extends AbstractJavaFxController {
     public void onGameBoardUpdate(GameBoardEvent event) {
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );
+      mapController.setMap( event.getDTO().getNumberOfMap() );
     }
    
    @Override
@@ -208,10 +207,9 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onPcBoardUpdate(PcBoardEvent event) {
-      PcDTO relatedPc = pcs.get( event.getDTO().getColour() );
+      PcDTO relatedPc = pcs.remove( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );
       pcs.put( relatedPc.getColour(),relatedPc );
-      //TODO: testalo, non sono sicuro che triggheri i listener
     }
 
     @Override

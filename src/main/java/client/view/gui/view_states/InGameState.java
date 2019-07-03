@@ -2,30 +2,24 @@ package client.view.gui.view_states;
 
 import client.controller.GuiController;
 import common.events.lobby_events.LobbyEvent;
-import common.remote_interfaces.RemotePlayer;
-import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.List;
 
 import static javafx.application.Platform.runLater;
 
 public class InGameState extends ViewState {
-   public InGameState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> previousAcks) throws RemoteException {
-      super( stage, player, hostServices, previousAcks );
+   InGameState() throws RemoteException {
+      super();
       try {
          FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ) );
          Parent root = loader.load();
-         javafxController = loader.getController();
-         javafxController.setPlayer( player );
-         javafxController.setHostServices( hostServices );
+         setJavafxController( loader.getController() );
    
          runLater(()->{
             stage.setTitle( "ADRENALINE" );
@@ -45,11 +39,6 @@ public class InGameState extends ViewState {
    
    @Override
    public ViewState nextState() throws RemoteException {
-      return ViewState.getFirstState(hostServices, stage,previousAcks,topView);
-   }
-
-   @Override
-   public void notifyEvent(LobbyEvent event) {
-
+      return ViewState.getFirstState(hostServices, stage,topView);
    }
 }

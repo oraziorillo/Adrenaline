@@ -27,7 +27,6 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    private TranslateTransition translate;
    private PcColourEnum settedColour;
    
-   public final ChangeListener<PcColourEnum> colorListener = (observableValue, oldV, newV) -> setPcColour( newV );
    public final ChangeListener<KillShotTrackDTO> frenzyListener =(obs,oldV,newV) -> {
       azioniController.changed( obs,oldV,newV );
       vitaController.changed( obs,oldV,newV );

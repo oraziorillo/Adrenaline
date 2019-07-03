@@ -14,14 +14,10 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,25 +27,21 @@ import java.util.UUID;
  * Concrete states will override those methods so exception is no longer thrown
  */
 public abstract class ViewState extends AbstractView {
-   protected AbstractJavaFxController javafxController;
+   private AbstractJavaFxController javafxController;
    private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
-   protected RemotePlayer player;
-   protected HostServices hostServices;
-   protected List<String> previousAcks;
-   public static Stage stage;
-   protected GuiView topView;
+   protected static transient RemotePlayer player;
+   static transient HostServices hostServices;
+   private static transient List<String> previousAcks = new ArrayList<>();
+   static transient Stage stage;
+   static transient GuiView topView;
    
    public abstract ViewState nextState() throws RemoteException;
    
-   public ViewState(Stage stage, RemotePlayer player, HostServices hostServices, List<String> observedList) throws RemoteException {
+   ViewState() throws RemoteException {
       super();
-      this.player = player;
-      this.hostServices = hostServices;
-      this.stage = stage;
-      this.previousAcks = observedList;
    }
    
-   public void setJavafxController(AbstractJavaFxController javafxController) {
+   protected void setJavafxController(AbstractJavaFxController javafxController) {
       this.javafxController = javafxController;
       javafxController.setPlayer( player );
       javafxController.setHostServices( hostServices );
@@ -59,19 +51,16 @@ public abstract class ViewState extends AbstractView {
       
    }
    
-   public void setHostServices(HostServices hostServices) {
-      this.hostServices = hostServices;
+   protected AbstractJavaFxController getJavafxController() {
+      return javafxController;
    }
    
-   public static ViewState getFirstState(HostServices hostServices, Stage stage, List<String> previousAcks, GuiView topView) throws RemoteException {
-      UserAuthState returned = new UserAuthState( stage, hostServices, previousAcks);
-      returned.setTopView(topView);
+   public static ViewState getFirstState(HostServices hostServices, Stage stage, GuiView topView) throws RemoteException {
+      ViewState returned = new UserAuthState();
+      ViewState.stage = stage;
+      ViewState.hostServices = hostServices;
+      ViewState.topView = topView;
       return returned;
-   }
-   
-   protected void setTopView(GuiView topView){
-      this.topView = topView;
-      javafxController.setTopView( topView );
    }
    
    /**
@@ -85,8 +74,8 @@ public abstract class ViewState extends AbstractView {
    }
    
    public void setPlayer(RemotePlayer player){
-      this.player = player;
-      javafxController.setPlayer( player );
+      ViewState.player = player;
+      if(javafxController!=null) javafxController.setPlayer( player );
    }
    
    @Override
@@ -109,8 +98,8 @@ public abstract class ViewState extends AbstractView {
    
    @Override
    public void ack(String message) {
-      javafxController.ack( message );
       previousAcks.add( message );
+      if(javafxController!=null) javafxController.ack( message );
    }
    
    @Override
@@ -129,34 +118,42 @@ public abstract class ViewState extends AbstractView {
    
    @Override
    public ModelEventListener getListener() {
-      return this;
+      return topView;
    }
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-   
+      javafxController.onGameBoardUpdate( event );
    }
    
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-   
+      javafxController.onKillShotTrackUpdate( event );
    }
    
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
-   
+      javafxController.onPcBoardUpdate( event );
    }
    
    @Override
    public void onPcUpdate(PcEvent event) {
-   
+      javafxController.onPcUpdate( event );
    }
    
    @Override
    public void onSquareUpdate(SquareEvent event) {
-   
+      javafxController.onSquareUpdate( event );
    }
    
    @Override
-   public void notifyEvent(LobbyEvent event) {}
+   public void notifyEvent(LobbyEvent event) {
+      try {
+         javafxController.notifyEvent( event );
+      } catch ( RemoteException e ) {
+         IllegalStateException e1 = new IllegalStateException( "RemoteException on netless operation" );
+         e1.setStackTrace( e.getStackTrace() );
+         throw e1;
+      }
+   }
 }

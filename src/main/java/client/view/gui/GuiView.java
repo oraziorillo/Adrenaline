@@ -27,13 +27,12 @@ public class GuiView extends AbstractView implements ModelEventListener {
    private transient ViewState currentGui;
    protected transient RemotePlayer player;
    protected transient HostServices hostServices;
-   private transient List<String> acks = new ArrayList<>();
-
-
+   
+   
    public GuiView(HostServices hostServices, Stage stage) throws RemoteException {
       super();
       this.hostServices = hostServices;
-      currentGui = ViewState.getFirstState(hostServices,stage,acks,this );
+      currentGui = ViewState.getFirstState(hostServices,stage, this );
    }
 
 
@@ -108,12 +107,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
       this.player = player;
       currentGui.setPlayer(player);
    }
-
-   public void setHostServices(HostServices hostServices) {
-      this.hostServices = hostServices;
-      currentGui.setHostServices( hostServices );
-   }
-
+   
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
       currentGui.onGameBoardUpdate( event );
