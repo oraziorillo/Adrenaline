@@ -184,9 +184,9 @@ public class InGameController extends AbstractJavaFxController {
    
    @Override
     public void onGameBoardUpdate(GameBoardEvent event) {
+      mapController.setMap( event.getDTO().getNumberOfMap() );
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );
-      mapController.setMap( event.getDTO().getNumberOfMap() );
     }
    
    @Override

@@ -57,7 +57,6 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
          rotations[i].setToAngle( -mainPane.getRotate() );
          showing[i] = new ParallelTransition( card, trans, rotations[i] );
       }
-      test();
    }
 
    public void setColor(AmmoEnum color){
@@ -116,13 +115,6 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       mainPane.translateXProperty().bind(Bindings.multiply( Bindings.add( mainPane.heightProperty(), -CARD_TRANSLATION ), 0.5*transXMult));
       mainPane.setTranslateY( -CARD_TRANSLATION*transYMult  );
       this.cornerProperty.set( corner );
-   }
-
-   public void test(){
-      setColor( AmmoEnum.RED );
-      for(ImageView card: cards) {
-         card.setImage( new Image( "/images/weapons/martello_ionico.png", true ) );
-      }
    }
 
    public void setCards(WeaponCardDTO[] cards){
