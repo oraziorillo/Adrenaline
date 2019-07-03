@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.components;
 
+import client.view.gui.ImageCache;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.OpponentBoard;
 import common.dto_model.AmmoTileDTO;
 import common.dto_model.PcDTO;
@@ -22,16 +23,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.EnumMap;
 
 
 public class Map {
-   @FXML
-   GridPane grid;
+   private static final Paint TARGETABLECOLOR = Color.rgb( 45, 200, 45, 0.3 );
+   
+   @FXML GridPane grid;
    private RemotePlayer player;
    
    private Pane[][] squares = new Pane[ROWS][COLS];
@@ -73,7 +77,10 @@ public class Map {
          PcColourEnum colour = change.getValueAdded().getColour();   //Get changing pc's color
          Pane square = squares[change.getValueAdded().getSquareRow()][change.getValueAdded().getSquareCol()];   //get new square
          Circle circle = pcCircles.getOrDefault( colour,new Circle(0,Color.valueOf( colour.toString() )) ); //get pc circle
+         circle.setOnMouseClicked( e -> chooseTarget(colour) );
+         Pane oldSquare = (Pane)circle.getParent();
          pcCircles.put( colour,circle );
+         if(oldSquare!=null) oldSquare.getChildren().remove( circle );
          //bind radius to payers number for every circle
          NumberBinding radius = Bindings.subtract( Bindings.divide(Bindings.min( square.widthProperty(),square.heightProperty()),Bindings.multiply( 2,innerGridSize )),1);
          for(ImageView[] array:ammos){
@@ -82,44 +89,50 @@ public class Map {
                ammo.fitHeightProperty().bind( radius );
             }
          }
-   
+         
          OpponentBoard created = loadNewBoard(colour);
          change.getMap().addListener( created );
          for(OpponentBoard c:opponentBoardControllers.values()){
             c.onChanged( change );
          }
          created.heightProperty().bind( Bindings.multiply( circle.radiusProperty(),2) );
-   
+         
          //add the circle to the square
          square.getChildren().add( circle );
          square.setMinSize( 0,0 );
-   
+         
          //update class data structures and show
          for(Circle c:pcCircles.values()){
             c.radiusProperty().unbind();
             c.radiusProperty().bind( radius );
          }
          circle.setVisible( true );
-      }else{
-         throw new IllegalArgumentException( "Squares shouldn't be removed" );
       }
    };
    
+   private void chooseTarget(PcColourEnum colour) {
+      try {
+         player.chooseTarget( colour.toString() );
+      } catch ( RemoteException e ) {
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
+   }
+   
    public final MapChangeListener<SquareDTO,SquareDTO> squareObserver = change -> {
-      if(change.wasAdded()&&!change.wasRemoved()){
+      if(change.wasRemoved()&&!change.wasAdded()){
          throw new IllegalStateException( "Squares shouldn't be just removed, they should be modified or added" );
       }
       if(change.wasAdded()){
          SquareDTO newSquare = change.getValueAdded();
-         stackPanes[newSquare.getRow()][newSquare.getCol()].setEffect(
-                 newSquare.isTargetable()?new DropShadow( 10,0,0,Color.LIGHTGREEN ):null
+         stackPanes[newSquare.getRow()][newSquare.getCol()].setBackground(
+                 newSquare.isTargetable()?new Background( new BackgroundFill( TARGETABLECOLOR,null,null ) ):null
          );
          ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
          if(change.getValueAdded().getAmmoTile()!=null) {
             AmmoTileDTO ammoTileDTO = change.getValueAdded().getAmmoTile();
-            currAmmo.setImage( new Image( ammoTileDTO.getImagePath() ));
+            currAmmo.setImage( ImageCache.loadImage( ammoTileDTO.getImagePath(),0 ));
          }else{
-            currAmmo.setImage( new Image( AmmoTileDTO.getEmptyPath() ) );
+            currAmmo.setImage( ImageCache.loadImage( AmmoTileDTO.getEmptyPath(),0 ) );
          }
       }
    };
@@ -150,9 +163,12 @@ public class Map {
             
             ImageView ammoTile = new ImageView();
             ammoTile.setPreserveRatio( true );
-            ammos[r][c] = ammoTile;
+            ammoTile.fitWidthProperty().bind( ammoTile.fitHeightProperty() );
    
+            ammos[r][c] = ammoTile;
+            
             StackPane stackPane = new StackPane( pcsPane,ammoTile );
+            ammoTile.fitHeightProperty().bind( Bindings.divide( stackPane.heightProperty(),2 ) );
             stackPane.maxWidthProperty().bind( Bindings.divide( grid.widthProperty(),COLS ) );
             stackPane.maxHeightProperty().bind( Bindings.divide( grid.heightProperty(),ROWS ) );
             StackPane.setAlignment( pcsPane,Pos.TOP_LEFT );
@@ -231,7 +247,7 @@ public class Map {
       grid.setBackground( new Background( bi ) );
       grid.maxWidthProperty().bind( Bindings.multiply( ratio,grid.heightProperty() ) );
       grid.minWidthProperty().bind( Bindings.multiply( ratio,grid.heightProperty() ) );
-   
+      
    }
    
    public void setPlayer(RemotePlayer player) {

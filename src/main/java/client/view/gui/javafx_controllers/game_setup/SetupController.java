@@ -13,6 +13,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_events.PcEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemotePlayer;
+import javafx.animation.ScaleTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -27,6 +28,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -219,7 +221,18 @@ public class SetupController extends AbstractJavaFxController {
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      //TODO: aspetta di avere l'indice della mappa
+      int mapIndex = event.getDTO().getNumberOfMap();
+      ImageView toKeep = ( ImageView ) maps.getChildren().remove( mapIndex );
+      ScaleTransition scale = new ScaleTransition( new Duration( 500 ),toKeep );
+      scale.setOnFinished( e -> {
+         maps.getChildren().clear();
+         maps.getChildren().add( toKeep );
+         toKeep.setTranslateX( 0 ); toKeep.setTranslateY( 0 );
+      } );
+      toKeep.setTranslateX( toKeep.getImage().getWidth()/2 );
+      toKeep.setTranslateY( toKeep.getImage().getHeight()/2 );
+      scale.play();
+      //TODO: da testare
    }
 
    @Override

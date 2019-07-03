@@ -151,18 +151,22 @@ public class Pc {
         events.fireEvent(new MovementEvent(convertToDTO(), oldPos, currSquare.toString()));
     }
 
-    //TODO questo synchronized è una prova..
-    public synchronized void drawPowerUp(){
 
-        PowerUpCard powerUpToDraw = currGame.drawPowerUp();
-        if (powerUpToDraw != null) {
-            powerUps.add(powerUpToDraw);
+    public void drawPowerUp(int numOfPowerUps){
 
-            //notify power up drown
-            events.fireEvent(new PowerUpDrownEvent(
-                    this.convertToDTO(),
-                    powerUpToDraw.convertToDTO()));
+        PowerUpCardDTO[] powerUpsDTOs = new PowerUpCardDTO[2];
+
+        while (numOfPowerUps != 0) {
+            PowerUpCard powerUpToDraw = currGame.drawPowerUp();
+            if (powerUpToDraw != null) {
+                powerUps.add(powerUpToDraw);
+                powerUpsDTOs[2 - numOfPowerUps] = powerUpToDraw.convertToDTO();
+            }
+            numOfPowerUps--;
         }
+
+        //notify power up drown
+        events.fireEvent(new PowerUpDrownEvent(this.convertToDTO(), powerUpsDTOs[0], powerUpsDTOs[1]));
     }
 
 
@@ -174,9 +178,7 @@ public class Pc {
         }
 
         //notify listeners
-        events.fireEvent(new PowerUpDiscardedEvent(
-                convertToDTO(),
-                p.convertToDTO()));
+        events.fireEvent(new PowerUpDiscardedEvent(convertToDTO(), p.convertToDTO()));
     }
 
 
@@ -218,7 +220,7 @@ public class Pc {
                 ammoTile.getAmmo(), null, true));
 
         if (ammoTile.hasPowerUp() && powerUps.size() < MAX_POWER_UPS_IN_HAND)
-            drawPowerUp();
+            drawPowerUp(1);
     }
 
 

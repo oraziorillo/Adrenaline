@@ -27,6 +27,11 @@ public class PcSelectionState extends State {
     public void selectPcColour(String pcColour) {
         if (controller.checkAvailableColour(pcColour)) {
             this.pcColour = pcColour;
+            PcColourEnum colourChosen = PcColourEnum.fromString(pcColour);
+            if (colourChosen != null)
+                controller.ackCurrent("\n" + colourChosen.getName() +
+                        "\n" + colourChosen.getDescription() +
+                        "\n\nI guess it's what you wanted");
         }
     }
 
@@ -42,6 +47,7 @@ public class PcSelectionState extends State {
             Pc pc = new Pc(PcColourEnum.fromString(pcColour), controller.getGame());
             controller.getGame().addPc(pc);
             controller.getCurrPlayer().setPc(pc);
+            controller.ackAll("@" + DatabaseHandler.getInstance().getUsername(controller.getCurrPlayer().getToken()) + " picked " + pc.getName());
             return true;
         }
         return false;
@@ -54,9 +60,18 @@ public class PcSelectionState extends State {
      */
     @Override
     public State nextState() {
-        controller.nextTurn();
-        if (controller.getCurrPlayerIndex() == 0)
+        if (controller.amITheLast()) {
+            controller.ackCurrent("\nGood Choice!");
+            controller.ackAll("\nLet's start!");
+            controller.nextTurn();
+            controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
             DatabaseHandler.getInstance().save(controller);
+        } else {
+            controller.ackCurrent("\nGood choice! Now wait for the others choosing their character...");
+            controller.nextTurn();
+            controller.ackCurrent("\nChoose your character, each of them is particular in its own way:\n" +
+                    controller.availableColours());
+        }
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 }

@@ -18,26 +18,26 @@ public class FirstTurnState extends State{
         super(controller);
         powerUpToDropIndex = -1;
         this.pcToSpawn = controller.getCurrPc();
-        this.pcToSpawn.drawPowerUp();
-        this.pcToSpawn.drawPowerUp();
+        this.pcToSpawn.drawPowerUp(2);
     }
 
     
     /**
      * Sets the params for later respawn. See the game manual for the dynamics
-     * @param powerUpToDropIndex the index of the powerup card the pc will use to respawn
+     * @param powerUpToDropIndex the index of the power up card the pc will use to respawn
      */
     @Override
     public void selectPowerUp (int powerUpToDropIndex) {
         if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
             this.powerUpToDropIndex = powerUpToDropIndex;
+            controller.ackCurrent("\nYou'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". It's ok?");
         }
     }
 
 
     /**
      * Executes the respawn: Puts the pre-given pc on the GenerationSquare of the colour of the card with the given index
-     * @return true if pc is respawned fine, false if some parameters was invalid
+     * @return true if pc is respawn fine, false if some parameters was invalid
      */
     @Override
     public boolean ok() {
@@ -59,6 +59,8 @@ public class FirstTurnState extends State{
     @Override
     public State nextState() {
         controller.nextTurn();
+        if (controller.getCurrPlayerIndex() != 0)
+            controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

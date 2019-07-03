@@ -24,6 +24,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static common.Constants.FIRST_MAP;
+import static common.Constants.LAST_MAP;
+
 /**
  * This class represents an ADRENALINE game
  */
@@ -37,6 +40,7 @@ public class Game {
     @Expose private Deck<PowerUpCard> powerUpsDeck;
     @Expose private Deck<AmmoTile> ammoDeck;
     @Expose private boolean finalFrenzy;
+    private GameBoard[] preLoadedGameBoards;
 
 
     private Game() {
@@ -51,6 +55,7 @@ public class Game {
     public static Game getGame() {
         Game game = new Game();
         game.initDecks();
+        game.preLoadGameBoards();
         return game;
     }
 
@@ -151,31 +156,37 @@ public class Game {
     }
 
 
+    private void preLoadGameBoards(){
+        preLoadedGameBoards = new GameBoard[LAST_MAP];
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Square.class, new SquareDeserializer())
+                .excludeFieldsWithoutExposeAnnotation()
+                .serializeNulls()
+                .create();
+        try {
+            for (int numberOfMap = FIRST_MAP; numberOfMap <= LAST_MAP; numberOfMap++) {
+                JsonReader reader = new JsonReader(
+                        new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));
+                preLoadedGameBoards[numberOfMap - 1] = gson.fromJson(reader, GameBoard.class);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Loads a map given the index
      * @param numberOfMap the index of the map
      */
     public void initMap(int numberOfMap) {
-        try {
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Square.class, new SquareDeserializer())
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .serializeNulls()
-                    .create();
+        gameBoard = preLoadedGameBoards[numberOfMap - 1];
+        preLoadedGameBoards = null;
 
-            JsonReader reader = new JsonReader(
-                    new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));
-            gameBoard = gson.fromJson(reader, GameBoard.class);
+        gameBoard.init(weaponsDeck, ammoDeck);
+        gameBoard.addModelEventHandler(events);
 
-            gameBoard.init(weaponsDeck, ammoDeck);
-            gameBoard.addModelEventHandler(events);
-
-            //notify map set
-            events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(numberOfMap), numberOfMap));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        //notify map set
+        events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(numberOfMap), numberOfMap));
     }
 
 
@@ -386,6 +397,11 @@ public class Game {
     }
 
 
+    public String preLoadedGameBoardToString(int numOfMap) {
+        return preLoadedGameBoards[numOfMap - 1].simplifiedToString();
+    }
+
+
     void killOccurred(PcColourEnum killerColour, boolean overkilled) {
         gameBoard.killOccurred(killerColour, overkilled);
     }
@@ -394,7 +410,6 @@ public class Game {
     public void addModelEventListener(UUID playerID, ModelEventListener listener) {
         events.addModelEventListener(playerID, listener);
     }
-
 }
 
 

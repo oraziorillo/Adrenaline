@@ -1,11 +1,10 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import server.model.WeaponCard;
 import server.model.Effect;
 import server.model.PowerUpCard;
+import server.model.WeaponCard;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -59,12 +58,9 @@ public class SetupWeaponState extends State {
                 if (controller.getCurrPc().hasEnoughAmmo(newCost)) {
                     if (!upgrades.get(upgradeIndex).isAsynchronous()) {
                         weapon.addUpgrade(upgradeIndex);
+                        controller.ackCurrent("\nNow you weapon is huge");
                     } else {
-                        try {
-                            controller.getCurrPlayer().getView().ack("Choose if you want to use this upgrade before (true) or after (false) the basic effect.");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        controller.ackCurrent("\nYou can use it *before* or *after* the basic effect. So tell me, what do you prefer?");
                         waiting = true;
                         asynchronousUpgradeIndex = upgradeIndex;
                     }
@@ -85,8 +81,10 @@ public class SetupWeaponState extends State {
         if (waiting) {
             if (beforeBasicEffect) {
                 weapon.pushFirstUpgrade(asynchronousUpgradeIndex);
+                controller.ackCurrent("\nBefore, huh? I'd have use it after...");
             } else {
                 weapon.addUpgrade(asynchronousUpgradeIndex);
+                controller.ackCurrent("\nAfter, huh? I'd have use it before...");
             }
             waiting = false;
         }
@@ -100,8 +98,10 @@ public class SetupWeaponState extends State {
     @Override
     public void selectPowerUp(int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
-        if (powerUp != null && !powerUp.isSelectedAsAmmo())
+        if (powerUp != null && !powerUp.isSelectedAsAmmo()) {
             powerUp.setSelectedAsAmmo(true);
+            controller.ackCurrent("You'll lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo");
+        }
     }
    
    /**

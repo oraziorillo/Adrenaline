@@ -152,6 +152,15 @@ public class GameBoard {
     }
 
 
+    String simplifiedToString(){
+        StringBuilder b = new StringBuilder();
+        for (Square s : squares) {
+            b.append("\n").append(s.toString()).append("\t\t").append(s.getColour()).append((s.isSpawnPoint() ? " Spawn point" : " Ammo square"));
+        }
+        return b.toString();
+    }
+
+
     public GameBoardDTO convertoTo(int numberOfMap){
         GameBoardDTO gameBoardDTO = new GameBoardDTO();
         gameBoardDTO.setNumberOfMap(numberOfMap);

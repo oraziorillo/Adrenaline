@@ -27,6 +27,7 @@ public class TargetSelectionState extends State {
     private LinkedList<Pc> targetsShotTwice;    //per la machine gun....
     private Set<Square> targetableSquares;
 
+
     TargetSelectionState(Controller controller) {
         super(controller);
         this.shotTargets = new LinkedList<>();

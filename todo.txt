@@ -37,7 +37,7 @@ ROBA DA CONTROLLER
  - considerare l'utilizzo di undo quando è final frenzy and in shootpeopleState seleziona l'arma
 
  - considerare di dover rimischiare il deck di ammoTile se finisce
- 
+
 
 REGOLE DA IMPLEMENTARE:
 
@@ -45,7 +45,7 @@ REGOLE DA IMPLEMENTARE:
 
 - Action-hero comment
 
-- controllare il numero di powerUp massimi di un utente
+- controllare il numero di powerUp1 massimi di un utente
 
 
 

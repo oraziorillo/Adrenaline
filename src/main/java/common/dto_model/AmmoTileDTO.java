@@ -15,14 +15,16 @@ public class AmmoTileDTO implements DTO {
     }
 
     public String getImagePath() {
-        StringBuilder pathBuilder = new StringBuilder();
+        StringBuilder pathBuilder = new StringBuilder(DIR);
         if (hasPowerUp) {
             pathBuilder.append("p");
         }
-        for (int i = 0; i < AmmoEnum.values().length; i++) {
-            AmmoEnum color = AmmoEnum.values()[i];
-            pathBuilder.append(color.toString().toLowerCase());
+        for (int colIndex = 0; colIndex < AmmoEnum.values().length; colIndex++) {
+            AmmoEnum color = AmmoEnum.values()[colIndex];
+            for(int i=0;i<ammo[colIndex];i++)
+                pathBuilder.append(color.toString().toLowerCase());
         }
+        pathBuilder.append( EXTENSION );
         return pathBuilder.toString();
     }
 

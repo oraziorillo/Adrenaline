@@ -7,14 +7,10 @@ import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 /**
  * When the user chooses the "collect" action
@@ -34,7 +30,7 @@ class GrabStuffState extends State{
 
 
     /**
-     * Calls the setWeaponToGrabIndec method of the pre-selected Square
+     * Calls the setWeaponToGrabIndex method of the pre-selected Square
      * @see Square
      * @param index the index to pass to the method
      */
@@ -43,14 +39,9 @@ class GrabStuffState extends State{
         if (targetSquare != null) {
             try {
                 targetSquare.setWeaponToGrabIndex(index);
-                controller.getCurrPlayer().getView().ack("You have selected the " +
-                        (index == 0
-                        ? index+1 + "st index"
-                        : index+1 + "nd index"));
+                controller.ackCurrent("\nMmh.. good choice!");
             } catch (NullPointerException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                controller.ackCurrent(e.getMessage());
             }
         }
     }
@@ -71,11 +62,7 @@ class GrabStuffState extends State{
                 .count() == 3 )
             targetSquare.setWeaponToDropIndex(index);
         else {
-            try {
-                controller.getCurrPlayer().getView().ack("You can't drop your weapon. You need it to harm everyone!");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            controller.ackCurrent("\nYou'd better use that weapon to hurt people");
         }
     }
 
@@ -91,11 +78,9 @@ class GrabStuffState extends State{
         if (s != null && !s.isEmpty() && targetableSquares.contains(s)) {
             this.targetSquare = s;
             targetSquare.resetWeaponIndexes();
-            try {
-                controller.getCurrPlayer().getView().ack("The square " + targetSquare.toString() + " has been selected");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            controller.ackCurrent(targetSquare.isSpawnPoint()
+                    ? "\nOhw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString()
+                    : "\nI see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString());
         }
     }
 
@@ -107,8 +92,10 @@ class GrabStuffState extends State{
     @Override
     public void selectPowerUp(int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
-        if (powerUp != null && !powerUp.isSelectedAsAmmo())
+        if (powerUp != null && !powerUp.isSelectedAsAmmo()) {
             powerUp.setSelectedAsAmmo(true);
+            controller.ackCurrent("\nYou will lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo");
+        }
     }
 
     
@@ -169,25 +156,13 @@ class GrabStuffState extends State{
                 controller.addSquareToRefill(targetSquare);
                 return true;
             } catch (EmptySquareException e) {
-                try {
-                    controller.getCurrPlayer().getView().ack("You can't use this action on this Square. It's empty!!");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                controller.ackCurrent("\nThere's nothing to grab here!");
                 return false;
             } catch (NotEnoughAmmoException e) {
-                try {
-                    controller.getCurrPlayer().getView().ack("You don't have enough ammos. Come on, collect them first!");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                controller.ackCurrent("\nNot enough ammo. You had to grab them first! Do I have to teach you how to play?");
                 return false;
             } catch (Exception e){
-                try {
-                    controller.getCurrPlayer().getView().ack("Be careful! " + e );
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                controller.ackCurrent(e.getMessage());
                 return false;
             }
         }

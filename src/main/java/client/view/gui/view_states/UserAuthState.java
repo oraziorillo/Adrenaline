@@ -2,69 +2,53 @@ package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
-import common.events.lobby_events.LobbyEvent;
 import common.remote_interfaces.RemoteLoginController;
-import javafx.application.HostServices;
-import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.UUID;
 
 public class UserAuthState extends ViewState {
-   public UserAuthState(Stage stage, HostServices hostServices, List<String> previousAcks) throws RemoteException {
-      super( stage, null, hostServices,previousAcks);
-      javafxController = new UserAuthController();
-   }
-   
-   @Override
-   public void ack(String message) {
-   
-   }
-
-   @Override
-   public void notifyEvent(LobbyEvent event) {
-
+   UserAuthState() throws RemoteException {
+      super();
+      setJavafxController( new UserAuthController() );
    }
 
    @Override
    public ViewState nextState() {
-      SetupState nextState = null;
+      SetupState nextState;
       try {
-         nextState = new SetupState(stage,player,hostServices,previousAcks );
+         nextState = new SetupState();
       } catch ( RemoteException never ) {
          IllegalStateException e1 = new IllegalStateException( );
          e1.setStackTrace( never.getStackTrace() );
          throw e1;
       }
-      nextState.setTopView( topView );
       return nextState;
    }
    
    @Override
    public UUID acquireToken() {
-      return javafxController.acquireToken();
+      return getJavafxController().acquireToken();
    }
    
    @Override
    public String acquireUsername() {
-      return javafxController.acquireUsername();
+      return getJavafxController().acquireUsername();
    }
    
    @Override
    public ConnectionMethodEnum acquireConnectionMethod() {
-      return javafxController.acquireConnectionMethod();
+      return getJavafxController().acquireConnectionMethod();
    }
    
    @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
-      return javafxController.acquireConnection( cme );
+      return getJavafxController().acquireConnection( cme );
    }
    
    @Override
    public boolean wantsToRegister() {
-      return javafxController.wantsToRegister();
+      return getJavafxController().wantsToRegister();
    }
    
-   //TODO: ricevi un qualche dto e cambia stato
 }

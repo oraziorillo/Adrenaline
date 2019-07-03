@@ -72,6 +72,7 @@ public class Vita implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    }
    
    private void updateMarks(short[] marks){
+      marchi.getChildren().clear();
       int i=0;
       for (PcColourEnum color: PcColourEnum.values()){
          if(!settedColor.equals( color )){

@@ -185,6 +185,14 @@ public class WeaponCard {
     }
 
 
+    public String ammoToString(){
+        StringBuilder ammoString = new StringBuilder();
+        for (AmmoEnum a : AmmoEnum.values())
+            ammoString.append("\n-").append(this.ammo[a.ordinal()]).append(" " + a.toString() + " ammo");
+        return ammoString.toString();
+    }
+
+
     public WeaponCardDTO convertToDTO(){
         WeaponCardDTO weaponCardDTO = new WeaponCardDTO();
         weaponCardDTO.setBasicEffects(fireModes.size());

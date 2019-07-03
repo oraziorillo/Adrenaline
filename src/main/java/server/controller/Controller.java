@@ -17,7 +17,6 @@ import server.model.squares.Square;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -79,6 +78,7 @@ public class Controller{
                 player.setCurrState(new InactiveState(this, 2));
             });
             nextTurn();
+            ackAll("Game restored!");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -94,14 +94,9 @@ public class Controller{
             else
                 p.setCurrState(new InactiveState(this, InactiveState.PC_SELECTION_STATE));
         }
-        try {
-            getCurrPlayer().getView().ack("It's your turn!!");
-        } catch (IOException e) {
-            getCurrPlayer().setOnLine(false);
-            checkGameStatus();
-
-        }
-
+        ackAll("Game started!");
+        ackCurrent("It's your turn!");
+        ackCurrent("You're the first to join this lobby, so I'll reward you by making you choose the game board we'll play on");
     }
 
 
@@ -111,8 +106,7 @@ public class Controller{
             try {
                 listener = p.getView().getListener();
             } catch (RemoteException e) {
-                p.setOnLine(false);
-                checkGameStatus();
+                e.printStackTrace();
             }
             game.addModelEventListener(p.getToken(), listener);
         });
@@ -235,6 +229,7 @@ public class Controller{
     public void nextTurn() {
         if (deadPlayers.isEmpty()) {
             increaseCurrPlayerIndex();
+            ackCurrent("\nIt's your turn");
             getCurrPlayer().setActive();
             if (currPlayerIndex == lastPlayerIndex)
                 game.computeWinner();
@@ -250,19 +245,46 @@ public class Controller{
             currPlayerIndex = 0;
         else
             currPlayerIndex++;
-
-        try {
-            getCurrPlayer().getView().ack("You are the current player now!");
-        } catch (IOException e) {
-            getCurrPlayer().setOnLine(false);
-            checkGameStatus();
-        }
     }
 
 
     public boolean isNextOnDuty(Player player){
         return currPlayerIndex < players.size() - 1 && players.indexOf(player) == currPlayerIndex + 1 ||
                 currPlayerIndex == players.size() - 1 && players.indexOf(player) == 0;
+    }
+
+
+    public boolean amITheLast() {
+        return currPlayerIndex == players.size() - 1;
+    }
+
+
+    public void ackCurrent(String msg){
+        try {
+            getCurrPlayer().getView().ack(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void ackAll(String msg){
+        players.parallelStream().forEach(p -> {
+            try {
+                p.getView().ack(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    public String availableColours() {
+        StringBuilder availableColours = new StringBuilder();
+        for (PcColourEnum c : availablePcColours) {
+            availableColours.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
+        }
+        return availableColours.toString();
     }
 
 

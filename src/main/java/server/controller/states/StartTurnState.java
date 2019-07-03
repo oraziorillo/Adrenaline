@@ -4,8 +4,6 @@ import server.controller.Controller;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
-import java.rmi.RemoteException;
-
 import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 /**Turn beginning state*/
@@ -20,12 +18,14 @@ public class StartTurnState extends State {
     @Override
     public boolean runAround(){
         nextState = new RunAroundState(controller);
+        controller.ackCurrent("\nJust run?");
         return true;
     }
 
     @Override
     public boolean grabStuff(){
         nextState = new GrabStuffState(controller);
+        controller.ackCurrent("\nShopping time!");
         return true;
     }
 
@@ -35,15 +35,11 @@ public class StartTurnState extends State {
         for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
             if (weaponCards[i] != null && weaponCards[i].isLoaded()) {
                 nextState = new ShootPeopleState(controller, false, false);
+                controller.ackCurrent("FINALLY! It's showtime!");
                 return true;
             }
         }
-        try {
-            controller.getCurrPlayer().getView().ack("You can't use this action now!");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        nextState = new StartTurnState(controller);
+        controller.ackCurrent("\nYou have no usable weapons!");
         return false;
     }
 
@@ -56,12 +52,7 @@ public class StartTurnState extends State {
                 return true;
             }
         }
-        try {
-            controller.getCurrPlayer().getView().ack("You can't use this action now!");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        nextState = new StartTurnState(controller);
+        controller.ackCurrent("\nA power up can make the difference between life and death");
         return false;
     }
     

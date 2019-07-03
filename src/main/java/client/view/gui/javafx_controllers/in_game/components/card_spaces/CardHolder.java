@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.components.card_spaces;
 
+import client.view.gui.ImageCache;
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;
 import common.enums.SquareColourEnum;
@@ -44,17 +45,10 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
          int cardIndex = i;
          ImageView card = ( ImageView ) weaponBox.getChildren().get( i );
          cards[i]=card;
+         card.setTranslateY( CARD_TRANSLATION );
          card.setOnMouseEntered( e-> appear(  cardIndex ) );
          card.setOnMouseExited( e-> disappear(cardIndex ) );
-         card.setOnMouseClicked( e-> {
-            try {
-               player.chooseWeaponOnSpawnPoint( cardIndex );
-            } catch ( IOException ex ) {
-               try {
-                  player.quit();
-               } catch ( IOException ignored ){}
-            }
-         } );
+         card.setOnMouseClicked( e-> chooseWeaponOnSpawnPoint( cardIndex ) );
          TranslateTransition trans = new TranslateTransition( duration );
          rotations[i] = new RotateTransition( duration );
          trans.setToY( -CARD_TRANSLATION );
@@ -68,7 +62,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
 
    public void setColor(AmmoEnum color){
       String path = "/images/card_holders/"+color.name().toLowerCase()+".png";
-      Image img = new Image( path,true );
+      Image img = ImageCache.loadImage( path,-1 );
       background.setImage( img );
       squareColor = SquareColourEnum.valueOf( color.name() );
    }
@@ -136,10 +130,15 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
          throw new IllegalArgumentException( "You must set "+this.cards.length+" cards at time" );
       }
       for(int i=0;i<cards.length;i++){
-         int forLambda=i;
          ImageView card = this.cards[i];
-         card.setImage( new Image( cards[i].getImagePath(),true ) );
-         card.setOnMouseClicked( e-> chooseWeaponOnSpawnPoint( forLambda ) );
+         if(cards[i]!=null) {
+            int forLambda = i;
+            card.setImage( new Image( cards[i].getImagePath(), true ) );
+            card.setOnMouseClicked( e -> chooseWeaponOnSpawnPoint( forLambda ) );
+            card.setVisible( true );
+         }else {
+            card.setVisible( false );
+         }
       }
    }
 
