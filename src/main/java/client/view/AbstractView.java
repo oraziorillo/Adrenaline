@@ -51,4 +51,9 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
     public String requestString(String message) {
         return null;
     }
+    
+    @Override
+    public boolean isReachable() throws RemoteException {
+        return true;
+    }
 }

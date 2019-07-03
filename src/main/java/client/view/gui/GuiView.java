@@ -94,7 +94,8 @@ public class GuiView extends AbstractView implements ModelEventListener {
    public ModelEventListener getListener() {
       return currentGui.getListener();
    }
-
+   
+   
    public void nextState() {
       try {
          currentGui = currentGui.nextState();
