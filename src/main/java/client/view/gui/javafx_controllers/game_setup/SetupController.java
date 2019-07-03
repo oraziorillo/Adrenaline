@@ -20,7 +20,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
@@ -51,7 +50,7 @@ public class SetupController extends AbstractJavaFxController {
    private EnumMap<PcColourEnum,ImageView> pcViews = new EnumMap<>(PcColourEnum.class );
    private StackPane[] skullPanes = new StackPane[LENGHT];
    private static final Effect selectableEffect = new DropShadow( 10,Color.LIGHTGREEN );
-   
+   private boolean firstPlayer;
    
    
    public SetupController() throws RemoteException {
@@ -181,7 +180,7 @@ public class SetupController extends AbstractJavaFxController {
       mainPane.setOpacity( enabled?1:.5 );
    }
    
-   private void setSkullSelectionEnabled(boolean enable){
+   private void setSkullsSelectable(boolean enable){
       skullTrack.setEffect( enable?selectableEffect :null );
       for(int i=Constants.MIN_KILL_SHOT_TRACK_SIZE-1;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){ //constants does not refer to array indexes
          int param = i+1;
@@ -194,30 +193,43 @@ public class SetupController extends AbstractJavaFxController {
    
    private void setMapSelectable(boolean selectable){
       maps.setEffect( selectable?selectableEffect:null );
-      for(int i=Constants.FIRST_MAP;i<=Constants.LAST_MAP;i++){
-         int i1=i;
-         maps.getChildren().get( i ).setOnMouseClicked( selectable?e->chooseMap( i1 ):null );
+      for(int i=0;i<=Constants.LAST_MAP-Constants.FIRST_MAP;i++){
+         int mapNumber=i+Constants.FIRST_MAP;
+         maps.getChildren().get( i ).setOnMouseClicked( selectable?e->chooseMap( mapNumber ):null );
       }
+   }
+   
+   private void setPcSelectable(PcColourEnum color,boolean selectable){
+      ImageView target = pcViews.get( color );
+      target.setOnMouseClicked( selectable?e->choosePcColor( color ):null );
+      target.setEffect( selectable?selectableEffect:null );
+   }
+   
+   private void setPcSelected(PcColourEnum color){
+      ImageView target = pcViews.get( color );
+      target.setDisable( true );
+      target.setOpacity( .4 );
+      setPcSelectable( color,false );
    }
    
    @Override
    public void onPcUpdate(PcEvent event) {
-      ImageView pcView = pcViews.get( event.getDTO().getColour() );
-      pcView.setDisable( true );
-      pcView.setOpacity( .4 );
-      pcView.setEffect( null );
+      setPcSelected( event.getDTO().getColour() );
    }
    
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
+      for(PcColourEnum col:PcColourEnum.values())
+         setPcSelectable( col,true );
       int l=event.getDTO().getKillShotTrack().length;
-      setSkullSelectionEnabled( false );
+      setSkullsSelectable( false );
       showCirclesBeforeIndex( l );
    }
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
       setMapSelectable( false );
+      setSkullsSelectable( firstPlayer );
       runLater(()-> {
          maps.setTileAlignment( Pos.CENTER );
          maps.setHgap( 0 );
@@ -259,10 +271,8 @@ public class SetupController extends AbstractJavaFxController {
    @Override
    public void changed(ObservableValue<? extends Number> obs, Number oldV, Number newV) {
       if(oldV.equals( Double.NEGATIVE_INFINITY )) {
-         setSkullSelectionEnabled( newV.doubleValue()==0 );
-         if(!(newV.doubleValue()==0)){
-            setMapSelectable( false );
-         }
+         firstPlayer = true;
+         setMapSelectable( newV.doubleValue()==0 );
       }else if(newV.doubleValue() >= 3 /*MIN_PLAYERS*/){
          setEnabled( true );
       }
