@@ -10,8 +10,9 @@ import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
-import common.events.pc_events.PcEvent;
 import common.events.lobby_events.LobbyEvent;
+import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ScaleTransition;
 import javafx.beans.binding.Bindings;
@@ -20,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -255,7 +255,12 @@ public class SetupController extends AbstractJavaFxController {
    public void notifyEvent(LobbyEvent event) {
 
    }
-   
+
+   @Override
+   public void request(Request request) throws RemoteException {
+
+   }
+
    /**
     * Listens the number of players before my turn
     * @param obs the property

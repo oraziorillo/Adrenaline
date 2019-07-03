@@ -2,8 +2,6 @@ package server;
 
 import common.PropertyLoader;
 
-import java.io.IOException;
-
 public class ServerPropertyLoader extends PropertyLoader {
    private static ServerPropertyLoader instance;
    private ServerPropertyLoader() {

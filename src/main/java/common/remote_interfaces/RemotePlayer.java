@@ -40,6 +40,8 @@ public interface RemotePlayer extends Remote {
 
     void chooseDirection(int cardinalDirectionIndex) throws RemoteException;
 
+    void response(String response) throws RemoteException;
+
     void skip() throws RemoteException;
 
     void undo() throws RemoteException;

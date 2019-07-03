@@ -138,6 +138,12 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
         out.flush();
     }
 
+    @Override
+    public void response(String response){
+        out.println(RESPONSE + REGEX + response);
+        out.flush();
+    }
+
 
     @Override
     public synchronized void skip() {

@@ -22,6 +22,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
@@ -197,6 +198,11 @@ public class InGameController extends AbstractJavaFxController {
    @Override
    public void notifyEvent(LobbyEvent event) {
 
+   }
+
+   @Override
+   public void request(Request request) throws RemoteException {
+      
    }
 
    @Override

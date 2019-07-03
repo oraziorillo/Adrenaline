@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
+import common.events.requests.Request;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
@@ -31,6 +32,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     private transient State currState;
     private transient RemoteView view;
     private transient WeaponCard currWeapon;
+    private transient Request activeRequest;
 
 
     public Player(UUID token) throws RemoteException {
@@ -49,6 +51,16 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         if (DatabaseHandler.getInstance().isLoggedIn(token))
             throw new PlayerAlreadyLoggedInException();
         this.view = view;
+    }
+
+
+    public Request getActiveRequest() {
+        return activeRequest;
+    }
+
+
+    public void setActiveRequest(Request activeRequest) {
+        this.activeRequest = activeRequest;
     }
 
 
@@ -98,17 +110,17 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    public void notifyDamaged() {
+        currState.checkTagbackGrenadeConditions(this);
+    }
+
+
     public void setOnLine(boolean onLine) {
         this.onLine = onLine;
     }
 
 
     public boolean isOnLine() { return onLine; }
-
-
-    public void setAttacked(){
-        currState.hasBeenAttacked(this);
-    }
 
 
     @Override
@@ -236,12 +248,19 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         }
     }
 
+
     @Override
     public synchronized void chooseDirection(int cardinalDirectionIndex){
         for (CardinalDirectionEnum cardinalDirection: CardinalDirectionEnum.values()) {
             if (cardinalDirection.ordinal() == cardinalDirectionIndex)
                 currState.selectDirection(cardinalDirection);
         }
+    }
+
+
+    @Override
+    public void response(String response) throws RemoteException {
+        currState.response(response);
     }
 
 

@@ -1,5 +1,7 @@
 package common;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Some game contants
  */
@@ -8,6 +10,11 @@ public final class Constants {
     // --------------> CONTROL
     public static final String SUCCESS = "Y";
     public static final String FAIL = "N";
+
+    // --------------> TIMER
+
+    public static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(10));
+    public static final int REQUEST_TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(30));
 
     // --------------> RULES
 
@@ -26,11 +33,6 @@ public final class Constants {
     //pc values
     public static final int[] PC_VALUES = {8, 6, 4, 2, 1, 1};
     public static final int[] FINAL_FRENZY_PC_VALUES = {2, 1, 1, 1};
-
-    //decks
-    public static final int AMMO_DECK = 0;
-    public static final int WEAPONS_DECK = 1;
-    public static final int POWER_UPS_DECK = 2;
 
     //rules
     public static final int FIRST_MAP = 1;

@@ -18,12 +18,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static common.Constants.TIME;
+
 /**
  * Pre-game, singleton waiting room. Stores players and starts a game when has enough of them.
  */
 public class Lobby {
-
-    private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis( ServerPropertyLoader.getInstance().getLobbyTimer() ));
 
     @Expose private Controller controller;
     @Expose private UUID gameUUID;

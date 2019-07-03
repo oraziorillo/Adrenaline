@@ -56,6 +56,8 @@ public class TargetSelectionState extends State {
         }
         currAction = currEffect.getActionAtIndex(actionIndex);
         setAction();
+        if(currEffect.isOriented())
+            controller.ackCurrent("\nChoose a cardinal direction: (N/S/E/W)");
         if (!currAction.isParameterized() && !hasNextAction()){
             executeEffect();
             return true;

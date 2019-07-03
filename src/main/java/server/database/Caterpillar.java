@@ -43,6 +43,12 @@ public class Caterpillar<PK, SK, V> {
     }
 
 
+    public PK getPrimaryKey(SK sk) {
+        if (secondaryKeys.contains(sk))
+            return primaryKeys.get(secondaryKeys.indexOf(sk));
+        return null;
+    }
+
     public SK getSecondaryKey(V v) {
         if(values.indexOf(v) < secondaryKeys.size())
             return secondaryKeys.get(values.indexOf(v));

@@ -6,6 +6,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -28,7 +29,7 @@ public class SetupState extends ViewState {
    SetupState() throws RemoteException {
       super();
       try {
-         FXMLLoader loader = new FXMLLoader( Map.class.getResource( "/fxml/gameSetup/setup.fxml" ) );
+         FXMLLoader loader = new FXMLLoader( Map.class.getResource( "fxml/gameSetup/setup.fxml" ) );
          Parent root = loader.load();
          setJavafxController( loader.getController() );
          stage.setScene( new Scene( root ) );
@@ -98,5 +99,10 @@ public class SetupState extends ViewState {
          beforeMyTurn.set((double)(event.getDTO().size()-1));  //excluded yourself
       }
       stillChoosing.set(event.getDTO().size());
+   }
+
+   @Override
+   public void request(Request request) throws RemoteException {
+
    }
 }
