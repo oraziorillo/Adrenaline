@@ -5,6 +5,7 @@ import client.view.gui.GuiView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +35,11 @@ public class GuiController extends Application {
         view = new GuiView( getHostServices(),stage );
         UUID token = authUser( stage );
         loginController.joinLobby( token );
+        stage.setOnCloseRequest( e-> {
+           try {
+              player.quit();
+           } catch ( RemoteException ignored ) {}
+        } );
     }
     
     private UUID authUser(Stage stage){

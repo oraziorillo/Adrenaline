@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public abstract class AbstractView extends UnicastRemoteObject implements RemoteView, ModelEventListener {
 
-    protected static transient final String HOST = System.getProperty("java.server.hostname");
+    protected static transient final String HOST = ClientPropertyLoader.getInstance().getHostAddress();
     protected static transient final int SOCKET_PORT = ClientPropertyLoader.getInstance().getSocketPort();
     protected static transient final int RMI_PORT = ClientPropertyLoader.getInstance().getRmiPort();
 

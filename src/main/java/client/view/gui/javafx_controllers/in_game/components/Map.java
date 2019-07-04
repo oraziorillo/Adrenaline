@@ -51,6 +51,9 @@ public class Map {
    private static final int COLS = 4;
    
    public final MapChangeListener<PcColourEnum,PcDTO> playerObserver = change -> {
+      for(OpponentBoard c:opponentBoardControllers.values()){
+         c.onChanged( change );
+      }
       if(change.wasAdded() && change.wasRemoved()){
          PcDTO newPc = change.getValueAdded();
          PcDTO oldPc = change.getValueRemoved();
@@ -91,10 +94,6 @@ public class Map {
          }
          
          OpponentBoard created = loadNewBoard(colour);
-         change.getMap().addListener( created );
-         for(OpponentBoard c:opponentBoardControllers.values()){
-            c.onChanged( change );
-         }
          created.heightProperty().bind( Bindings.multiply( circle.radiusProperty(),2) );
          
          //add the circle to the square

@@ -35,16 +35,23 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
@@ -188,7 +195,7 @@ public class InGameController extends AbstractJavaFxController {
    }
 
    @Override
-   public boolean isReachable() throws RemoteException {
+   public boolean isReachable() {
       return true;
    }
 
@@ -212,16 +219,35 @@ public class InGameController extends AbstractJavaFxController {
 
    @Override
    public void request(Request request) {
+      String GRENADE = "Do you wanna use your Tagback Grenade? (yes/no)";
       try {
-         switch (request.toString()) {
-            case "Do you wanna use your Tagback Grenade? (yes/no)":
-               Alert requestAlert = new Alert( Alert.AlertType.CONFIRMATION, request.toString(), ButtonType.YES, ButtonType.NO );
-               Timer timer = new Timer( ClientPropertyLoader.getInstance().getRequestTimer(), e -> requestAlert.close() );
-               requestAlert.setHeaderText( null );
-               timer.start();
-               Optional<ButtonType> response = requestAlert.showAndWait();
-               player.response( response.orElse( ButtonType.NO ).getText().toLowerCase() );
-               break;
+         Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
+         alert.setContentText( request.toString() );
+         alert.setHeaderText( null );
+         alert.setOnCloseRequest( Event::consume );
+         if(request.toString().equalsIgnoreCase( GRENADE )){
+            Timer timer = new Timer( ClientPropertyLoader.getInstance().getRequestTimer(), e -> alert.close() );
+            timer.start();
+         }
+         String ans = alert.showAndWait().orElse( new ButtonType( request.getChoices().get(request.getChoices().size()-1) ) ).toString();
+         player.response( ans );
+         if(request.toString().equalsIgnoreCase( GRENADE ) && "yes".equalsIgnoreCase( ans )){
+            Stage stage = new Stage();
+            stage.setAlwaysOnTop( true );
+            stage.setResizable( false );
+            HashMap<Node,EventHandler> clickHandlers= new HashMap<>();
+            for(Node n:powerUpHandController.getCardNodes()){
+               clickHandlers.put( n,n.getOnMouseClicked() );
+               n.setOnMouseClicked( mouseEvent -> {
+                  clickHandlers.get( n ).handle( mouseEvent );
+                  stage.close();
+               } );
+            }
+            stage.setOnCloseRequest( e ->{
+               for(Node n: clickHandlers.keySet()){
+                  n.setOnMouseClicked( clickHandlers.get( n ) );
+               }
+            } );
          }
       }catch ( IOException e ){
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
@@ -248,7 +274,6 @@ public class InGameController extends AbstractJavaFxController {
          pcBoardController.setPcColour( eventColor );
          powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[Constants.MAX_POWER_UPS_IN_HAND+1]));
          weaponHandController.setCards( event.getDTO().getWeapons() );
-         //mapController.setColor
       }
       pcs.put( eventColor,event.getDTO() );
     }

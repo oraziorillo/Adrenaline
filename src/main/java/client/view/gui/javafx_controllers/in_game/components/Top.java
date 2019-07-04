@@ -23,7 +23,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -92,7 +91,7 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    
    @FXML
    public void showSettings() throws IOException {
-      FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/inGame/settingsMenu.fxml" ) );
+      FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/inGame/dialogs/settingsMenu.fxml" ) );
       Parent parent = loader.load();
       SettingsMenu settingsMenu = loader.getController();
       settingsMenu.setHostServices( hostServices );

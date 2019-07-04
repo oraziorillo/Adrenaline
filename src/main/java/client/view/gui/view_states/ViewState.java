@@ -108,7 +108,13 @@ public abstract class ViewState extends AbstractView {
    }
    
    @Override
-   public void chatMessage(String message) {throw new IllegalStateException( UNEXPECTED_CALL );}
+   public void chatMessage(String message) {
+      try {
+         javafxController.chatMessage( message );
+      } catch ( RemoteException e ) {
+         Thread.currentThread().getUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
+   }
    
    @Override
    public boolean wantsToRegister() {

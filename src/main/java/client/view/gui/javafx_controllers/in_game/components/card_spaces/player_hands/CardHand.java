@@ -102,6 +102,10 @@ public abstract class CardHand <T extends AbstractCardDTO> {
             w.setPlayer( player );
    }
    
+   public AbstractCardDTO[] getCards() {
+      return cards;
+   }
+   
    public Node getNode(){
       return mainPane;
    }

@@ -2,8 +2,11 @@ package client.view.gui.javafx_controllers.in_game.components.card_spaces.player
 
 import common.Constants;
 import common.dto_model.PowerUpCardDTO;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PowerUpHand extends CardHand<PowerUpCardDTO> {
    
@@ -27,5 +30,14 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
       for(int i=0; i<cards.length;i++){
          weaponControllers[i].setWeapon( cards[i] );
       }
+   }
+   
+   @Override
+   public PowerUpCardDTO[] getCards() {
+      return ( PowerUpCardDTO[] ) super.getCards();
+   }
+   
+   public List<Node> getCardNodes(){
+      return mainPane.getChildren();
    }
 }
