@@ -180,7 +180,6 @@ public class SetupController extends AbstractJavaFxController {
       skullTrack.setEffect( enable?selectableEffect :null );
       for(int i=Constants.MIN_KILL_SHOT_TRACK_SIZE-1;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){ //constants does not refer to array indexes
          int param = i+1;
-         System.out.println(i);
          skullPanes[i].setOnMouseClicked( enable?e->chooseSkulls( param ):null );
          skullPanes[i].setOnMouseEntered( enable?e->showCirclesBeforeIndex( param ):null );
       }

@@ -174,11 +174,6 @@ public class CliView extends AbstractView {
         return this;
     }
     
-    @Override
-    public void resumeGame(GameDTO game) throws RemoteException {
-    
-    }
-    
     
     @Override
     public void resumeGame(GameDTO game) throws RemoteException {
