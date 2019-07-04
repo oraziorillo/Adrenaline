@@ -255,7 +255,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
 
     @Override
-    public void response(String response) throws RemoteException {
+    public void response(String response) {
         currState.response(response);
     }
 

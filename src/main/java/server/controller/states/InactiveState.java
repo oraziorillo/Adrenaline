@@ -64,6 +64,7 @@ public class InactiveState extends State {
             case "no":
                 this.wantToUseTagbackGrenade = false;
                 controller.stopRequestTimer();
+                controller.unlock();
                 break;
             default:
                 break;

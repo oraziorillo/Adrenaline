@@ -17,13 +17,15 @@ public class LaunchServer {
 
     public static void main(String[] args) throws IOException {
     
-        ServerPropertyLoader propertyLoader = ServerPropertyLoader.getInstance();
-        
-        Registry registry = LocateRegistry.createRegistry(propertyLoader.getRmiPort());
+        //ServerPropertyLoader propertyLoader = ServerPropertyLoader.getInstance();
+
+        //Registry registry = LocateRegistry.createRegistry(propertyLoader.getRmiPort());
+        Registry registry = LocateRegistry.createRegistry(9999);
         registry.rebind("LoginController", LoginController.getInstance());
 
         ExecutorService pool = Executors.newCachedThreadPool();
-        try (ServerSocket serverSocket = new ServerSocket(propertyLoader.getSocketPort())) {
+        //try (ServerSocket serverSocket = new ServerSocket(propertyLoader.getSocketPort()))
+        try (ServerSocket serverSocket = new ServerSocket(10000)) {
             System.out.println("Server listening");
             while (!serverSocket.isClosed()) {
                 Socket clientSocket = serverSocket.accept();

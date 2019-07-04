@@ -116,6 +116,8 @@ public class Lobby {
                 return player.getView().isReachable();
             } catch (RemoteException e) {
                 return false;
+            } catch (IOException e) {
+                return false;
             }
         }).collect(Collectors.toList());
         if (players.size() > 2)

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import common.dto_model.GameDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
@@ -182,11 +183,12 @@ public class Game {
         gameBoard = preLoadedGameBoards[numberOfMap - 1];
         preLoadedGameBoards = null;
 
+        gameBoard.setNumberOfMap(numberOfMap);
         gameBoard.init(weaponsDeck, ammoDeck);
         gameBoard.addModelEventHandler(events);
 
         //notify map set
-        events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(numberOfMap), numberOfMap));
+        events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(), numberOfMap));
     }
 
 
@@ -420,6 +422,14 @@ public class Game {
 
     public void addModelEventListener(UUID playerID, ModelEventListener listener) {
         events.addModelEventListener(playerID, listener);
+    }
+
+
+    public GameDTO convertToDTO(){
+        GameDTO gameDTO = new GameDTO();
+        gameDTO.setGameBoardDTO(gameBoard.convertoTo());
+        gameDTO.setPcs(pcs.stream().map(Pc::convertToDTO).collect(Collectors.toSet()));
+        return gameDTO;
     }
 }
 

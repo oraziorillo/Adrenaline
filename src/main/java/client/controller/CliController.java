@@ -71,6 +71,7 @@ public class CliController {
                 view.printMessage(ControllerMethodsEnum.help());
             }
         }
+
         //TODO logout
     }
 

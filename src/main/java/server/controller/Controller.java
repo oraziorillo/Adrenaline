@@ -20,6 +20,7 @@ import server.model.squares.Square;
 import javax.swing.Timer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -341,8 +342,7 @@ public class Controller{
         try {
             getCurrPlayer().getView().ack(msg);
         } catch (RemoteException e) {
-            getCurrPlayer().setOnLine(false);
-            checkGameStatus();
+            checkGameStatus(getCurrPlayer());
         }
     }
 
@@ -350,10 +350,14 @@ public class Controller{
     public void ackAll(String msg){
         players.parallelStream().forEach(p -> {
             try {
-                p.getView().ack(msg);
+                if (p.getView().isReachable())
+                    p.getView().ack(msg);
             } catch (RemoteException e) {
                 p.setOnLine(false);
-                checkGameStatus();
+                checkGameStatus(p);
+            } catch (IOException e) {
+                p.setOnLine(false);
+                checkGameStatus(p);
             }
         });
     }
@@ -374,11 +378,13 @@ public class Controller{
 
 
     public void unlock() {
-
+        locked = false;
     }
 
 
-    public void checkGameStatus() {
+    public void checkGameStatus(Player player) {
+        player.setOnLine(false);
+        System.out.println(player.getPc().getName() + "is out");
         if (players.stream().filter(Player::isOnLine).count() < 3){
             //TODO
         }

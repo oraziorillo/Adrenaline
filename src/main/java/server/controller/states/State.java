@@ -146,12 +146,5 @@ public abstract class State {
         controller.sendChatMessage(msg);
     }
 
-
-    public State forcePass() {
-        controller.getSquaresToRefill().forEach(Square::refill);
-        controller.resetSquaresToRefill();
-        controller.resetRemainingActions();
-        controller.nextTurn();
-        return new InactiveState(controller, InactiveState.START_TURN_STATE);
-    }
+    public State forcePass() { return null; }
 }

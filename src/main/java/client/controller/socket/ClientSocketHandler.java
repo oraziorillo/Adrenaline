@@ -55,9 +55,9 @@ public class ClientSocketHandler implements Runnable {
                 buffer.add(args);
             } catch (IOException e) {
                 try {
-                    socket.close();
-                    out.close();
                     in.close();
+                    out.close();
+                    socket.close();
                 } catch (IOException ignore) {
                 }
             }

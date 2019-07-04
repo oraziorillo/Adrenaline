@@ -14,8 +14,8 @@ public class ClientPropertyLoader extends PropertyLoader {
       if(instance == null) instance = new ClientPropertyLoader();
       return instance;
    }
-   
-   public String getHostAddress(){
-      return properties.getProperty( "server.rmi.server.hostname" );
-   }
+
+    public String getHostAddress() {
+        return System.getProperty("client.host");
+    }
 }

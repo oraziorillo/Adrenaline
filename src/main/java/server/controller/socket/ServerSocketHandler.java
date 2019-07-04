@@ -150,6 +150,9 @@ public class ServerSocketHandler implements Runnable {
             case OK:
                 player.ok();
                 break;
+            case RESPONSE:
+                player.response(args[1]);
+                break;
             case PASS:
                 player.pass();
                 break;

@@ -143,7 +143,7 @@ public class CliView extends AbstractView {
     
     
     @Override
-    public synchronized void error(String msg) throws RemoteException{
+    public synchronized void error(String msg){
         inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
         System.exit(1);
     }
@@ -168,7 +168,7 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public boolean isReachable() throws RemoteException {
+    public boolean isReachable() throws RemoteException, IOException {
         return true;
     }
 
