@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import server.exceptions.EmptySquareException;
-import server.exceptions.NotEnoughAmmoException;
+import common.exceptions.EmptySquareException;
+import common.exceptions.NotEnoughAmmoException;
 import server.model.squares.SpawnPoint;
 
 import static org.junit.Assert.assertNotNull;

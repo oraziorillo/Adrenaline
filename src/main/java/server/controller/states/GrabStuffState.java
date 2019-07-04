@@ -1,8 +1,8 @@
 package server.controller.states;
 
 import server.controller.Controller;
-import server.exceptions.EmptySquareException;
-import server.exceptions.NotEnoughAmmoException;
+import common.exceptions.EmptySquareException;
+import common.exceptions.NotEnoughAmmoException;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;

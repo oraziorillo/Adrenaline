@@ -1,20 +1,27 @@
 package common.dto_model;
 
-import server.controller.Player;
-import server.database.DatabaseHandler;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyDTO implements DTO {
 
     private List<String> players;
 
-    public LobbyDTO(List<Player> players, boolean gameStarted, boolean playing){
-        this.players = new ArrayList<>();
-        players.stream()
-                .map(p -> DatabaseHandler.getInstance().getUsername(p.getToken()))
-                .forEach(u -> this.players.add(u));
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
+    private boolean gameStarted;
+
+    public List<String> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<String> players) {
+        this.players = players;
     }
 
     public String lastPlayerAddedName() {

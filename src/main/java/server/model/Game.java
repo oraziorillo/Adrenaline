@@ -403,6 +403,7 @@ public class Game {
         GameDTO gameDTO = new GameDTO();
         gameDTO.setGameBoardDTO(gameBoard.convertoTo());
         gameDTO.setPcs(pcs.stream().map(Pc::convertToDTO).collect(Collectors.toSet()));
+        gameDTO.setKillShotTrackDTO(gameBoard.getKillShotTrack().convertToDTO());
         return gameDTO;
     }
 }

@@ -36,6 +36,6 @@ public class MovementEvent extends PcEvent {
 
     @Override
     public PcEvent hideSensibleContent() {
-        return new MovementEvent(getCensoredDTO(), from, to, true);
+        return new MovementEvent(pc.getCensoredDTO(), from, to, true);
     }
 }

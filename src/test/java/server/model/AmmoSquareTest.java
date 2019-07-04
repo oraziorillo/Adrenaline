@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import server.exceptions.EmptySquareException;
+import common.exceptions.EmptySquareException;
 import server.model.squares.AmmoSquare;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;

@@ -34,6 +34,6 @@ public class PowerUpDiscardedEvent extends PcEvent {
 
     @Override
     public PcEvent hideSensibleContent() {
-        return new PowerUpDiscardedEvent(getCensoredDTO(), powerUp, true);
+        return new PowerUpDiscardedEvent(pc.getCensoredDTO(), powerUp, true);
     }
 }

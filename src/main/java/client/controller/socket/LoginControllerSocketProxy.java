@@ -4,7 +4,7 @@ import client.view.AbstractView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.net.Socket;

@@ -21,7 +21,7 @@ public class PcColourChosenEvent extends PcEvent{
 
     @Override
     public PcEvent hideSensibleContent() {
-        return new PcColourChosenEvent(pc, true);
+        return new PcColourChosenEvent(pc.getCensoredDTO(), true);
     }
 
 

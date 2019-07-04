@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Support class for game that handles the map and the kill shot track
  */
 public class GameBoard {
-    private int numberOfMap;            //TODO  è un expose??
+    @Expose private int numberOfMap;
     @Expose private int rows;
     @Expose private int columns;
     @Expose private List<Square> squares;

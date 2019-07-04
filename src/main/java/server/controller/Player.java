@@ -9,7 +9,8 @@ import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
 import server.database.DatabaseHandler;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
+import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
 
@@ -324,6 +325,15 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     public synchronized void forcePass(){
         currState = currState.forcePass();
+    }
+
+
+    public synchronized void resumeGame(Game game) {
+        try {
+            view.resumeGame(game.convertToDTO().getCensoredDTOFor(pc.getColour()));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
     
 }

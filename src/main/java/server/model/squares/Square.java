@@ -5,8 +5,8 @@ import common.dto_model.SquareDTO;
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
 import common.events.square_events.TargetableSetEvent;
-import server.exceptions.EmptySquareException;
-import server.exceptions.NotEnoughAmmoException;
+import common.exceptions.EmptySquareException;
+import common.exceptions.NotEnoughAmmoException;
 import server.model.*;
 
 import java.util.HashSet;
