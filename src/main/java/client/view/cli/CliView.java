@@ -88,7 +88,7 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public boolean wantsToRegister() {
+    public ControllerMethodsEnum authMethod() {
         ControllerMethodsEnum cmd = null;
         do {
             try {
@@ -102,14 +102,18 @@ public class CliView extends AbstractView {
             }
         } while (cmd == null);
 
+        return cmd;
+        /*
         switch (cmd) {
             case SIGN_UP:
-                return true;
             case LOG_IN:
-                return false;
+            case QUIT:
+                return cmd;
             default:
-                throw new IllegalArgumentException(WRONG_TIME);
+
         }
+
+         */
     }
 
 
@@ -130,23 +134,24 @@ public class CliView extends AbstractView {
 
 
     @Override
+    public synchronized void error(String msg){
+        inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
+        System.exit(1);
+    }
+
+
+    @Override
     public synchronized void ack(String message) throws RemoteException {
         if (message.length() != 0) {
             printMessage(message);
         }
     }
-    
+
     @Override
     public void chatMessage(String message) throws RemoteException {
-        //TODO: orazio, ho aggiunto questo metodo per differenziare i messaggi dagli utenti
+        //not implemented on cli
     }
-    
-    
-    @Override
-    public synchronized void error(String msg) throws RemoteException{
-        inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
-        System.exit(1);
-    }
+
 
 
     @Override

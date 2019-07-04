@@ -5,16 +5,10 @@ import client.view.gui.GuiView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class GuiController extends Application {
@@ -40,7 +34,7 @@ public class GuiController extends Application {
         try {
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             UUID token;
-            if (view.wantsToRegister()) {
+            if (view.authMethod()) {
                 String username = view.acquireUsername();
                 token = loginController.register( username, view );
                 view.ack( "This is your token"+System.lineSeparator()+token );

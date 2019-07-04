@@ -135,6 +135,12 @@ public class InactiveState extends State {
 
 
     @Override
+    public State forcePass() {
+        return this;
+    }
+
+
+    @Override
     public State nextState() {
         if (hasToRespawn)
             return new RespawnState(controller);

@@ -163,10 +163,12 @@ public class ServerSocketHandler implements Runnable {
                 player.skip();
                 break;
             case QUIT:
-                player.quit();
+                if (args.length == 1)
+                    player.quit();
+                else
+                    loginController.quit(UUID.fromString(args[1]));
                 break;
             default:
-                //TODO: incompleta
                 break;
         }
     }

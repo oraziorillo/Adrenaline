@@ -296,40 +296,48 @@ public class Controller{
 
 
     public void sendRequest(Request request, Player recipient) {
-        try {
-            lock();
-            requestRecipient = recipient;
-            recipient.getView().request(request);
-            requestTimer.start();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (recipient.isOnLine()) {
+            try {
+                lock();
+                requestRecipient = recipient;
+                recipient.getView().request(request);
+                requestTimer.start();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public void sendNonBlockingRequest(Request request) {
-        try {
-            getCurrPlayer().getView().request(request);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (getCurrPlayer().isOnLine()) {
+            try {
+                getCurrPlayer().getView().request(request);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public void ackRequestRecipient(String msg) {
-        try {
-            requestRecipient.getView().ack(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (requestRecipient.isOnLine()) {
+            try {
+                requestRecipient.getView().ack(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public void ackPlayer(Player p, String msg) {
-        try {
-            p.getView().ack(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (p.isOnLine()) {
+            try {
+                p.getView().ack(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -339,18 +347,18 @@ public class Controller{
             getCurrPlayer().getView().ack(msg);
         } catch (RemoteException e) {
             getCurrPlayer().setOnLine(false);
-            checkGameStatus();
+            checkIfGameCanContinueC();
         }
     }
 
 
     public void ackAll(String msg){
-        players.parallelStream().forEach(p -> {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
                 p.getView().ack(msg);
             } catch (RemoteException e) {
                 p.setOnLine(false);
-                checkGameStatus();
+                checkIfGameCanContinueC();
             }
         });
     }
@@ -380,15 +388,15 @@ public class Controller{
     }
 
 
-    public void checkGameStatus() {
+    public void checkIfGameCanContinueC() {
         if (players.stream().filter(Player::isOnLine).count() < 3){
-            //TODO
+
         }
     }
 
 
     public void sendChatMessage(String msg) {
-        players.parallelStream().forEach(p -> {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
                 p.getView().chatMessage(msg);
             } catch (RemoteException e) {

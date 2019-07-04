@@ -37,13 +37,6 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
 
 
    @Override
-   public void error(String msg) throws RemoteException {
-      out.println(ERROR + REGEX + msg.replaceAll(System.lineSeparator(), REGEX));
-      out.flush();
-   }
-
-
-   @Override
    public void notifyEvent(LobbyEvent event) throws RemoteException {
       out.println(NOTIFY_EVENT + REGEX + gson.toJson(event, LobbyEvent.class));
       out.flush();

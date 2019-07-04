@@ -13,8 +13,6 @@ public interface RemoteView extends Remote {
     
     void chatMessage(String message) throws RemoteException;
 
-    void error(String msg) throws RemoteException;
-
     void notifyEvent(LobbyEvent event) throws RemoteException;
 
     void request(Request request) throws RemoteException;

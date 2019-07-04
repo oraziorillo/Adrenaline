@@ -49,8 +49,8 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
 
    @Override
-   public boolean wantsToRegister() {
-      return currentGui.wantsToRegister();
+   public boolean authMethod() {
+      return currentGui.authMethod();
    }
 
 

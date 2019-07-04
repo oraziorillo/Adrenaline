@@ -7,7 +7,6 @@ import server.controller.Controller;
 import server.controller.Player;
 import server.model.Pc;
 import server.model.WeaponCard;
-import server.model.squares.Square;
 
 import java.rmi.RemoteException;
 
@@ -148,10 +147,6 @@ public abstract class State {
 
 
     public State forcePass() {
-        controller.getSquaresToRefill().forEach(Square::refill);
-        controller.resetSquaresToRefill();
-        controller.resetRemainingActions();
-        controller.nextTurn();
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 }

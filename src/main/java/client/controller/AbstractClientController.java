@@ -21,8 +21,8 @@ public abstract class AbstractClientController extends Application {
 //        try {
 //            UUID token;
 //            this.loginController = view.acquireConnection(view.acquireConnectionMethod());
-//            boolean wantsToRegister = view.wantsToRegister();
-//            if (wantsToRegister) {
+//            boolean authMethod = view.authMethod();
+//            if (authMethod) {
 //                String username;
 //                do {
 //                    username = view.acquireUsername();

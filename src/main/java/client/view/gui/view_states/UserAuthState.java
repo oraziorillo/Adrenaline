@@ -48,8 +48,8 @@ public class UserAuthState extends ViewState {
    }
    
    @Override
-   public boolean wantsToRegister() {
-      return getJavafxController().wantsToRegister();
+   public boolean authMethod() {
+      return getJavafxController().authMethod();
    }
 
    @Override

@@ -183,6 +183,7 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
     @Override
     public synchronized void quit() {
         out.println(QUIT);
+        out.flush();
         try {
             out.close();
             in.close();

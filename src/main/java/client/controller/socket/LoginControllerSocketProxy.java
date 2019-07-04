@@ -4,12 +4,11 @@ import client.view.AbstractView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -77,5 +76,15 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
         out.flush();
     }
 
-
+    @Override
+    public void quit(UUID token) throws RemoteException {
+        out.println(QUIT + REGEX + token);
+        out.flush();
+        try {
+            out.close();
+            in.close();
+            socket.close();
+        } catch (IOException ignored) {
+        }
+    }
 }

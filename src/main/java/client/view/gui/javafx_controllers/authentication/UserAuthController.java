@@ -92,7 +92,7 @@ public class UserAuthController extends AbstractJavaFxController {
    
    
    @Override
-   public boolean wantsToRegister() {
+   public boolean authMethod() {
       Alert firstTime = new Alert(
               Alert.AlertType.CONFIRMATION,
               "is this your first time?",

@@ -111,7 +111,7 @@ public abstract class ViewState extends AbstractView {
    public void chatMessage(String message) {throw new IllegalStateException( UNEXPECTED_CALL );}
    
    @Override
-   public boolean wantsToRegister() {
+   public boolean authMethod() {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    

@@ -34,6 +34,11 @@ public class ModelEventHandler {
     }
 
 
+    synchronized void removeListener(PcColourEnum colour) {
+        listeners.removeSecondary(colour);
+    }
+
+
     synchronized void fireEvent(GameBoardEvent event){
         listeners.values().parallelStream().forEach(l -> {
             try {

@@ -44,7 +44,7 @@ public class UseTargetingScopeState extends State {
                     controller.getCurrPlayer().getView().ack("You have selected this powerUp as an ammo!");
                 } catch (RemoteException e) {
                     controller.getCurrPlayer().setOnLine(false);
-                    controller.checkGameStatus();
+                    controller.checkIfGameCanContinueC();
                 }
             }
         }
@@ -53,7 +53,7 @@ public class UseTargetingScopeState extends State {
                 controller.getCurrPlayer().getView().ack("Be careful! " + ex );
             } catch (RemoteException e) {
                 controller.getCurrPlayer().setOnLine(false);
-                controller.checkGameStatus();
+                controller.checkIfGameCanContinueC();
             }
         }
     }
