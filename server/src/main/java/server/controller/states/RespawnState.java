@@ -15,7 +15,7 @@ public class RespawnState extends State {
     RespawnState(Controller controller) {
         super(controller);
         this.powerUpIndex = -1;
-        //controller.startTimer();
+        //cli.controller.startTimer();
         recordDeath();
         if (!deadPlayer.isOnLine()) {
             powerUpIndex = deadPlayer.getPc().getPowerUps().size() - 1;

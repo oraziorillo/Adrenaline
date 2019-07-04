@@ -26,7 +26,7 @@ class GrabStuffState extends State{
 
     GrabStuffState(Controller controller) {
         super(controller);
-        //controller.startTimer();
+        //cli.controller.startTimer();
         targetableSquares = new HashSet<>();
         setTargetableToValidSquares(controller.getCurrPc());
     }

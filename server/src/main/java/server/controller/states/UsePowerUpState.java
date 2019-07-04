@@ -21,7 +21,7 @@ public class UsePowerUpState extends State {
     UsePowerUpState(Controller controller) {
         super(controller);
         this.targetableSquares = new HashSet<>();
-        //controller.startTimer();
+        //cli.controller.startTimer();
     }
 
 

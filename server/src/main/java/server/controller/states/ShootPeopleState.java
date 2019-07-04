@@ -26,7 +26,7 @@ public class ShootPeopleState extends State {
         this.moved = hasMoved;
         this.reloadDone = hasReloaded;
         this.targetableSquares = new HashSet<>();
-        //controller.startTimer();
+        //cli.controller.startTimer();
         setTargetableToValidSquares(controller.getCurrPc());
     }
 

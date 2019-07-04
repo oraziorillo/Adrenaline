@@ -12,7 +12,7 @@ public class ClientPropertyLoader extends PropertyLoader {
    private static ClientPropertyLoader instance;
    
    private ClientPropertyLoader() {
-      super("server.host = localhost");
+      super();
    }
    
    public static ClientPropertyLoader getInstance() {

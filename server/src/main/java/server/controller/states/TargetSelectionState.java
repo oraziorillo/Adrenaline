@@ -39,7 +39,7 @@ public class TargetSelectionState extends State {
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
-        //controller.startTimer();
+        //cli.controller.startTimer();
         setAction();
         checkIfOriented();
     }
@@ -76,7 +76,7 @@ public class TargetSelectionState extends State {
 
         LinkedList<Pc> justShotPc = new LinkedList<>(currEffect.execute(controller.getCurrPc()));
         if (!justShotPc.isEmpty()) {
-//            List<Player> players = controller.getPlayers();
+//            List<Player> players = cli.controller.getPlayers();
 //            for (Pc pc: justShotPc) {
 //                players.forEach(player -> {
 //                    if (player.getPc() == pc){

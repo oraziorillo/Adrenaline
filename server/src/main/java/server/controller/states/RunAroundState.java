@@ -20,7 +20,7 @@ public class RunAroundState extends State{
       super(controller);
       this.undo = false;
       targetableSquares = new HashSet<>();
-      //controller.startTimer();
+      //cli.controller.startTimer();
       setTargetableToValidSquares(controller.getCurrPc());
    }
    

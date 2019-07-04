@@ -276,5 +276,5 @@ public class DatabaseHandler {
     }
 
 
-    //TODO mettere view a null quando il player si disconnette
+    //TODO mettere cli.view a null quando il player si disconnette
 }

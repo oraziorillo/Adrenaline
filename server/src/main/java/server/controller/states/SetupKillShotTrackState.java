@@ -21,7 +21,7 @@ public class SetupKillShotTrackState extends State{
         super(controller);
         this.killShotTrackIndex = -1;
         controller.ackCurrent("\nI'll let you choose even the number of skulls to place on the killshot track (5 to 8)");
-        //controller.startTimer();
+        //cli.controller.startTimer();
     }
 
     

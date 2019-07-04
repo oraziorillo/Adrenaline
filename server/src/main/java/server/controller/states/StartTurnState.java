@@ -15,7 +15,7 @@ public class StartTurnState extends State {
 
     StartTurnState(Controller controller) {
         super(controller);
-        //controller.startTimer();
+        //cli.controller.startTimer();
         controller.ackCurrent("You can:\n> run around\n> grab stuff\n> shoot people\n> use a power up");
     }
 

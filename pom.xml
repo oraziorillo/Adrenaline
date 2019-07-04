@@ -134,7 +134,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.2</version>
                 <configuration>
-                    <mainClass>client.LaunchGui</mainClass>
+                    <mainClass>gui.LaunchGui</mainClass>
                 </configuration>
             </plugin>
         </plugins>

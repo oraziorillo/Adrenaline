@@ -20,26 +20,26 @@ public abstract class AbstractClientController extends Application {
     protected void initialize() {
 //        try {
 //            UUID token;
-//            this.loginController = view.acquireConnection(view.acquireConnectionMethod());
-//            boolean authMethod = view.authMethod();
+//            this.loginController = cli.view.acquireConnection(cli.view.acquireConnectionMethod());
+//            boolean authMethod = cli.view.authMethod();
 //            if (authMethod) {
 //                String username;
 //                do {
-//                    username = view.acquireUsername();
-//                    token = loginController.register(username, view);
+//                    username = cli.view.acquireUsername();
+//                    token = loginController.register(username, cli.view);
 //                } while (token == null);
-//                view.printMessage("Registered as @" + username +
+//                cli.view.printMessage("Registered as @" + username +
 //                        "\n\nThis is your token: " + token + "\nUse it to login next time\n");
 //                player = tryLogin(token);
 //            } else {
 //                do {
-//                    token = view.acquireToken();
+//                    token = cli.view.acquireToken();
 //                    player = tryLogin(token);
 //                } while (player == null);
 //            }
 //            loginController.joinLobby(token);
 //        } catch (IOException e) {
-//            view.printMessage("Server unreachable");
+//            cli.view.printMessage("Server unreachable");
 //        }
     }
 
@@ -47,11 +47,11 @@ public abstract class AbstractClientController extends Application {
 //    private RemotePlayer tryLogin(UUID token){
 //        RemotePlayer tmpPlayer;
 //        try {
-//            tmpPlayer = loginController.login(token, view);
+//            tmpPlayer = loginController.login(token, cli.view);
 //            if (tmpPlayer != null)
-//                view.printMessage("Logging in");
+//                cli.view.printMessage("Logging in");
 //        } catch (PlayerAlreadyLoggedInException e) {
-//            view.printMessage(e.getMessage());
+//            cli.view.printMessage(e.getMessage());
 //            tmpPlayer = null;
 //        } catch (IOException e) {
 //            e.printStackTrace();
