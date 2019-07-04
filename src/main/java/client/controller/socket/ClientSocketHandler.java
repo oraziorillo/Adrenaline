@@ -12,6 +12,7 @@ import common.events.lobby_events.LobbyEvent;
 import common.events.lobby_events.PlayerJoinedEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import server.model.deserializers.ModelEventDeserializer;
 
@@ -85,6 +86,11 @@ public class ClientSocketHandler implements Runnable {
                 LobbyEvent lobbyEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), PlayerJoinedEvent.class);
                 view.notifyEvent(lobbyEvent);
+                break;
+            case REQUEST:
+                Request request = gson.fromJson(
+                        new JsonReader(new StringReader(args[1])), Request.class);
+                view.request(request);
                 break;
             case ON_GAME_BOARD_UPDATE:
                 GameBoardEvent gameBoardEvent = gson.fromJson(

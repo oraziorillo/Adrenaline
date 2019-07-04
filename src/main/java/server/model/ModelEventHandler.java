@@ -8,6 +8,8 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
 import server.database.Caterpillar;
+import server.database.DatabaseHandler;
+
 import java.rmi.RemoteException;
 import java.util.UUID;
 
@@ -70,7 +72,7 @@ public class ModelEventHandler {
 
 
 
-    synchronized void fireEvent(PcEvent event) {
+    public synchronized void fireEvent(PcEvent event) {
         PcColourEnum publisherColour = event.getDTO().getColour();
         try {
             listeners.get(publisherColour).onPcUpdate(event);
@@ -102,5 +104,10 @@ public class ModelEventHandler {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void notifyDamaged(PcColourEnum damagedColour){
+        DatabaseHandler.getInstance().getPlayer(listeners.getPrimaryKey(damagedColour)).notifyDamaged();
     }
 }

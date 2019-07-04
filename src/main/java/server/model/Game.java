@@ -192,8 +192,19 @@ public class Game {
 
     public void restore(){
         gameBoard.init(weaponsDeck, ammoDeck);
-        for (Square s : gameBoard.getSquares())
-            pcs.addAll(s.getPcs());
+        gameBoard.addModelEventHandler(events);
+        for (Square s : gameBoard.getSquares()) {
+            for (Pc pc : s.getPcs()){
+                pcs.add(pc);
+                pc.setCurrSquare(s);
+            }
+        }
+        pcs.forEach(p -> {
+            events.addListenerColour(p.getColour());
+            p.addModelEventHandler(events);
+            p.setCurrGame(this);
+        });
+
     }
 
     /**

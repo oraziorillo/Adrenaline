@@ -28,6 +28,7 @@ public enum ControllerMethodsEnum {
     CHOOSE_AMMO("ca", "choose an ammo for the targeting scope"),
     CHOOSE_ASYNCHRONOUS_EFFECT_ORDER("async", "choose the order of the selected asynchronous upgrade"),
     CHOOSE_DIRECTION("dir", "choose a direction"),
+    RESPONSE("r", "use it to answer to a request"),
     OK("ok", "confirm your command"),
     RELOAD("rel", "reload a weapon"),
     PASS("pass", "pass turn"),

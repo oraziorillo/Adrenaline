@@ -10,6 +10,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -27,7 +28,7 @@ import java.util.UUID;
  * Concrete states will override those methods so exception is no longer thrown
  */
 public abstract class ViewState extends AbstractView {
-   private AbstractJavaFxController javafxController;
+   private static AbstractJavaFxController javafxController;
    private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
    protected static transient RemotePlayer player;
    static transient HostServices hostServices;
@@ -42,7 +43,7 @@ public abstract class ViewState extends AbstractView {
    }
    
    protected void setJavafxController(AbstractJavaFxController javafxController) {
-      this.javafxController = javafxController;
+      ViewState.javafxController = javafxController;
       javafxController.setPlayer( player );
       javafxController.setHostServices( hostServices );
       javafxController.setTopView( topView );
@@ -59,8 +60,13 @@ public abstract class ViewState extends AbstractView {
       ViewState returned = new UserAuthState();
       ViewState.stage = stage;
       ViewState.hostServices = hostServices;
-      ViewState.topView = topView;
+      setTopView( topView );
       return returned;
+   }
+   
+   public static void setTopView(GuiView topView) {
+      ViewState.topView = topView;
+      if(javafxController!=null) javafxController.setTopView( topView );
    }
    
    /**
@@ -99,7 +105,6 @@ public abstract class ViewState extends AbstractView {
    @Override
    public void ack(String message) {
       previousAcks.add( message );
-      if(javafxController!=null) javafxController.ack( message );
    }
    
    @Override
@@ -156,4 +161,10 @@ public abstract class ViewState extends AbstractView {
          throw e1;
       }
    }
+   
+   @Override
+   public void request(Request request) throws RemoteException {
+   
+   }
+   
 }

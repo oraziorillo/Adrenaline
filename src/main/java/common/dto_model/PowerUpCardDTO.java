@@ -4,13 +4,14 @@ import common.enums.AmmoEnum;
 
 public class PowerUpCardDTO extends AbstractCardDTO {
     
-    private static final String DEFAULT_NAME = "retro_powerup";
+    private static final String DEFAULT_NAME = "Back";
+    private static final String DIRECTORY_NAME = "powerups/";
     private AmmoEnum colour;
 
     @Override
     public String getImagePath() {
         String appendedColor = colour==null?"":("_"+colour.toString().toLowerCase());
-        return super.getImagePath() + name + appendedColor + extension;
+        return super.getImagePath() + DIRECTORY_NAME + name + appendedColor + extension;
     }
 
     public String getName() {

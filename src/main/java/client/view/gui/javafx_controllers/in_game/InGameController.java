@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game;
 
+import client.ClientPropertyLoader;
 import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Map;
 import client.view.gui.javafx_controllers.in_game.components.Top;
@@ -8,6 +9,7 @@ import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
+import common.Constants;
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
@@ -21,6 +23,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
@@ -34,10 +37,14 @@ import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Optional;
 
 public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
@@ -52,7 +59,6 @@ public class InGameController extends AbstractJavaFxController {
    @FXML private Top topController;
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
-   private final ObjectProperty<PcColourEnum> color = new SimpleObjectProperty<>(PcColourEnum.GREEN);
    private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
    private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
    private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
@@ -93,7 +99,6 @@ public class InGameController extends AbstractJavaFxController {
          n.setTranslateX(2 * (size - i));
          n.setViewOrder(i);
       }
-      setPlayer( player );
    }
    
    private Region spacerFactory(){
@@ -189,9 +194,9 @@ public class InGameController extends AbstractJavaFxController {
 
    @Override
     public void onGameBoardUpdate(GameBoardEvent event) {
+      mapController.setMap( event.getDTO().getNumberOfMap() );
       for(SquareDTO s:event.getDTO().getSquares())
          squares.put( s,s );
-      mapController.setMap( event.getDTO().getNumberOfMap() );
     }
    
    @Override
@@ -203,6 +208,24 @@ public class InGameController extends AbstractJavaFxController {
    @Override
    public void notifyEvent(LobbyEvent event) {
 
+   }
+
+   @Override
+   public void request(Request request) {
+      try {
+         switch (request.toString()) {
+            case "Do you wanna use your Tagback Grenade? (yes/no)":
+               Alert requestAlert = new Alert( Alert.AlertType.CONFIRMATION, request.toString(), ButtonType.YES, ButtonType.NO );
+               Timer timer = new Timer( ClientPropertyLoader.getInstance().getRequestTimer(), e -> requestAlert.close() );
+               requestAlert.setHeaderText( null );
+               timer.start();
+               Optional<ButtonType> response = requestAlert.showAndWait();
+               player.response( response.orElse( ButtonType.NO ).getText().toLowerCase() );
+               break;
+         }
+      }catch ( IOException e ){
+         Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
    }
 
    @Override
@@ -219,15 +242,15 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onPcUpdate(PcEvent event) {
-       PcColourEnum color = event.getDTO().getColour();
+       PcColourEnum eventColor = event.getDTO().getColour();
        if(!event.isCensored()) {
-         topController.setColour( color );
-         pcBoardController.setPcColour( color );
-         powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[0]));
+         topController.setColour( eventColor );
+         pcBoardController.setPcColour( eventColor );
+         powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[Constants.MAX_POWER_UPS_IN_HAND+1]));
          weaponHandController.setCards( event.getDTO().getWeapons() );
          //mapController.setColor
       }
-      pcs.put( color,event.getDTO() );
+      pcs.put( eventColor,event.getDTO() );
     }
 
     @Override

@@ -1,13 +1,11 @@
 package server.controller.states;
 
+import common.enums.AmmoEnum;
 import server.controller.Controller;
 import server.controller.Player;
-import common.enums.AmmoEnum;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
-
-import java.rmi.RemoteException;
 
 public class RespawnState extends State {
 
@@ -45,12 +43,6 @@ public class RespawnState extends State {
     public boolean ok() {
         if (powerUpIndex > -1) {
             respawn();
-            try {
-                deadPlayer.getView().ack("\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
-            } catch (RemoteException e) {
-                deadPlayer.setOnLine(false);
-                controller.checkGameStatus();
-            }
             return true;
         }
         return false;
@@ -66,6 +58,7 @@ public class RespawnState extends State {
         pcToRespawn.discardPowerUp(powerUp);
         pcToRespawn.spawn(s);
         oldSquare.getPcs().remove(pcToRespawn);
+        controller.ackPlayer(deadPlayer, "\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
     }
 
 

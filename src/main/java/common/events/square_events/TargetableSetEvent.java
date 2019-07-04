@@ -21,11 +21,12 @@ public class TargetableSetEvent extends SquareEvent {
 
     @Override
     public String toString() {
-        return censored
-               ? ""
-               : (square.isTargetable()
-                 ? square.toString() + " is targettable"
-                 : "");
+        StringBuilder squareString = new StringBuilder();
+        if (!censored) {
+            if (!censored && square.isTargetable())
+                squareString.append("> ").append(square.toString());
+        }
+        return squareString.toString();
     }
 
 

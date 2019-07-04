@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.components;
 
+import client.view.gui.ImageCache;
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.CardHolder;
 import client.view.gui.javafx_controllers.in_game.dialogs.SettingsMenu;
 import common.Constants;
@@ -12,6 +13,7 @@ import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -49,35 +51,34 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
    private FlowPane frenzyTrackPane = new FlowPane();
    public static final double KILLSHOT_HEIGHT = 100d;
    
-   public final MapChangeListener<SquareDTO,SquareDTO> squareListener = c->cardHolderController.onChanged( c );
-   public final MapChangeListener<PcColourEnum, PcDTO> pcListener = change -> {
+   public final MapChangeListener<SquareDTO,SquareDTO> squareListener = c->Platform.runLater( ()->cardHolderController.onChanged( c ));
+   public final MapChangeListener<PcColourEnum, PcDTO> pcListener = change -> Platform.runLater( ()-> {
       ammoController.onChanged( change );
-      if(change.wasAdded() && settedColour.equals( change.getValueAdded().getColour() )){
-         punti.setText( Short.toString( change.getValueAdded().getPcBoard().getPoints()) );
-      }
-   };
+      if (change.wasAdded() && change.getValueAdded().getColour().equals( settedColour ))
+         punti.setText( Short.toString( change.getValueAdded().getPcBoard().getPoints() ) );
+   });
    
    public void initialize(){
       //Init killshottrack
-      ImageView skullImage = new ImageView( new Image( "/images/teschio_0.png",0, KILLSHOT_HEIGHT,true, false) );
+      ImageView skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_0.png", KILLSHOT_HEIGHT) );
       StackPane circlePane = killshotTrackPanes[0] = new StackPane( );
       StackPane skullPane = new StackPane( skullImage,circlePane );
       skullImage.setPreserveRatio( true );
       killShotTrack.getChildren().add( skullPane );
       for(int i=1; i<Constants.MAX_KILL_SHOT_TRACK_SIZE-1;i++){
-         skullImage = new ImageView( new Image( "/images/teschio_i.png",0, KILLSHOT_HEIGHT,true, false ) );
+         skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_i.png", KILLSHOT_HEIGHT ) );
          circlePane = killshotTrackPanes[i] = new StackPane(  );
          skullImage.setPreserveRatio( true );
          skullPane = new StackPane( skullImage, circlePane );
          killShotTrack.getChildren().add( skullPane );
       }
-      skullImage = new ImageView( new Image( "/images/teschio_ultimo.png",0, KILLSHOT_HEIGHT,true,false ));
+      skullImage = new ImageView( ImageCache.loadImage( "/images/teschio_ultimo.png", KILLSHOT_HEIGHT));
       circlePane = killshotTrackPanes[Constants.MAX_KILL_SHOT_TRACK_SIZE-1] = new StackPane(  );
       skullImage.setPreserveRatio( true );
       skullPane = new StackPane( skullImage,circlePane );
       killShotTrack.getChildren().add( skullPane );
       //Final frenzy box
-      skullImage = new ImageView(new Image( "/images/killshot_box.png",0, KILLSHOT_HEIGHT,true,false ) );
+      skullImage = new ImageView(ImageCache.loadImage( "/images/killshot_box.png", KILLSHOT_HEIGHT ) );
       frenzyTrackPane = new FlowPane();
       frenzyTrackPane.setMaxSize( skullImage.getImage().getWidth(),skullImage.getImage().getHeight() );
       skullImage.setPreserveRatio( true );
@@ -140,9 +141,11 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       this.frenzyTrackPane.getChildren().clear();
       double circles= Math.ceil( Math.sqrt( track.getFinalFrenzyKillShotTrack().length ) );
       for(KillShotDTO k:track.getFinalFrenzyKillShotTrack()){
-         Circle c = new Circle(0,Color.valueOf( k.getColour().toString() ));
-         c.radiusProperty().bind( Bindings.subtract( Bindings.divide( Bindings.min( frenzyTrackPane.heightProperty(),frenzyTrackPane.widthProperty() ),2*circles ),1 ) );
+         if(k==null) break;
+         Circle c;
+         c = new Circle(0,Color.valueOf( k.getColour().toString()));
          c.setStroke( Color.BLACK );
+         c.radiusProperty().bind( Bindings.subtract( Bindings.divide( Bindings.min( frenzyTrackPane.heightProperty(), frenzyTrackPane.widthProperty() ), 2 * circles ), 1 ) );
          this.frenzyTrackPane.getChildren().add( c );
       }
       

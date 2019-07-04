@@ -4,6 +4,7 @@ public enum ViewMethodsEnum {
     ACK,
     ERROR,
     NOTIFY_EVENT,
+    REQUEST,
     ON_GAME_BOARD_UPDATE,
     ON_KILL_SHOT_TRACK_UPDATE,
     ON_PC_BOARD_UPDATE,

@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
+import common.events.requests.Request;
+import server.ServerPropertyLoader;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -24,6 +26,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static common.Constants.*;
 import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
 import static common.Constants.ACTIONS_PER_TURN;
 import static java.sql.Types.TIME;
@@ -42,7 +45,10 @@ public class Controller{
     private Set<PcColourEnum> availablePcColours;
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
+    private boolean locked;
     private Timer timer;
+    private Timer requestTimer;
+    private Player requestRecipient;
 
 
     public Controller(UUID gameUUID, List<Player> players) {
@@ -53,6 +59,15 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
+        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
+            try {
+                requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
+                requestRecipient.getView().ack("Time to decide is up!");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+        this.requestTimer.stop();
         //this.timer = new javax.swing.Timer(TIME, actionEvent -> getCurrPlayer().forcePass());
     }
 
@@ -86,12 +101,12 @@ public class Controller{
             currPlayerIndex = gameInfo.getCurrPlayerIndex();
             lastPlayerIndex = gameInfo.getLastPlayerIndex();
             addListenersToModel();
+            ackAll("Game restored!");
             players.forEach(player -> {
                 player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken())));
                 player.setCurrState(new InactiveState(this, 2));
             });
             nextTurn();
-            ackAll("Game restored!");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -123,6 +138,11 @@ public class Controller{
             }
             game.addModelEventListener(p.getToken(), listener);
         });
+    }
+
+
+    public boolean isLocked() {
+        return locked;
     }
 
 
@@ -278,6 +298,45 @@ public class Controller{
     }
 
 
+    public void sendRequest(Request request, Player recipient) {
+        try {
+            locked = true;
+            requestRecipient = recipient;
+            recipient.getView().request(request);
+            requestTimer.start();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void sendNonBlockingRequest(Request request) {
+        try {
+            getCurrPlayer().getView().request(request);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void ackRequestRecipient(String msg) {
+        try {
+            requestRecipient.getView().ack(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void ackPlayer(Player p, String msg) {
+        try {
+            p.getView().ack(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void ackCurrent(String msg){
         try {
             getCurrPlayer().getView().ack(msg);
@@ -309,9 +368,30 @@ public class Controller{
     }
 
 
+    public void stopRequestTimer() {
+        this.requestTimer.stop();
+    }
+
+
+    public void unlock() {
+
+    }
+
+
     public void checkGameStatus() {
         if (players.stream().filter(Player::isOnLine).count() < 3){
             //TODO
         }
+    }
+
+
+    public void sendChatMessage(String msg) {
+        players.parallelStream().forEach(p -> {
+            try {
+                p.getView().chatMessage(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

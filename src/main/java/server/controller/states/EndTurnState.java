@@ -14,6 +14,7 @@ class EndTurnState extends State {
     EndTurnState(Controller controller) {
         super(controller);
         //controller.startTimer();
+        controller.ackCurrent("Now the only things left for you to do are to reload or just pass");
     }
     
     /**
@@ -34,10 +35,14 @@ class EndTurnState extends State {
      */
     @Override
     public boolean pass() {
-        controller.getSquaresToRefill().forEach(Square::refill);
-        controller.resetSquaresToRefill();
-        controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
-        return true;
+        if (!controller.isLocked()) {
+            controller.getSquaresToRefill().forEach(Square::refill);
+            controller.resetSquaresToRefill();
+            controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+            return true;
+        }
+        controller.ackCurrent("\nBe patient! A player is choosing whether to use or not a Tagback Grenade");
+        return false;
     }
 
 

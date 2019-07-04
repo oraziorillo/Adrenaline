@@ -20,8 +20,8 @@ public class GameBoard {
     @Expose private int columns;
     @Expose private List<Square> squares;
     @Expose private int[] doors;
+    @Expose private KillShotTrack killShotTrack;
     private List<Square> spawnPoints;
-    private KillShotTrack killShotTrack;
 
 
     public GameBoard(){

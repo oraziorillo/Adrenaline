@@ -24,7 +24,7 @@ public class SpawnEvent extends PcEvent {
         return (censored
                 ? pc.getName()
                 : "You")
-                    + " spawned on row " + pc.getSquareRow() + " and coloumn " + pc.getSquareCol();
+                    + " spawned on " + pc.squareToString();
     }
 
 

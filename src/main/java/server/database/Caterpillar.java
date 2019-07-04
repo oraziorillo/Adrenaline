@@ -3,20 +3,20 @@ package server.database;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Caterpillar<PK, SK, V> {
+public class Caterpillar<P, S, V> {
 
     /**
      * This class is a dynamically changing HashMap.
-     * At the beginning it is used like an HashMap of V objects accessed by a PK key; you can add and remove values by using the primary key.
-     * You can also add SK objects to the data structure, but they are unused at the moment.
+     * At the beginning it is used like an HashMap of V objects accessed by a P key; you can add and remove values by using the primary key.
+     * You can also add S objects to the data structure, but they are unused at the moment.
      * The size of SKs' list is always less then or equals to the size of the list of values.
-     * When the size of List of SK values reaches the size of the List of values, Caterpillar "metamorphoses" and starts to behaves like an
-     * HashMap in which keys are SK type objects and values are V type objects and the binding between secondary keys and values is guaranteed
+     * When the size of List of S values reaches the size of the List of values, Caterpillar "metamorphoses" and starts to behaves like an
+     * HashMap in which keys are S type objects and values are V type objects and the binding between secondary keys and values is guaranteed
      * by the order of insertions of secondary keys and values.
      */
 
-    private ArrayList<PK> primaryKeys;
-    private ArrayList<SK> secondaryKeys;
+    private ArrayList<P> primaryKeys;
+    private ArrayList<S> secondaryKeys;
     private ArrayList<V> values;
 
 
@@ -27,35 +27,37 @@ public class Caterpillar<PK, SK, V> {
     }
 
 
-    private boolean metamorphosed(){
-        return secondaryKeys.size() == values.size();
-    }
-
-
-    public void put(PK k, V v) {
+    public void put(P k, V v) {
         primaryKeys.add(primaryKeys.size(), k);
         values.add(values.size(), v);
     }
 
 
-    public V get(SK k) {
+    public V get(S k) {
         return values.get(secondaryKeys.indexOf(k));
     }
 
 
-    public SK getSecondaryKey(V v) {
+    public P getPrimaryKey(S s) {
+        if (secondaryKeys.contains(s))
+            return primaryKeys.get(secondaryKeys.indexOf(s));
+        return null;
+    }
+
+
+    public S getSecondaryKey(V v) {
         if(values.indexOf(v) < secondaryKeys.size())
             return secondaryKeys.get(values.indexOf(v));
         return null;
     }
 
 
-    public void insertSK(SK k) {
+    public void insertSK(S k) {
         secondaryKeys.add(secondaryKeys.size(), k);
     }
 
 
-    public void remove(PK k){
+    public void remove(P k){
         int i = primaryKeys.indexOf(k);
         values.remove(i);
         primaryKeys.remove(i);
@@ -66,12 +68,12 @@ public class Caterpillar<PK, SK, V> {
 
 
 
-    public List<PK> primaryKeySet(){
+    public List<P> primaryKeySet(){
         return primaryKeys;
     }
 
 
-    public List<SK> secondaryKeySet() {
+    public List<S> secondaryKeySet() {
         return secondaryKeys;
     }
 

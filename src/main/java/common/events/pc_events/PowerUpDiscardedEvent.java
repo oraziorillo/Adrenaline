@@ -26,7 +26,7 @@ public class PowerUpDiscardedEvent extends PcEvent {
     @Override
     public String toString() {
         if (censored)
-            return "\n" + pc.getName() + "discarded a " + powerUp.getColour() + " " + powerUp.getName();
+            return "\n" + pc.getName() + " discarded a " + powerUp.getColour() + " " + powerUp.getName();
         else
             return "\nYou discarded a " + powerUp.getColour() + " " + powerUp.getName() + pc.powerUpsToString();
     }

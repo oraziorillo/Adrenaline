@@ -1,5 +1,7 @@
 package common;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Some game contants
  */
@@ -26,11 +28,6 @@ public final class Constants {
     //pc values
     public static final int[] PC_VALUES = {8, 6, 4, 2, 1, 1};
     public static final int[] FINAL_FRENZY_PC_VALUES = {2, 1, 1, 1};
-
-    //decks
-    public static final int AMMO_DECK = 0;
-    public static final int WEAPONS_DECK = 1;
-    public static final int POWER_UPS_DECK = 2;
 
     //rules
     public static final int FIRST_MAP = 1;
@@ -62,18 +59,19 @@ public final class Constants {
     public static final int POWER_UP_DISCARDED = 6;
     public static final int POWER_UP_DROWN = 7;
     public static final int SPAWN = 8;
+    public static final int COLLECT_EVENT = 9;
 
     //pcBoard events
-    public static final int AMMO_CHANGED = 9;
-    public static final int DAMAGE_MARKS_TAKEN = 10;
-    public static final int DEATH = 11;
-    public static final int NUMBER_OF_DEATH_INCREASED = 12;
-    public static final int POINTS_INCREASED = 13;
+    public static final int AMMO_CHANGED = 10;
+    public static final int DAMAGE_MARKS_TAKEN = 11;
+    public static final int DEATH = 12;
+    public static final int NUMBER_OF_DEATH_INCREASED = 13;
+    public static final int POINTS_INCREASED = 14;
 
     //square events
-    public static final int ITEM_COLLECTED = 14;
-    public static final int SQUARE_REFILLED = 15;
-    public static final int TARGETABLE_SET = 16;
+    public static final int ITEM_COLLECTED = 15;
+    public static final int SQUARE_REFILLED = 16;
+    public static final int TARGETABLE_SET = 17;
 
 
     // --------------> SOCKET

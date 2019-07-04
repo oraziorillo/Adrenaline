@@ -46,11 +46,13 @@ public class AmmoChangedEvent extends PcBoardEvent {
                 (censored
                     ? pcBoard.getColour().getName()
                     : "You"));
-        dynamicMessageBuilder.append(
-                isEarned
-                    ? " earned:\n" + ammoDifferenceToString(ammoDifference)
-                    : " paid:\n" + ammoDifferenceToString(ammoDifference)
-                        + "and used:\n" + powerUpsDiscarded.toString() + "\nto pay the difference");
+        if(isEarned)
+            dynamicMessageBuilder.append(" earned:\n").append(ammoDifferenceToString(ammoDifference));
+        else
+            dynamicMessageBuilder.append(" paid:\n").append(ammoDifferenceToString(ammoDifference)).append(
+                    powerUpsDiscarded.isEmpty()
+                    ? ""
+                    : "and used:\n" + powerUpsDiscarded.toString() + "\nto pay the difference");
         return dynamicMessageBuilder.toString();
     }
 

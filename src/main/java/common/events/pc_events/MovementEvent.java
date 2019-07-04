@@ -18,8 +18,8 @@ public class MovementEvent extends PcEvent {
     }
 
 
-    private MovementEvent (PcDTO pc, String from, String to, boolean isPrivate) {
-        super(pc, isPrivate);
+    private MovementEvent (PcDTO pc, String from, String to, boolean censored) {
+        super(pc, censored);
         this.from = from;
         this.to = to;
     }

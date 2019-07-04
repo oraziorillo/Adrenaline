@@ -2,6 +2,7 @@ package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
+import common.events.requests.Request;
 import common.remote_interfaces.RemoteLoginController;
 
 import java.rmi.RemoteException;
@@ -54,5 +55,10 @@ public class UserAuthState extends ViewState {
    @Override
    public boolean isReachable() throws RemoteException {
       return true;
+   }
+
+   @Override
+   public void request(Request request) throws RemoteException {
+
    }
 }

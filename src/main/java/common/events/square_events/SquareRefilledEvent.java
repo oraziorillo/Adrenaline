@@ -1,8 +1,7 @@
 package common.events.square_events;
 
 import common.dto_model.SquareDTO;
-
-import java.util.Arrays;
+import common.dto_model.WeaponCardDTO;
 
 import static common.Constants.SQUARE_REFILLED;
 
@@ -26,9 +25,20 @@ public class SquareRefilledEvent extends SquareEvent {
 
     @Override
     public String toString() {
-        return isSpawnPoint
-                ? square.toString() + " refilled\nNow there are these weapon cards on it:\n" + Arrays.toString(square.getWeapons())
-                : square.toString() + " refilled\nNow there is a:\n" + square.getAmmoTile().toString() + "\nammo tile on it";
+        StringBuilder squareRefilled = new StringBuilder();
+        if (isSpawnPoint) {
+            StringBuilder weaponsString = new StringBuilder();
+            int i = 1;
+            for (WeaponCardDTO w : square.getWeapons()) {
+                weaponsString.append("\n[").append(i).append("] ").append(w.getName());
+                i++;
+            }
+            squareRefilled.append(square.toString()).append(" refilled\nNow there are these weapon cards on it:\n")
+                    .append(weaponsString.toString());
+        } else
+            squareRefilled.append(square.toString()).append(" refilled\nNow there is a:\n")
+                    .append(square.getAmmoTile().toString()).append("\nammo tile on it");
+        return squareRefilled.toString();
     }
 
 

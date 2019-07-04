@@ -1,7 +1,7 @@
 package client.view.gui.view_states;
 
 import client.controller.GuiController;
-import common.events.lobby_events.LobbyEvent;
+import common.events.requests.Request;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,6 +33,7 @@ public class InGameState extends ViewState {
       } catch ( IOException e ) {
          IllegalArgumentException e1 = new IllegalArgumentException( "Can't load FXML" );
          e1.setStackTrace( e.getStackTrace() );
+         e1.initCause( e );
          throw e1;
       }
    }
@@ -40,6 +41,11 @@ public class InGameState extends ViewState {
    @Override
    public ViewState nextState() throws RemoteException {
       return ViewState.getFirstState(hostServices, stage,topView);
+   }
+
+   @Override
+   public void request(Request request) throws RemoteException {
+
    }
 
    @Override

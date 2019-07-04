@@ -76,6 +76,10 @@ public class PcDTO implements DTO {
         this.powerUps = powerUps;
     }
 
+    public String squareToString() {
+        return "(" + squareRow + "," + squareCol + ")";
+    }
+
     public String powerUpsToString() {
         StringBuilder powerUpsString = new StringBuilder("\nYour power ups:");
         int i = 0;

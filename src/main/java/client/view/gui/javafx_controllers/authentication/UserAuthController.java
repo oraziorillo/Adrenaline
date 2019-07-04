@@ -6,6 +6,7 @@ import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
+import common.events.requests.Request;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
@@ -21,39 +22,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class UserAuthController extends AbstractJavaFxController {
-   private HashSet<Alert> alerts = new HashSet<>();
-   private GuiView view;
    
    public UserAuthController() throws RemoteException {
    }
    
-   public void setView(GuiView view) {
-      this.view = view;
-   }
-   
-   @Override
-   public void ack(String message) {
-//      Alert infos = new Alert( Alert.AlertType.INFORMATION );
-//      infos.setTitle( "infos" );
-//      infos.setHeaderText( null );
-//      infos.setContentText( "The king of the arena says:" );
-//      infos.setResizable( true );
-//      TextArea messageArea = new TextArea(message);
-//      messageArea.setWrapText( true );
-//      messageArea.setEditable( false );
-//      infos.getDialogPane().setExpandableContent( messageArea );
-//      infos.getDialogPane().setExpanded( true );
-//      infos.setOnCloseRequest( e->alerts.remove( infos ) );
-//      infos.show();
-      
-   }
-
-
    @Override
    public void notifyEvent(LobbyEvent event) throws RemoteException {
 
    }
-   
+
+   @Override
+   public void request(Request request) throws RemoteException {
+
+   }
+
    @Override
    public void chatMessage(String message) throws RemoteException {
       throw new IllegalStateException( "Can't write in chat" );
@@ -71,7 +53,6 @@ public class UserAuthController extends AbstractJavaFxController {
 
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
-      RemoteLoginController loginController;
       Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");

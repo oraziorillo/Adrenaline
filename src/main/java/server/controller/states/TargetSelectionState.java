@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import common.enums.PcColourEnum;
+import common.events.requests.Request;
 import server.controller.Controller;
 import common.enums.CardinalDirectionEnum;
 import server.controller.Player;
@@ -60,6 +61,14 @@ public class TargetSelectionState extends State {
         }
         currAction = currEffect.getActionAtIndex(actionIndex);
         setAction();
+        if(currEffect.isOriented()) {
+            List<String> possibilities = new ArrayList<>();
+            possibilities.add("N");
+            possibilities.add("S");
+            possibilities.add("E");
+            possibilities.add("W");
+            controller.sendNonBlockingRequest(new Request("\nChoose a cardinal direction: (N/S/E/W)", possibilities));
+        }
         if (!currAction.isParameterized() && !hasNextAction()){
             executeEffect();
             return true;
