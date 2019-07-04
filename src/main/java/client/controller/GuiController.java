@@ -5,12 +5,6 @@ import client.view.gui.GuiView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.Stage;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
@@ -46,12 +40,16 @@ public class GuiController extends Application {
         try {
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
             UUID token;
-            if (view.wantsToRegister()) {
-                String username = view.acquireUsername();
-                token = loginController.register( username, view );
-                view.ack( "This is your token"+System.lineSeparator()+token );
-            } else {
-                token = view.acquireToken();
+            switch (view.authMethod()){
+               case LOG_IN:
+                  token = view.acquireToken();
+                  break;
+               case SIGN_UP:
+                  String username = view.acquireUsername();
+                  token = loginController.register( username, view );
+                  view.ack( "This is your token"+System.lineSeparator()+token );
+                  default:
+                     throw new IllegalStateException( "Gui allows illegal states" );
             }
             player = loginController.login( token, view );
             view.setPlayer( player );

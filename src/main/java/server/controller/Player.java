@@ -126,7 +126,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public void sendMessage(String msg) {
-        currState.sendChatMessage(msg);
+        currState.sendChatMessage("@"+DatabaseHandler.getInstance().getUsername( this.getToken() )+": "+msg);
     }
 
 

@@ -4,6 +4,7 @@ import client.view.AbstractView;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -117,7 +118,7 @@ public abstract class ViewState extends AbstractView {
    }
    
    @Override
-   public boolean wantsToRegister() {
+   public ControllerMethodsEnum authMethod() {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    

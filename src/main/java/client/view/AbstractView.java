@@ -2,6 +2,7 @@ package client.view;
 
 import client.ClientPropertyLoader;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
@@ -35,8 +36,8 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
         return null;
     }
 
-    public boolean wantsToRegister() {
-        return false;
+    public ControllerMethodsEnum authMethod() {
+        return null;
     }
 
     public String acquireUsername() {

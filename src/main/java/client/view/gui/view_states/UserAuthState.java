@@ -2,6 +2,7 @@ package client.view.gui.view_states;
 
 import client.view.gui.javafx_controllers.authentication.UserAuthController;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.requests.Request;
 import common.remote_interfaces.RemoteLoginController;
 
@@ -48,8 +49,8 @@ public class UserAuthState extends ViewState {
    }
    
    @Override
-   public boolean wantsToRegister() {
-      return getJavafxController().wantsToRegister();
+   public ControllerMethodsEnum authMethod() {
+      return getJavafxController().authMethod();
    }
 
    @Override
