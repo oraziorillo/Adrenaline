@@ -75,6 +75,13 @@ public class RunAroundState extends State{
       return false;
    }
 
+
+   public State forcePass() {
+         controller.getGame().setTargetableSquares(targetableSquares, false);
+         controller.resetRemainingActions();
+         controller.nextTurn();
+         return new InactiveState(controller, InactiveState.START_TURN_STATE);
+   }
    
    /**
     * Transition

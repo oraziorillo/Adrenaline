@@ -41,6 +41,7 @@ public class TargetSelectionState extends State {
         this.currAction = currEffect.getActionAtIndex(actionIndex);
         //controller.startTimer();
         setAction();
+        checkIfOriented();
     }
 
 
@@ -61,14 +62,7 @@ public class TargetSelectionState extends State {
         }
         currAction = currEffect.getActionAtIndex(actionIndex);
         setAction();
-        if(currEffect.isOriented()) {
-            List<String> possibilities = new ArrayList<>();
-            possibilities.add("N");
-            possibilities.add("S");
-            possibilities.add("E");
-            possibilities.add("W");
-            controller.sendNonBlockingRequest(new Request("\nChoose a cardinal direction: (N/S/E/W)", possibilities));
-        }
+        checkIfOriented();
         if (!currAction.isParameterized() && !hasNextAction()){
             executeEffect();
             return true;
@@ -239,6 +233,18 @@ public class TargetSelectionState extends State {
                     currAction.selectPc(targetPc);
                 }
             }
+        }
+    }
+
+
+    private void checkIfOriented() {
+        if(currEffect.isOriented()) {
+            List<String> possibilities = new ArrayList<>();
+            possibilities.add("N");
+            possibilities.add("S");
+            possibilities.add("E");
+            possibilities.add("W");
+            controller.sendNonBlockingRequest(new Request("\nChoose a cardinal direction: (N/S/E/W)", possibilities));
         }
     }
 
