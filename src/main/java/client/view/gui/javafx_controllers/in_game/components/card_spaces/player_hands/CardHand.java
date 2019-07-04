@@ -11,12 +11,16 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
 
+
+/**
+ * Abstraction for a card hand of the player. Helps to call weapon/powerup specific methods
+ * @param <T> The actual card type.
+ */
 public abstract class CardHand <T extends AbstractCardDTO> {
    @FXML protected HBox mainPane = new HBox(10);
    protected GeneralWeapon[] weaponControllers;
@@ -28,6 +32,10 @@ public abstract class CardHand <T extends AbstractCardDTO> {
    protected PcColourEnum playerColor;
    private static final String FXML = "/fxml/inGame/weapons/general_weapon.fxml";
    
+   /**
+    * Creates a CardHand with the fixed sizes
+    * @param arraySize the max number of cards this card can hold
+    */
    protected CardHand(int arraySize){
       weaponControllers = new GeneralWeapon[arraySize];
       transitions = new TranslateTransition[arraySize];
@@ -45,6 +53,9 @@ public abstract class CardHand <T extends AbstractCardDTO> {
       }
    }
    
+   /**
+    * loads graphics, binds translation to images height
+    */
    public void initialize() {
       mainPane.translateYProperty().bind( Bindings.multiply( mainPane.heightProperty(),hiddenFraction ) );
       for( int i = 0; i<3; i++ ){
@@ -60,6 +71,10 @@ public abstract class CardHand <T extends AbstractCardDTO> {
       }
    }
    
+   /**
+    * Translates a card up
+    * @param cardIndex the index of the card to translate
+    */
    protected void appear(int cardIndex){
       Transition current = transitions[cardIndex];
       current.stop();
@@ -67,6 +82,10 @@ public abstract class CardHand <T extends AbstractCardDTO> {
       current.play();
    }
    
+   /**
+    * Translates a card down
+    * @param cardIndex the index of the card to translate
+    */
    private void disappear(int cardIndex){
       Transition current = transitions[cardIndex];
       current.stop();
@@ -74,6 +93,12 @@ public abstract class CardHand <T extends AbstractCardDTO> {
       current.play();
    }
    
+   /**
+    * Given an array of T cards, sets them
+    * @param newCards the cards to set
+    * @throws IllegalArgumentException on null argument
+    * @throws IllegalArgumentException if newCards.size() is different from the constructor param
+    */
    protected void setCards(T[] newCards){
       if(newCards==null){
          throw new IllegalArgumentException( "Setting null cards" );
@@ -92,6 +117,10 @@ public abstract class CardHand <T extends AbstractCardDTO> {
       }
    }
    
+   /**
+    * sets the player to this and all the GeneralWeapons this contains
+    * @param player the player to set
+    */
    public void setPlayer(RemotePlayer player){
       this.player = player;
       for(GeneralWeapon w: weaponControllers)
@@ -107,6 +136,9 @@ public abstract class CardHand <T extends AbstractCardDTO> {
       return mainPane;
    }
    
+   /**
+    * removes selected effect from every graphic element
+    */
    public void deselectAll() {
       for(Node n:mainPane.getChildren())
          n.setEffect( null );

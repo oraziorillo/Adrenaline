@@ -227,19 +227,19 @@ public class InGameController extends AbstractJavaFxController {
 
    @Override
    public void request(Request request) {
-      String GRENADE = "Do you wanna use your Tagback Grenade? (yes/no)";
+      String grenade = "Do you wanna use your Tagback Grenade? (yes/no)";
       try {
          Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
          alert.setContentText( request.toString() );
          alert.setHeaderText( null );
          alert.setOnCloseRequest( Event::consume );
-         if(request.toString().equalsIgnoreCase( GRENADE )){
+         if(request.toString().equalsIgnoreCase( grenade )){
             Timer timer = new Timer( ClientPropertyLoader.getInstance().getRequestTimer(), e -> alert.close() );
             timer.start();
          }
          String ans = alert.showAndWait().orElse( new ButtonType( request.getChoices().get(request.getChoices().size()-1) ) ).toString();
          player.response( ans );
-         if(request.toString().equalsIgnoreCase( GRENADE ) && "yes".equalsIgnoreCase( ans )){
+         if(request.toString().equalsIgnoreCase( grenade ) && "yes".equalsIgnoreCase( ans )){
             Stage stage = new Stage();
             stage.setAlwaysOnTop( true );
             stage.setResizable( false );
