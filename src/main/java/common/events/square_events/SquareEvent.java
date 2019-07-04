@@ -4,9 +4,18 @@ import common.dto_model.SquareDTO;
 import common.enums.PcColourEnum;
 import common.events.ModelEvent;
 
+/**
+ * An event representing a square change
+ */
 public abstract class SquareEvent implements ModelEvent {
-
+   
+   /**
+    * The updated square
+    */
    SquareDTO square;
+   /**
+    * Used to hide sensible data
+    */
    boolean isPrivate;
 
 
@@ -30,7 +39,10 @@ public abstract class SquareEvent implements ModelEvent {
    public PcColourEnum getPublisherColour(){
       return null;
    }
-
-
+   
+   /**
+    * Used to generate a copy of the this square, with sensible data hidden
+    * @return a new SquareEvent with some data hidden
+    */
    public abstract SquareEvent censor();
 }

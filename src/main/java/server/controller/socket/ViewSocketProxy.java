@@ -98,7 +98,7 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    
    @Override
    public void resumeGame(GameDTO game) {
-      out.println( RESUME_GAME+ REGEX+gson.toJson( game ) );
+      out.println( RESUME_GAME + REGEX + gson.toJson( game ) );
       out.flush();
    }
    

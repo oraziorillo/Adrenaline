@@ -6,7 +6,10 @@ import common.enums.PcColourEnum;
 import static common.Constants.ITEM_COLLECTED;
 
 public class ItemCollectedEvent extends SquareEvent {
-
+    
+    /**
+     * to deserialize
+     */
     private int eventID = ITEM_COLLECTED;
     private PcColourEnum pcColour;
     private String item;
