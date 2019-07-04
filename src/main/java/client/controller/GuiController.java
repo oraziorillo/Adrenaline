@@ -48,6 +48,7 @@ public class GuiController extends Application {
                   String username = view.acquireUsername();
                   token = loginController.register( username, view );
                   view.ack( "This is your token"+System.lineSeparator()+token );
+                  break;
                   default:
                      throw new IllegalStateException( "Gui allows illegal states" );
             }
