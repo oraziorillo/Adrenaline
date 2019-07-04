@@ -34,8 +34,8 @@ public class ModelEventHandler {
     }
 
 
-    synchronized void removeListener(PcColourEnum colour) {
-        listeners.removeLine(colour);
+    synchronized void removeListener(UUID token) {
+        listeners.removeLine(token);
     }
 
 

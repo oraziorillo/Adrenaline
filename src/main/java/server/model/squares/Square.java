@@ -172,7 +172,7 @@ public abstract class Square {
 
     /**
      * removes a pc from this square
-     * @param c the pc to remove
+     * @param c the pc to removeLine
      */
     public void removePc(Pc c) {
         pcs.remove(c);

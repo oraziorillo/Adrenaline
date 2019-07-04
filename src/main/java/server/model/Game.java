@@ -399,6 +399,11 @@ public class Game {
     }
 
 
+    public void removeListener(UUID token) {
+        events.removeListener(token);
+    }
+
+
     public GameDTO convertToDTO(){
         GameDTO gameDTO = new GameDTO();
         gameDTO.setGameBoardDTO(gameBoard.convertoTo());
