@@ -23,13 +23,10 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static common.Constants.*;
 import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
 import static common.Constants.ACTIONS_PER_TURN;
-import static java.sql.Types.TIME;
 
 public class Controller{
 
@@ -300,7 +297,7 @@ public class Controller{
 
     public void sendRequest(Request request, Player recipient) {
         try {
-            locked = true;
+            lock();
             requestRecipient = recipient;
             recipient.getView().request(request);
             requestTimer.start();
@@ -373,8 +370,13 @@ public class Controller{
     }
 
 
-    public void unlock() {
+    public void lock() {
+        locked = true;
+    }
 
+
+    public void unlock() {
+        locked = false;
     }
 
 

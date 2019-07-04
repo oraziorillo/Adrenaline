@@ -82,6 +82,9 @@ public class ClientSocketHandler implements Runnable {
                 }
                 view.error(error.toString());
                 break;
+            case CHAT_MESSAGE:
+                view.chatMessage(args[1]);
+                break;
             case NOTIFY_EVENT:
                 LobbyEvent lobbyEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), PlayerJoinedEvent.class);

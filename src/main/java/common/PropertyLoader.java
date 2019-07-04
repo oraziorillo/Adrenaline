@@ -37,7 +37,7 @@ public abstract class PropertyLoader {
    public int getRequestTimer(){
       return Integer.parseInt( properties.getProperty( "common.request.timer" ) );
    }
-   
+
    public String getHostAddress(){
       return properties.getProperty( "common.hostname" );
    }

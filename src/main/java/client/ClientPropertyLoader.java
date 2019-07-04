@@ -14,5 +14,5 @@ public class ClientPropertyLoader extends PropertyLoader {
       if(instance == null) instance = new ClientPropertyLoader();
       return instance;
    }
-   
+
 }
