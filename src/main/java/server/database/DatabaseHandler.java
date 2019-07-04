@@ -271,6 +271,10 @@ public class DatabaseHandler {
         return "src/main/java/server/database/files/game_infos/" + uuid + ".json";
     }
 
+    public PcColourEnum getCurrPlayerColour(UUID playerToken) {
+        return playerInfoByToken.get(playerToken).getPlayer().getCurrPc();
+    }
+
 
     //TODO mettere view a null quando il player si disconnette
 }

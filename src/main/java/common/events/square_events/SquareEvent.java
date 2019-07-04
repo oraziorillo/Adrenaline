@@ -27,10 +27,6 @@ public abstract class SquareEvent implements ModelEvent {
    }
 
 
-   public PcColourEnum getPublisherColour(){
-      return null;
-   }
-
 
    public abstract SquareEvent censor();
 }

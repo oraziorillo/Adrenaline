@@ -1,6 +1,7 @@
 package common.events.square_events;
 
 import common.dto_model.SquareDTO;
+import common.enums.PcColourEnum;
 
 import static common.Constants.TARGETABLE_SET;
 

@@ -178,10 +178,10 @@ public class TargetSelectionState extends State {
     public void selectSquare(int row, int column) {
         Square s = controller.getGame().getSquare(row, column);
         if (s != null && s.isTargetable()) {
-            if (controller.getCurrWeapon().isChained() && effectIndex == 0){            //per il vortex
+            if (controller.getCurrWeapon().isChained() && effectIndex == 0 && !currAction.isMovement()){            //per il vortex
                 for (Effect effect: effectsToApply) {
                     for (Action action: effect.getActions()) {
-                        if (!action.isSelfMovement())
+                        if (!action.isSelfMovement() )
                             action.selectSquare(s);
                     }
                 }
@@ -218,7 +218,7 @@ public class TargetSelectionState extends State {
                     currEffect.getActions().forEach(a -> a.selectPc(targetPc));
                 } else if (currAction.isAdditionalDamage()) {
                     if (currAction.isExclusiveForOldTargets()) {
-                        if (targetsShotTwice.contains(targetPc)) {
+                        if (!targetsShotTwice.contains(targetPc)) {
                             currAction.selectPc(targetPc);
                         }
                     } else if (shotTargets.contains(targetPc)) {
@@ -238,7 +238,7 @@ public class TargetSelectionState extends State {
 
 
     private void checkIfOriented() {
-        if(currEffect.isOriented()) {
+        if(currEffect.isOriented() && !directionSelected) {
             List<String> possibilities = new ArrayList<>();
             possibilities.add("N");
             possibilities.add("S");
@@ -251,7 +251,7 @@ public class TargetSelectionState extends State {
 
     @Override
     public void selectDirection(CardinalDirectionEnum direction) {
-        if(currEffect.isOriented()) {
+        if(currEffect.isOriented() && !directionSelected) {
             currEffect.assignDirection(direction);
             controller.getGame().setTargetableSquares(targetableSquares, false);
             setTargetableToValidSquares(controller.getCurrPc());

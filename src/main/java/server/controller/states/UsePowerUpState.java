@@ -8,6 +8,7 @@ import server.model.PowerUpCard;
 import server.model.actions.Action;
 import server.model.squares.Square;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class UsePowerUpState extends State {
@@ -19,6 +20,7 @@ public class UsePowerUpState extends State {
 
     UsePowerUpState(Controller controller) {
         super(controller);
+        this.targetableSquares = new HashSet<>();
         //controller.startTimer();
     }
 

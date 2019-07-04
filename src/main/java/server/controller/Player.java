@@ -318,6 +318,10 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void forcePass(){
         currState = currState.forcePass();
     }
-    
+
+
+    public PcColourEnum getCurrPc() {
+        return currState.getCurrPc();
+    }
 }
 

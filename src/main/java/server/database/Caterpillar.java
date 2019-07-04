@@ -2,6 +2,7 @@ package server.database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Caterpillar<P, S, V> {
 
@@ -49,6 +50,11 @@ public class Caterpillar<P, S, V> {
         if(values.indexOf(v) < secondaryKeys.size())
             return secondaryKeys.get(values.indexOf(v));
         return null;
+    }
+
+
+    public P getPrimaryAtIndex(int index) {
+        return primaryKeys.get(index);
     }
 
 

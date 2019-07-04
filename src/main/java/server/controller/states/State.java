@@ -149,4 +149,9 @@ public abstract class State {
     public State forcePass() {
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
+
+
+    public PcColourEnum getCurrPc() {
+        return controller.getCurrPc().getColour();
+    }
 }
