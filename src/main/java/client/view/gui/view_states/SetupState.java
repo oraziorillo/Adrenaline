@@ -26,7 +26,7 @@ public class SetupState extends ViewState {
    private transient DoubleProperty stillChoosing = new SimpleDoubleProperty( Double.POSITIVE_INFINITY );
    private transient DoubleProperty beforeMyTurn = new SimpleDoubleProperty( Double.NEGATIVE_INFINITY );
    
-   SetupState() throws RemoteException {
+   SetupState() {
       super();
       try {
          FXMLLoader loader = new FXMLLoader( SetupState.class.getResource( "/fxml/gameSetup/setup.fxml" ) );
@@ -37,9 +37,8 @@ public class SetupState extends ViewState {
          stage.show();
       }catch ( IOException shouldNotHappen ){
          IllegalArgumentException e1 = new IllegalArgumentException( "Cannot load fxml file" );
-         shouldNotHappen.printStackTrace();
-//         e1.initCause( shouldNotHappen );
-//         throw e1;
+         e1.initCause( shouldNotHappen );
+         throw e1;
       }
       stillChoosing.addListener( (obs, oldV, newV) -> {
          if (newV.doubleValue() == 0)
@@ -56,7 +55,7 @@ public class SetupState extends ViewState {
    }
    
    @Override
-   public ViewState nextState() throws RemoteException {
+   public ViewState nextState() {
       InGameState returned = new InGameState();
       for(KillShotTrackEvent e:killShotToPass) returned.onKillShotTrackUpdate( e );
       for(GameBoardEvent e: gameBoardToPass) returned.onGameBoardUpdate( e );
@@ -101,9 +100,5 @@ public class SetupState extends ViewState {
       }
       stillChoosing.set(event.getDTO().size());
    }
-
-   @Override
-   public boolean isReachable() throws RemoteException {
-      return true;
-   }
+   
 }

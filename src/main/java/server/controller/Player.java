@@ -7,7 +7,6 @@ import common.enums.PcColourEnum;
 import common.events.requests.Request;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
-import server.controller.states.InactiveState;
 import server.controller.states.State;
 import server.database.DatabaseHandler;
 import server.exceptions.PlayerAlreadyLoggedInException;
@@ -126,7 +125,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public void sendMessage(String msg) {
-        currState.sendChatMessage(msg);
+        currState.sendChatMessage("@"+DatabaseHandler.getInstance().getUsername( this.getToken() )+": "+msg);
     }
 
 
@@ -303,12 +302,15 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void quit() {
-        //TODO: gestire la disconnessione in modo tale da far saltare il turno al giocatore
+        this.onLine = false;
+        this.view = null;
+        this.pc.removeListener();
+        forcePass();
     }
 
 
     @Override
-    public synchronized boolean isConnected() throws RemoteException{
+    public synchronized boolean isConnected() throws RemoteException {
         return true;
     }
 

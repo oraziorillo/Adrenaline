@@ -24,13 +24,10 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static common.Constants.*;
 import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
 import static common.Constants.ACTIONS_PER_TURN;
-import static java.sql.Types.TIME;
 
 public class Controller{
 
@@ -300,40 +297,48 @@ public class Controller{
 
 
     public void sendRequest(Request request, Player recipient) {
-        try {
-            locked = true;
-            requestRecipient = recipient;
-            recipient.getView().request(request);
-            requestTimer.start();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (recipient.isOnLine()) {
+            try {
+                lock();
+                requestRecipient = recipient;
+                recipient.getView().request(request);
+                requestTimer.start();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public void sendNonBlockingRequest(Request request) {
-        try {
-            getCurrPlayer().getView().request(request);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (getCurrPlayer().isOnLine()) {
+            try {
+                getCurrPlayer().getView().request(request);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public void ackRequestRecipient(String msg) {
-        try {
-            requestRecipient.getView().ack(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (requestRecipient.isOnLine()) {
+            try {
+                requestRecipient.getView().ack(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     public void ackPlayer(Player p, String msg) {
-        try {
-            p.getView().ack(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (p.isOnLine()) {
+            try {
+                p.getView().ack(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -342,22 +347,19 @@ public class Controller{
         try {
             getCurrPlayer().getView().ack(msg);
         } catch (RemoteException e) {
-            checkGameStatus(getCurrPlayer());
+            getCurrPlayer().setOnLine(false);
+            checkIfGameCanContinueC();
         }
     }
 
 
     public void ackAll(String msg){
-        players.parallelStream().forEach(p -> {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
-                if (p.getView().isReachable())
-                    p.getView().ack(msg);
+                p.getView().ack(msg);
             } catch (RemoteException e) {
                 p.setOnLine(false);
-                checkGameStatus(p);
-            } catch (IOException e) {
-                p.setOnLine(false);
-                checkGameStatus(p);
+                checkIfGameCanContinueC();
             }
         });
     }
@@ -377,22 +379,25 @@ public class Controller{
     }
 
 
+    public void lock() {
+        locked = true;
+    }
+
+
     public void unlock() {
         locked = false;
     }
 
 
-    public void checkGameStatus(Player player) {
-        player.setOnLine(false);
-        System.out.println(player.getPc().getName() + "is out");
+    public void checkIfGameCanContinueC() {
         if (players.stream().filter(Player::isOnLine).count() < 3){
-            //TODO
+
         }
     }
 
 
     public void sendChatMessage(String msg) {
-        players.parallelStream().forEach(p -> {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
                 p.getView().chatMessage(msg);
             } catch (RemoteException e) {

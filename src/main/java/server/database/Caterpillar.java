@@ -67,6 +67,11 @@ public class Caterpillar<P, S, V> {
     }
 
 
+    public void removeSecondary(S s) {
+        secondaryKeys.remove(s);
+    }
+
+
 
     public List<P> primaryKeySet(){
         return primaryKeys;

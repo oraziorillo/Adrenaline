@@ -6,13 +6,17 @@ import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Top;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import common.Constants;
+import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
-import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
+import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
+import common.events.square_events.SquareEvent;
+import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -20,7 +24,6 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
@@ -37,8 +40,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
-
-import static javafx.application.Platform.runLater;
+import java.util.UUID;
 
 public class SetupController extends AbstractJavaFxController {
    
@@ -153,11 +155,6 @@ public class SetupController extends AbstractJavaFxController {
    }
    
    @Override
-   public void printMessage(String msg) {
-      chatController.showServerMessage( msg );
-   }
-   
-   @Override
    public void ack(String message) {
       chatController.showServerMessage( message );
    }
@@ -167,16 +164,6 @@ public class SetupController extends AbstractJavaFxController {
       chatController.showUserMessage( message );
    }
    
-   @Override
-   public ModelEventListener getListener() {
-      return this;
-   }
-
-   @Override
-   public boolean isReachable() throws RemoteException {
-      return true;
-   }
-
    @Override
    public void setPlayer(RemotePlayer player) {
       super.setPlayer( player );
@@ -226,12 +213,22 @@ public class SetupController extends AbstractJavaFxController {
    }
    
    @Override
+   public void onSquareUpdate(SquareEvent event) {
+   
+   }
+   
+   @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       for(PcColourEnum col:PcColourEnum.values())
          setPcSelectable( col,true );
       int l=event.getDTO().getKillShotTrack().length;
       setSkullsSelectable( false );
       showCirclesBeforeIndex( l );
+   }
+   
+   @Override
+   public void onPcBoardUpdate(PcBoardEvent event) {
+   
    }
    
    @Override
@@ -266,10 +263,35 @@ public class SetupController extends AbstractJavaFxController {
    }
 
    @Override
-   public void request(Request request) throws RemoteException {
+   public void request(Request request) {
 
    }
-
+   
+   @Override
+   public ConnectionMethodEnum acquireConnectionMethod() {
+      return null;
+   }
+   
+   @Override
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
+      return null;
+   }
+   
+   @Override
+   public ControllerMethodsEnum authMethod() {
+      return null;
+   }
+   
+   @Override
+   public String acquireUsername() {
+      return null;
+   }
+   
+   @Override
+   public UUID acquireToken() {
+      return null;
+   }
+   
    /**
     * Listens the number of players before my turn
     * @param obs the property
@@ -285,4 +307,6 @@ public class SetupController extends AbstractJavaFxController {
          setEnabled( true );
       }
    }
+   
+   
 }

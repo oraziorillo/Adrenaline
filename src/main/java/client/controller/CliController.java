@@ -3,16 +3,19 @@ package client.controller;
 import client.view.AbstractView;
 import client.view.cli.CliView;
 import client.view.cli.CommandParser;
+import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
-import static common.enums.ControllerMethodsEnum.QUIT;
+import static common.Constants.WRONG_TIME;
 
 public class CliController {
 
@@ -25,42 +28,56 @@ public class CliController {
     }
 
 
-    public void run(){
+    public void run() {
         view.printMessage("\t\tWELCOME TO ADRENALINE!");
+        UUID token;
         while (this.loginController == null) {
             try {
-                UUID token;
                 while (this.loginController == null) {
-                    tryAcquireConnection();
+                    if (!tryAcquireConnection()) {
+                        view.printMessage("BYE!");
+                        return;
+                    }
                 }
-                boolean wantsToRegister = view.wantsToRegister();
-                if (wantsToRegister) {
-                    String username;
-                    do {
-                        username = view.acquireUsername();
-                        token = loginController.register(username, view);
-                    } while (token == null);
-                    view.printMessage("Signed up as @" + username +
-                            "\nThis is your token: " + token +
-                            "\nUse it to login next time");
-                    player = tryLogin(token);
-                } else {
-                    do {
-                        token = view.acquireToken();
+                ControllerMethodsEnum authMethod = view.authMethod();
+                switch (authMethod) {
+                    case SIGN_UP:
+                        String username;
+                        do {
+                            username = view.acquireUsername();
+                            token = loginController.register(username, view);
+                        } while (token == null);
+                        view.printMessage("Signed up as @" + username +
+                                "\nThis is your token: " + token +
+                                "\nUse it to login next time");
                         player = tryLogin(token);
-                    } while (player == null);
+                        break;
+                    case LOG_IN:
+                        do {
+                            token = view.acquireToken();
+                            player = tryLogin(token);
+                        } while (player == null);
+                        break;
+                    case QUIT:
+                        view.printMessage("BYE!");
+                        UnicastRemoteObject.unexportObject(view, true);
+                        return;
+                    default:
+                        throw new IllegalArgumentException(WRONG_TIME);
                 }
                 loginController.joinLobby(token);
+            } catch (IllegalArgumentException e) {
+                view.printMessage(e.getMessage());
             } catch (IOException e) {
                 view.printMessage("Server unreachable");
             }
         }
         view.nextCommand();
-        String[] input = null;
-        while (isRunnable() && (input == null || !input[0].equals(QUIT.getCommand()))) {
+        ControllerMethodsEnum command = null;
+        while (isRunnable() && command != ControllerMethodsEnum.QUIT) {
             try {
-                input = view.nextCommand().split("\\s+");
-                ControllerMethodsEnum command = ControllerMethodsEnum.parseString(input[0]);
+                String[] input = view.nextCommand().split("\\s+");
+                command = ControllerMethodsEnum.parseString(input[0]);
                 String[] args = new String[input.length - 1];
                 System.arraycopy(input, 1, args, 0, input.length - 1);
                 CommandParser.executeCommand(command, args, player);
@@ -71,17 +88,30 @@ public class CliController {
                 view.printMessage(ControllerMethodsEnum.help());
             }
         }
-
+        try {
+            view.printMessage("BYE!");
+            UnicastRemoteObject.unexportObject(view, true);
+        } catch (NoSuchObjectException e) {
+            e.printStackTrace();
+        }
         //TODO logout
     }
 
 
-    private void tryAcquireConnection(){
+    private boolean tryAcquireConnection(){
         try {
-            this.loginController = view.acquireConnection(view.acquireConnectionMethod());
+            ConnectionMethodEnum connMethod = view.acquireConnectionMethod();
+            if (connMethod == ConnectionMethodEnum.QUIT) {
+                UnicastRemoteObject.unexportObject(view, true);
+                return false;
+            }
+            this.loginController = view.acquireConnection(connMethod);
         } catch (IllegalArgumentException e){
             view.printMessage(e.getMessage());
+        } catch (NoSuchObjectException e) {
+            e.printStackTrace();
         }
+        return true;
     }
 
 

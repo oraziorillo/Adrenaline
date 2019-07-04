@@ -347,9 +347,13 @@ public class Pc {
     }
 
 
-
     public void addModelEventHandler(ModelEventHandler events) {
         this.events = events;
+    }
+
+
+    public void removeListener() {
+        events.removeListener(colour);
     }
 
 

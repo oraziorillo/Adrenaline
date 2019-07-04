@@ -14,10 +14,7 @@ import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.SquareDTO;
-import common.enums.AmmoEnum;
-import common.enums.CardinalDirectionEnum;
-import common.enums.PcColourEnum;
-import common.events.ModelEventListener;
+import common.enums.*;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
@@ -25,6 +22,7 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
+import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -35,16 +33,19 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
-import javax.swing.*;
+import javax.swing.Timer;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Optional;
+import java.util.*;
 
 public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
@@ -183,16 +184,6 @@ public class InGameController extends AbstractJavaFxController {
    }
    
    @Override
-   public ModelEventListener getListener() {
-      return this;
-   }
-
-   @Override
-   public boolean isReachable() throws RemoteException {
-      return true;
-   }
-
-   @Override
     public void onGameBoardUpdate(GameBoardEvent event) {
       mapController.setMap( event.getDTO().getNumberOfMap() );
       for(SquareDTO s:event.getDTO().getSquares())
@@ -212,22 +203,66 @@ public class InGameController extends AbstractJavaFxController {
 
    @Override
    public void request(Request request) {
+      String GRENADE = "Do you wanna use your Tagback Grenade? (yes/no)";
       try {
-         switch (request.toString()) {
-            case "Do you wanna use your Tagback Grenade? (yes/no)":
-               Alert requestAlert = new Alert( Alert.AlertType.CONFIRMATION, request.toString(), ButtonType.YES, ButtonType.NO );
-               Timer timer = new Timer( ClientPropertyLoader.getInstance().getRequestTimer(), e -> requestAlert.close() );
-               requestAlert.setHeaderText( null );
-               timer.start();
-               Optional<ButtonType> response = requestAlert.showAndWait();
-               player.response( response.orElse( ButtonType.NO ).getText().toLowerCase() );
-               break;
+         Alert alert = new Alert( Alert.AlertType.CONFIRMATION );
+         alert.setContentText( request.toString() );
+         alert.setHeaderText( null );
+         alert.setOnCloseRequest( Event::consume );
+         if(request.toString().equalsIgnoreCase( GRENADE )){
+            Timer timer = new Timer( ClientPropertyLoader.getInstance().getRequestTimer(), e -> alert.close() );
+            timer.start();
+         }
+         String ans = alert.showAndWait().orElse( new ButtonType( request.getChoices().get(request.getChoices().size()-1) ) ).toString();
+         player.response( ans );
+         if(request.toString().equalsIgnoreCase( GRENADE ) && "yes".equalsIgnoreCase( ans )){
+            Stage stage = new Stage();
+            stage.setAlwaysOnTop( true );
+            stage.setResizable( false );
+            HashMap<Node,EventHandler> clickHandlers= new HashMap<>();
+            for(Node n:powerUpHandController.getCardNodes()){
+               clickHandlers.put( n,n.getOnMouseClicked() );
+               n.setOnMouseClicked( mouseEvent -> {
+                  clickHandlers.get( n ).handle( mouseEvent );
+                  stage.close();
+               } );
+            }
+            stage.setOnCloseRequest( e ->{
+               for(Node n: clickHandlers.keySet()){
+                  n.setOnMouseClicked( clickHandlers.get( n ) );
+               }
+            } );
          }
       }catch ( IOException e ){
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
    }
-
+   
+   @Override
+   public ConnectionMethodEnum acquireConnectionMethod() {
+      return null;
+   }
+   
+   @Override
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
+      return null;
+   }
+   
+   @Override
+   public ControllerMethodsEnum authMethod() {
+      return null;
+   }
+   
+   @Override
+   public String acquireUsername() {
+      return null;
+   }
+   
+   @Override
+   public UUID acquireToken() {
+      return null;
+   }
+   
    @Override
     public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       killShotTrackData.set( event.getDTO() );
@@ -248,7 +283,6 @@ public class InGameController extends AbstractJavaFxController {
          pcBoardController.setPcColour( eventColor );
          powerUpHandController.setCards( event.getDTO().getPowerUps().toArray(new PowerUpCardDTO[Constants.MAX_POWER_UPS_IN_HAND+1]));
          weaponHandController.setCards( event.getDTO().getWeapons() );
-         //mapController.setColor
       }
       pcs.put( eventColor,event.getDTO() );
     }
@@ -260,6 +294,5 @@ public class InGameController extends AbstractJavaFxController {
    
    @Override
    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-      //TODO
    }
 }

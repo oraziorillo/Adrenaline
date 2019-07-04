@@ -2,6 +2,7 @@ package client.view;
 
 import client.ClientPropertyLoader;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
@@ -13,12 +14,9 @@ import java.util.UUID;
 
 public abstract class AbstractView extends UnicastRemoteObject implements RemoteView, ModelEventListener {
 
-     protected static transient final String HOST = "localhost";
-     protected static transient final int SOCKET_PORT = 10000;
-     protected static transient final int RMI_PORT = 9999;
-   // protected static transient final String HOST = System.getProperty("java.server.hostname");
-   // protected static transient final int SOCKET_PORT = ClientPropertyLoader.getInstance().getSocketPort();
-   // protected static transient final int RMI_PORT = ClientPropertyLoader.getInstance().getRmiPort();
+    protected static transient final String HOST = ClientPropertyLoader.getInstance().getHostAddress();
+    protected static transient final int SOCKET_PORT = ClientPropertyLoader.getInstance().getSocketPort();
+    protected static transient final int RMI_PORT = ClientPropertyLoader.getInstance().getRmiPort();
 
     protected AbstractView() throws RemoteException {
         super();
@@ -39,8 +37,8 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
         return null;
     }
 
-    public boolean wantsToRegister() {
-        return false;
+    public ControllerMethodsEnum authMethod() {
+        return null;
     }
 
     public String acquireUsername() {
@@ -55,10 +53,10 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
         return null;
     }
 
-    public void error(String msg) {}
-    
+    public void error(String error) {}
+
     @Override
-    public boolean isReachable() throws RemoteException, IOException {
+    public boolean isReachable() throws RemoteException {
         return true;
     }
 }

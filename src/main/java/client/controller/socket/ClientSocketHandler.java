@@ -34,7 +34,7 @@ public class ClientSocketHandler implements Runnable {
     private BlockingQueue<String[]> buffer;
 
 
-    public ClientSocketHandler(Socket socket, AbstractView view, BlockingQueue<String[]> buffer) throws IOException {
+    ClientSocketHandler(Socket socket, AbstractView view, BlockingQueue<String[]> buffer) throws IOException {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -52,7 +52,8 @@ public class ClientSocketHandler implements Runnable {
                 args = in.readLine().split(REGEX);
                 handle(args);
             } catch (IllegalArgumentException notAViewMethod) {
-                buffer.add(args);
+                if (args != null)
+                    buffer.add(args);
             } catch (IOException e) {
                 try {
                     in.close();
@@ -81,6 +82,9 @@ public class ClientSocketHandler implements Runnable {
                     error.append(s).append(System.lineSeparator());
                 }
                 view.error(error.toString());
+                break;
+            case CHAT_MESSAGE:
+                view.chatMessage(args[1]);
                 break;
             case NOTIFY_EVENT:
                 LobbyEvent lobbyEvent = gson.fromJson(

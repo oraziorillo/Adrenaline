@@ -100,5 +100,11 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
          }
       }
    }
+
+
+   @Override
+   public void quit(UUID token) throws RemoteException {
+
+   }
 }
 

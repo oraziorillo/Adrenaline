@@ -8,7 +8,8 @@ import static common.Constants.WRONG_TIME;
 
 public enum ConnectionMethodEnum {
     SOCKET(":s","socket"),
-    RMI(":r","rmi");
+    RMI(":r","rmi"),
+    QUIT(":q","quit");
 
     private Collection<String> command = new HashSet<>();
     
