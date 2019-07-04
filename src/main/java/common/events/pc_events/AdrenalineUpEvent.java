@@ -29,6 +29,6 @@ public class AdrenalineUpEvent extends PcEvent {
 
     @Override
     public PcEvent hideSensibleContent() {
-        return new AdrenalineUpEvent(getCensoredDTO(), true);
+        return new AdrenalineUpEvent(pc.getCensoredDTO(), true);
     }
 }

@@ -7,7 +7,7 @@ import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.NoSuchObjectException;

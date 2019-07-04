@@ -4,7 +4,7 @@ import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.LoginController;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -166,10 +166,7 @@ public class ServerSocketHandler implements Runnable {
                 player.skip();
                 break;
             case QUIT:
-                if (args.length == 1)
-                    player.quit();
-                else
-                    loginController.quit(UUID.fromString(args[1]));
+                player.quit();
                 break;
             default:
                 break;

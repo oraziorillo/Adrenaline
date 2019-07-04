@@ -28,7 +28,7 @@ public class ItemCollectedEvent extends SquareEvent {
 
     @Override
     public String toString() {
-        return (censored
+        return (isPrivate
                 ? pcColour.getName()
                 : "You")
                 + " collected a " + item + " on " + square;

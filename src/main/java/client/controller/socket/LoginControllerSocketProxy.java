@@ -4,11 +4,10 @@ import client.view.AbstractView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -74,17 +73,5 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
     public synchronized void joinLobby(UUID token) {
         out.println(JOIN_LOBBY.toString() + REGEX + token);
         out.flush();
-    }
-
-    @Override
-    public void quit(UUID token) throws RemoteException {
-        out.println(QUIT + REGEX + token);
-        out.flush();
-        try {
-            out.close();
-            in.close();
-            socket.close();
-        } catch (IOException ignored) {
-        }
     }
 }

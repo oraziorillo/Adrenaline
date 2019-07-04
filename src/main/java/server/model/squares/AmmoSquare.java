@@ -5,7 +5,7 @@ import common.dto_model.SquareDTO;
 import common.enums.SquareColourEnum;
 import common.events.square_events.ItemCollectedEvent;
 import common.events.square_events.SquareRefilledEvent;
-import server.exceptions.EmptySquareException;
+import common.exceptions.EmptySquareException;
 import server.model.AmmoTile;
 import server.model.Deck;
 import server.model.Pc;

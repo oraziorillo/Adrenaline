@@ -6,16 +6,12 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
-import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
-
-import static common.enums.ControllerMethodsEnum.LOG_IN;
-import static common.enums.ControllerMethodsEnum.SIGN_UP;
 
 public class GuiController extends Application {
 

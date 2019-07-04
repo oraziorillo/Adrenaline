@@ -73,7 +73,7 @@ public abstract class ViewState {
    
    /**
     * Utility method for not manageable errors (Such as server unreachable).
-    * Displays an error dialog and quits (performing a soft quit if possible)
+    * Displays an error dialog and quits (performing a soft quitFromLobby if possible)
     * @param msg the text for the error dialog
     */
    public void error(String msg) {

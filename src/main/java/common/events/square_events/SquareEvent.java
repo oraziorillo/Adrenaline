@@ -7,7 +7,7 @@ import common.events.ModelEvent;
 public abstract class SquareEvent implements ModelEvent {
 
    SquareDTO square;
-   boolean censored;
+   boolean isPrivate;
 
 
    SquareEvent(SquareDTO square){
@@ -15,9 +15,9 @@ public abstract class SquareEvent implements ModelEvent {
    }
 
 
-   SquareEvent(SquareDTO square, boolean censored) {
+   SquareEvent(SquareDTO square, boolean isPrivate) {
       this.square = square;
-      this.censored = true;
+      this.isPrivate = true;
    }
 
 

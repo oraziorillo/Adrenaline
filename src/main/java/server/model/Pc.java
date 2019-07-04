@@ -8,8 +8,8 @@ import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 import common.events.pc_board_events.*;
 import common.events.pc_events.*;
-import server.exceptions.EmptySquareException;
-import server.exceptions.NotEnoughAmmoException;
+import common.exceptions.EmptySquareException;
+import common.exceptions.NotEnoughAmmoException;
 import server.model.squares.Square;
 
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package server.model;
 
+import com.google.gson.annotations.Expose;
 import common.dto_model.KillShotDTO;
 import common.enums.PcColourEnum;
 
@@ -7,9 +8,9 @@ import common.enums.PcColourEnum;
  * A single kill marker
  */
 public class KillShot {
-    private PcColourEnum colour;
-    private boolean skulled;
-    private boolean overkilled;
+    @Expose private PcColourEnum colour;
+    @Expose private boolean skulled;
+    @Expose private boolean overkilled;
 
     KillShot(){
         colour = null;

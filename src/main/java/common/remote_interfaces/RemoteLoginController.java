@@ -1,6 +1,6 @@
 package common.remote_interfaces;
 
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.Remote;
@@ -14,6 +14,4 @@ public interface RemoteLoginController extends Remote {
    RemotePlayer login(UUID fromString, RemoteView view) throws IOException, PlayerAlreadyLoggedInException;
    
    void joinLobby(UUID token) throws RemoteException;
-
-   void quit(UUID token) throws RemoteException;
 }

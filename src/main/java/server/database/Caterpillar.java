@@ -7,7 +7,7 @@ public class Caterpillar<P, S, V> {
 
     /**
      * This class is a dynamically changing HashMap.
-     * At the beginning it is used like an HashMap of V objects accessed by a P key; you can add and remove values by using the primary key.
+     * At the beginning it is used like an HashMap of V objects accessed by a P key; you can add and removeLine values by using the primary key.
      * You can also add S objects to the data structure, but they are unused at the moment.
      * The size of SKs' list is always less then or equals to the size of the list of values.
      * When the size of List of S values reaches the size of the List of values, Caterpillar "metamorphoses" and starts to behaves like an
@@ -57,18 +57,13 @@ public class Caterpillar<P, S, V> {
     }
 
 
-    public void remove(P k){
+    public void removeLine(P k){
         int i = primaryKeys.indexOf(k);
         values.remove(i);
         primaryKeys.remove(i);
         if (i < secondaryKeys.size()){
             secondaryKeys.remove(i);
         }
-    }
-
-
-    public void removeSecondary(S s) {
-        secondaryKeys.remove(s);
     }
 
 

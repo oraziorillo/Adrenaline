@@ -9,6 +9,7 @@ import server.model.Pc;
 import server.model.WeaponCard;
 
 import java.rmi.RemoteException;
+import java.util.UUID;
 
 import static common.Constants.WRONG_TIME;
 
@@ -141,6 +142,7 @@ public abstract class State {
      */
     public abstract State nextState();
 
+
     public void sendChatMessage(String msg) {
         controller.sendChatMessage(msg);
     }
@@ -148,5 +150,10 @@ public abstract class State {
 
     public State forcePass() {
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
+    }
+
+
+    public void removeListener(UUID token) {
+        controller.getGame().removeListener(token);
     }
 }

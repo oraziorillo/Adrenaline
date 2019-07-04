@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Support class for game that handles the map and the kill shot track
  */
 public class GameBoard {
-    private int numberOfMap;            //TODO  è un expose??
+    @Expose private int numberOfMap;
     @Expose private int rows;
     @Expose private int columns;
     @Expose private List<Square> squares;
@@ -27,19 +27,7 @@ public class GameBoard {
 
     public GameBoard(){
         this.spawnPoints = new ArrayList<>();
-        this.squares = new ArrayList<>();
     }
-
-
-    /*
-    public GameBoard(int rows, int columns, List<Square> squares, int[] doors) {
-        this.rows = rows;
-        this.columns = columns;
-        this.squares = squares;
-        this.spawnPoints = new ArrayList<>();
-        init(doors);
-    }
-     */
 
 
     void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
@@ -70,16 +58,6 @@ public class GameBoard {
         }
     }
 
-
-    /*
-     * assigns the proper deck to each square and the list of listeners
-     * @param weaponsDeck deck of weapons
-     * @param ammoDeck deck of ammoTile
-     *
-    void initSquares(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
-        squares.forEach(s -> s.init(weaponsDeck, ammoDeck));
-    }
-     */
 
     public void setNumberOfMap(int numberOfMap) {
         this.numberOfMap = numberOfMap;
