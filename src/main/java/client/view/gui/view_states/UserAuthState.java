@@ -18,13 +18,7 @@ public class UserAuthState extends ViewState {
    @Override
    public ViewState nextState() {
       SetupState nextState;
-      try {
-         nextState = new SetupState();
-      } catch ( RemoteException never ) {
-         IllegalStateException e1 = new IllegalStateException( );
-         e1.setStackTrace( never.getStackTrace() );
-         throw e1;
-      }
+      nextState = new SetupState();
       return nextState;
    }
    
@@ -53,13 +47,4 @@ public class UserAuthState extends ViewState {
       return getJavafxController().authMethod();
    }
 
-   @Override
-   public boolean isReachable() throws RemoteException {
-      return true;
-   }
-
-   @Override
-   public void request(Request request) throws RemoteException {
-
-   }
 }

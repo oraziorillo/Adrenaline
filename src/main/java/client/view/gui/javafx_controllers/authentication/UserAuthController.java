@@ -1,12 +1,17 @@
 package client.view.gui.javafx_controllers.authentication;
 
+import client.ClientPropertyLoader;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
-import common.events.ModelEventListener;
+import common.events.game_board_events.GameBoardEvent;
+import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
+import common.events.pc_board_events.PcBoardEvent;
+import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
+import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
@@ -14,75 +19,58 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Optional;
 import java.util.UUID;
 
-import static common.enums.ControllerMethodsEnum.*;
+import static common.enums.ControllerMethodsEnum.LOG_IN;
+import static common.enums.ControllerMethodsEnum.SIGN_UP;
 
 public class UserAuthController extends AbstractJavaFxController {
    
-   public UserAuthController() throws RemoteException {
+   public UserAuthController() {
    }
    
    @Override
-   public void notifyEvent(LobbyEvent event) throws RemoteException {
-
-   }
-
-   @Override
-   public void request(Request request) throws RemoteException {
-
-   }
-
-   @Override
-   public void chatMessage(String message) throws RemoteException {
-      throw new IllegalStateException( "Can't write in chat" );
+   public void ack(String message) {
+   
    }
    
    @Override
-   public ModelEventListener getListener() throws RemoteException {
-      return this;
+   public void chatMessage(String message) {
+   
+   }
+   
+   @Override
+   public void notifyEvent(LobbyEvent event) {
+
    }
 
    @Override
-   public boolean isReachable() throws RemoteException {
-      return true;
-   }
+   public void request(Request request) {
 
+   }
+   
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
       Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");
       Optional<ButtonType> response = rmiOrSocket.showAndWait();
-      System.out.println(response.get().getText());
-      return ConnectionMethodEnum.parseString(response.get().getText().toLowerCase());
+      return response.isPresent()?ConnectionMethodEnum.parseString(response.get().getText().toLowerCase()):ConnectionMethodEnum.QUIT;
    }
-   
    
    @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       try {
          switch (cme) {
             case RMI:
-               Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
+               Registry registry = LocateRegistry.getRegistry( ClientPropertyLoader.getInstance().getHostAddress(), ClientPropertyLoader.getInstance().getRmiPort());
                return ( RemoteLoginController ) registry.lookup("LoginController");
             case SOCKET:
             default:
-//               ClientSocketHandler handler = new ClientSocketHandler(new Socket(HOST, SOCKET_PORT), this);
-//               Thread thread = new Thread(new Task<>() {
-//                  @Override
-//                  protected Object call() throws Exception {
-//                     handler.run();
-//                     return null;
-//                  }
-//               }, "SocketHandler");
-//               thread.start();
-//               return handler;
-               return new LoginControllerSocketProxy( new Socket( HOST,SOCKET_PORT ),topView );
+               return new LoginControllerSocketProxy( new Socket( ClientPropertyLoader.getInstance().getHostAddress(),ClientPropertyLoader.getInstance().getSocketPort() ),topView );
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");
@@ -90,7 +78,6 @@ public class UserAuthController extends AbstractJavaFxController {
          return null;    //This line won't be executed, but is needed to avoid variable initialization error on return
       }
    }
-   
    
    @Override
    public ControllerMethodsEnum authMethod() {
@@ -132,10 +119,28 @@ public class UserAuthController extends AbstractJavaFxController {
    }
    
    @Override
-   public String requestString(String message) {
-      TextInputDialog input = new TextInputDialog("Gimme strinnngs");
-      input.setHeaderText(null);
-      return input.showAndWait().orElse( "" );
+   public void onPcBoardUpdate(PcBoardEvent event) {
+   
+   }
+   
+   @Override
+   public void onSquareUpdate(SquareEvent event) {
+   
+   }
+   
+   @Override
+   public void onGameBoardUpdate(GameBoardEvent event) {
+   
+   }
+   
+   @Override
+   public void onPcUpdate(PcEvent event) {
+   
+   }
+   
+   @Override
+   public void onKillShotTrackUpdate(KillShotTrackEvent event) {
+   
    }
    
    @Override

@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
 import static javafx.application.Platform.runLater;
 
 public class InGameState extends ViewState {
-   InGameState() throws RemoteException {
+   InGameState() {
       super();
       try {
          FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ) );
@@ -43,13 +43,5 @@ public class InGameState extends ViewState {
       return ViewState.getFirstState(hostServices, stage,topView);
    }
 
-   @Override
-   public void request(Request request) throws RemoteException {
 
-   }
-
-   @Override
-   public boolean isReachable() throws RemoteException {
-      return true;
-   }
 }

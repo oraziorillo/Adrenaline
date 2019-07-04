@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
 import static common.enums.ControllerMethodsEnum.LOG_IN;
@@ -35,6 +37,7 @@ public class GuiController extends Application {
         stage.setOnCloseRequest( e-> {
            try {
               player.quit();
+              UnicastRemoteObject.unexportObject( view,true );
            } catch ( RemoteException ignored ) {}
         } );
     }
@@ -52,8 +55,9 @@ public class GuiController extends Application {
                   token = loginController.register( username, view );
                   view.ack( "This is your token"+System.lineSeparator()+token );
                   break;
-                  default:
-                     throw new IllegalStateException( "Gui allows illegal states" );
+               case QUIT: default:
+                  stage.close();
+                  throw new IllegalStateException( "Gui allows illegal states" );
             }
             player = loginController.login( token, view );
             view.setPlayer( player );

@@ -19,6 +19,7 @@ import javafx.application.HostServices;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ import java.util.UUID;
  * Most methods just throw IllegalStateException, which is non-blocking, to notify unexpected calls
  * Concrete states will override those methods so exception is no longer thrown
  */
-public abstract class ViewState extends AbstractView {
+public abstract class ViewState {
    private static AbstractJavaFxController javafxController;
    private static final String UNEXPECTED_CALL = "You are not supposed to call this method from there";
    protected static transient RemotePlayer player;
@@ -39,7 +40,7 @@ public abstract class ViewState extends AbstractView {
    
    public abstract ViewState nextState() throws RemoteException;
    
-   ViewState() throws RemoteException {
+   ViewState() {
       super();
    }
    
@@ -75,7 +76,6 @@ public abstract class ViewState extends AbstractView {
     * Displays an error dialog and quits (performing a soft quit if possible)
     * @param msg the text for the error dialog
     */
-   @Override
    public void error(String msg) {
       javafxController.error( msg );
    }
@@ -85,91 +85,60 @@ public abstract class ViewState extends AbstractView {
       if(javafxController!=null) javafxController.setPlayer( player );
    }
    
-   @Override
    public ConnectionMethodEnum acquireConnectionMethod() {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
-   @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {throw new IllegalStateException( UNEXPECTED_CALL );}
    
-   @Override
    public String acquireUsername(){
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
-   @Override
    public UUID acquireToken() {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
-   @Override
    public void ack(String message) {
       previousAcks.add( message );
    }
    
-   @Override
    public void chatMessage(String message) {
-      try {
-         javafxController.chatMessage( message );
-      } catch ( RemoteException e ) {
-         Thread.currentThread().getUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
-      }
+      javafxController.chatMessage( message );
    }
-
-   @Override
+   
    public ControllerMethodsEnum authMethod() {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
-   @Override
    public String requestString(String message) {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
-   
-   @Override
-   public ModelEventListener getListener() {
-      return topView;
-   }
-   
-   @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
       javafxController.onGameBoardUpdate( event );
    }
    
-   @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       javafxController.onKillShotTrackUpdate( event );
    }
    
-   @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
       javafxController.onPcBoardUpdate( event );
    }
    
-   @Override
    public void onPcUpdate(PcEvent event) {
       javafxController.onPcUpdate( event );
    }
    
-   @Override
    public void onSquareUpdate(SquareEvent event) {
       javafxController.onSquareUpdate( event );
    }
    
-   @Override
    public void notifyEvent(LobbyEvent event) {
-      try {
-         javafxController.notifyEvent( event );
-      } catch ( RemoteException e ) {
-         IllegalStateException e1 = new IllegalStateException( "RemoteException on netless operation" );
-         e1.setStackTrace( e.getStackTrace() );
-         throw e1;
-      }
+      javafxController.notifyEvent( event );
    }
    
-   @Override
    public void request(Request request) throws RemoteException {
    
    }
