@@ -14,10 +14,7 @@ import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.SquareDTO;
-import common.enums.AmmoEnum;
-import common.enums.CardinalDirectionEnum;
-import common.enums.PcColourEnum;
-import common.events.ModelEventListener;
+import common.enums.*;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
@@ -25,6 +22,7 @@ import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
+import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.property.BooleanProperty;
@@ -39,19 +37,15 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import javax.swing.Timer;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
@@ -190,16 +184,6 @@ public class InGameController extends AbstractJavaFxController {
    }
    
    @Override
-   public ModelEventListener getListener() {
-      return this;
-   }
-
-   @Override
-   public boolean isReachable() {
-      return true;
-   }
-
-   @Override
     public void onGameBoardUpdate(GameBoardEvent event) {
       mapController.setMap( event.getDTO().getNumberOfMap() );
       for(SquareDTO s:event.getDTO().getSquares())
@@ -253,7 +237,32 @@ public class InGameController extends AbstractJavaFxController {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
    }
-
+   
+   @Override
+   public ConnectionMethodEnum acquireConnectionMethod() {
+      return null;
+   }
+   
+   @Override
+   public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
+      return null;
+   }
+   
+   @Override
+   public ControllerMethodsEnum authMethod() {
+      return null;
+   }
+   
+   @Override
+   public String acquireUsername() {
+      return null;
+   }
+   
+   @Override
+   public UUID acquireToken() {
+      return null;
+   }
+   
    @Override
     public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       killShotTrackData.set( event.getDTO() );

@@ -2,29 +2,35 @@ package client.view.gui.javafx_controllers;
 
 import client.view.AbstractView;
 import client.view.gui.GuiView;
+import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
+import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
+import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
+import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 
 import java.rmi.RemoteException;
+import java.util.UUID;
 
-public abstract class AbstractJavaFxController extends AbstractView implements ChangeListener<Number> {
+public abstract class AbstractJavaFxController implements ChangeListener<Number>,ModelEventListener {
    
    protected HostServices hostServices;
    protected RemotePlayer player;
    protected GuiView topView;
    
-   protected AbstractJavaFxController() throws RemoteException {
+   protected AbstractJavaFxController() {
    }
    
-   @Override
    public void error(String msg) {
       Alert errorAlert = new Alert(Alert.AlertType.ERROR);
       errorAlert.setTitle("ERROR");
@@ -39,47 +45,44 @@ public abstract class AbstractJavaFxController extends AbstractView implements C
       this.hostServices = hostServices;
    }
    
+   public abstract void ack(String message);
+   
+   public abstract void chatMessage(String message);
+   
    public void  setPlayer(RemotePlayer player) {
       this.player = player;
-   }
-   
-   @Override
-   public ModelEventListener getListener() throws RemoteException {
-      return topView;
-   }
-   
-   @Override
-   public void ack(String message) {
-   
-   }
-   
-   @Override
-   public void onSquareUpdate(SquareEvent event) {
-   
-   }
-   
-   @Override
-   public void onPcUpdate(PcEvent event) {
-   
-   }
-   
-   @Override
-   public void onPcBoardUpdate(PcBoardEvent event) {
-   
-   }
-   
-   @Override
-   public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-   
-   }
-   
-   @Override
-   public void onGameBoardUpdate(GameBoardEvent event) {
-   
    }
    
    public void setTopView(GuiView topView) {
       this.topView = topView;
    }
    
+   public abstract void notifyEvent(LobbyEvent event);
+   
+   public abstract void request(Request request);
+   
+   public abstract ConnectionMethodEnum acquireConnectionMethod();
+   
+   public abstract RemoteLoginController acquireConnection(ConnectionMethodEnum cme);
+   
+   public abstract ControllerMethodsEnum authMethod();
+   
+   public abstract String acquireUsername();
+   
+   public abstract UUID acquireToken();
+   
+   @Override
+   public abstract void onPcBoardUpdate(PcBoardEvent event);
+   
+   @Override
+   public abstract void onSquareUpdate(SquareEvent event);
+   
+   @Override
+   public abstract void onGameBoardUpdate(GameBoardEvent event);
+   
+   @Override
+   public abstract void onPcUpdate(PcEvent event);
+   
+   @Override
+   public abstract void onKillShotTrackUpdate(KillShotTrackEvent event);
 }

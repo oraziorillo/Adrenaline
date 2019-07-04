@@ -4,6 +4,8 @@ import server.controller.Controller;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
+import java.net.InetAddress;
+
 import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 /**Turn beginning state*/
@@ -61,6 +63,11 @@ public class StartTurnState extends State {
         }
         controller.ackCurrent("\nA power up can make the difference between life and death");
         return false;
+    }
+
+
+    public State forcePass() {
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
     
     /**

@@ -4,6 +4,7 @@ import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
 import common.events.requests.Request;
 
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -19,6 +20,6 @@ public interface RemoteView extends Remote {
 
     ModelEventListener getListener() throws RemoteException;
 
-    boolean isReachable() throws RemoteException;
+    boolean isReachable() throws RemoteException, IOException;
 
 }

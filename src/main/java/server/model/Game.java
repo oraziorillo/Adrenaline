@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import common.dto_model.GameDTO;
 import common.dto_model.PcDTO;
 import common.enums.PcColourEnum;
 import common.enums.SquareColourEnum;
@@ -61,38 +62,6 @@ public class Game {
 
 
     private void initDecks(){
-
-        /* da valutare se cambiarlo
-        try {
-            JsonReader reader;
-            Type deckType = new TypeToken<Deck>(){}.getType();
-            Gson gson = new GsonBuilder()
-                    .serializeNulls()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .registerTypeAdapter(Action.class, new ActionDeserializer())
-                    .registerTypeAdapter(deckType, new DeckDeserializer<>())
-                    .create();
-
-            reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
-            weaponsDeck = gson.fromJson(reader, deckType);
-            weaponsDeck.getCards().parallelStream().forEach(WeaponCard::init);
-            weaponsDeck.shuffle();
-            reader.close();
-
-            reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
-            powerUpsDeck = gson.fromJson(reader, deckType);
-            powerUpsDeck.shuffle();
-            reader.close();
-
-            reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
-            ammoDeck = gson.fromJson(reader, deckType);
-            ammoDeck.shuffle();
-            reader.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         */
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Action.class, new ActionDeserializer());
@@ -182,11 +151,12 @@ public class Game {
         gameBoard = preLoadedGameBoards[numberOfMap - 1];
         preLoadedGameBoards = null;
 
+        gameBoard.setNumberOfMap(numberOfMap);
         gameBoard.init(weaponsDeck, ammoDeck);
         gameBoard.addModelEventHandler(events);
 
         //notify map set
-        events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(numberOfMap), numberOfMap));
+        events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(), numberOfMap));
     }
 
 
@@ -426,6 +396,14 @@ public class Game {
     public void addModelEventListener(UUID playerID, PcColourEnum colour, ModelEventListener listener) {
         events.addModelEventListener(playerID, listener);
         events.addListenerColour(colour);
+    }
+
+
+    public GameDTO convertToDTO(){
+        GameDTO gameDTO = new GameDTO();
+        gameDTO.setGameBoardDTO(gameBoard.convertoTo());
+        gameDTO.setPcs(pcs.stream().map(Pc::convertToDTO).collect(Collectors.toSet()));
+        return gameDTO;
     }
 }
 

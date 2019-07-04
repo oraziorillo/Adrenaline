@@ -65,7 +65,7 @@ public interface CommandParser {
                 case CHOOSE_DIRECTION:
                     CardinalDirectionEnum dir = CardinalDirectionEnum.parseString(args[0]);
                     if (dir != null)
-                        player.chooseDirection(Integer.parseInt(args[0]));
+                        player.chooseDirection(dir.ordinal());
                     break;
                 case RESPONSE:
                     player.response(args[0]);
