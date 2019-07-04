@@ -136,6 +136,7 @@ public class InGameController extends AbstractJavaFxController {
    private void passClicked(){
       try {
          player.pass();
+         deselectAll();
       } catch ( IOException e ) {
          error( "Server unreachable" );
       }
@@ -145,6 +146,7 @@ public class InGameController extends AbstractJavaFxController {
    private void applyClicked(ActionEvent actionEvent) {
       try {
          player.ok();
+         deselectAll();
       } catch ( IOException e ) {
          error( "Server unreachable" );
       }
@@ -219,6 +221,7 @@ public class InGameController extends AbstractJavaFxController {
 
    @Override
    public void notifyEvent(LobbyEvent event) {
+      deselectAll();
 
    }
 
