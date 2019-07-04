@@ -20,7 +20,6 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.effect.DropShadow;
@@ -37,8 +36,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
-
-import static javafx.application.Platform.runLater;
 
 public class SetupController extends AbstractJavaFxController {
    
@@ -285,4 +282,6 @@ public class SetupController extends AbstractJavaFxController {
          setEnabled( true );
       }
    }
+   
+   
 }

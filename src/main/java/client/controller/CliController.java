@@ -10,7 +10,9 @@ import common.remote_interfaces.RemotePlayer;
 import server.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
 import static common.Constants.WRONG_TIME;
@@ -32,8 +34,10 @@ public class CliController {
         while (this.loginController == null) {
             try {
                 while (this.loginController == null) {
-                    if (!tryAcquireConnection())
+                    if (!tryAcquireConnection()) {
+                        view.printMessage("BYE!");
                         return;
+                    }
                 }
                 ControllerMethodsEnum authMethod = view.authMethod();
                 switch (authMethod) {
@@ -56,6 +60,7 @@ public class CliController {
                         break;
                     case QUIT:
                         view.printMessage("BYE!");
+                        UnicastRemoteObject.unexportObject(view, true);
                         return;
                     default:
                         throw new IllegalArgumentException(WRONG_TIME);
@@ -83,6 +88,12 @@ public class CliController {
                 view.printMessage(ControllerMethodsEnum.help());
             }
         }
+        try {
+            view.printMessage("BYE!");
+            UnicastRemoteObject.unexportObject(view, true);
+        } catch (NoSuchObjectException e) {
+            e.printStackTrace();
+        }
         //TODO logout
     }
 
@@ -90,11 +101,15 @@ public class CliController {
     private boolean tryAcquireConnection(){
         try {
             ConnectionMethodEnum connMethod = view.acquireConnectionMethod();
-            if (connMethod == ConnectionMethodEnum.QUIT)
+            if (connMethod == ConnectionMethodEnum.QUIT) {
+                UnicastRemoteObject.unexportObject(view, true);
                 return false;
+            }
             this.loginController = view.acquireConnection(connMethod);
         } catch (IllegalArgumentException e){
             view.printMessage(e.getMessage());
+        } catch (NoSuchObjectException e) {
+            e.printStackTrace();
         }
         return true;
     }

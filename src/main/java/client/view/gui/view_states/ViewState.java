@@ -4,6 +4,7 @@ import client.view.AbstractView;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -108,10 +109,16 @@ public abstract class ViewState extends AbstractView {
    }
    
    @Override
-   public void chatMessage(String message) {throw new IllegalStateException( UNEXPECTED_CALL );}
-   
+   public void chatMessage(String message) {
+      try {
+         javafxController.chatMessage( message );
+      } catch ( RemoteException e ) {
+         Thread.currentThread().getUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
+      }
+   }
+
    @Override
-   public boolean authMethod() {
+   public ControllerMethodsEnum authMethod() {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    

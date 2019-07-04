@@ -3,6 +3,7 @@ package client.view.gui;
 import client.view.AbstractView;
 import client.view.gui.view_states.ViewState;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -49,7 +50,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
 
    @Override
-   public boolean authMethod() {
+   public ControllerMethodsEnum authMethod() {
       return currentGui.authMethod();
    }
 
@@ -92,7 +93,8 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void chatMessage(String message) {
-      Platform.runLater( ()->currentGui.chatMessage( message ));
+      if(message.length()>0)
+         Platform.runLater( ()->currentGui.chatMessage( message ));
    }
    
    @Override

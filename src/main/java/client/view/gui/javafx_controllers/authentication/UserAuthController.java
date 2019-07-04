@@ -1,9 +1,9 @@
 package client.view.gui.javafx_controllers.authentication;
 
 import client.controller.socket.LoginControllerSocketProxy;
-import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.enums.ConnectionMethodEnum;
+import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
 import common.events.requests.Request;
@@ -17,9 +17,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
+
+import static common.enums.ControllerMethodsEnum.*;
 
 public class UserAuthController extends AbstractJavaFxController {
    
@@ -92,14 +93,14 @@ public class UserAuthController extends AbstractJavaFxController {
    
    
    @Override
-   public boolean authMethod() {
+   public ControllerMethodsEnum authMethod() {
       Alert firstTime = new Alert(
               Alert.AlertType.CONFIRMATION,
               "is this your first time?",
               new ButtonType("Login", ButtonBar.ButtonData.NO),
               new ButtonType("Register", ButtonBar.ButtonData.YES)
       );
-      return firstTime.showAndWait().get().getButtonData().equals(ButtonBar.ButtonData.YES);
+      return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES )?SIGN_UP:LOG_IN;
    }
    
    @Override

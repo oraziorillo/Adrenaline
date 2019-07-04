@@ -75,8 +75,10 @@ public class CliView extends AbstractView {
                     Socket socket = new Socket(HOST, SOCKET_PORT);
                     return new LoginControllerSocketProxy(socket, this);
                 case RMI:
+                    System.setProperty( "java.rmi.server.hostname",HOST );
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);
-                    return (RemoteLoginController) registry.lookup("LoginController");
+                    RemoteLoginController returned = (RemoteLoginController) registry.lookup("LoginController");
+                    return returned;
                 default:
                     throw new IllegalArgumentException(WRONG_TIME);
             }

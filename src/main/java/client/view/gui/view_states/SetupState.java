@@ -101,7 +101,7 @@ public class SetupState extends ViewState {
       }
       stillChoosing.set(event.getDTO().size());
    }
-
+   
    @Override
    public boolean isReachable() throws RemoteException {
       return true;
