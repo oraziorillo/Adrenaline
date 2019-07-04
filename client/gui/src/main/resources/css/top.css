@@ -1,0 +1,14 @@
+#mainPane{
+    height: 150;
+    -fx-pref-width: infinity;
+    -fx-max-height: height;
+    -fx-pref-height: height;
+}
+
+#settingsButton{
+    -fx-max-height: 75;
+    -fx-max-width: 75;
+    -fx-background-image: url("/images/settings_button.png"), url("/images/bordo.png");
+    -fx-background-size: stretch,stretch;
+    -fx-background-insets: -2 -2 -2 -2, 0 0 0 0;
+}

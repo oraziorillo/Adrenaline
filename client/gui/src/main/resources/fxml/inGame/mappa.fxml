@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:cli.controller="gui.cli.view.javafx_controllers.in_game.components.Map" stylesheets="/css/mappa.css" alignment="BOTTOM_RIGHT"
+          fx:id="grid" id="grid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.halignment="RIGHT">
+</GridPane>

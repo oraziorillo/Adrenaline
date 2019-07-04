@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="mainPane"
+           fx:cli.controller="gui.cli.view.javafx_controllers.in_game.components.pc_board.Vita" stylesheets="/css/pc_board/Pc.css">
+    <ImageView fx:id="background" preserveRatio="true"/>
+    <GridPane>
+        <rowConstraints>
+            <RowConstraints percentHeight="25.3676471"/>
+            <RowConstraints percentHeight="07.3529412"/>
+            <RowConstraints percentHeight="34.1911765"/>
+            <RowConstraints percentHeight="04.4117647"/>
+            <RowConstraints percentHeight="25.3676471"/>
+            <RowConstraints/>
+        </rowConstraints>
+        <columnConstraints>
+            <ColumnConstraints percentWidth="1.5"/>
+            <ColumnConstraints percentWidth="16.5"/>
+            <ColumnConstraints percentWidth="38"/>
+            <ColumnConstraints percentWidth="9.5"/>
+            <ColumnConstraints percentWidth="33.5"/>
+            <ColumnConstraints/>
+        </columnConstraints>
+        <Region GridPane.rowSpan="6"/>
+        <Region GridPane.columnIndex="5" GridPane.rowSpan="6"/>
+        <GridPane fx:id="marchi" alignment="BOTTOM_RIGHT" GridPane.columnIndex="3" GridPane.columnSpan="2"/>
+        <TilePane fx:id="danni" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="4" alignment="CENTER_LEFT" prefRows="1" />
+        <TilePane fx:id="morti" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="2" alignment="CENTER_LEFT" prefRows="1"/>
+    </GridPane>
+
+</StackPane>
