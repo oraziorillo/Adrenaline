@@ -2,6 +2,7 @@ package client.view.gui;
 
 import client.view.AbstractView;
 import client.view.gui.view_states.ViewState;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
@@ -100,6 +101,11 @@ public class GuiView extends AbstractView implements ModelEventListener {
    @Override
    public ModelEventListener getListener() {
       return this;
+   }
+
+   @Override
+   public void resumeGame(GameDTO game) throws RemoteException {
+
    }
 
    @Override

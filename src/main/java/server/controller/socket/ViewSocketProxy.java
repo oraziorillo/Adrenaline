@@ -2,6 +2,7 @@ package server.controller.socket;
 
 import client.controller.socket.AbstractSocketProxy;
 import com.google.gson.Gson;
+import common.dto_model.GameDTO;
 import common.events.ModelEventListener;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -94,6 +95,11 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    @Override
    public ModelEventListener getListener() throws RemoteException {
       return this;
+   }
+
+   @Override
+   public void resumeGame(GameDTO game) throws RemoteException {
+
    }
 
 
