@@ -18,7 +18,6 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
 
     protected AbstractView() throws RemoteException {
         super();
-        
     }
 
     public void printMessage(String msg) {

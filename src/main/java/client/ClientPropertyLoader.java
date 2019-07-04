@@ -16,6 +16,6 @@ public class ClientPropertyLoader extends PropertyLoader {
    }
    
    public String getHostAddress(){
-      return properties.getProperty( "client.host" );
+      return properties.getProperty( "server.rmi.server.hostname" );
    }
 }

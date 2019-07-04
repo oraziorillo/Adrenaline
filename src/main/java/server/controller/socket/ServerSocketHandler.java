@@ -23,6 +23,7 @@ public class ServerSocketHandler implements Runnable {
     private RemotePlayer player;
     private RemoteView view;
 
+
     public ServerSocketHandler(Socket socket) throws IOException {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
@@ -30,6 +31,7 @@ public class ServerSocketHandler implements Runnable {
         this.loginController = LoginController.getInstance();
         this.view = new ViewSocketProxy(socket);
     }
+
 
     @Override
     public void run() {
