@@ -1,10 +1,23 @@
 package common.dto_model;
 
 import common.enums.PcColourEnum;
+
 import java.util.ArrayList;
+
+import static common.Constants.MAX_POWER_UPS_IN_HAND;
+import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 public class PcDTO implements DTO {
 
+    public boolean isCensored() {
+        return censored;
+    }
+
+    public void setCensored(boolean censored) {
+        this.censored = censored;
+    }
+
+    private boolean censored;
     private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
@@ -89,5 +102,36 @@ public class PcDTO implements DTO {
             i++;
         }
         return powerUpsString.toString();
+    }
+
+
+    public PcDTO getCensoredDTO() {
+        PcDTO censoredPcDTO = new PcDTO();
+
+        WeaponCardDTO[] censoredWeapons = new WeaponCardDTO[MAX_WEAPONS_IN_HAND];
+        WeaponCardDTO tmp;
+        for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
+            tmp = weapons[i];
+            if (tmp != null && tmp.isLoaded())
+                censoredWeapons[i] = WeaponCardDTO.getCardBack();
+            else if (tmp != null)
+                censoredWeapons[i] = tmp;
+        }
+        censoredPcDTO.setWeapons(censoredWeapons);
+
+        ArrayList<PowerUpCardDTO> censoredPowerUps = new ArrayList<>();
+        for (int i = 0; i < MAX_POWER_UPS_IN_HAND; i++) {
+            if (i < powerUps.size())
+                censoredPowerUps.add(PowerUpCardDTO.getCardBack());
+        }
+        censoredPcDTO.setPowerUps(censoredPowerUps);
+
+        censoredPcDTO.setCensored(true);
+        censoredPcDTO.setColour(colour);
+        censoredPcDTO.setSquareRow(squareRow);
+        censoredPcDTO.setSquareCol(squareCol);
+        censoredPcDTO.setAdrenaline(adrenaline);
+        censoredPcDTO.setPcBoard(pcBoard);
+        return censoredPcDTO;
     }
 }

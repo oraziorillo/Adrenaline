@@ -1,18 +1,23 @@
 package client.view.gui.javafx_controllers.in_game.components.pc_board;
 
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import common.Constants;
 import common.dto_model.KillShotTrackDTO;
 import common.enums.PcColourEnum;
+import common.events.ModelEvent;
 import common.remote_interfaces.RemotePlayer;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
+import java.awt.event.MouseEvent;
+import java.beans.EventHandler;
 import java.io.IOException;
 
 public class Azioni implements ChangeListener<KillShotTrackDTO> {
@@ -60,4 +65,5 @@ public class Azioni implements ChangeListener<KillShotTrackDTO> {
    public void setPlayer(RemotePlayer player) {
       this.player = player;
    }
+   
 }

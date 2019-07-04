@@ -1,6 +1,9 @@
 package client.view.gui.view_states;
 
 import client.controller.GuiController;
+import common.dto_model.GameDTO;
+import common.dto_model.KillShotTrackDTO;
+import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.requests.Request;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,6 +39,11 @@ public class InGameState extends ViewState {
          e1.initCause( e );
          throw e1;
       }
+   }
+   
+   @Override
+   public void resumeGame(GameDTO game) {
+      getJavafxController().resumeGame(game);
    }
    
    @Override

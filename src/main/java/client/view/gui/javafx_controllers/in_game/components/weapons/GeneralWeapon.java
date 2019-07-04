@@ -1,9 +1,11 @@
 package client.view.gui.javafx_controllers.in_game.components.weapons;
 
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import common.dto_model.PowerUpCardDTO;
 import common.dto_model.WeaponCardDTO;
 import common.remote_interfaces.RemotePlayer;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,6 +21,7 @@ public class GeneralWeapon {
    @FXML public StackPane mainPane;
    private RemotePlayer player;
    private boolean enabled = false;
+   private int selectedEffect = 0;
    
    public void initialize(){
       background.imageProperty().addListener( (obs,oldV,newV)-> {
@@ -38,7 +41,7 @@ public class GeneralWeapon {
             effectButton.setBackground( null ); //transparent
             effectButton.setMaxHeight( Double.MAX_VALUE );  //can grow without limits
             effectButton.setMaxWidth( Double.MAX_VALUE );
-            effectButton.setOnAction( evt -> chooseWeapon( e ) );
+            effectButton.setOnAction( evt -> switchFiremode() );
             GridPane.setVgrow( effectButton, Priority.ALWAYS );   //fill cell
             GridPane.setHgrow( effectButton, Priority.ALWAYS );
             contentPane.add( effectButton, 0, effect, weapon.getUpgrades() + 1, 1 );
@@ -71,9 +74,12 @@ public class GeneralWeapon {
       }
    }
    
-   private void chooseWeapon(int index) {
+   private void switchFiremode() {
       if(enabled) {
          try {
+            contentPane.getChildren().get( selectedEffect ).setEffect( null );
+            selectedEffect++;
+            contentPane.getChildren().get( selectedEffect ).setEffect( InGameController.selectedObjectEffect );
             player.switchFireMode();
          } catch ( IOException e ) {
             Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(), e );
@@ -84,6 +90,10 @@ public class GeneralWeapon {
    private void chooseUpgrade(int index){
       if(enabled) {
          try {
+            int firstUpgradeIndex = contentPane.getRowCount()-1;
+            for(int i=firstUpgradeIndex;i<contentPane.getChildren().size();i++)
+               contentPane.getChildren().get( i ).setEffect( null );
+            contentPane.getChildren().get( firstUpgradeIndex+index ).setEffect( InGameController.selectedObjectEffect );
             player.chooseUpgrade( index );
          } catch ( IOException e ) {
             Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(), e );
@@ -107,5 +117,10 @@ public class GeneralWeapon {
    
    public void setEnabled(boolean enabled) {
       this.enabled = enabled;
+   }
+   
+   public void deselect() {
+      for(Node n:contentPane.getChildren())
+         n.setEffect( null );
    }
 }

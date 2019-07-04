@@ -14,9 +14,9 @@ import java.util.UUID;
 
 public abstract class AbstractView extends UnicastRemoteObject implements RemoteView, ModelEventListener {
 
-    protected static transient final String HOST = ClientPropertyLoader.getInstance().getHostAddress();
-    protected static transient final int SOCKET_PORT = ClientPropertyLoader.getInstance().getSocketPort();
-    protected static transient final int RMI_PORT = ClientPropertyLoader.getInstance().getRmiPort();
+    protected static final transient String HOST = ClientPropertyLoader.getInstance().getHostAddress();
+    protected static final transient int SOCKET_PORT = ClientPropertyLoader.getInstance().getSocketPort();
+    protected static final transient int RMI_PORT = ClientPropertyLoader.getInstance().getRmiPort();
 
     protected AbstractView() throws RemoteException {
         super();
@@ -48,11 +48,7 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
     public UUID acquireToken() {
         return null;
     }
-
-    public String requestString(String message) {
-        return null;
-    }
-
+    
     public void error(String error) {}
 
     @Override

@@ -150,4 +150,9 @@ public class Top implements ChangeListener<KillShotTrackDTO> {
       
    }
    
+   public void deselectAll() {
+      ammoController.deselectAll();
+      cardHolderController.deselectAll();
+      
+   }
 }

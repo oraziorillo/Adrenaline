@@ -27,6 +27,6 @@ public class CollectEvent extends PcEvent {
 
     @Override
     public PcEvent hideSensibleContent() {
-        return new CollectEvent(getCensoredDTO(),true);
+        return new CollectEvent(pc.getCensoredDTO(),true);
     }
 }

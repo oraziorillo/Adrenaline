@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.in_game.components;
 
 import client.view.gui.ImageCache;
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.OpponentBoard;
 import common.dto_model.AmmoTileDTO;
 import common.dto_model.PcDTO;
@@ -10,7 +11,6 @@ import common.remote_interfaces.RemotePlayer;
 import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.DoubleProperty;
@@ -44,6 +44,7 @@ public class Map {
    private EnumMap<PcColourEnum,Circle> pcCircles = new EnumMap<>( PcColourEnum.class );
    private EnumMap<PcColourEnum,VBox> opponentBoardGraphics = new EnumMap<>( PcColourEnum.class );
    private EnumMap<PcColourEnum,OpponentBoard> opponentBoardControllers = new EnumMap<>(PcColourEnum.class);
+   private EnumMap<PcColourEnum,ScaleTransition> transitions = new EnumMap<>(PcColourEnum.class);
    private ImageView[][] ammos = new ImageView[ROWS][COLS];
    private DoubleProperty innerGridSize = new SimpleDoubleProperty();
    
@@ -51,9 +52,8 @@ public class Map {
    private static final int COLS = 4;
    
    public final MapChangeListener<PcColourEnum,PcDTO> playerObserver = change -> {
-      for(OpponentBoard c:opponentBoardControllers.values()){
+      for(OpponentBoard c:opponentBoardControllers.values())
          c.onChanged( change );
-      }
       if(change.wasAdded() && change.wasRemoved()){
          PcDTO newPc = change.getValueAdded();
          PcDTO oldPc = change.getValueRemoved();
@@ -61,11 +61,12 @@ public class Map {
          TranslateTransition transition = new TranslateTransition(new Duration( 400 ),circle);
          Pane newSquare = squares[newPc.getSquareRow()][newPc.getSquareCol()];
          Pane oldSquare = squares[oldPc.getSquareRow()][oldPc.getSquareCol()];
-         circle.setVisible( false );
          Bounds oldBound = circle.localToScene( circle.getBoundsInLocal() );
+         Bounds newBounds = circle.localToScene( circle.getBoundsInLocal() );
+   
+         circle.setVisible( false );
          oldSquare.getChildren().remove( circle );
          newSquare.getChildren().add( circle );
-         Bounds newBounds = circle.localToScene( circle.getBoundsInLocal() );
          double deltaX = newBounds.getCenterX() - oldBound.getCenterX();
          double deltaY = newBounds.getCenterY() - oldBound.getCenterY();
          transition.setFromX(-deltaX);
@@ -80,8 +81,8 @@ public class Map {
          PcColourEnum colour = change.getValueAdded().getColour();   //Get changing pc's color
          Pane square = squares[change.getValueAdded().getSquareRow()][change.getValueAdded().getSquareCol()];   //get new square
          Circle circle = pcCircles.getOrDefault( colour,new Circle(0,Color.valueOf( colour.toString() )) ); //get pc circle
-         circle.setOnMouseClicked( e -> chooseTarget(colour) );
          Pane oldSquare = (Pane)circle.getParent();
+         circle.setOnMouseClicked( e -> chooseTarget(colour) );
          pcCircles.put( colour,circle );
          if(oldSquare!=null) oldSquare.getChildren().remove( circle );
          //bind radius to payers number for every circle
@@ -112,6 +113,9 @@ public class Map {
    private void chooseTarget(PcColourEnum colour) {
       try {
          player.chooseTarget( colour.toString() );
+         deselectAll();
+         pcCircles.get( colour ).setEffect( InGameController.selectedObjectEffect );
+         opponentBoardGraphics.get( colour ).setEffect( InGameController.selectedObjectEffect );
       } catch ( RemoteException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
@@ -123,10 +127,12 @@ public class Map {
       }
       if(change.wasAdded()){
          SquareDTO newSquare = change.getValueAdded();
-         stackPanes[newSquare.getRow()][newSquare.getCol()].setBackground(
+         int row = newSquare.getRow();
+         int col = newSquare.getCol();
+         stackPanes[row][col].setBackground(
                  newSquare.isTargetable()?new Background( new BackgroundFill( TARGETABLECOLOR,null,null ) ):null
          );
-         ImageView currAmmo = ammos[newSquare.getRow()][newSquare.getCol()];
+         ImageView currAmmo = ammos[row][col];
          if(change.getValueAdded().getAmmoTile()!=null) {
             AmmoTileDTO ammoTileDTO = change.getValueAdded().getAmmoTile();
             currAmmo.setImage( ImageCache.loadImage( ammoTileDTO.getImagePath(),0 ));
@@ -184,6 +190,7 @@ public class Map {
    private void squareClicked(int row,int col){
       try {
          player.chooseSquare( row,col );
+         squares[row][col].setEffect( InGameController.selectedObjectEffect );
       } catch ( IOException ex ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),ex );
       }
@@ -204,8 +211,9 @@ public class Map {
       scale = new ScaleTransition( new Duration( 200 ),board );
       boardController = boardLoader.getController();
       boardController.setColor( color );
-      pcCircles.get( color ).setOnMouseEntered( e->showBoard( color,scale ) );
-      board.setOnMouseExited( e->hideBoard( color,scale ) );
+      pcCircles.get( color ).setOnMouseEntered( e->showBoard( color ) );
+      board.setOnMouseExited( e->hideBoard( color ) );
+      board.setOnMouseClicked( e->chooseTarget( color ) );
       board.toFront();
       scale.setFromX( 0 ); scale.setFromY( 0 );
       scale.setToX( 1 ); scale.setToY( 1 );
@@ -215,8 +223,9 @@ public class Map {
       return boardController;
    }
    
-   private synchronized void showBoard(PcColourEnum color,ScaleTransition scale){
-      if(!scale.getStatus().equals( Animation.Status.RUNNING )) {
+   private synchronized void showBoard(PcColourEnum color){
+      ScaleTransition scale = transitions.get( color );
+      if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
          VBox board;
          Circle circle = pcCircles.get( color );
          board = opponentBoardGraphics.get( color );
@@ -227,14 +236,17 @@ public class Map {
       }
    }
    
-   private synchronized void hideBoard(PcColourEnum color,ScaleTransition scale){
-      scale.stop();
-      scale.setRate( -1 );
-      scale.setOnFinished( e -> {
-         scale.setOnFinished( null );
-         grid.getChildren().remove( opponentBoardGraphics.get( color ) );
-      } );
-      scale.play();
+   private synchronized void hideBoard(PcColourEnum color){
+      ScaleTransition scale = transitions.get( color );
+      if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
+         scale.stop();
+         scale.setRate( -1 );
+         scale.setOnFinished( e -> {
+            scale.setOnFinished( null );
+            grid.getChildren().remove( opponentBoardGraphics.get( color ) );
+         } );
+         scale.play();
+      }
    }
    
    public void setMap(int mapIndex){
@@ -251,5 +263,15 @@ public class Map {
    
    public void setPlayer(RemotePlayer player) {
       this.player = player;
+   }
+   
+   public void deselectAll() {
+      for(Circle c:pcCircles.values())
+         c.setEffect( null );
+      for(PcColourEnum c: PcColourEnum.values())
+         hideBoard( c );
+      for(Pane[] row:squares)
+         for(Pane p:row)
+            p.setEffect( InGameController.selectedObjectEffect );
    }
 }

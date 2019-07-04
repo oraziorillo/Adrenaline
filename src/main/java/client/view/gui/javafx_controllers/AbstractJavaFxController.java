@@ -1,7 +1,7 @@
 package client.view.gui.javafx_controllers;
 
-import client.view.AbstractView;
 import client.view.gui.GuiView;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
@@ -16,21 +16,35 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.HostServices;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 
-import java.rmi.RemoteException;
 import java.util.UUID;
 
+/**
+ * superclass for java fx controllers
+ */
 public abstract class AbstractJavaFxController implements ChangeListener<Number>,ModelEventListener {
    
+   /**
+    * Needed to show game manuals. Given by the application in which the controller is ran
+    */
    protected HostServices hostServices;
+   /**
+    * the stub for the server-size player
+    */
    protected RemotePlayer player;
+   /**
+    * the actually exported view
+    */
    protected GuiView topView;
    
    protected AbstractJavaFxController() {
    }
    
+   /**
+    * utility method to display an error message and exit
+    * @param msg the text of the message
+    */
    public void error(String msg) {
       Alert errorAlert = new Alert(Alert.AlertType.ERROR);
       errorAlert.setTitle("ERROR");
@@ -45,8 +59,16 @@ public abstract class AbstractJavaFxController implements ChangeListener<Number>
       this.hostServices = hostServices;
    }
    
+   /**
+    * To print messages from the server
+    * @param message
+    */
    public abstract void ack(String message);
    
+   /**
+    * to print messages from other users
+    * @param message
+    */
    public abstract void chatMessage(String message);
    
    public void  setPlayer(RemotePlayer player) {
@@ -85,4 +107,6 @@ public abstract class AbstractJavaFxController implements ChangeListener<Number>
    
    @Override
    public abstract void onKillShotTrackUpdate(KillShotTrackEvent event);
+   
+   public abstract void resumeGame(GameDTO game);
 }

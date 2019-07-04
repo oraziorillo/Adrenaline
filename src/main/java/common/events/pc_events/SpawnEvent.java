@@ -30,6 +30,6 @@ public class SpawnEvent extends PcEvent {
 
     @Override
     public PcEvent hideSensibleContent() {
-        return new SpawnEvent(getCensoredDTO(), true);
+        return new SpawnEvent(pc.getCensoredDTO(), true);
     }
 }

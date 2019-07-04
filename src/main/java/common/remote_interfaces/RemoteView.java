@@ -1,5 +1,6 @@
 package common.remote_interfaces;
 
+import common.dto_model.GameDTO;
 import common.events.ModelEventListener;
 import common.events.lobby_events.LobbyEvent;
 import common.events.requests.Request;
@@ -19,6 +20,8 @@ public interface RemoteView extends Remote {
     void request(Request request) throws RemoteException;
 
     ModelEventListener getListener() throws RemoteException;
+
+    void resumeGame(GameDTO game) throws RemoteException;
 
     boolean isReachable() throws RemoteException, IOException;
 

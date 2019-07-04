@@ -20,7 +20,6 @@ import server.model.squares.Square;
 import javax.swing.Timer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -99,10 +98,10 @@ public class Controller{
             currPlayerIndex = gameInfo.getCurrPlayerIndex();
             lastPlayerIndex = gameInfo.getLastPlayerIndex();
             addListenersToModel();
-            ackAll("Game restored!");
             players.forEach(player -> {
                 player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken())));
                 player.setCurrState(new InactiveState(this, 2));
+                player.resumeGame(game);
             });
             nextTurn();
         } catch (FileNotFoundException e) {

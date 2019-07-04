@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands;
 
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import common.Constants;
 import common.dto_model.PowerUpCardDTO;
 import javafx.collections.ObservableList;
@@ -15,10 +16,17 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
       super.initialize();
    }
    
+   /**
+    * even calls player's choosePowerup method
+    * @param cardIndex the index of the card to translate
+    */
    @Override
    protected void appear(int cardIndex) {
       super.appear( cardIndex );
       try {
+         for(Node n:getCardNodes())
+            n.setEffect( null );
+         getCardNodes().get( cardIndex ).setEffect( InGameController.selectedObjectEffect );
          player.choosePowerUp( cardIndex );
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
@@ -37,7 +45,5 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
       return ( PowerUpCardDTO[] ) super.getCards();
    }
    
-   public List<Node> getCardNodes(){
-      return mainPane.getChildren();
-   }
+   
 }

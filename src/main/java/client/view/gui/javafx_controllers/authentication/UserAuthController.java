@@ -3,6 +3,7 @@ package client.view.gui.javafx_controllers.authentication;
 import client.ClientPropertyLoader;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.game_board_events.GameBoardEvent;
@@ -13,8 +14,10 @@ import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -52,6 +55,10 @@ public class UserAuthController extends AbstractJavaFxController {
 
    }
    
+   /**
+    * Asks the user his preferred connection technology
+    * @return an enum representing the user's choice
+    */
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
       Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
@@ -61,6 +68,12 @@ public class UserAuthController extends AbstractJavaFxController {
       return response.isPresent()?ConnectionMethodEnum.parseString(response.get().getText().toLowerCase()):ConnectionMethodEnum.QUIT;
    }
    
+   /**
+    * Given a ConnectionMethodEnum, creates the related RemoteLoginController
+    * @param cme the given enum
+    * @return some net abstraction of RemoteLoginController, using the given net technology
+    * @throws IllegalArgumentException if the given Connection Method is not supported
+    */
    @Override
    public RemoteLoginController acquireConnection(ConnectionMethodEnum cme) {
       try {
@@ -69,8 +82,9 @@ public class UserAuthController extends AbstractJavaFxController {
                Registry registry = LocateRegistry.getRegistry( ClientPropertyLoader.getInstance().getHostAddress(), ClientPropertyLoader.getInstance().getRmiPort());
                return ( RemoteLoginController ) registry.lookup("LoginController");
             case SOCKET:
-            default:
                return new LoginControllerSocketProxy( new Socket( ClientPropertyLoader.getInstance().getHostAddress(),ClientPropertyLoader.getInstance().getSocketPort() ),topView );
+            default:
+               throw new IllegalArgumentException( "Unsupported connection enum" );
          }
       } catch ( IOException | NotBoundException connectionEx) {
          error("Server unreachable");
@@ -79,6 +93,10 @@ public class UserAuthController extends AbstractJavaFxController {
       }
    }
    
+   /**
+    * Asks the user if he wants to register or to sign up
+    * @return user's choice as a ControllerMethodEnum
+    */
    @Override
    public ControllerMethodsEnum authMethod() {
       Alert firstTime = new Alert(
@@ -90,15 +108,30 @@ public class UserAuthController extends AbstractJavaFxController {
       return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES )?SIGN_UP:LOG_IN;
    }
    
+   /**
+    * Asks the user for an username
+    * @return the typed username
+    */
    @Override
    public String acquireUsername() {
       TextInputDialog usernameDialog = new TextInputDialog();
       usernameDialog.setTitle("Username");
+      Button okButton = ( Button ) usernameDialog.getDialogPane().lookupButton( ButtonType.OK );
+      usernameDialog.getEditor().textProperty().addListener( (obs, oldV, newV) -> {
+         okButton.setDisable( newV.length()==0 );
+         usernameDialog.setContentText( newV.length()>0?null:"Insert an username" );
+      } );
+      
       usernameDialog.setHeaderText(null);
       usernameDialog.setContentText("Insert your username");
-      return usernameDialog.showAndWait().orElse("username");
+      String provided = usernameDialog.showAndWait().orElse("username");
+      return provided.length()>0?provided:"username";
    }
    
+   /**
+    * asks the user for a token
+    * @return the given token, if the user didn't close the window (but game closes too in that case)
+    */
    @Override
    public UUID acquireToken() {
       TextInputDialog tokenDialog = new TextInputDialog("Login");
@@ -109,38 +142,61 @@ public class UserAuthController extends AbstractJavaFxController {
          try {
             UUID.fromString(t1);
             tokenDialog.setContentText(null);
-            okButton.setVisible(true);
+            okButton.setDisable(false);
          } catch (IllegalArgumentException illegalUUID) {
             tokenDialog.setContentText("Not a valid token");
-            okButton.setVisible(false);
+            okButton.setDisable( true );
          }
       });
       return UUID.fromString(tokenDialog.showAndWait().get());
    }
    
+   /**
+    * ignores updates
+    */
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
    
    }
    
+   /**
+    * ignores updates
+    */
    @Override
    public void onSquareUpdate(SquareEvent event) {
    
    }
    
+   /**
+    * ignores updates
+    */
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
    
    }
    
+   /**
+    * ignores updates
+    */
    @Override
    public void onPcUpdate(PcEvent event) {
    
    }
    
+   /**
+    * ignores updates
+    */
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
    
+   }
+   
+   /**
+    * @throws IllegalStateException always: this controller is not supposed to handle a game
+    */
+   @Override
+   public void resumeGame(GameDTO game) {
+      throw new IllegalStateException( "Should be in InGameState" );
    }
    
    @Override

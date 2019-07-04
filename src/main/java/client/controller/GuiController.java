@@ -6,16 +6,12 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
-import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
-
-import static common.enums.ControllerMethodsEnum.LOG_IN;
-import static common.enums.ControllerMethodsEnum.SIGN_UP;
 
 public class GuiController extends Application {
 
@@ -32,13 +28,21 @@ public class GuiController extends Application {
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
         view = new GuiView( getHostServices(),stage );
-        UUID token = authUser( stage );
+        UUID token;
+        do {
+           token = authUser( stage );
+        }while (token==null);
+       view.nextState();
         loginController.joinLobby( token );
         stage.setOnCloseRequest( e-> {
            try {
               player.quit();
               UnicastRemoteObject.unexportObject( view,true );
-           } catch ( RemoteException ignored ) {}
+           } catch ( RemoteException ignored ) {
+           
+           }finally {
+              stage.close();
+           }
         } );
     }
     
@@ -61,7 +65,6 @@ public class GuiController extends Application {
             }
             player = loginController.login( token, view );
             view.setPlayer( player );
-            view.nextState();
            return token;
         }catch ( IOException e ){
            view.error( "Server unreachable" );

@@ -4,7 +4,7 @@ import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.database.DatabaseHandler;
-import server.exceptions.PlayerAlreadyLoggedInException;
+import common.exceptions.PlayerAlreadyLoggedInException;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -102,9 +102,15 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    }
 
 
-   @Override
-   public void quit(UUID token) throws RemoteException {
+   boolean isInStartedGame(UUID token) {
+      return lobbies.parallelStream()
+              .filter(l -> l.hasPlayer(token) && l.isGameStarted())
+              .count() == 1;
+   }
 
+
+   void quitFromLobby(UUID token) {
+      lobbies.parallelStream().filter(l -> l.hasPlayer(token)).forEach(l -> l.removePlayer(token));
    }
 }
 

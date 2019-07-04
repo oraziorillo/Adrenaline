@@ -4,19 +4,16 @@ import com.google.gson.annotations.Expose;
 import common.dto_model.LobbyDTO;
 import common.events.lobby_events.LobbyEvent;
 import common.events.lobby_events.PlayerJoinedEvent;
-import common.remote_interfaces.RemoteView;
 import server.ServerPropertyLoader;
 import server.database.DatabaseHandler;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Pre-game, singleton waiting room. Stores players and starts a game when has enough of them.
@@ -47,12 +44,15 @@ public class Lobby {
     }
 
 
-    public boolean isAvailable() {
+    boolean isAvailable() {
         return !gameStarted && players.size() <= 5;
     }
 
+    boolean isGameStarted() {
+        return gameStarted;
+    }
 
-    public UUID getGameUUID() {
+    UUID getGameUUID() {
         return gameUUID;
     }
 
@@ -61,6 +61,12 @@ public class Lobby {
         return players;
     }
 
+
+    boolean hasPlayer(UUID token) {
+        return players.parallelStream()
+                .filter(p -> p.getToken().equals(token))
+                .count() == 1;
+    }
 
     /**
      * Adds p tho the waiting room. Then
@@ -71,77 +77,72 @@ public class Lobby {
      * @param player the player to add
      */
     void addPlayer(Player player) {
+        try {
+            if (gameStarted) {
+                controller.getGame().addModelEventListener(
+                        player.getToken(),
+                        player.getPc().getColour(),
+                        player.getView().getListener());
+                player.setOnLine(true);
+                player.resumeGame(controller.getGame());
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         players.add(player);
-        publishEvent(new PlayerJoinedEvent(new LobbyDTO(players, false, false )), player);
+        publishEvent(new PlayerJoinedEvent(this.convertToDTO()), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
-            ack("\nThe game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes...", null);
+            ackAll("\nThe game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes...");
         } else if (players.size() == 5) {
             timer.stop();
             startNewGame();
-            ack("\nThe game is starting", null);
+            ackAll("\nThe game is starting");
         }
+    }
+
+
+    void removePlayer(UUID token) {
+        players.parallelStream()
+                .filter(p -> p.getToken().equals(token))
+                .findFirst()
+                .ifPresent(p -> players.remove(p));
+
     }
 
 
     private void removePlayer(Player player) {
         players.remove(player);
-        ack("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!", null);
+        ackAll("@" + databaseHandler.getUsername(player.getToken()) + " has disconnected. BOOOOO!");
         if (players.size() < 3) {
             timer.stop();
-            ack(TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds and the game would have started. Now we have to start again." +
-                    System.lineSeparator() + "Blame @" + databaseHandler.getUsername(player.getToken()) + " for this!", null);
+            ackAll(TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds and the game would have started. Now we have to start again." +
+                    System.lineSeparator() + "Blame @" + databaseHandler.getUsername(player.getToken()) + " for this!");
         }
     }
 
 
     private void startNewGame() {
         timer.stop();
-        if (gameCanStart()) {
-            controller = new Controller(gameUUID, players);
-            if (databaseHandler.containsGame(gameUUID)) {
-                controller.initGame(gameUUID);
-            } else {
-                controller.initGame();
-                databaseHandler.save(controller);
-            }
-            gameStarted = true;
+        controller = new Controller(gameUUID, players);
+        if (databaseHandler.containsGame(gameUUID)) {
+            controller.initGame(gameUUID);
+        } else {
+            controller.initGame();
+            databaseHandler.save(controller);
         }
+        gameStarted = true;
     }
 
 
-    private boolean gameCanStart() {
-        players = players.stream().filter(player -> {
+    private void ackAll(String msg) {
+        players.parallelStream().forEach(p -> {
             try {
-                return player.getView().isReachable();
+                p.getView().ack(msg);
             } catch (RemoteException e) {
-                return false;
-            } catch (IOException e) {
-                return false;
+                e.printStackTrace();
             }
-        }).collect(Collectors.toList());
-        if (players.size() > 2)
-            return true;
-        return false;
-    }
-
-
-    private void ack(String m1, String m2, Player... recipientsForM2) {
-        List<UUID> rec2 = Arrays
-                .stream(recipientsForM2)
-                .map(Player::getToken)
-                .collect(Collectors.toList());
-        for (Player p : players) {
-            try {
-                if (rec2.contains(p.getToken()) && m2 != null) {
-                    p.getView().ack(m2);
-                } else if (!rec2.contains(p.getToken()) && m1 != null)
-                    p.getView().ack(m1);
-            } catch (IOException e) {
-                p.quit();
-                removePlayer(p);
-            }
-        }
+        });
     }
 
 
@@ -164,9 +165,15 @@ public class Lobby {
     }
 
 
-    private List<RemoteView> getViews(){
-        return players.stream().map(Player::getView).collect(Collectors.toList());
+    public LobbyDTO convertToDTO() {
+        List<String> userNames = new ArrayList<>();
+        players.stream()
+                .map(p -> DatabaseHandler.getInstance().getUsername(p.getToken()))
+                .forEach(userNames::add);
+        LobbyDTO lobbyDTO = new LobbyDTO();
+        lobbyDTO.setPlayers(userNames);
+        lobbyDTO.setGameStarted(gameStarted);
+        return lobbyDTO;
     }
-
 }
 

@@ -6,6 +6,7 @@ import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Top;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import common.Constants;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
@@ -179,7 +180,6 @@ public class SetupController extends AbstractJavaFxController {
       skullTrack.setEffect( enable?selectableEffect :null );
       for(int i=Constants.MIN_KILL_SHOT_TRACK_SIZE-1;i<Constants.MAX_KILL_SHOT_TRACK_SIZE;i++){ //constants does not refer to array indexes
          int param = i+1;
-         System.out.println(i);
          skullPanes[i].setOnMouseClicked( enable?e->chooseSkulls( param ):null );
          skullPanes[i].setOnMouseEntered( enable?e->showCirclesBeforeIndex( param ):null );
       }
@@ -224,6 +224,11 @@ public class SetupController extends AbstractJavaFxController {
       int l=event.getDTO().getKillShotTrack().length;
       setSkullsSelectable( false );
       showCirclesBeforeIndex( l );
+   }
+   
+   @Override
+   public void resumeGame(GameDTO game) {
+   
    }
    
    @Override

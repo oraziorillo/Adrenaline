@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.in_game.components.card_spaces;
 
 import client.view.gui.ImageCache;
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;
 import common.enums.SquareColourEnum;
@@ -36,8 +37,6 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    private ImageView[] cards = new ImageView[3];
    private RemotePlayer player;
    private SquareColourEnum squareColor;
-   
-   
 
    public void initialize(){
       Duration duration = new Duration( 500 );
@@ -50,9 +49,9 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
          card.setOnMouseExited( e-> disappear(cardIndex ) );
          card.setOnMouseClicked( e-> chooseWeaponOnSpawnPoint( cardIndex ) );
          TranslateTransition trans = new TranslateTransition( duration );
-         rotations[i] = new RotateTransition( duration );
          trans.setToY( -CARD_TRANSLATION );
          trans.setFromY( card.getTranslateY() );
+         rotations[i] = new RotateTransition( duration );
          rotations[i].setFromAngle( card.getRotate() );
          rotations[i].setToAngle( -mainPane.getRotate() );
          showing[i] = new ParallelTransition( card, trans, rotations[i] );
@@ -141,6 +140,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    private void chooseWeaponOnSpawnPoint(int i){
       try{
          player.chooseWeaponOnSpawnPoint( i );
+         cards[i].setEffect( InGameController.selectedObjectEffect );
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
@@ -150,6 +150,11 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
       if (change.wasAdded() && change.getValueAdded().getWeapons()!=null&&change.getValueAdded().getColour().equals(this.squareColor ))
             this.setCards( change.getValueAdded().getWeapons() );
-      
+   }
+   
+   
+   public void deselectAll() {
+      for(ImageView card:cards)
+         card.setEffect( null );
    }
 }

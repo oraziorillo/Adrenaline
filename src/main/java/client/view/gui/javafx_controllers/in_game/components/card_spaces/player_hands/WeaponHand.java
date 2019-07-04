@@ -1,7 +1,9 @@
 package client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands;
 
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import common.Constants;
 import common.dto_model.WeaponCardDTO;
+import javafx.scene.Node;
 
 import java.io.IOException;
 
@@ -19,11 +21,18 @@ public class WeaponHand extends CardHand<WeaponCardDTO> {
       }
    }
    
+   /**
+    * even calls player's choose weapon of mine method
+    * @param cardIndex the index of the card to translate
+    */
    @Override
    protected void appear(int cardIndex) {
       super.appear( cardIndex );
       try {
          player.chooseWeaponOfMine( cardIndex );
+         for(Node n: getCardNodes())
+            n.setEffect( null );
+         getCardNodes().get( cardIndex ).setEffect( InGameController.selectedObjectEffect );
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }

@@ -3,6 +3,7 @@ package client.view.gui.view_states;
 import client.view.AbstractView;
 import client.view.gui.GuiView;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
@@ -73,7 +74,7 @@ public abstract class ViewState {
    
    /**
     * Utility method for not manageable errors (Such as server unreachable).
-    * Displays an error dialog and quits (performing a soft quit if possible)
+    * Displays an error dialog and quits (performing a soft quitFromLobby if possible)
     * @param msg the text for the error dialog
     */
    public void error(String msg) {
@@ -111,10 +112,6 @@ public abstract class ViewState {
       throw new IllegalStateException( UNEXPECTED_CALL );
    }
    
-   public String requestString(String message) {
-      throw new IllegalStateException( UNEXPECTED_CALL );
-   }
-   
    public void onGameBoardUpdate(GameBoardEvent event) {
       javafxController.onGameBoardUpdate( event );
    }
@@ -143,4 +140,5 @@ public abstract class ViewState {
    
    }
    
+   public abstract void resumeGame(GameDTO game);
 }
