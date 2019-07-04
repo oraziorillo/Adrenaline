@@ -104,6 +104,11 @@ public class GuiView extends AbstractView implements ModelEventListener {
    }
    
    @Override
+   public void resumeGame(GameDTO game) throws RemoteException {
+
+   }
+
+   @Override
    public boolean isReachable() throws RemoteException {
       return true;
    }

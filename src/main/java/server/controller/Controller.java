@@ -98,7 +98,6 @@ public class Controller{
             currPlayerIndex = gameInfo.getCurrPlayerIndex();
             lastPlayerIndex = gameInfo.getLastPlayerIndex();
             addListenersToModel();
-            ackAll("Game restored!");
             players.forEach(player -> {
                 player.setPc(game.getPc(databaseHandler.getPlayerColour(player.getToken())));
                 player.setCurrState(new InactiveState(this, 2));

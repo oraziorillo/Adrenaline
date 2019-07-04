@@ -9,6 +9,15 @@ import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 public class PcDTO implements DTO {
 
+    public boolean isCensored() {
+        return censored;
+    }
+
+    public void setCensored(boolean censored) {
+        this.censored = censored;
+    }
+
+    private boolean censored;
     private PcColourEnum colour;
     private PcBoardDTO pcBoard;
     private WeaponCardDTO[] weapons;
@@ -117,6 +126,7 @@ public class PcDTO implements DTO {
         }
         censoredPcDTO.setPowerUps(censoredPowerUps);
 
+        censoredPcDTO.setCensored(true);
         censoredPcDTO.setColour(colour);
         censoredPcDTO.setSquareRow(squareRow);
         censoredPcDTO.setSquareCol(squareCol);

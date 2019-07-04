@@ -181,6 +181,12 @@ public class CliView extends AbstractView {
     
     
     @Override
+    public void resumeGame(GameDTO game) throws RemoteException {
+        printMessage(game.toString());
+    }
+
+
+    @Override
     public boolean isReachable() throws RemoteException {
         return true;
     }

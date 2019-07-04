@@ -1,7 +1,5 @@
 package common;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Some game contants
  */
@@ -39,7 +37,6 @@ public final class Constants {
     public static final int ACTIONS_PER_TURN = 2;
     public static final int ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER = 1;
 
-
     // --------------> EVENTS
 
     //lobby events
@@ -73,11 +70,9 @@ public final class Constants {
     public static final int SQUARE_REFILLED = 16;
     public static final int TARGETABLE_SET = 17;
 
-
     // --------------> SOCKET
 
     public static final String REGEX = "#";
-
 
     // --------------> MESSAGES
 
