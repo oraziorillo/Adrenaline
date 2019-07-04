@@ -67,8 +67,11 @@ public class Caterpillar<P, S, V> {
     }
 
 
-    public void removeSecondary(S s) {
-        secondaryKeys.remove(s);
+    public void removeLine(S s) {
+        int indexToRemove = secondaryKeys.indexOf(s);
+        primaryKeys.remove(indexToRemove);
+        secondaryKeys.remove(indexToRemove);
+        values.remove(indexToRemove);
     }
 
 

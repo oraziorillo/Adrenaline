@@ -35,7 +35,7 @@ public enum ControllerMethodsEnum {
     SKIP("skip", "skip the action (if optional) for which your are selecting targets"),
     UNDO("undo", "undo last action"),
     SEND_MESSAGE("msg", "send message"),
-    QUIT("q", "quit"),
+    QUIT("q", "quitFromLobby"),
     HELP("h", "print help");
 
 

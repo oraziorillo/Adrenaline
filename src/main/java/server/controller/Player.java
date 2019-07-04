@@ -304,8 +304,15 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void quit() {
         this.onLine = false;
         this.view = null;
-        this.pc.removeListener();
-        forcePass();
+        try {
+            if (LoginController.getInstance().isInStartedGame(token)) {
+                this.pc.removeListener();
+                forcePass();
+            }
+            LoginController.getInstance().quitFromLobby(token);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

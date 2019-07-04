@@ -35,7 +35,7 @@ public class ModelEventHandler {
 
 
     synchronized void removeListener(PcColourEnum colour) {
-        listeners.removeSecondary(colour);
+        listeners.removeLine(colour);
     }
 
 

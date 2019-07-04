@@ -102,9 +102,15 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    }
 
 
-   @Override
-   public void quit(UUID token) throws RemoteException {
+   boolean isInStartedGame(UUID token) {
+      return lobbies.parallelStream()
+              .filter(l -> l.hasPlayer(token) && l.isGameStarted())
+              .count() == 1;
+   }
 
+
+   void quitFromLobby(UUID token) {
+      lobbies.parallelStream().filter(l -> l.hasPlayer(token)).forEach(l -> l.removePlayer(token));
    }
 }
 

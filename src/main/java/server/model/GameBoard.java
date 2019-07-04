@@ -29,17 +29,6 @@ public class GameBoard {
     }
 
 
-    /*
-    public GameBoard(int rows, int columns, List<Square> squares, int[] doors) {
-        this.rows = rows;
-        this.columns = columns;
-        this.squares = squares;
-        this.spawnPoints = new ArrayList<>();
-        init(doors);
-    }
-     */
-
-
     void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         for (Square s : squares) {
 
@@ -67,17 +56,6 @@ public class GameBoard {
                     .forEach(s::addVisible);
         }
     }
-
-
-    /*
-     * assigns the proper deck to each square and the list of listeners
-     * @param weaponsDeck deck of weapons
-     * @param ammoDeck deck of ammoTile
-     *
-    void initSquares(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
-        squares.forEach(s -> s.init(weaponsDeck, ammoDeck));
-    }
-     */
 
     public int getColumns() {
         return columns;

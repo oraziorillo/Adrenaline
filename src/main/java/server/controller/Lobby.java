@@ -47,12 +47,15 @@ public class Lobby {
     }
 
 
-    public boolean isAvailable() {
+    boolean isAvailable() {
         return !gameStarted && players.size() <= 5;
     }
 
+    boolean isGameStarted() {
+        return gameStarted;
+    }
 
-    public UUID getGameUUID() {
+    UUID getGameUUID() {
         return gameUUID;
     }
 
@@ -61,6 +64,12 @@ public class Lobby {
         return players;
     }
 
+
+    boolean hasPlayer(UUID token) {
+        return players.parallelStream()
+                .filter(p -> p.getToken().equals(token))
+                .count() == 1;
+    }
 
     /**
      * Adds p tho the waiting room. Then
@@ -71,6 +80,18 @@ public class Lobby {
      * @param player the player to add
      */
     void addPlayer(Player player) {
+        try {
+            if (gameStarted) {
+                controller.getGame().addModelEventListener(
+                        player.getToken(),
+                        player.getPc().getColour(),
+                        player.getView().getListener());
+                player.setOnLine(true);
+                //TODO send GAMEDTO
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         players.add(player);
         publishEvent(new PlayerJoinedEvent(new LobbyDTO(players, false, false )), player);
         if (players.size() >= 3 && players.size() < 5) {
@@ -81,6 +102,15 @@ public class Lobby {
             startNewGame();
             ack("\nThe game is starting", null);
         }
+    }
+
+
+    void removePlayer(UUID token) {
+        players.parallelStream()
+                .filter(p -> p.getToken().equals(token))
+                .findFirst()
+                .ifPresent(p -> players.remove(p));
+
     }
 
 
@@ -97,30 +127,14 @@ public class Lobby {
 
     private void startNewGame() {
         timer.stop();
-        if (gameCanStart()) {
-            controller = new Controller(gameUUID, players);
-            if (databaseHandler.containsGame(gameUUID)) {
-                controller.initGame(gameUUID);
-            } else {
-                controller.initGame();
-                databaseHandler.save(controller);
-            }
-            gameStarted = true;
+        controller = new Controller(gameUUID, players);
+        if (databaseHandler.containsGame(gameUUID)) {
+            controller.initGame(gameUUID);
+        } else {
+            controller.initGame();
+            databaseHandler.save(controller);
         }
-    }
-
-
-    private boolean gameCanStart() {
-        players = players.stream().filter(player -> {
-            try {
-                return player.getView().isReachable();
-            } catch (RemoteException e) {
-                return false;
-            }
-        }).collect(Collectors.toList());
-        if (players.size() > 2)
-            return true;
-        return false;
+        gameStarted = true;
     }
 
 

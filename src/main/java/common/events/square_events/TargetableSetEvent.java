@@ -22,7 +22,7 @@ public class TargetableSetEvent extends SquareEvent {
     @Override
     public String toString() {
         StringBuilder squareString = new StringBuilder();
-        if (!censored && square.isTargetable())
+        if (!isPrivate && square.isTargetable())
             squareString.append("> ").append(square.toString());
         return squareString.toString();
     }

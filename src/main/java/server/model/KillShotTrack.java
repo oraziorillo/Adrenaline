@@ -1,15 +1,16 @@
 package server.model;
 
+import com.google.gson.annotations.Expose;
 import common.dto_model.KillShotDTO;
 import common.dto_model.KillShotTrackDTO;
 import common.enums.PcColourEnum;
 
 public class KillShotTrack {
 
-    private KillShot[] killShotTrack;
-    private int currentKillShotTrackIndex;
-    private KillShot [] finalFrenzyKillShotTrack;
-    private int finalFrenzyCurrentKillShotTrackIndex;
+    @Expose private KillShot[] killShotTrack;
+    @Expose private int currentKillShotTrackIndex;
+    @Expose private KillShot [] finalFrenzyKillShotTrack;
+    @Expose private int finalFrenzyCurrentKillShotTrackIndex;
 
 
     /**

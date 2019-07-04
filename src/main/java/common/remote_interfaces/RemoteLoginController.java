@@ -14,6 +14,4 @@ public interface RemoteLoginController extends Remote {
    RemotePlayer login(UUID fromString, RemoteView view) throws IOException, PlayerAlreadyLoggedInException;
    
    void joinLobby(UUID token) throws RemoteException;
-
-   void quit(UUID token) throws RemoteException;
 }

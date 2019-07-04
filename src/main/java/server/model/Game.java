@@ -421,6 +421,12 @@ public class Game {
     public void addModelEventListener(UUID playerID, ModelEventListener listener) {
         events.addModelEventListener(playerID, listener);
     }
+
+
+    public void addModelEventListener(UUID playerID, PcColourEnum colour, ModelEventListener listener) {
+        events.addModelEventListener(playerID, listener);
+        events.addListenerColour(colour);
+    }
 }
 
 
