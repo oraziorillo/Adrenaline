@@ -16,6 +16,10 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
       super.initialize();
    }
    
+   /**
+    * even calls player's choosePowerup method
+    * @param cardIndex the index of the card to translate
+    */
    @Override
    protected void appear(int cardIndex) {
       super.appear( cardIndex );
@@ -39,10 +43,6 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
    @Override
    public PowerUpCardDTO[] getCards() {
       return ( PowerUpCardDTO[] ) super.getCards();
-   }
-   
-   public List<Node> getCardNodes(){
-      return mainPane.getChildren();
    }
    
    

@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -144,6 +145,14 @@ public abstract class CardHand <T extends AbstractCardDTO> {
          n.setEffect( null );
       for(GeneralWeapon gw:weaponControllers)
          gw.deselect();
+   }
+   
+   /**
+    * getter for card graphics
+    * @return a node of the javafx nodes conteining the cards in this hand
+    */
+   public List<Node> getCardNodes(){
+      return mainPane.getChildren();
    }
 }
 
