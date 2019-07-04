@@ -64,12 +64,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
    public UUID acquireToken() {
       return currentGui.acquireToken();
    }
-
-   @Override
-   public String requestString(String message) {
-      return currentGui.requestString( message );
-   }
-
+   
    @Override
    public void ack(String message) {
       runLater( ()->currentGui.ack( message ));

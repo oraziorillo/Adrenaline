@@ -1,5 +1,6 @@
 package client.view.gui.javafx_controllers.in_game.components;
 
+import client.view.gui.javafx_controllers.in_game.InGameController;
 import common.dto_model.PcDTO;
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
@@ -30,10 +31,12 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
       grid.minWidthProperty().bind( grid.heightProperty() );
       for(int i=0; i<AmmoEnum.values().length*MAX_AMMOS_PER_COLOR;i++){
          int color = i/MAX_AMMOS_PER_COLOR;
-         AmmoEnum colorEnum = AmmoEnum.values()[color];
          int index = i%MAX_AMMOS_PER_COLOR;
          Region current = ammos[color][index] = new Region();
-         current.setOnMouseClicked( e-> selectAmmo(AmmoEnum.values()[color]));
+         current.setOnMouseClicked( e-> {
+            selectAmmo(AmmoEnum.values()[color]);
+            current.setEffect( InGameController.selectedObjectEffect );
+         });
          current.setBackground( new Background( new BackgroundFill( Color.valueOf( AmmoEnum.values()[color].toString() ) ,null,null) ));
          current.setMaxSize( Double.MAX_VALUE,Double.MAX_VALUE );
          GridPane.setHgrow( current, Priority.ALWAYS );
@@ -77,5 +80,11 @@ public class Ammo implements MapChangeListener<PcColourEnum, PcDTO>, ChangeListe
    
    public void setPlayer(RemotePlayer player) {
       this.player = player;
+   }
+   
+   public void deselectAll() {
+      for(Region[] arr:ammos)
+         for (Region r:arr)
+            r.setEffect( null );
    }
 }

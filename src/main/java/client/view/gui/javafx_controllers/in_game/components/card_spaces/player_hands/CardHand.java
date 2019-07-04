@@ -87,9 +87,6 @@ public abstract class CardHand <T extends AbstractCardDTO> {
             T newCard = newCards[i];
             cards[i] = newCard;
             cardImage.background.setImage( ImageCache.loadImage( newCard.getImagePath(), -1 ) );
-//            cardImage.background.imageProperty().addListener( (obs,oldV,newV)->{
-//               mainPane.setMaxWidth( newV.getWidth()*cards.length + mainPane.getSpacing() * (cards.length-1) );
-//            });
             transitions[i].setNode( cardImage.mainPane );
          }
       }
@@ -108,6 +105,13 @@ public abstract class CardHand <T extends AbstractCardDTO> {
    
    public Node getNode(){
       return mainPane;
+   }
+   
+   public void deselectAll() {
+      for(Node n:mainPane.getChildren())
+         n.setEffect( null );
+      for(GeneralWeapon gw:weaponControllers)
+         gw.deselect();
    }
 }
 

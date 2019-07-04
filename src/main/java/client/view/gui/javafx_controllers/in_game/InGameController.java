@@ -1,6 +1,7 @@
 package client.view.gui.javafx_controllers.in_game;
 
 import client.ClientPropertyLoader;
+import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Map;
 import client.view.gui.javafx_controllers.in_game.components.Top;
@@ -8,7 +9,6 @@ import client.view.gui.javafx_controllers.in_game.components.card_spaces.CardHol
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.PowerUpHand;
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
-import client.view.gui.javafx_controllers.AbstractJavaFxController;
 import common.Constants;
 import common.dto_model.KillShotTrackDTO;
 import common.dto_model.PcDTO;
@@ -39,13 +39,16 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.swing.Timer;
+import javax.swing.*;
 import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class InGameController extends AbstractJavaFxController {
    public HBox bottom;
@@ -60,15 +63,16 @@ public class InGameController extends AbstractJavaFxController {
    @FXML private Top topController;
    @FXML private Chat chatController;
    @FXML private PcBoard pcBoardController;
-   private transient BooleanProperty finalFrenzy = new SimpleBooleanProperty( false );
-   private transient ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
-   private transient ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
-   private transient ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
+   private ObservableMap<PcColourEnum,PcDTO> pcs = FXCollections.observableHashMap();
+   private ObservableMap<SquareDTO,SquareDTO> squares = FXCollections.observableHashMap();
+   private ObjectProperty<KillShotTrackDTO> killShotTrackData = new SimpleObjectProperty<>();
+   public static final Effect selectedObjectEffect = new DropShadow( 20, Color.WHITESMOKE );
    
-   public InGameController() throws RemoteException {
+   public InGameController() {
    }
    
    public void initialize() {
+      
       //Add player hands
       bottom.getChildren().add( spacerFactory() );
       bottom.getChildren().add( powerUpHandController.getNode() );
@@ -76,24 +80,31 @@ public class InGameController extends AbstractJavaFxController {
       bottom.getChildren().add( weaponHandController.getNode() );
       bottom.getChildren().add( spacerFactory() );
       bottom.getChildren().get( 1 ).toFront();   //move chat to the right
+      
       //init pc listeners
       pcs.addListener( mapController.playerObserver );
       pcs.addListener( topController.pcListener );
       pcs.addListener( pcBoardController );
+      
       //init squares listeners
       squares.addListener( mapController.squareObserver );
       squares.addListener( cardHolderLeftController );
       squares.addListener( cardHolderRightController );
       squares.addListener( topController.squareListener );
+      
       //init killshottrack listeners
       killShotTrackData.addListener(topController);
+      killShotTrackData.addListener( pcBoardController );
+      
       //dispose card holders and set colors
       cardHolderLeftController.setCorner(CardinalDirectionEnum.WEST);
       cardHolderLeftController.setColor( AmmoEnum.RED );
       cardHolderRightController.setCorner(CardinalDirectionEnum.EAST);
       cardHolderRightController.setColor( AmmoEnum.YELLOW );
+      
       //pass host services
       topController.setHostServices( hostServices );
+      
       //make under map buttons overlap a little
       for (int i = 0, size = underMapButtons.getChildren().size(); i < size; i++) {
          Node n = underMapButtons.getChildren().get(i);
@@ -108,7 +119,17 @@ public class InGameController extends AbstractJavaFxController {
       HBox.setHgrow( spacer, Priority.ALWAYS );
       return spacer;
    }
-
+   
+   private void deselectAll(){
+      mapController.deselectAll();
+      cardHolderLeftController.deselectAll();
+      cardHolderRightController.deselectAll();
+      weaponHandController.deselectAll();
+      powerUpHandController.deselectAll();
+      topController.deselectAll();
+      chatController.disappear();
+   }
+   
    
    //Button methods
    @FXML
@@ -295,4 +316,6 @@ public class InGameController extends AbstractJavaFxController {
    @Override
    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
    }
+   
+   
 }

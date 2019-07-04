@@ -8,6 +8,7 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -15,7 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
-public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
+public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO>,ChangeListener<KillShotTrackDTO> {
    static final String DIRECTORY = "/images/pc_board/";
    static final String FRENZY_SUBDIR = "/frenzy/";
    @FXML private HBox mainPane;
@@ -72,4 +73,13 @@ public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO> {
    public void setPlayer(RemotePlayer player) {
       azioniController.setPlayer(player);
    }
+   
+   @Override
+   public void changed(ObservableValue<? extends KillShotTrackDTO> obs, KillShotTrackDTO oldV, KillShotTrackDTO newV) {
+      if(!newV.getKillShotTrack()[newV.getKillShotTrack().length-1].isSkulled()){
+         azioniController.changed( obs, oldV, newV );
+         vitaController.changed( obs, oldV, newV );
+      }
+   }
+   
 }
