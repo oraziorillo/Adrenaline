@@ -193,6 +193,13 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
 
 
     @Override
+    public void sendMessage(String s) {
+        out.println(SEND_MESSAGE + REGEX + s);
+        out.flush();
+    }
+
+
+    @Override
     public synchronized boolean isConnected() {
         return !socket.isClosed();
     }
@@ -203,9 +210,4 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
         return this.token;
     }
 
-
-    @Override
-    public void sendMessage(String s) {
-        //TODO
-    }
 }
