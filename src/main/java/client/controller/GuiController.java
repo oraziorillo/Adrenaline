@@ -28,13 +28,21 @@ public class GuiController extends Application {
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
         view = new GuiView( getHostServices(),stage );
-        UUID token = authUser( stage );
+        UUID token;
+        do {
+           token = authUser( stage );
+        }while (token==null);
+       view.nextState();
         loginController.joinLobby( token );
         stage.setOnCloseRequest( e-> {
            try {
               player.quit();
               UnicastRemoteObject.unexportObject( view,true );
-           } catch ( RemoteException ignored ) {}
+           } catch ( RemoteException ignored ) {
+           
+           }finally {
+              stage.close();
+           }
         } );
     }
     
@@ -57,7 +65,6 @@ public class GuiController extends Application {
             }
             player = loginController.login( token, view );
             view.setPlayer( player );
-            view.nextState();
            return token;
         }catch ( IOException e ){
            view.error( "Server unreachable" );

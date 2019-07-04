@@ -3,6 +3,7 @@ package client.view.gui.javafx_controllers.authentication;
 import client.ClientPropertyLoader;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.gui.javafx_controllers.AbstractJavaFxController;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.game_board_events.GameBoardEvent;
@@ -141,6 +142,11 @@ public class UserAuthController extends AbstractJavaFxController {
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
    
+   }
+   
+   @Override
+   public void resumeGame(GameDTO game) {
+      throw new IllegalStateException( "Should be in InGameState" );
    }
    
    @Override

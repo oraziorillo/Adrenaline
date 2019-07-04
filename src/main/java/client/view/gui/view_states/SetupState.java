@@ -1,12 +1,11 @@
 package client.view.gui.view_states;
 
-import client.view.gui.javafx_controllers.in_game.components.Map;
+import common.dto_model.GameDTO;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
-import common.events.requests.Request;
 import common.events.square_events.SquareEvent;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -15,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.HashSet;
 
 public class SetupState extends ViewState {
@@ -99,6 +97,12 @@ public class SetupState extends ViewState {
          beforeMyTurn.set((double)(event.getDTO().size()-1));  //excluded yourself
       }
       stillChoosing.set(event.getDTO().size());
+   }
+   
+   @Override
+   public void resumeGame(GameDTO game) {
+      topView.nextState();
+      topView.resumeGame( game );
    }
    
 }

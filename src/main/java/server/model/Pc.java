@@ -350,13 +350,8 @@ public class Pc {
     public void addModelEventHandler(ModelEventHandler events) {
         this.events = events;
     }
-
-
-    public void removeListener() {
-        events.removeListener(colour);
-    }
-
-
+    
+    
     @Override
     public String toString() {
         return pcBoard.getColour().getName();

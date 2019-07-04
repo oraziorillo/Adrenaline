@@ -4,6 +4,7 @@ import client.view.AbstractView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import common.dto_model.GameDTO;
 import common.enums.ViewMethodsEnum;
 import common.events.ModelEvent;
 import common.events.game_board_events.GameBoardEvent;
@@ -120,6 +121,11 @@ public class ClientSocketHandler implements Runnable {
                 SquareEvent squareEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onSquareUpdate(squareEvent);
+                break;
+            case RESUME_GAME:
+                GameDTO game = gson.fromJson(
+                        new JsonReader( new StringReader( args[1] ) ), GameDTO.class );
+                view.resumeGame( game );
                 break;
             default:
                 throw new IllegalStateException("Unexpected command: " + viewMethod);

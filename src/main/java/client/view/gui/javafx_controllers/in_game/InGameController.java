@@ -10,10 +10,7 @@ import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_
 import client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.WeaponHand;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import common.Constants;
-import common.dto_model.KillShotTrackDTO;
-import common.dto_model.PcDTO;
-import common.dto_model.PowerUpCardDTO;
-import common.dto_model.SquareDTO;
+import common.dto_model.*;
 import common.enums.*;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
@@ -291,8 +288,19 @@ public class InGameController extends AbstractJavaFxController {
     public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       killShotTrackData.set( event.getDTO() );
     }
-
-    @Override
+   
+   @Override
+   public void resumeGame(GameDTO game) {
+      mapController.setMap( game.getGameBoardDTO().getNumberOfMap() );
+      for(SquareDTO s: game.getGameBoardDTO().getSquares())
+         squares.put( s,s );
+      for(PcDTO pc:game.getPcs())
+         pcs.put( pc.getColour(),pc );
+      killShotTrackData.set( game.getKillShotTrackDTO() );
+      
+   }
+   
+   @Override
     public void onPcBoardUpdate(PcBoardEvent event) {
       PcDTO relatedPc = pcs.remove( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );

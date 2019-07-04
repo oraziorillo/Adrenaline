@@ -3,6 +3,7 @@ package client.view.cli;
 import client.controller.socket.LoginControllerSocketProxy;
 import client.view.AbstractView;
 import client.view.InputReader;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
@@ -172,8 +173,13 @@ public class CliView extends AbstractView {
     public synchronized ModelEventListener getListener() throws RemoteException{
         return this;
     }
-
-
+    
+    @Override
+    public void resumeGame(GameDTO game) throws RemoteException {
+    
+    }
+    
+    
     @Override
     public boolean isReachable() throws RemoteException {
         return true;

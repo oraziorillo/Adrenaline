@@ -6,6 +6,7 @@ import client.view.gui.javafx_controllers.in_game.components.Chat;
 import client.view.gui.javafx_controllers.in_game.components.Top;
 import client.view.gui.javafx_controllers.in_game.components.pc_board.PcBoard;
 import common.Constants;
+import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
@@ -224,6 +225,11 @@ public class SetupController extends AbstractJavaFxController {
       int l=event.getDTO().getKillShotTrack().length;
       setSkullsSelectable( false );
       showCirclesBeforeIndex( l );
+   }
+   
+   @Override
+   public void resumeGame(GameDTO game) {
+   
    }
    
    @Override
