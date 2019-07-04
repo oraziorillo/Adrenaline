@@ -181,7 +181,12 @@ public class InGameController extends AbstractJavaFxController {
    public ModelEventListener getListener() {
       return this;
    }
-   
+
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
+
    @Override
     public void onGameBoardUpdate(GameBoardEvent event) {
       for(SquareDTO s:event.getDTO().getSquares())

@@ -5,6 +5,8 @@ import common.enums.PcColourEnum;
 import server.database.DatabaseHandler;
 import server.model.Pc;
 
+import java.util.Random;
+
 /**
  * Each player selects a Pc
  */
@@ -16,6 +18,7 @@ public class PcSelectionState extends State {
 
     PcSelectionState(Controller controller) {
         super(controller);
+        //controller.startTimer();
     }
 
 
@@ -51,6 +54,20 @@ public class PcSelectionState extends State {
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public State forcePass() {
+        Random random = new Random();
+        for (PcColourEnum pcColour: PcColourEnum.values()) {
+            if (controller.getAvailablePcColours().contains(pcColour)){
+                this.pcColour = pcColour.toString();
+                break;
+            }
+        }
+        ok();
+        return nextState();
     }
 
 

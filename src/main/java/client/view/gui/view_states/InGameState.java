@@ -41,4 +41,9 @@ public class InGameState extends ViewState {
    public ViewState nextState() throws RemoteException {
       return ViewState.getFirstState(hostServices, stage,topView);
    }
+
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
 }

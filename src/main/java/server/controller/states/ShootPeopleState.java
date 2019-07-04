@@ -4,6 +4,8 @@ import server.controller.Controller;
 import server.model.Pc;
 import server.model.WeaponCard;
 import server.model.squares.Square;
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,6 +25,8 @@ public class ShootPeopleState extends State {
         super(controller);
         this.moved = hasMoved;
         this.reloadDone = hasReloaded;
+        this.targetableSquares = new HashSet<>();
+        //controller.startTimer();
         setTargetableToValidSquares(controller.getCurrPc());
     }
 
@@ -107,11 +111,19 @@ public class ShootPeopleState extends State {
 
 
     @Override
+    public State forcePass() {
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
+    }
+
+
+    @Override
     public State nextState() {
         if (undo)
             return new StartTurnState(controller);
         if (weaponSelected)
-            return new SetupWeaponState(controller);
+            return new SetupWeaponState(controller, moved);
         if (wantsToReload)
             return new ReloadState(controller);
         return this;

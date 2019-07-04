@@ -4,6 +4,7 @@ import server.controller.Controller;
 import server.model.Pc;
 import server.model.squares.Square;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,6 +19,8 @@ public class RunAroundState extends State{
    RunAroundState(Controller controller) {
       super(controller);
       this.undo = false;
+      targetableSquares = new HashSet<>();
+      //controller.startTimer();
       setTargetableToValidSquares(controller.getCurrPc());
    }
    
@@ -71,6 +74,7 @@ public class RunAroundState extends State{
       }
       return false;
    }
+
    
    /**
     * Transition

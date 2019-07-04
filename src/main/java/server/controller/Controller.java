@@ -15,17 +15,23 @@ import server.model.actions.Action;
 import server.model.deserializers.*;
 import server.model.squares.Square;
 
+import javax.swing.Timer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
 import static common.Constants.ACTIONS_PER_TURN;
+import static java.sql.Types.TIME;
 
 public class Controller{
+
+    //private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(3000));
+
 
     private UUID gameUUID;
     private Game game;
@@ -36,6 +42,7 @@ public class Controller{
     private Set<PcColourEnum> availablePcColours;
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
+    private Timer timer;
 
 
     public Controller(UUID gameUUID, List<Player> players) {
@@ -46,7 +53,13 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
+        //this.timer = new javax.swing.Timer(TIME, actionEvent -> getCurrPlayer().forcePass());
     }
+
+
+//    public void startTimer() {
+//        timer.start();
+//    }
 
 
     void initGame(UUID gameUUID) {
@@ -127,6 +140,10 @@ public class Controller{
         return game;
     }
 
+
+    public Set<PcColourEnum> getAvailablePcColours() {
+        return availablePcColours;
+    }
 
     public List<Player> getPlayers() {
         return players;
@@ -245,6 +262,8 @@ public class Controller{
             currPlayerIndex = 0;
         else
             currPlayerIndex++;
+        if (!players.get(currPlayerIndex).isOnLine())
+            increaseCurrPlayerIndex();
     }
 
 
@@ -263,7 +282,8 @@ public class Controller{
         try {
             getCurrPlayer().getView().ack(msg);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            getCurrPlayer().setOnLine(false);
+            checkGameStatus();
         }
     }
 
@@ -273,7 +293,8 @@ public class Controller{
             try {
                 p.getView().ack(msg);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                p.setOnLine(false);
+                checkGameStatus();
             }
         });
     }

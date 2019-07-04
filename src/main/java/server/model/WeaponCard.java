@@ -85,7 +85,7 @@ public class WeaponCard {
     }
 
     public short[] getCurrentCost(){
-        return currentCost;
+        return currentCost.clone();
     }
 
     public List<Effect> getFireModes(){
@@ -154,20 +154,6 @@ public class WeaponCard {
 
     }
 
-    public void removeUpgrade(int index) {
-        Effect eff;
-        if(upgrades.size() > index) {
-            eff = upgrades.get(index);
-            if (effectsToApply.remove(eff)) {
-                for (int i = 0; i < AMMO_COLOURS_NUMBER; i++)
-                    currentCost[i] -= eff.getCost()[i];
-                effectsToApply.remove(eff);
-            }
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
 
     public void reset() {
         for (Effect effect: effectsToApply) {
@@ -176,6 +162,7 @@ public class WeaponCard {
             }
         }
         effectsToApply.clear();
+        currentCost = new short[AMMO_COLOURS_NUMBER];
         init();
     }
 

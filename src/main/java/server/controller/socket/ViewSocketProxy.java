@@ -92,4 +92,9 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    public ModelEventListener getListener() throws RemoteException {
       return this;
    }
+
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
 }

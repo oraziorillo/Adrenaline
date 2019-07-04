@@ -13,6 +13,7 @@ class EndTurnState extends State {
 
     EndTurnState(Controller controller) {
         super(controller);
+        //controller.startTimer();
     }
     
     /**
@@ -38,7 +39,17 @@ class EndTurnState extends State {
         controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
         return true;
     }
-    
+
+
+    @Override
+    public State forcePass() {
+        controller.getSquaresToRefill().forEach(Square::refill);
+        controller.resetSquaresToRefill();
+        controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
+    }
+
     /**
      * State transition
      * @return ReloadState if the reload was called, StartTurnState else
@@ -51,4 +62,6 @@ class EndTurnState extends State {
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
+
+
 }

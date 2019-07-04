@@ -154,19 +154,23 @@ public class Pc {
 
     public void drawPowerUp(int numOfPowerUps){
 
-        PowerUpCardDTO[] powerUpsDTOs = new PowerUpCardDTO[2];
+        PowerUpCardDTO[] powerUpsDTOs = new PowerUpCardDTO[numOfPowerUps];
 
-        while (numOfPowerUps != 0) {
+        int temp = numOfPowerUps;
+        while (temp != 0) {
             PowerUpCard powerUpToDraw = currGame.drawPowerUp();
             if (powerUpToDraw != null) {
                 powerUps.add(powerUpToDraw);
-                powerUpsDTOs[2 - numOfPowerUps] = powerUpToDraw.convertToDTO();
+                powerUpsDTOs[numOfPowerUps - temp] = powerUpToDraw.convertToDTO();
             }
-            numOfPowerUps--;
+            temp--;
         }
 
         //notify power up drown
-        events.fireEvent(new PowerUpDrownEvent(this.convertToDTO(), powerUpsDTOs[0], powerUpsDTOs[1]));
+        if (numOfPowerUps == 2)
+            events.fireEvent(new PowerUpDrownEvent(this.convertToDTO(), powerUpsDTOs[0], powerUpsDTOs[1]));
+        else
+            events.fireEvent(new PowerUpDrownEvent(this.convertToDTO(), powerUpsDTOs[0], null));
     }
 
 

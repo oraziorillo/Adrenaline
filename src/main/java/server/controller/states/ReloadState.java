@@ -17,6 +17,7 @@ public class ReloadState extends State {
 
     ReloadState(Controller controller) {
         super(controller);
+        //controller.startTimer();
     }
 
 
@@ -83,6 +84,16 @@ public class ReloadState extends State {
         controller.resetSquaresToRefill();
         controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
         return true;
+    }
+
+
+    @Override
+    public State forcePass() {
+        controller.getSquaresToRefill().forEach(Square::refill);
+        controller.resetSquaresToRefill();
+        controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 
 

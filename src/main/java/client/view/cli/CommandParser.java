@@ -51,9 +51,10 @@ public interface CommandParser {
                     player.chooseUpgrade(Integer.parseInt( args[0] ) - 1);
                     break;
                 case CHOOSE_ASYNCHRONOUS_EFFECT_ORDER:
-                    //TODO MEGLIO
-                    boolean bool = getBoolean(args[0]);
-                    player.chooseAsynchronousEffectOrder( bool );
+                    if (args[0].equals("before"))
+                        player.chooseAsynchronousEffectOrder(true);
+                    else if (args[0].equals("after"))
+                        player.chooseAsynchronousEffectOrder(false);
                     break;
                 case CHOOSE_TARGET:
                     player.chooseTarget(args[0]);
@@ -91,14 +92,5 @@ public interface CommandParser {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("You missed some info about the command you gave to me");
         }
-
-    }
-
-    static boolean getBoolean(String string){
-        if (string.equalsIgnoreCase("b"))
-            return true;
-        if (string.equalsIgnoreCase("a"))
-            return false;
-        throw new IllegalArgumentException();
     }
 }

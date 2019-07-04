@@ -4,6 +4,10 @@ import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
 import org.junit.Test;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static common.enums.ControllerMethodsEnum.CHOOSE_MAP;
 
 public class RandomTest {
@@ -31,4 +35,33 @@ public class RandomTest {
         }
      }
 
+
+     @Test
+    public void randomNumbers(){
+        Random random = new Random();
+        for (int i = 0; i < 20; i++)
+            System.out.println(random.nextInt(2));
+     }
+
+
+     @Test
+    public void system() {
+        boolean mioboolean = true;
+        System.out.println(mioboolean);
+    }
+
+
+    @Test
+    public void timerTest() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                int x = 0;
+                System.out.println(++x);
+            }
+        };
+        timerTask.run();
+        System.out.println(true);
+    }
 }

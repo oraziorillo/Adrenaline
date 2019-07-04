@@ -95,6 +95,11 @@ public class GuiView extends AbstractView implements ModelEventListener {
       return currentGui.getListener();
    }
 
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
+
    public void nextState() {
       try {
          currentGui = currentGui.nextState();

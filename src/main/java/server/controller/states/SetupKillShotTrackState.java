@@ -3,6 +3,8 @@ package server.controller.states;
 import common.enums.PcColourEnum;
 import server.controller.Controller;
 
+import java.util.Random;
+
 import static common.Constants.MAX_KILL_SHOT_TRACK_SIZE;
 import static common.Constants.MIN_KILL_SHOT_TRACK_SIZE;
 
@@ -18,6 +20,7 @@ public class SetupKillShotTrackState extends State{
     SetupKillShotTrackState(Controller controller) {
         super(controller);
         this.killShotTrackIndex = -1;
+        //controller.startTimer();
     }
 
     
@@ -51,6 +54,14 @@ public class SetupKillShotTrackState extends State{
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public State forcePass() {
+        Random random = new Random();
+        controller.getGame().initKillShotTrack(random.nextInt(3) + 5);
+        return new PcSelectionState(controller);
     }
 
 

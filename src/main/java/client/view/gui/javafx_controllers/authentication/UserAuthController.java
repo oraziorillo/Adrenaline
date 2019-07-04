@@ -63,7 +63,12 @@ public class UserAuthController extends AbstractJavaFxController {
    public ModelEventListener getListener() throws RemoteException {
       return this;
    }
-   
+
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
+
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
       RemoteLoginController loginController;

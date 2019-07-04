@@ -6,6 +6,7 @@ import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
+import server.controller.states.InactiveState;
 import server.controller.states.State;
 import server.database.DatabaseHandler;
 import server.exceptions.PlayerAlreadyLoggedInException;
@@ -293,10 +294,14 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
 
     @Override
-    public boolean isConnected() throws RemoteException{
+    public synchronized boolean isConnected() throws RemoteException{
         return true;
     }
-    
+
+
+    public synchronized void forcePass(){
+        currState = currState.forcePass();
+    }
     
 }
 

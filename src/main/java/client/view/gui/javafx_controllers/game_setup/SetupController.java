@@ -176,7 +176,12 @@ public class SetupController extends AbstractJavaFxController {
    public ModelEventListener getListener() {
       return this;
    }
-   
+
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
+
    @Override
    public void setPlayer(RemotePlayer player) {
       super.setPlayer( player );

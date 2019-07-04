@@ -19,6 +19,7 @@ public class UsePowerUpState extends State {
 
     UsePowerUpState(Controller controller) {
         super(controller);
+        //controller.startTimer();
     }
 
 
@@ -89,6 +90,14 @@ public class UsePowerUpState extends State {
         return false;
     }
 
+    @Override
+    public State forcePass() {
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        currAction.resetAction();
+        controller.resetRemainingActions();
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
+    }
 
     @Override
     public State nextState() {

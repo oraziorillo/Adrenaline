@@ -24,6 +24,7 @@ public class UseTargetingScopeState extends State {
     UseTargetingScopeState(Controller controller, List<Pc> targetables) {
         super(controller);
         this.targetablePcs = targetables;
+        //controller.startTimer();
     }
 
 
@@ -42,7 +43,8 @@ public class UseTargetingScopeState extends State {
                 try {
                     controller.getCurrPlayer().getView().ack("You have selected this powerUp as an ammo!");
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    controller.getCurrPlayer().setOnLine(false);
+                    controller.checkGameStatus();
                 }
             }
         }
@@ -50,7 +52,8 @@ public class UseTargetingScopeState extends State {
             try {
                 controller.getCurrPlayer().getView().ack("Be careful! " + ex );
             } catch (RemoteException e) {
-                e.printStackTrace();
+                controller.getCurrPlayer().setOnLine(false);
+                controller.checkGameStatus();
             }
         }
     }
@@ -79,7 +82,8 @@ public class UseTargetingScopeState extends State {
 
     @Override
     public boolean undo() {
-        currAction.resetAction();
+        if (currAction != null)
+            currAction.resetAction();
         undo = true;
         return true;
     }
@@ -87,7 +91,8 @@ public class UseTargetingScopeState extends State {
 
     @Override
     public boolean skip() {
-        currAction.resetAction();
+        if (currAction != null)
+            currAction.resetAction();
         undo = true;
         return true;
     }
@@ -95,7 +100,7 @@ public class UseTargetingScopeState extends State {
 
     @Override
     public boolean ok() {
-        if (currAction.isComplete()) {
+        if (currPowerUp != null && currAction.isComplete()) {
             if (ammoToUse != null || powerUpSelectedAsAmmo != null){
                 currPowerUp.useAction(controller.getCurrPc());
                 payAmmo();
@@ -126,9 +131,22 @@ public class UseTargetingScopeState extends State {
             short[] cost = new short[3];
             cost[ammoToUse.ordinal()]++;
             controller.getCurrPlayer().getPc().payAmmo(cost);
+            if (powerUpSelectedAsAmmo != null)
+                powerUpSelectedAsAmmo.setSelectedAsAmmo(false);
         } else {
             controller.getCurrPc().discardPowerUp(powerUpSelectedAsAmmo);
         }
+    }
+
+
+    @Override
+    public State forcePass() {
+        controller.getCurrPc().resetPowerUpAsAmmo();
+        if (currAction != null)
+            currAction.resetAction();
+        controller.resetRemainingActions();
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 
 

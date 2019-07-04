@@ -8,6 +8,7 @@ import server.model.PowerUpCard;
 import server.model.squares.Square;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,6 +26,8 @@ class GrabStuffState extends State{
 
     GrabStuffState(Controller controller) {
         super(controller);
+        //controller.startTimer();
+        targetableSquares = new HashSet<>();
         setTargetableToValidSquares(controller.getCurrPc());
     }
 
@@ -167,6 +170,20 @@ class GrabStuffState extends State{
             }
         }
         return false;
+    }
+
+
+    @Override
+    public State forcePass() {
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        controller.getCurrPc().resetPowerUpAsAmmo();
+        if (targetSquare != null) {
+            targetSquare.resetWeaponIndexes();
+        }
+        controller.resetRemainingActions();
+        controller.getCurrPc().resetPowerUpAsAmmo();
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
 
 

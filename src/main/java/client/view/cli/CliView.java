@@ -72,8 +72,6 @@ public class CliView extends AbstractView {
             switch (cme) {
                 case SOCKET:
                     Socket socket = new Socket(HOST, SOCKET_PORT);
-                    //ClientSocketHandler handler = new ClientSocketHandler(socket, this);
-                    //new Thread(handler).start();
                     return new LoginControllerSocketProxy(socket, this);
                 case RMI:
                     Registry registry = LocateRegistry.getRegistry(HOST, RMI_PORT);

@@ -13,6 +13,7 @@ public class StartTurnState extends State {
 
     StartTurnState(Controller controller) {
         super(controller);
+        //controller.startTimer();
     }
 
     @Override

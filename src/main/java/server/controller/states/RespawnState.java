@@ -17,7 +17,13 @@ public class RespawnState extends State {
     RespawnState(Controller controller) {
         super(controller);
         this.powerUpIndex = -1;
+        //controller.startTimer();
         recordDeath();
+        if (!deadPlayer.isOnLine()) {
+            powerUpIndex = deadPlayer.getPc().getPowerUps().size() - 1;
+            respawn();
+            deadPlayer.ok();
+        }
     }
 
     private void recordDeath() {
@@ -38,18 +44,12 @@ public class RespawnState extends State {
     @Override
     public boolean ok() {
         if (powerUpIndex > -1) {
-            Pc pcToRespawn = deadPlayer.getPc();
-            PowerUpCard powerUp = pcToRespawn.getPowerUpCard(powerUpIndex);
-            AmmoEnum respawnColour = powerUp.getColour();
-            Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
-            Square oldSquare = pcToRespawn.getCurrSquare();
-            pcToRespawn.spawn(s);
-            pcToRespawn.discardPowerUp(powerUp);
-            oldSquare.getPcs().remove(pcToRespawn);
+            respawn();
             try {
                 deadPlayer.getView().ack("\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
             } catch (RemoteException e) {
-                e.printStackTrace();
+                deadPlayer.setOnLine(false);
+                controller.checkGameStatus();
             }
             return true;
         }
@@ -57,9 +57,29 @@ public class RespawnState extends State {
     }
 
 
+    private void respawn() {
+        Pc pcToRespawn = deadPlayer.getPc();
+        PowerUpCard powerUp = pcToRespawn.getPowerUpCard(powerUpIndex);
+        AmmoEnum respawnColour = powerUp.getColour();
+        Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
+        Square oldSquare = pcToRespawn.getCurrSquare();
+        pcToRespawn.discardPowerUp(powerUp);
+        pcToRespawn.spawn(s);
+        oldSquare.getPcs().remove(pcToRespawn);
+    }
+
+
+    @Override
+    public State forcePass() {
+        powerUpIndex = deadPlayer.getPc().getPowerUps().size() - 1;
+        respawn();
+        deadPlayer.ok();
+        return nextState();
+    }
+
     @Override
     public State nextState() {
-        if (controller.getDeadPlayers().isEmpty() && controller.isNextOnDuty(deadPlayer)) {
+        if (controller.getDeadPlayers().isEmpty() && controller.isNextOnDuty(deadPlayer) && deadPlayer.isOnLine()) {
             controller.increaseCurrPlayerIndex();
             return new StartTurnState(controller);
         }

@@ -6,6 +6,8 @@ import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
 
+import java.util.Random;
+
 /**
  * Spawns the pcs for the first time
  */
@@ -19,6 +21,7 @@ public class FirstTurnState extends State{
         powerUpToDropIndex = -1;
         this.pcToSpawn = controller.getCurrPc();
         this.pcToSpawn.drawPowerUp(2);
+        //controller.startTimer();
     }
 
     
@@ -42,17 +45,31 @@ public class FirstTurnState extends State{
     @Override
     public boolean ok() {
         if (powerUpToDropIndex > -1) {
-            PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
-            AmmoEnum respawnColour = powerUp.getColour();
-            Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
-            pcToSpawn.spawn(s);
-            pcToSpawn.discardPowerUp(powerUp);
+            spawn();
             return true;
         }
         return false;
     }
 
-    
+
+    @Override
+    public State forcePass() {
+        Random random = new Random();
+        powerUpToDropIndex = random.nextInt(2);
+        spawn();
+        return nextState();
+    }
+
+
+    private void spawn() {
+        PowerUpCard powerUp = pcToSpawn.getPowerUpCard(powerUpToDropIndex);
+        AmmoEnum respawnColour = powerUp.getColour();
+        Square s = controller.getGame().getSpawnPoint(respawnColour.toSquareColour());
+        pcToSpawn.spawn(s);
+        pcToSpawn.discardPowerUp(powerUp);
+    }
+
+
     /**
      * @return StartTurnState
      */

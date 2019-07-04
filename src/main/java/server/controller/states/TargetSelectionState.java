@@ -17,6 +17,7 @@ public class TargetSelectionState extends State {
 
     private boolean undo;
     private boolean directionSelected;
+    private boolean moved;
     private int effectIndex;
     private int actionIndex;
     private List<Effect> effectsToApply;
@@ -28,13 +29,16 @@ public class TargetSelectionState extends State {
     private Set<Square> targetableSquares;
 
 
-    TargetSelectionState(Controller controller) {
+    TargetSelectionState(Controller controller, boolean hasMoved) {
         super(controller);
+        this.moved = hasMoved;
+        this.targetableSquares = new HashSet<>();
         this.shotTargets = new LinkedList<>();
         this.targetsShotTwice = new LinkedList<>();
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
+        //controller.startTimer();
         setAction();
     }
 
@@ -122,7 +126,7 @@ public class TargetSelectionState extends State {
 
     private void setDeadPlayers(){
         controller.getPlayers().stream().forEach(player -> {
-            if (player.getPc().getDamageTrack()[10] != null)     //TODO sostituire l'indice dell'array: da 2 a 10
+            if (player.getPc().getDamageTrack()[10] != null)
                 controller.addDeadPlayer(player);
         });
     }
@@ -148,7 +152,6 @@ public class TargetSelectionState extends State {
                 executeEffect();       //da rivedere
         } else
             controller.getCurrPlayer().setCurrState(nextState());
-            //TODO display the list of valid Targets
     }
 
 
@@ -156,7 +159,7 @@ public class TargetSelectionState extends State {
     private boolean validateSquares(Set<Square> targetables){
         if (targetables.isEmpty())
             return false;
-        if (currAction.isMovement())        //TODO da cambiare in isMovement
+        if (currAction.isMovement())
             return true;
         Set<Square> squaresWithPcs = targetableSquares.stream().
                 filter(square -> !square.getPcs().isEmpty()).
@@ -263,7 +266,7 @@ public class TargetSelectionState extends State {
 
     @Override
     public boolean undo(){
-        if (controller.getCurrWeapon().getEffectsToApply().get(0) == currEffect){
+        if (controller.getCurrWeapon().getEffectsToApply().get(0) == currEffect && !moved){
             controller.getCurrWeapon().reset();
             undo = true;
             return true;
@@ -282,13 +285,26 @@ public class TargetSelectionState extends State {
             } else {
                 executeEffect();
                 controller.getCurrWeapon().reset();
-                if (targetableSquares != null)
-                    controller.getGame().setTargetableSquares(targetableSquares, false);
+                controller.getGame().setTargetableSquares(targetableSquares, false);
                 setDeadPlayers();
                 return true;
             }
         }
         return false;
+    }
+
+
+    @Override
+    public State forcePass() {
+        controller.getSquaresToRefill().forEach(Square::refill);
+        controller.resetSquaresToRefill();
+        controller.resetRemainingActions();
+        controller.getGame().setTargetableSquares(targetableSquares, false);
+        controller.nextTurn();
+        if (effectIndex > 0)
+            controller.getCurrWeapon().setLoaded(false);
+        controller.setCurrWeapon(null);
+        return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 
 

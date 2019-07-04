@@ -1289,7 +1289,7 @@
             "squareExplosive": true,
             "roomExplosive": false,
             "additionalDamage": false,
-            "exclusiveForOldTargets": true,
+            "exclusiveForOldTargets": false,
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
@@ -1330,7 +1330,7 @@
             "parameterized": true,
             "needsOldSquare": false,
             "isMovement": false,
-            "damage": 2,
+            "damage": 1,
             "marks": 0,
             "maxNumberOfTargets": 1,
             "squareExplosive": false,
@@ -1517,7 +1517,7 @@
             "targetsOnDifferentSquares": false,
             "targetChecker": [
               {
-                "type": ""
+                "type": "straightLine"
               }
             ]
           }

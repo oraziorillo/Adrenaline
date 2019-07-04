@@ -14,12 +14,15 @@ public class SetupWeaponState extends State {
 
     private boolean undo;
     private boolean waiting;
+    private boolean moved;
     private int fireModeIndex;
     private int asynchronousUpgradeIndex;
 
-    SetupWeaponState(Controller controller) {
+    SetupWeaponState(Controller controller, boolean hasMoved) {
         super(controller);
+        this.moved = hasMoved;
         this.fireModeIndex = 1;
+        //controller.startTimer();
     }
 
     private short [] sumArray(short [] firstArray, short [] secondArray){
@@ -127,7 +130,20 @@ public class SetupWeaponState extends State {
     public boolean ok() {
         return true;
     }
-   
+
+
+    @Override
+    public State forcePass() {
+        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
+            if (p.isSelectedAsAmmo())
+                p.setSelectedAsAmmo(false);
+        }
+        controller.getCurrWeapon().reset();
+        controller.nextTurn();
+        return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
+    }
+
+
    /**
     * Transition
     * @return SetUpWeaponState if undo has been called, TargetSelectionSquare else
@@ -135,7 +151,7 @@ public class SetupWeaponState extends State {
     @Override
     public State nextState() {
         if (undo)
-            return new SetupWeaponState(controller);
-        return new TargetSelectionState(controller);
+            return new SetupWeaponState(controller, moved);
+        return new TargetSelectionState(controller, moved);
     }
 }
