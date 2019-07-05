@@ -19,11 +19,15 @@ import common.events.square_events.SquareEvent;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 
 import static common.Constants.REGEX;
 
+/**
+ * Always running runnable listening a socket
+ */
 public class ClientSocketHandler implements Runnable {
 
     private Gson gson;
@@ -32,9 +36,12 @@ public class ClientSocketHandler implements Runnable {
     private PrintWriter out;
     private BufferedReader in;
     private AbstractView view;
+    /**
+     * used to distinguish incoming questions from incoming answers
+     */
     private BlockingQueue<String[]> buffer;
 
-
+    
     ClientSocketHandler(Socket socket, AbstractView view, BlockingQueue<String[]> buffer) throws IOException {
         this.socket = socket;
         this.out = new PrintWriter(socket.getOutputStream());
@@ -65,9 +72,14 @@ public class ClientSocketHandler implements Runnable {
             }
         }
     }
-
-
-    private void handle(String[] args) throws IOException {
+    
+    /**
+     * iterate over possible requests, if none is found throw exception
+     * @param args a request you wast to parse
+     * @throws IOException theorically never
+     * @throws IllegalStateException if fails to parse the answer
+     */
+    private void handle(String[] args) throws RemoteException {
         ViewMethodsEnum viewMethod = ViewMethodsEnum.valueOf(args[0]);
         switch (viewMethod) {
             case ACK:

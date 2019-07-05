@@ -3,10 +3,18 @@ package common;
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * utility to load properties via methods
+ */
 public abstract class PropertyLoader {
    protected Properties properties = new Properties();
    private static final String[] sharedProps = {"common.rmi.port = 9999","common.socket.port = 10000","common.request.timer = 30","common.hostname = localhost"};
    private static final String FILENAME = "config.properties";
+   
+   /**
+    * tries to load the properties, on fail creates them with default values
+    * @param defaultProps
+    */
    protected PropertyLoader(String... defaultProps) {
       try {
          try (FileInputStream fin = new FileInputStream( FILENAME )) {

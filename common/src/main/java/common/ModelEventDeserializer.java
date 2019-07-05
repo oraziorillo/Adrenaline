@@ -18,6 +18,9 @@ import java.lang.reflect.Type;
 
 import static common.Constants.*;
 
+/**
+ * Custom json deserialyzer
+ */
 public class ModelEventDeserializer implements JsonDeserializer<ModelEvent> {
 
     @Override
