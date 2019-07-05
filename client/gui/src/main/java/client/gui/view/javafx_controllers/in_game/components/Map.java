@@ -217,6 +217,7 @@ public class Map {
       board.toFront();
       scale.setFromX( 0 ); scale.setFromY( 0 );
       scale.setToX( 1 ); scale.setToY( 1 );
+      transitions.put( color,scale );
       board.setScaleX( 0 ); board.setScaleY( 0 );
       opponentBoardGraphics.put( color,board );
       opponentBoardControllers.put( color,boardController );
@@ -226,6 +227,7 @@ public class Map {
    private synchronized void showBoard(PcColourEnum color){
       ScaleTransition scale = transitions.get( color );
       if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
+         scale.setRate( 1 );
          VBox board;
          Circle circle = pcCircles.get( color );
          board = opponentBoardGraphics.get( color );
@@ -239,6 +241,7 @@ public class Map {
    private synchronized void hideBoard(PcColourEnum color){
       ScaleTransition scale = transitions.get( color );
       if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
+         scale.setRate( -1 );
          scale.stop();
          scale.setRate( -1 );
          scale.setOnFinished( e -> {
