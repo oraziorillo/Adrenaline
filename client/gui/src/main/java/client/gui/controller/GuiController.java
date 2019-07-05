@@ -12,6 +12,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
+/**
+ * Controller for gui flow, launched by launch gui
+ * @see client.gui.LaunchGui
+ */
 public class GuiController extends Application {
 
    RemoteLoginController loginController;
@@ -20,8 +24,7 @@ public class GuiController extends Application {
 
    public GuiController() {
     }
-
-
+   
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
@@ -43,7 +46,12 @@ public class GuiController extends Application {
            }
         } );
     }
-    
+   
+   /**
+    * Login protocol
+    * @param stage passed to the view
+    * @return the token obtained after login
+    */
     private UUID authUser(Stage stage){
         try {
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
