@@ -131,7 +131,7 @@ public class SquareTest {
     @Test
     public void onCardinalDirectionReturnsTheVisibleSquareOnTheSelectedDirectionIfThereIsOne(){
         onRight = gameBoard.getSquare(row+1, coloumn);
-        assertNotSame(onRight, tested.onDirection( CardinalDirectionEnum.EAST ) );
+        assertSame(onRight, tested.onDirection( CardinalDirectionEnum.EAST ) );
     }
     
     @Test
@@ -173,6 +173,7 @@ public class SquareTest {
         ok.add( gameBoard.getSquare(row, coloumn-1) );
         assertEquals(tested.allSquaresOnDirection(CardinalDirectionEnum.WEST), ok );
     }
+    //TODO test di allSquaresInDirection e allSquares
 
 
     @Test
