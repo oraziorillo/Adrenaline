@@ -19,11 +19,11 @@ import java.util.HashSet;
 
 public class SetupState extends ViewState {
    
-   private transient HashSet<GameBoardEvent> gameBoardToPass = new HashSet<>();
-   private transient HashSet<PcEvent> pcToPass = new HashSet<>();
-   private transient HashSet<KillShotTrackEvent> killShotToPass = new HashSet<>();
-   private transient DoubleProperty stillChoosing = new SimpleDoubleProperty( Double.POSITIVE_INFINITY );
-   private transient DoubleProperty beforeMyTurn = new SimpleDoubleProperty( Double.NEGATIVE_INFINITY );
+   private HashSet<GameBoardEvent> gameBoardToPass = new HashSet<>();
+   private HashSet<PcEvent> pcToPass = new HashSet<>();
+   private HashSet<KillShotTrackEvent> killShotToPass = new HashSet<>();
+   private DoubleProperty stillChoosing = new SimpleDoubleProperty( Double.POSITIVE_INFINITY );
+   private DoubleProperty beforeMyTurn = new SimpleDoubleProperty( Double.NEGATIVE_INFINITY );
    
    SetupState() {
       super();
