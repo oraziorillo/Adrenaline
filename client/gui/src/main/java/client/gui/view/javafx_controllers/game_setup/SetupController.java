@@ -64,9 +64,8 @@ public class SetupController extends AbstractJavaFxController {
    private boolean firstPlayer;
    
    
-   public SetupController() throws RemoteException {
+   public SetupController() {
    }
-   
    
    public void initialize(){
       GridPane.setValignment( maps,VPos.CENTER );

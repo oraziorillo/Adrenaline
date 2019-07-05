@@ -118,5 +118,11 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
                  l.publishEvent(new PlayersChangedEvent(l.convertToDTO()));
               });
    }
+
+
+   public void gameOver(UUID gameUUID) {
+      Lobby deadLobby = lobbies.stream().filter(lobby -> lobby.getGameUUID() == gameUUID).findFirst().get();
+      lobbies.remove(deadLobby);
+   }
 }
 

@@ -25,7 +25,9 @@ import common.enums.CardinalDirectionEnum;
 
 import java.io.IOException;
 
-
+/**
+ * Graphic element to hold the weapons on a spawn point
+ */
 public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    @FXML public AnchorPane mainPane;
    @FXML private FlowPane weaponBox;
@@ -37,7 +39,10 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    private ImageView[] cards = new ImageView[3];
    private RemotePlayer player;
    private SquareColourEnum squareColor;
-
+   
+   /**
+    * initializes animations and mouse reactions
+    */
    public void initialize(){
       Duration duration = new Duration( 500 );
       for(int i=0; i<3;i++){
@@ -57,7 +62,11 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
          showing[i] = new ParallelTransition( card, trans, rotations[i] );
       }
    }
-
+   
+   /**
+    * sets the color of this (card holders can be of the same colour of ammo colours)
+    * @param color the color to set
+    */
    public void setColor(AmmoEnum color){
       String path = "/images/card_holders/"+color.name().toLowerCase()+".png";
       Image img = ImageCache.loadImage( path,-1 );
@@ -80,7 +89,12 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       current.setRate( 1 );
       current.play();
    }
-
+   
+   /**
+    * adjusts rotation (card holder are placed on the corners of the screen and translation must be managed.
+    * This method manages it)
+    * @param corner the corner to go
+    */
    public void setCorner(CardinalDirectionEnum corner) {
       double rotation;
       double transXMult = 0;
@@ -115,7 +129,11 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       mainPane.setTranslateY( -CARD_TRANSLATION*transYMult  );
       this.cornerProperty.set( corner );
    }
-
+   
+   /**
+    * Card holder displays cards. You set these cards here
+    * @param cards Cards to set
+    */
    public void setCards(WeaponCardDTO[] cards){
       if(cards.length!=this.cards.length){
          throw new IllegalArgumentException( "You must set "+this.cards.length+" cards at time" );
@@ -137,22 +155,33 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
       this.player = player;
    }
    
+   /**
+    * wraps player's method
+    * @param i the index of the weapon
+    * @see RemotePlayer
+    */
    private void chooseWeaponOnSpawnPoint(int i){
       try{
-          player.chooseWeaponOnSpawnPoint(i + 1);
+         player.chooseWeaponOnSpawnPoint( i );
          cards[i].setEffect( InGameController.selectedObjectEffect );
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );
       }
    }
-
+   
+   /**
+    * Reacts to the changes of every square of the same setted colour, setting the weapons on that square
+    * @param change contains the change data
+    */
    @Override
    public void onChanged(Change<? extends SquareDTO, ? extends SquareDTO> change) {
       if (change.wasAdded() && change.getValueAdded().getWeapons()!=null&&change.getValueAdded().getColour().equals(this.squareColor ))
             this.setCards( change.getValueAdded().getWeapons() );
    }
    
-   
+   /**
+    * Disable every special effect used for selection
+    */
    public void deselectAll() {
       for(ImageView card:cards)
          card.setEffect( null );

@@ -167,9 +167,9 @@ public class SpawnPoint extends Square {
     @Override
     public String itemToString() {
         StringBuilder items = new StringBuilder();
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 0; i < 3; i++) {
             if (weapons[i] != null)
-                items.append("\n[").append(i).append("] ").append(weapons[i].toString());
+                items.append("\n[").append(i+1).append("] ").append(weapons[i].toString());
         }
         return items.toString();
     }
@@ -181,7 +181,7 @@ public class SpawnPoint extends Square {
         squareDTO.setCol(getCol());
         squareDTO.setColour(getColour());
         squareDTO.setTargetable(isTargetable());
-        squareDTO.setPcs(getPcs().stream().map(pc -> pc.getColour()).collect(Collectors.toSet()));
+        squareDTO.setPcs(getPcs().stream().map(Pc::getColour).collect(Collectors.toSet()));
         squareDTO.setWeapons(convertWeaponsDTO());
         return squareDTO;
     }

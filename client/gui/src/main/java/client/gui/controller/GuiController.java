@@ -19,7 +19,6 @@ public class GuiController extends Application {
    protected RemotePlayer player;
 
    public GuiController() {
-
     }
 
 

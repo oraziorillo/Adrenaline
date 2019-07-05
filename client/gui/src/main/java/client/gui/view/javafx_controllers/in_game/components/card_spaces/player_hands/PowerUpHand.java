@@ -6,6 +6,7 @@ import common.dto_model.PowerUpCardDTO;
 import javafx.scene.Node;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class PowerUpHand extends CardHand<PowerUpCardDTO> {
    
@@ -31,10 +32,21 @@ public class PowerUpHand extends CardHand<PowerUpCardDTO> {
       }
    }
    
+   /**
+    * When a powerup card is clicked call usePowerup method of player
+    * @param cards
+    */
    public void setCards(PowerUpCardDTO[] cards){
       super.setCards( cards );
       for(int i=0; i<cards.length;i++){
          weaponControllers[i].setWeapon( cards[i] );
+         weaponControllers[i].mainPane.setOnMouseClicked( evt->{
+            try {
+               player.usePowerUp();
+            }catch ( RemoteException e ) {
+               Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(), e );
+            }
+         } );
       }
    }
    

@@ -154,7 +154,7 @@ public class GameBoard {
         gameBoardDTO.setNumberOfMap(numberOfMap);
         gameBoardDTO.setRows(rows);
         gameBoardDTO.setColumns(columns);
-        gameBoardDTO.setSquares(squares.stream().map(Square::convertToDTO).collect(Collectors.toList()));
+        gameBoardDTO.setSquares(squares.stream().map(Square::convertToDTO).collect(Collectors.toSet()));
         return  gameBoardDTO;
     }
 }

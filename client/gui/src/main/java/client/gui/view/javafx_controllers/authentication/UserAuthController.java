@@ -16,6 +16,7 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -30,7 +31,10 @@ import static common.enums.ControllerMethodsEnum.SIGN_UP;
 
 public class UserAuthController extends AbstractJavaFxController {
    
-   public UserAuthController() {
+   private final Stage stage;
+   
+   public UserAuthController(Stage stage) {
+      this.stage = stage;
    }
    
    @Override
@@ -103,7 +107,7 @@ public class UserAuthController extends AbstractJavaFxController {
               new ButtonType("Login", ButtonBar.ButtonData.NO),
               new ButtonType("Register", ButtonBar.ButtonData.YES)
       );
-      return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES )?SIGN_UP:LOG_IN;
+      return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES ) ? SIGN_UP : LOG_IN;
    }
    
    /**
@@ -133,6 +137,7 @@ public class UserAuthController extends AbstractJavaFxController {
    @Override
    public UUID acquireToken() {
       TextInputDialog tokenDialog = new TextInputDialog("Login");
+      tokenDialog.setOnCloseRequest( e -> stage.close());
       tokenDialog.setHeaderText("Insert your token");
       tokenDialog.setContentText(null);
       Button okButton = (Button) tokenDialog.getDialogPane().lookupButton( ButtonType.OK);

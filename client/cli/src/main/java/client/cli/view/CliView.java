@@ -22,6 +22,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.UUID;
 
 import static common.Constants.WRONG_TIME;
@@ -185,6 +186,16 @@ public class CliView extends AbstractView {
     public synchronized boolean isReachable() throws RemoteException {
         return true;
     }
+
+    @Override
+    public void winners(List<String> gameWinners) throws RemoteException {
+        printMessage(gameWinners.size() == 1 ? gameWinners.toString() + "is the winner!!"
+                : gameWinners.toString() + "are the winners");
+    }
+
+
+    @Override
+    public void close() throws RemoteException {}
 
 
     @Override

@@ -78,7 +78,7 @@ public class GeneralWeapon {
       if(enabled) {
          try {
             contentPane.getChildren().get( selectedEffect ).setEffect( null );
-            selectedEffect++;
+            selectedEffect = (selectedEffect+1)%(contentPane.getRowCount()-1);  //1 row for effect +1 for upgrades. Increment cyclically selected effect index
             contentPane.getChildren().get( selectedEffect ).setEffect( InGameController.selectedObjectEffect );
             player.switchFireMode();
          } catch ( IOException e ) {
@@ -120,6 +120,7 @@ public class GeneralWeapon {
    }
    
    public void deselect() {
+      selectedEffect = 0;
       for(Node n:contentPane.getChildren())
          n.setEffect( null );
    }
