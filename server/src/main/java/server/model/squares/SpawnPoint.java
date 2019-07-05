@@ -21,7 +21,7 @@ import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 public class SpawnPoint extends Square {
 
-    @Expose private WeaponCard[] weapons;
+    @Expose private WeaponCard[] weapons = new WeaponCard[CARDS_ON_SPAWN_POINT];;
     private int weaponToGrabIndex;
     private int weaponToDropIndex;
     private Deck<WeaponCard> weaponsDeck;
