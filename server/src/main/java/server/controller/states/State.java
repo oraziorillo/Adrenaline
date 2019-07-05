@@ -39,10 +39,6 @@ public abstract class State {
         controller.ackCurrent(WRONG_TIME);
     }
 
-    public void spawnPc(Pc pc, int powerUpToDropIndex) {
-        controller.ackCurrent(WRONG_TIME);
-    }
-
     public boolean runAround(){
         controller.ackCurrent(WRONG_TIME);
         return false;
@@ -112,7 +108,7 @@ public abstract class State {
     }
 
     public boolean undo() {
-        //cli.controller.ackCurrent("No regrets. No going back.");
+        controller.ackCurrent("No regrets. No going back.");
         return false;
     }
 

@@ -34,6 +34,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.layout.*;
@@ -43,6 +44,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class InGameController extends AbstractJavaFxController {
@@ -297,6 +299,7 @@ public class InGameController extends AbstractJavaFxController {
       killShotTrackData.set( game.getKillShotTrackDTO() );
       
    }
+
    
    @Override
     public void onPcBoardUpdate(PcBoardEvent event) {
@@ -326,6 +329,16 @@ public class InGameController extends AbstractJavaFxController {
    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
    }
    
-   
-   
+   @Override
+   public void winners(List<String> winners) {
+      Alert notify = new Alert( Alert.AlertType.INFORMATION,"HERE ARE THE WINNERS",ButtonType.OK );
+      notify.setHeaderText( null );
+      notify.setContentText( null );
+      VBox vBox = new VBox(  );
+      notify.getDialogPane().setExpandableContent( vBox );
+      for(String s:winners)
+         vBox.getChildren().add( new Label( s ) );
+      notify.getDialogPane().setExpanded( true );
+      notify.showAndWait();
+   }
 }

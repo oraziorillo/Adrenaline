@@ -115,10 +115,6 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
       out.println(CLOSE);
       out.flush();
    }
-
-
-   @Override
-   public boolean isReachable() {
-      return true;
-   }
+   
+   
 }

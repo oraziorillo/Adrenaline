@@ -276,11 +276,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void ok() {
-        try {
-            view.ack("questo è il mio stato attuale " + currState);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         if (currState.ok())
             currState = currState.nextState();
     }

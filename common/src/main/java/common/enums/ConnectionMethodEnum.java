@@ -7,9 +7,9 @@ import java.util.HashSet;
 import static common.Constants.WRONG_TIME;
 
 public enum ConnectionMethodEnum {
-    SOCKET(":s","socket"),
-    RMI(":r","rmi"),
-    QUIT(":q","quitFromLobby");
+    SOCKET("s","socket"),
+    RMI("r","rmi"),
+    QUIT("q","quitFromLobby");
 
     private Collection<String> command = new HashSet<>();
     

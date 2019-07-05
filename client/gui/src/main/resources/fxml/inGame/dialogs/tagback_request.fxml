@@ -7,8 +7,14 @@
 <?import javafx.scene.layout.*?>
 
 <HBox xmlns="http://javafx.com/javafx"
+<<<<<<< HEAD
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="client.view.gui.javafx_controllers.in_game.dialogs.TagbackRequest"
+            prefHeight="400.0" prefWidth="600.0">
+=======
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="client.gui.view.javafx_controllers.in_game.dialogs.TagbackRequest"
       prefHeight="400.0" prefWidth="600.0">
+>>>>>>> 1d762017ed51c975d0c9e88d81c5ff6cb37a9e72
 
 </HBox>

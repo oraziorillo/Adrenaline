@@ -58,8 +58,8 @@ public class CliView extends AbstractView {
             try {
                 cme = ConnectionMethodEnum.parseString(inputReader.requestString(
                         "Please, provide a connection method:\n" +
-                                "\t:s\t\tSocket\n" +
-                                "\t:r\t\tRmi")
+                                "\t> s\t\tSocket\n" +
+                                "\t> r\t\tRmi")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
                 printMessage(e.getMessage());
@@ -98,8 +98,8 @@ public class CliView extends AbstractView {
             try {
                 cmd = ControllerMethodsEnum.parseString(inputReader.requestString(
                         "Are you new?\n" +
-                                "\t:s\t\tSign up\n" +
-                                "\t:l\t\tLog in")
+                                "\t> s\t\tSign up\n" +
+                                "\t> l\t\tLog in")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
                 printMessage(e.getMessage());
@@ -107,17 +107,6 @@ public class CliView extends AbstractView {
         } while (cmd == null);
 
         return cmd;
-        /*
-        switch (cmd) {
-            case SIGN_UP:
-            case LOG_IN:
-            case QUIT:
-                return cmd;
-            default:
-
-        }
-
-         */
     }
 
 
@@ -182,26 +171,18 @@ public class CliView extends AbstractView {
     }
 
 
-    @Override
     public void winners(List<String> winners) throws RemoteException {
         printMessage(winners.size() == 1
                 ? "\nIt seems we have a winner. And he/she is...\n" + winners.get(0)
                 : "We have a draw between " + winners.get(0) + " and " + winners.get(1));
     }
 
-
-    @Override
+    
     public void close() throws RemoteException {
 
     }
-
-
-    @Override
-    public boolean isReachable() throws RemoteException {
-        return true;
-    }
-
-
+    
+    
     @Override
     public synchronized void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
         printMessage(event.toString());

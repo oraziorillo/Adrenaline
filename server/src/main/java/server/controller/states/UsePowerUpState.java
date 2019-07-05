@@ -13,7 +13,6 @@ import java.util.Set;
 
 public class UsePowerUpState extends State {
 
-    private boolean undo = false;
     private PowerUpCard currPowerUp;
     private Action currAction;
     private Set<Square> targetableSquares;
@@ -21,7 +20,6 @@ public class UsePowerUpState extends State {
     UsePowerUpState(Controller controller) {
         super(controller);
         this.targetableSquares = new HashSet<>();
-        //cli.controller.startTimer();
     }
 
 
@@ -35,6 +33,10 @@ public class UsePowerUpState extends State {
             if (powerUpAction.isParameterized() && !powerUpAction.isAdditionalDamage()) {
                 currPowerUp = powerUp;
                 currAction = powerUpAction;
+                if(currAction.isSelfMovement()) {
+                    setTargetableToValidSquares(controller.getCurrPc());
+                    controller.ackAll("\nYou can do like Goku now, teleport everywhere!");
+                }
                 setTargetableToValidSquares(controller.getCurrPc());
                 controller.ackCurrent("\nLet's make some moves");
             }
@@ -55,34 +57,39 @@ public class UsePowerUpState extends State {
 
     @Override
     public void selectTarget(PcColourEnum targetPcColour) {
-        Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
-        if ( targetPc != null && targetPc.getCurrSquare().isTargetable()){
-            currAction.selectPc(targetPc);
-            controller.ackCurrent("Is it that you want to move?");
+        if (currAction != null && !currAction.isSelfMovement()) {
+            Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
+            if (targetPc != null) {
+                currAction.selectPc(targetPc);
+                setTargetableToValidSquares(targetPc);
+                controller.ackCurrent("Is it that you want to move?");
+            }
         }
     }
 
 
     @Override
     public void selectSquare(int row, int column) {
-        Square s = controller.getGame().getSquare(row, column);
-        if (s != null && s.isTargetable())
-            currAction.selectSquare(s);
+        if (currAction != null) {
+            Square s = controller.getGame().getSquare(row, column);
+            if (s != null && s.isTargetable() && currAction != null)
+                currAction.selectSquare(s);
+        }
     }
 
 
     @Override
     public boolean undo() {
         controller.getGame().setTargetableSquares(targetableSquares, false);
-        currAction.resetAction();
-        undo = true;
+        if (currAction != null)
+            currAction.resetAction();
         return true;
     }
 
 
     @Override
     public boolean ok() {
-        if (currAction.isComplete()) {
+        if (currAction != null && currAction.isComplete()) {
             controller.getGame().setTargetableSquares(targetableSquares, false);
             currPowerUp.useAction(controller.getCurrPc());
             currAction.resetAction();
@@ -95,7 +102,8 @@ public class UsePowerUpState extends State {
     @Override
     public State forcePass() {
         controller.getGame().setTargetableSquares(targetableSquares, false);
-        currAction.resetAction();
+        if (currAction != null)
+            currAction.resetAction();
         controller.resetRemainingActions();
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);

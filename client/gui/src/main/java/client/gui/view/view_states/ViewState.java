@@ -138,4 +138,8 @@ public abstract class ViewState {
    }
    
    public abstract void resumeGame(GameDTO game);
+   
+   public void winners(List<String> winners) {
+      throw new IllegalStateException( UNEXPECTED_CALL );
+   }
 }

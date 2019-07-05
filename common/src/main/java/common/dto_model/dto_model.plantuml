@@ -1,0 +1,297 @@
+@startuml
+
+title __DTO_MODEL's Class Diagram__\n
+
+  namespace common {
+    namespace dto_model {
+      abstract class common.dto_model.AbstractCardDTO {
+          # extension : String
+          # name : String
+          {static} - IMAGE_PATH_PREFIX : String
+          + getImagePath()
+          {abstract} + isDefaultCard()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.AmmoTileDTO {
+          {static} # DIR : String
+          {static} # EXTENSION : String
+          - ammo : short[]
+          - hasPowerUp : boolean
+          + getAmmo()
+          {static} + getEmptyPath()
+          + getImagePath()
+          + hasPowerUp()
+          + setAmmo()
+          + setHasPowerUp()
+          + toString()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      interface common.dto_model.DTO {
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.GameBoardDTO {
+          - columns : int
+          - numberOfMap : int
+          - rows : int
+          - squares : List<SquareDTO>
+          + getColumns()
+          + getNumberOfMap()
+          + getRows()
+          + getSquares()
+          + setColumns()
+          + setNumberOfMap()
+          + setRows()
+          + setSquares()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.GameDTO {
+          ~ pcs : Set<PcDTO>
+          + addPc()
+          + getCensoredDTOFor()
+          + getGameBoardDTO()
+          + getKillShotTrackDTO()
+          + getPcs()
+          + setGameBoardDTO()
+          + setKillShotTrackDTO()
+          + setPcs()
+          + toString()
+          - appendPcBoard()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.KillShotDTO {
+          - overkilled : boolean
+          - skulled : boolean
+          + getColour()
+          + isOverkilled()
+          + isSkulled()
+          + setColour()
+          + setOverkilled()
+          + setSkulled()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.KillShotTrackDTO {
+          - finalFrenzyKillShotTrack : KillShotDTO[]
+          - killShotTrack : KillShotDTO[]
+          + getFinalFrenzyKillShotTrack()
+          + getKillShotTrack()
+          + setFinalFrenzyKillShotTrack()
+          + setKillShotTrack()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.LobbyDTO {
+          - gameStarted : boolean
+          - players : List<String>
+          + getPlayers()
+          + isGameStarted()
+          + lastPlayerAddedName()
+          + otherUserNames()
+          + setGameStarted()
+          + setPlayers()
+          + size()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.PcBoardDTO {
+          - ammo : short[]
+          - damageTrack : PcColourEnum[]
+          - damageTrackIndex : short
+          - marks : short[]
+          - numOfDeaths : int
+          - pcValue : int[]
+          - points : short
+          + getAmmo()
+          + getColour()
+          + getDamageTrack()
+          + getDamageTrackIndex()
+          + getMarks()
+          + getNumOfDeaths()
+          + getPcValue()
+          + getPoints()
+          + setAmmo()
+          + setColour()
+          + setDamageTrack()
+          + setDamageTrackIndex()
+          + setMarks()
+          + setNumOfDeaths()
+          + setPcValue()
+          + setPoints()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.PcDTO {
+          - adrenaline : short
+          - censored : boolean
+          - powerUps : ArrayList<PowerUpCardDTO>
+          - squareCol : int
+          - squareRow : int
+          - weapons : WeaponCardDTO[]
+          + getAdrenaline()
+          + getCensoredDTO()
+          + getColour()
+          + getName()
+          + getPcBoard()
+          + getPowerUps()
+          + getSquareCol()
+          + getSquareRow()
+          + getWeapons()
+          + isCensored()
+          + powerUpsToString()
+          + setAdrenaline()
+          + setCensored()
+          + setColour()
+          + setPcBoard()
+          + setPowerUps()
+          + setSquareCol()
+          + setSquareRow()
+          + setWeapons()
+          + squareToString()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.PowerUpCardDTO {
+          {static} - DEFAULT_NAME : String
+          {static} - DIRECTORY_NAME : String
+          {static} + getCardBack()
+          + getColour()
+          + getImagePath()
+          + getName()
+          + isDefaultCard()
+          + setColour()
+          + setName()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.SquareDTO {
+          - col : int
+          - pcs : Set<PcColourEnum>
+          - row : int
+          - targetable : boolean
+          - weapons : WeaponCardDTO[]
+          + description()
+          + equals()
+          + getAmmoTile()
+          + getCol()
+          + getColour()
+          + getPcs()
+          + getRow()
+          + getWeapons()
+          + isTargetable()
+          + setAmmoTile()
+          + setCol()
+          + setColour()
+          + setPcs()
+          + setRow()
+          + setTargetable()
+          + setWeapons()
+          + toString()
+      }
+    }
+  }
+  
+
+  namespace common {
+    namespace dto_model {
+      class common.dto_model.WeaponCardDTO {
+          {static} - DEFAULT_NAME : String
+          {static} - DIRECTORY_NAME : String
+          - basicEffects : int
+          - loaded : boolean
+          - upgrades : int
+          + getBasicEffects()
+          {static} + getCardBack()
+          + getImagePath()
+          + getName()
+          + getUpgrades()
+          + isDefaultCard()
+          + isLoaded()
+          + setBasicEffects()
+          + setLoaded()
+          + setName()
+          + setUpgrades()
+          + toString()
+      }
+    }
+  }
+  
+
+  common.dto_model.AbstractCardDTO .up.|> common.dto_model.DTO
+  common.dto_model.AmmoTileDTO .up.|> common.dto_model.DTO
+  common.dto_model.GameBoardDTO .up.|> common.dto_model.DTO
+  common.dto_model.GameDTO o-- common.dto_model.GameBoardDTO : gameBoardDTO
+  common.dto_model.GameDTO o-- common.dto_model.KillShotTrackDTO : killShotTrackDTO
+  common.dto_model.KillShotDTO .up.|> common.dto_model.DTO
+  common.dto_model.KillShotDTO o-- common.enums.PcColourEnum : colour
+  common.dto_model.KillShotTrackDTO .up.|> common.dto_model.DTO
+  common.dto_model.LobbyDTO .up.|> common.dto_model.DTO
+  common.dto_model.PcBoardDTO .up.|> common.dto_model.DTO
+  common.dto_model.PcBoardDTO o-- common.enums.PcColourEnum : colour
+  common.dto_model.PcDTO .up.|> common.dto_model.DTO
+  common.dto_model.PcDTO o-- common.enums.PcColourEnum : colour
+  common.dto_model.PcDTO o-- common.dto_model.PcBoardDTO : pcBoard
+  common.dto_model.PowerUpCardDTO -up-|> common.dto_model.AbstractCardDTO
+  common.dto_model.PowerUpCardDTO o-- common.enums.AmmoEnum : colour
+  common.dto_model.SquareDTO .up.|> common.dto_model.DTO
+  common.dto_model.SquareDTO o-- common.dto_model.AmmoTileDTO : ammoTile
+  common.dto_model.SquareDTO o-- common.enums.SquareColourEnum : colour
+  common.dto_model.WeaponCardDTO -up-|> common.dto_model.AbstractCardDTO
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

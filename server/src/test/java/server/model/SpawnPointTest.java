@@ -41,8 +41,6 @@ public class SpawnPointTest {
     @Mock
     private ModelEventHandler eventHandler;
 
-    private GameBoard gameBoard;
-
 
     @Before
     public void setupAndConstructorTest() {
