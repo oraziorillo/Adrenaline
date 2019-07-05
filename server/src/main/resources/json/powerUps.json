@@ -1,0 +1,650 @@
+[
+  {
+    "name": "Targeting Scope",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 1,
+      "marks": 0,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": true,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Targeting Scope",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 1,
+      "marks": 0,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": true,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Targeting Scope",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 1,
+      "marks": 0,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": true,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Targeting Scope",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 1,
+      "marks": 0,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": true,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Targeting Scope",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 1,
+      "marks": 0,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": true,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Targeting Scope",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 1,
+      "marks": 0,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": true,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Newton",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+        "type": "maxDistance",
+        "maxDistance": 2
+        },
+        {
+          "type": "minDistance",
+          "minDistance": 1
+        },
+        {
+          "type": "straightLine"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Newton",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": "maxDistance",
+          "maxDistance": 2
+        },
+        {
+          "type": "minDistance",
+          "minDistance": 1
+        },
+        {
+          "type": "straightLine"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Newton",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": "maxDistance",
+          "maxDistance": 2
+        },
+        {
+          "type": "minDistance",
+          "minDistance": 1
+        },
+        {
+          "type": "straightLine"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Newton",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": "maxDistance",
+          "maxDistance": 2
+        },
+        {
+          "type": "minDistance",
+          "minDistance": 1
+        },
+        {
+          "type": "straightLine"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Newton",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": "maxDistance",
+          "maxDistance": 2
+        },
+        {
+          "type": "minDistance",
+          "minDistance": 1
+        },
+        {
+          "type": "straightLine"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Newton",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": "maxDistance",
+          "maxDistance": 2
+        },
+        {
+          "type": "minDistance",
+          "minDistance": 1
+        },
+        {
+          "type": "straightLine"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tagback Grenade",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": false,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 0,
+      "marks": 1,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": false,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": "visibility"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tagback Grenade",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": false,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 0,
+      "marks": 1,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": false,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": "visibility"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tagback Grenade",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": false,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 0,
+      "marks": 1,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": false,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": "visibility"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tagback Grenade",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": false,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 0,
+      "marks": 1,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": false,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": "visibility"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tagback Grenade",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": false,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 0,
+      "marks": 1,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": false,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": "visibility"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tagback Grenade",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": false,
+      "needsOldSquare": false,
+      "isMovement": false,
+      "damage": 0,
+      "marks": 1,
+      "maxNumberOfTargets": 1,
+      "squareExplosive": false,
+      "roomExplosive": false,
+      "additionalDamage": false,
+      "exclusiveForOldTargets": false,
+      "targetsOnDifferentSquares": false,
+      "targetChecker": [
+        {
+          "type": "visibility"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Teleporter",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Teleporter",
+    "colour": "BLUE",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Teleporter",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Teleporter",
+    "colour": "RED",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Teleporter",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "Teleporter",
+    "colour": "YELLOW",
+    "action":
+    {
+      "optional": false,
+      "necessaryForNextAction": false,
+      "parameterized": true,
+      "needsOldSquare": false,
+      "isMovement": true,
+      "selfMovement": false,
+      "linkedChecker": false,
+      "maxNumberOfTargets": 1,
+      "targetChecker": [
+        {
+          "type": ""
+        }
+      ],
+      "destinationChecker": [
+        {
+          "type": ""
+        }
+      ]
+    }
+  }
+]

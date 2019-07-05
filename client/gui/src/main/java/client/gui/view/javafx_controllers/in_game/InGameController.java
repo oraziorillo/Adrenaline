@@ -43,6 +43,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class InGameController extends AbstractJavaFxController {
@@ -296,6 +297,12 @@ public class InGameController extends AbstractJavaFxController {
          pcs.put( pc.getColour(),pc );
       killShotTrackData.set( game.getKillShotTrackDTO() );
       
+   }
+   
+   @Override
+   public void winners(List<String> gameWinners) {
+      //TODO
+   
    }
    
    @Override

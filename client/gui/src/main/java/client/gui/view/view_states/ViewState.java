@@ -134,8 +134,12 @@ public abstract class ViewState {
    }
    
    public void request(Request request) throws RemoteException {
-   
+      javafxController.request( request );
    }
    
    public abstract void resumeGame(GameDTO game);
+   
+   public void winners(List<String> gameWinners){
+      javafxController.winners(gameWinners);
+   };
 }

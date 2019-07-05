@@ -7,6 +7,7 @@ import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.UUID;
 
 public class UserAuthState extends ViewState {

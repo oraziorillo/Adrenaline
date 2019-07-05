@@ -41,6 +41,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.UUID;
 
 public class SetupController extends AbstractJavaFxController {
@@ -227,6 +228,11 @@ public class SetupController extends AbstractJavaFxController {
    
    @Override
    public void resumeGame(GameDTO game) {
+   
+   }
+   
+   @Override
+   public void winners(List<String> gameWinners) {
    
    }
    

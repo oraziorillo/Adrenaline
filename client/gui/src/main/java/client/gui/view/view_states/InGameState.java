@@ -20,7 +20,6 @@ public class InGameState extends ViewState {
          FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ) );
          Parent root = loader.load();
          setJavafxController( loader.getController() );
-   
          runLater(()->{
             stage.setTitle( "ADRENALINE" );
             stage.setFullScreenExitHint( "Press ESC to exit fullscreen mode" );

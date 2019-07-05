@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -200,6 +201,11 @@ public class UserAuthController extends AbstractJavaFxController {
    @Override
    public void resumeGame(GameDTO game) {
       throw new IllegalStateException( "Should be in InGameState" );
+   }
+   
+   @Override
+   public void winners(List<String> gameWinners) {
+   
    }
    
    @Override

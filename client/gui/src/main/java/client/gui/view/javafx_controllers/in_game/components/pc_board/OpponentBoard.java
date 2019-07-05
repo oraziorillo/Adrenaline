@@ -42,8 +42,8 @@ public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
    }
    
    /**
-    *
-    * @param change
+    *To listen to Pcs changes, and display always updated values
+    * @param change cha change of the pc
     */
    @Override
    public void onChanged(Change<? extends PcColourEnum, ? extends PcDTO> change) {
