@@ -112,5 +112,11 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    void quitFromLobby(UUID token) {
       lobbies.parallelStream().filter(l -> l.hasPlayer(token)).forEach(l -> l.removePlayer(token));
    }
+
+
+   public void gameOver(UUID gameUUID) {
+      Lobby deadLobby = lobbies.stream().filter(lobby -> lobby.getGameUUID() == gameUUID).findFirst().get();
+      lobbies.remove(deadLobby);
+   }
 }
 

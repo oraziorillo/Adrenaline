@@ -48,6 +48,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    public void killView() {
+        view = null;
+    }
+
+
     public void setView(RemoteView view) throws PlayerAlreadyLoggedInException {
         if (DatabaseHandler.getInstance().isLoggedIn(token))
             throw new PlayerAlreadyLoggedInException();

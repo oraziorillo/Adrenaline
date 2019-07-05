@@ -8,6 +8,7 @@ import common.events.requests.Request;
 import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface RemoteView extends Remote {
 
@@ -23,6 +24,9 @@ public interface RemoteView extends Remote {
 
     void resumeGame(GameDTO game) throws RemoteException;
 
-    boolean isReachable() throws RemoteException, IOException;
+    boolean isReachable() throws RemoteException;
 
+    void winners(List<String> gameWinners) throws RemoteException;
+
+    void close() throws RemoteException;
 }

@@ -507,7 +507,7 @@
       "parameterized": true,
       "needsOldSquare": false,
       "isMovement": true,
-      "selfMovement": false,
+      "selfMovement": true,
       "linkedChecker": false,
       "maxNumberOfTargets": 1,
       "targetChecker": [
@@ -532,7 +532,7 @@
       "parameterized": true,
       "needsOldSquare": false,
       "isMovement": true,
-      "selfMovement": false,
+      "selfMovement": true,
       "linkedChecker": false,
       "maxNumberOfTargets": 1,
       "targetChecker": [
@@ -557,7 +557,7 @@
       "parameterized": true,
       "needsOldSquare": false,
       "isMovement": true,
-      "selfMovement": false,
+      "selfMovement": true,
       "linkedChecker": false,
       "maxNumberOfTargets": 1,
       "targetChecker": [
@@ -582,7 +582,7 @@
       "parameterized": true,
       "needsOldSquare": false,
       "isMovement": true,
-      "selfMovement": false,
+      "selfMovement": true,
       "linkedChecker": false,
       "maxNumberOfTargets": 1,
       "targetChecker": [
@@ -607,7 +607,7 @@
       "parameterized": true,
       "needsOldSquare": false,
       "isMovement": true,
-      "selfMovement": false,
+      "selfMovement": true,
       "linkedChecker": false,
       "maxNumberOfTargets": 1,
       "targetChecker": [
@@ -632,7 +632,7 @@
       "parameterized": true,
       "needsOldSquare": false,
       "isMovement": true,
-      "selfMovement": false,
+      "selfMovement": true,
       "linkedChecker": false,
       "maxNumberOfTargets": 1,
       "targetChecker": [

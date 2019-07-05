@@ -97,8 +97,9 @@ public class TargetSelectionState extends State {
 
 
     private void setAction(){
-        if (targetableSquares != null) {
+        if (targetableSquares != null && currEffect.getActions().size() < 4) {
             controller.getGame().setTargetableSquares(targetableSquares, false);
+            targetableSquares = new HashSet<>();
         }
         if (!currAction.isParameterized()) {
             if (currAction.needsOldSquare())
@@ -143,18 +144,23 @@ public class TargetSelectionState extends State {
 
 
     private void setTargettableSquares(Square square) {
-        targetableSquares = currAction.validSquares(square);
-        if (validateSquares(targetableSquares))
-            controller.getGame().setTargetableSquares(targetableSquares, true);
-        else if (undo())
-            controller.getCurrPlayer().undo();
-        else if (!controller.getCurrWeapon().isChained() && effectIndex != effectsToApply.size() - 1) {
-            if (currAction.isOptional())
-                skip();
-            else
-                executeEffect();       //da rivedere
-        } else
-            controller.getCurrPlayer().setCurrState(nextState());
+        if (!targetableSquares.isEmpty() && currEffect.getActions().size() == 4 && currEffect.getActions().indexOf(currAction) != 2){
+            return;
+        } else {
+            controller.getGame().setTargetableSquares(targetableSquares, false);
+            targetableSquares = currAction.validSquares(square);
+            if (validateSquares(targetableSquares))
+                controller.getGame().setTargetableSquares(targetableSquares, true);
+            else if (undo())
+                controller.getCurrPlayer().undo();
+            else if (!controller.getCurrWeapon().isChained() && effectIndex != effectsToApply.size() - 1) {
+                if (currAction.isOptional())
+                    skip();
+                else
+                    executeEffect();       //da rivedere
+            } else
+                controller.getCurrPlayer().setCurrState(nextState());
+        }
     }
 
 
@@ -271,6 +277,7 @@ public class TargetSelectionState extends State {
                 return false;
             }
             if (!hasNextAction()) {
+                executeEffect();
                 return true;
             }
             nextAction();

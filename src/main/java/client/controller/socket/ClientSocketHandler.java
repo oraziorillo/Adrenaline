@@ -19,7 +19,9 @@ import server.model.deserializers.ModelEventDeserializer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import static common.Constants.REGEX;
@@ -87,6 +89,12 @@ public class ClientSocketHandler implements Runnable {
             case CHAT_MESSAGE:
                 view.chatMessage(args[1]);
                 break;
+            case WINNERS:
+                List<String> winners = new ArrayList<>();
+                for (int i = 1; i < args.length; i++)
+                    winners.add(args[i]);
+                view.winners(winners);
+                break;
             case NOTIFY_EVENT:
                 LobbyEvent lobbyEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), PlayerJoinedEvent.class);
@@ -121,6 +129,12 @@ public class ClientSocketHandler implements Runnable {
                 SquareEvent squareEvent = gson.fromJson(
                         new JsonReader(new StringReader(args[1])), ModelEvent.class);
                 view.onSquareUpdate(squareEvent);
+                break;
+            case CLOSE:
+                view.close();
+                out.close();
+                in.close();
+                socket.close(); //TODO da rivedere
                 break;
             case RESUME_GAME:
                 GameDTO game = gson.fromJson(

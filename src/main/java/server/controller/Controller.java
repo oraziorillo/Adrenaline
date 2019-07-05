@@ -7,7 +7,6 @@ import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.requests.Request;
-import server.ServerPropertyLoader;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -20,6 +19,7 @@ import server.model.squares.Square;
 import javax.swing.Timer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -44,7 +44,7 @@ public class Controller{
     private LinkedList<Player> deadPlayers;
     private boolean locked;
     private Timer timer;
-    private Timer requestTimer;
+    //private Timer requestTimer;
     private Player requestRecipient;
 
 
@@ -56,15 +56,15 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
-            try {
-                requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
-                requestRecipient.getView().ack("Time to decide is up!");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-        this.requestTimer.stop();
+//        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
+//            try {
+//                requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
+//                requestRecipient.getView().ack("Time to decide is up!");
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//        this.requestTimer.stop();
         //this.timer = new javax.swing.Timer(TIME, actionEvent -> getCurrPlayer().forcePass());
     }
 
@@ -265,8 +265,9 @@ public class Controller{
             increaseCurrPlayerIndex();
             ackCurrent("\nIt's your turn");
             getCurrPlayer().setActive();
-            if (currPlayerIndex == lastPlayerIndex)
-                game.computeWinner();
+            if (currPlayerIndex == lastPlayerIndex) {
+                gameOver();
+            }
                 //TODO gestire il valore di ritorno del metodo precedente e implementare la fine della partita chiudendo connessioni..
         } else {
             deadPlayers.get(0).hasToRespawn();
@@ -301,7 +302,7 @@ public class Controller{
                 lock();
                 requestRecipient = recipient;
                 recipient.getView().request(request);
-                requestTimer.start();
+                //requestTimer.start();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -347,7 +348,7 @@ public class Controller{
             getCurrPlayer().getView().ack(msg);
         } catch (RemoteException e) {
             getCurrPlayer().setOnLine(false);
-            checkIfGameCanContinueC();
+            checkIfGameCanContinue();
         }
     }
 
@@ -358,7 +359,7 @@ public class Controller{
                 p.getView().ack(msg);
             } catch (RemoteException e) {
                 p.setOnLine(false);
-                checkIfGameCanContinueC();
+                checkIfGameCanContinue();
             }
         });
     }
@@ -373,9 +374,9 @@ public class Controller{
     }
 
 
-    public void stopRequestTimer() {
-        this.requestTimer.stop();
-    }
+//    public void stopRequestTimer() {
+//        this.requestTimer.stop();
+//    }
 
 
     public void lock() {
@@ -388,10 +389,48 @@ public class Controller{
     }
 
 
-    public void checkIfGameCanContinueC() {
+    public void checkIfGameCanContinue() {
         if (players.stream().filter(Player::isOnLine).count() < 3){
+            List<Pc> winners = game.computeWinner();
 
         }
+    }
+
+
+    public void gameOver() {
+        List<Pc> winners = game.computeWinner();
+        DatabaseHandler.getInstance().gameEnded(this);
+        List<String> winnerNames = winners.stream().map(Pc::getName).collect(Collectors.toList());
+        sendGameWinners(winnerNames);
+        try {
+            LoginController.getInstance().gameOver(gameUUID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        closeConnections();
+    }
+
+
+    public void sendGameWinners(List<String> gameWinners) {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
+            try {
+                p.getView().winners(gameWinners);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    void closeConnections() {
+        players.stream().filter(Player::isOnLine).forEach(player -> {
+            try {
+                player.getView().close();
+                player.killView();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
