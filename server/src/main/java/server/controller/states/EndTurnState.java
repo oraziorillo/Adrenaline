@@ -13,7 +13,6 @@ class EndTurnState extends State {
 
     EndTurnState(Controller controller) {
         super(controller);
-        //cli.controller.startTimer();
         controller.ackCurrent("Now the only things left for you to do are to reload or just pass");
     }
     

@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import server.model.squares.SpawnPoint;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,30 +20,37 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SpawnPointTest {
 
+    @Mock
     private Pc pc;
+
     private final SquareColourEnum colour = SquareColourEnum.RED;
+
     @Mock
-    private WeaponCard card0;
+    private WeaponCard card0, card1, card2;
+
     @Mock
-    private WeaponCard card1;
-    @Mock
-    private WeaponCard card2;
+    private WeaponCard card3, card4, card5;
+
     private int x = 2;
     private int y = 2;
     private SpawnPoint tested;
+
     @Mock
     private Deck<WeaponCard> deck;
+
     @Mock
     private ModelEventHandler eventHandler;
+
+    private GameBoard gameBoard;
 
 
     @Before
     public void setupAndConstructorTest() {
-        Mockito.when(deck.draw()).thenReturn(card0).thenReturn(card1).thenReturn(card2);
+        when(deck.draw()).thenReturn(card0).thenReturn(card1).thenReturn(card2).
+                thenReturn(card3).thenReturn(card4).thenReturn(card5);
         tested = new SpawnPoint(x, y, colour);
         tested.init(deck, null);
         tested.addModelEventHandler(eventHandler);
-        pc = Mockito.mock(Pc.class);
     }
 
 
@@ -80,9 +88,8 @@ public class SpawnPointTest {
 
     @Test
     public void refillRefillsTheEntireSquare() throws NotEnoughAmmoException, EmptySquareException {
-        int deckSize = 10;
-        when(deck.size()).thenReturn(deckSize);
         collectWorksFineWhenPcIsNotFullyArmed();
+        when(deck.size()).thenReturn(6);
         assertNotNull(tested.weaponAtIndex(0));
         assertNotNull(tested.weaponAtIndex(2));
         assertNull(tested.weaponAtIndex(1));
@@ -91,10 +98,11 @@ public class SpawnPointTest {
     }
 
 
+
     @Test
     public void weaponAtIndexWorksFine() {
-        assertSame(card0, tested.weaponAtIndex(0));
-        assertNotSame(card1, tested.weaponAtIndex(2));
+        assertEquals(card0, tested.weaponAtIndex(0));
+        assertNotEquals(card1, tested.weaponAtIndex(2));
     }
 
 

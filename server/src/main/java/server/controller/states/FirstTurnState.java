@@ -22,7 +22,7 @@ public class FirstTurnState extends State{
         this.pcToSpawn = controller.getCurrPc();
         this.pcToSpawn.drawPowerUp(2);
         controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
-        //cli.controller.startTimer();
+
     }
 
     

@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.requests.Request;
+import server.ServerPropertyLoader;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -30,9 +31,6 @@ import static common.Constants.ACTIONS_PER_TURN;
 
 public class Controller{
 
-    //private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(3000));
-
-
     private UUID gameUUID;
     private Game game;
     private int currPlayerIndex;
@@ -43,8 +41,8 @@ public class Controller{
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
     private boolean locked;
-    private Timer timer;
-    //private Timer requestTimer;
+    private Timer playerTimer;
+    private Timer requestTimer;
     private Player requestRecipient;
 
 
@@ -56,22 +54,17 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-//        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
-//            try {
-//                requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
-//                requestRecipient.getView().ack("Time to decide is up!");
-//            } catch (RemoteException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        this.requestTimer.stop();
-        //this.timer = new javax.swing.Timer(TIME, actionEvent -> getCurrPlayer().forcePass());
+        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
+            try {
+                requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
+                requestRecipient.getView().ack("Time to decide is up!");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+        this.requestTimer.stop();
     }
 
-
-//    public void startTimer() {
-//        timer.start();
-//    }
 
 
     void initGame(UUID gameUUID) {
@@ -265,13 +258,19 @@ public class Controller{
             increaseCurrPlayerIndex();
             ackCurrent("\nIt's your turn");
             getCurrPlayer().setActive();
+            startTimer();
             if (currPlayerIndex == lastPlayerIndex) {
                 gameOver();
             }
-                //TODO gestire il valore di ritorno del metodo precedente e implementare la fine della partita chiudendo connessioni..
         } else {
             deadPlayers.get(0).hasToRespawn();
         }
+    }
+
+
+    public void startTimer() {
+        this.playerTimer = new Timer(ServerPropertyLoader.getInstance().getPlayerTimer(), actionEvent -> getCurrPlayer().forcePass());
+        this.playerTimer.start();
     }
 
 
