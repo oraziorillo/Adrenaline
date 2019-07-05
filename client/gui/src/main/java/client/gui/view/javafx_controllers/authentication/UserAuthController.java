@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Optional;
@@ -61,6 +62,7 @@ public class UserAuthController extends AbstractJavaFxController {
    public ConnectionMethodEnum acquireConnectionMethod(){
       Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?\nI suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
+      rmiOrSocket.setOnCloseRequest( e->rmiOrSocket.close() );
       rmiOrSocket.setTitle("Select connection");
       Optional<ButtonType> response = rmiOrSocket.showAndWait();
       return response.isPresent()?ConnectionMethodEnum.parseString(response.get().getText().toLowerCase()):ConnectionMethodEnum.QUIT;
@@ -103,7 +105,13 @@ public class UserAuthController extends AbstractJavaFxController {
               new ButtonType("Login", ButtonBar.ButtonData.NO),
               new ButtonType("Register", ButtonBar.ButtonData.YES)
       );
-      return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES )?SIGN_UP:LOG_IN;
+      firstTime.setOnCloseRequest( e -> {
+         try {
+            player.quit();
+         } catch ( RemoteException ignored ) {
+         }
+      } );
+         return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES ) ? SIGN_UP : LOG_IN;
    }
    
    /**
@@ -113,6 +121,12 @@ public class UserAuthController extends AbstractJavaFxController {
    @Override
    public String acquireUsername() {
       TextInputDialog usernameDialog = new TextInputDialog();
+      usernameDialog.setOnCloseRequest( e -> {
+         try {
+            player.quit();
+         } catch ( RemoteException ignored ) {
+         }
+      } );
       usernameDialog.setTitle("Username");
       Button okButton = ( Button ) usernameDialog.getDialogPane().lookupButton( ButtonType.OK );
       usernameDialog.getEditor().textProperty().addListener( (obs, oldV, newV) -> {
@@ -133,6 +147,12 @@ public class UserAuthController extends AbstractJavaFxController {
    @Override
    public UUID acquireToken() {
       TextInputDialog tokenDialog = new TextInputDialog("Login");
+      tokenDialog.setOnCloseRequest( e -> {
+         try {
+            player.quit();
+         } catch ( RemoteException ignored ) {
+         }
+      } );
       tokenDialog.setHeaderText("Insert your token");
       tokenDialog.setContentText(null);
       Button okButton = (Button) tokenDialog.getDialogPane().lookupButton( ButtonType.OK);
