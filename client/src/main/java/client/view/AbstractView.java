@@ -7,7 +7,6 @@ import common.events.ModelEventListener;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemoteView;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
@@ -50,9 +49,5 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
     }
     
     public void error(String error) {}
-
-    @Override
-    public boolean isReachable() throws RemoteException {
-        return true;
-    }
+   
 }
