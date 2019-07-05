@@ -3,11 +3,7 @@
 <?import javafx.scene.layout.GridPane?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-<<<<<<< HEAD
-          fx:controller="client.view.gui.javafx_controllers.in_game.components.Ammo"
-=======
           fx:controller="client.gui.view.javafx_controllers.in_game.components.Ammo"
->>>>>>> 1d762017ed51c975d0c9e88d81c5ff6cb37a9e72
           fx:id="grid" id="grid"
           stylesheets="/css/munizioni.css">
 
