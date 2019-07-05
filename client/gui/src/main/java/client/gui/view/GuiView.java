@@ -84,7 +84,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void request(Request request) throws RemoteException {
-
+      currentGui.request( request );
    }
 
 
@@ -107,7 +107,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void winners(List<String> winners) throws RemoteException {
-
+      currentGui.winners(winners);
    }
 
    @Override

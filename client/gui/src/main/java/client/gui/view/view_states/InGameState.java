@@ -2,6 +2,7 @@ package client.gui.view.view_states;
 
 import client.gui.controller.GuiController;
 import common.dto_model.GameDTO;
+import common.events.requests.Request;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.input.KeyCodeCombination;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import static javafx.application.Platform.runLater;
 
@@ -47,6 +49,15 @@ public class InGameState extends ViewState {
    public ViewState nextState() throws RemoteException {
       return ViewState.getFirstState(hostServices, stage,topView);
    }
-
-
+   
+   @Override
+   public void request(Request request) throws RemoteException {
+      getJavafxController().request( request );
+   }
+   
+   @Override
+   public void winners(List<String> winners) {
+      getJavafxController().winners(winners);
+      stage.close();
+   }
 }
