@@ -3,14 +3,14 @@ package server.database;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Caterpillar<P, S, V> {
+public class CustomizedHashMap<P, S, V> {
 
     /**
      * This class is a dynamically changing HashMap.
      * At the beginning it is used like an HashMap of V objects accessed by a P key; you can add and removeLine values by using the primary key.
      * You can also add S objects to the data structure, but they are unused at the moment.
      * The size of SKs' list is always less then or equals to the size of the list of values.
-     * When the size of List of S values reaches the size of the List of values, Caterpillar "metamorphoses" and starts to behaves like an
+     * When the size of List of S values reaches the size of the List of values, CustomizedHashMap "metamorphoses" and starts to behaves like an
      * HashMap in which keys are S type objects and values are V type objects and the binding between secondary keys and values is guaranteed
      * by the order of insertions of secondary keys and values.
      */
@@ -20,7 +20,7 @@ public class Caterpillar<P, S, V> {
     private ArrayList<V> values;
 
 
-    public Caterpillar(){
+    public CustomizedHashMap(){
         this.primaryKeys = new ArrayList<>();
         this.secondaryKeys = new ArrayList<>();
         this.values = new ArrayList<>();

@@ -24,7 +24,6 @@ public class SetupWeaponState extends State {
         super(controller);
         this.moved = hasMoved;
         this.fireModeIndex = 1;
-        //cli.controller.startTimer();
     }
 
     private short [] sumArray(short [] firstArray, short [] secondArray){

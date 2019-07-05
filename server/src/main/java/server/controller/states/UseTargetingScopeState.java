@@ -24,7 +24,6 @@ public class UseTargetingScopeState extends State {
     UseTargetingScopeState(Controller controller, List<Pc> targetables) {
         super(controller);
         this.targetablePcs = targetables;
-        //cli.controller.startTimer();
     }
 
 

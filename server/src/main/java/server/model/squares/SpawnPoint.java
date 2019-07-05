@@ -38,6 +38,7 @@ public class SpawnPoint extends Square {
         super(row, col, colour);
         this.weaponToGrabIndex = -1;
         this.weaponToDropIndex = -1;
+        this.weapons = new WeaponCard[CARDS_ON_SPAWN_POINT];
     }
 
 
@@ -45,7 +46,7 @@ public class SpawnPoint extends Square {
     public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.weaponsDeck = weaponsDeck;
         for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++)
-            weapons[i] = weaponsDeck.draw();
+            weapons[i] = this.weaponsDeck.draw();
     }
 
 

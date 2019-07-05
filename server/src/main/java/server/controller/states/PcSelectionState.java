@@ -18,7 +18,6 @@ public class PcSelectionState extends State {
 
     PcSelectionState(Controller controller) {
         super(controller);
-        //cli.controller.startTimer();
     }
 
 

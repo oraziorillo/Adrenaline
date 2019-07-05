@@ -30,10 +30,4 @@ public class AmmoTileDeckTest {
         deck = new Deck<>();
         ammoTiles.forEach(a -> deck.add(a));
     }
-
-
-    @Test
-    public void printDeck(){
-        deck.print();
-    }
 }
