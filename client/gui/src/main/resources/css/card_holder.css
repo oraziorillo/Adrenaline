@@ -1,0 +1,5 @@
+AnchorPane{
+    width: 300;
+    -fx-pref-width: width;
+    -fx-max-width: width;
+}

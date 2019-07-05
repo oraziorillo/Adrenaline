@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="client.gui.view.javafx_controllers.in_game.components.Top"
+      id="mainPane"
+      maxHeight="${cardHolder.height}" minHeight="${cardHolder.height}" prefHeight="${cardHolder.height}" stylesheets="/css/top.css" BorderPane.alignment="TOP_CENTER" >
+    <fx:define>
+        <Double fx:id="padding" fx:value="20"/>
+    </fx:define>
+        <HBox HBox.hgrow="ALWAYS">
+            <VBox>
+                <HBox.margin><Insets topRightBottomLeft="$padding"/> </HBox.margin>
+                <fx:include fx:id="ammo" source="munizioni.fxml" VBox.vgrow="ALWAYS" />
+                <Label fx:id="punti" text="0" alignment="TOP_CENTER"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <HBox fx:id="killShotTrack" id="KillShotTrack" HBox.hgrow="ALWAYS" alignment="CENTER"/>
+        </HBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox alignment="TOP_RIGHT" spacing="20" HBox.hgrow="ALWAYS">
+            <fx:include source="card_holder.fxml" fx:id="cardHolder"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ImageView id="powerupDeck" preserveRatio="true">
+                <HBox.margin><Insets topRightBottomLeft="$padding"/></HBox.margin>
+                <Image url="/images/deck_holders/powerup.png" preserveRatio="true" requestedWidth="100"/>
+            </ImageView>
+            <Button fx:id="settingsButton" HBox.hgrow="ALWAYS" minWidth="${settingsButton.height}" onMouseClicked="#showSettings">
+                <HBox.margin><Insets topRightBottomLeft="35"/> </HBox.margin>
+            </Button>
+        </HBox>
+    </HBox>

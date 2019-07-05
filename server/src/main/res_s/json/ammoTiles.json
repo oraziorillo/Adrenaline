@@ -1,0 +1,290 @@
+[
+  {
+    "ammo": [
+      2,
+      0,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      2,
+      0,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      2,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      2,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      0,
+      2
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      0,
+      2
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      1,
+      0
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      1
+    ],
+    "hasPowerUp": true
+  },
+  {
+    "ammo": [
+      2,
+      1,
+      0
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      2,
+      1,
+      0
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      2,
+      1,
+      0
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      2,
+      0,
+      1
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      2,
+      0,
+      1
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      2,
+      0,
+      1
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      1,
+      2,
+      0
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      1,
+      2,
+      0
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      1,
+      2,
+      0
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      0,
+      2,
+      1
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      0,
+      2,
+      1
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      0,
+      2,
+      1
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      2
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      2
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      1,
+      0,
+      2
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      2
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      2
+    ],
+    "hasPowerUp": false
+  },
+  {
+    "ammo": [
+      0,
+      1,
+      2
+    ],
+    "hasPowerUp": false
+  }
+]

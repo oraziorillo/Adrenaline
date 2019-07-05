@@ -1,0 +1,105 @@
+{
+  "numberOfMap": 4,
+  "rows": 3,
+  "columns": 4,
+  "squares": [
+    {
+      "isSpawnPoint": false,
+      "row": 0,
+      "col": 0,
+      "colour": "RED",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 0,
+      "col": 1,
+      "colour": "BLUE",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": true,
+      "row": 0,
+      "col": 2,
+      "colour": "BLUE",
+      "weapons": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 0,
+      "col": 3,
+      "colour": "GREEN",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": true,
+      "row": 1,
+      "col": 0,
+      "colour": "RED",
+      "weapons": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 1,
+      "col": 1,
+      "colour": "VIOLET",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 1,
+      "col": 2,
+      "colour": "YELLOW",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 1,
+      "col": 3,
+      "colour": "YELLOW",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 2,
+      "col": 0,
+      "colour": "WHITE",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 2,
+      "col": 1,
+      "colour": "WHITE",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": false,
+      "row": 2,
+      "col": 2,
+      "colour": "YELLOW",
+      "ammoTile": null
+    },
+    {
+      "isSpawnPoint": true,
+      "row": 2,
+      "col": 3,
+      "colour": "YELLOW",
+      "weapons": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "killShotTrack": null,
+  "doors": [0, 1, 1, 0, 1, 5, 2, 3, 2, 6, 3, 2, 3, 7, 4, 8, 5, 1, 5, 9, 6, 2, 7, 3, 8, 4, 9, 5, 9, 10, 10, 9]
+}
