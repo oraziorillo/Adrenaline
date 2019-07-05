@@ -300,10 +300,6 @@ public class InGameController extends AbstractJavaFxController {
       
    }
 
-
-   public void winners(List<String> gameWinners) {
-   
-   }
    
    @Override
     public void onPcBoardUpdate(PcBoardEvent event) {

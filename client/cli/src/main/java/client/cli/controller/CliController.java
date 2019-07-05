@@ -5,9 +5,10 @@ import client.cli.view.CommandParser;
 import client.view.AbstractView;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
+import common.exceptions.PlayerAlreadyLoggedInException;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
-import common.exceptions.PlayerAlreadyLoggedInException;
+
 
 import java.io.IOException;
 import java.rmi.NoSuchObjectException;
@@ -120,7 +121,7 @@ public class CliController {
             tmpPlayer = loginController.login(token, view);
             if (tmpPlayer != null)
                 view.printMessage("\nLogging in");
-        } catch (PlayerAlreadyLoggedInException e) {
+        } catch ( PlayerAlreadyLoggedInException e) {
             view.printMessage(e.getMessage());
             tmpPlayer = null;
         } catch (IOException e) {

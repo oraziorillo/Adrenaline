@@ -44,7 +44,5 @@ public interface RemoteView extends Remote {
     void winners(List<String> winners) throws RemoteException;
 
     void close() throws RemoteException;
-
-    boolean isReachable() throws RemoteException;
-
+    
 }

@@ -171,26 +171,18 @@ public class CliView extends AbstractView {
     }
 
 
-    @Override
     public void winners(List<String> winners) throws RemoteException {
         printMessage(winners.size() == 1
                 ? "\nIt seems we have a winner. And he/she is...\n" + winners.get(0)
                 : "We have a draw between " + winners.get(0) + " and " + winners.get(1));
     }
 
-
-    @Override
+    
     public void close() throws RemoteException {
 
     }
-
-
-    @Override
-    public boolean isReachable() throws RemoteException {
-        return true;
-    }
-
-
+    
+    
     @Override
     public synchronized void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
         printMessage(event.toString());

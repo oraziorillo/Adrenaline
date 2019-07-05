@@ -19,7 +19,7 @@ public class InGameState extends ViewState {
    InGameState() {
       super();
       try {
-         FXMLLoader loader = new FXMLLoader( GuiController.class.getResource( "/fxml/inGame/gui.fxml" ) );
+         FXMLLoader loader = new FXMLLoader( getClass().getResource( "/fxml/inGame/gui.fxml" ) );
          Parent root = loader.load();
          setJavafxController( loader.getController() );
    
