@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import common.events.requests.Request;
+import server.ServerPropertyLoader;
 import server.controller.Controller;
 import server.controller.Player;
 import server.model.Pc;
@@ -9,6 +10,7 @@ import server.model.actions.Action;
 import server.model.target_checkers.EmptyChecker;
 import server.model.target_checkers.VisibilityDecorator;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class InactiveState extends State {
@@ -29,7 +31,7 @@ public class InactiveState extends State {
     public InactiveState(Controller controller, int nextState) {
         super(controller);
         this.nextState = nextState;
-        this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> useFirstTagbackGrenade());
+        this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer() * 1000, actionEvent -> useFirstTagbackGrenade());
         this.powerUpTimer.stop();
     }
 
@@ -99,7 +101,7 @@ public class InactiveState extends State {
                 wantToUseTagbackGrenade = false;
                 numberOfTagbackGrenades = 0;
                 damagedPc = null;
-                //powerUpTimer.stop();
+                powerUpTimer.stop();
                 controller.unlock();
                 break;
             }

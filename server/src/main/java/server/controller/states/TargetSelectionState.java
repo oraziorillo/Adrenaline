@@ -119,7 +119,7 @@ public class TargetSelectionState extends State {
 
     private void setDeadPlayers(){
         controller.getPlayers().stream().forEach(player -> {
-            if (player.getPc().getDamageTrack()[2] != null)         //TODO DA CAMBIARE
+            if (player.getPc().getDamageTrack()[10] != null)
                 controller.addDeadPlayer(player);
         });
     }

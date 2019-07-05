@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.requests.Request;
+import server.ServerPropertyLoader;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -40,7 +41,7 @@ public class Controller{
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
     private boolean locked;
-    private Timer playerTimer;
+    private java.util.Timer playerTimer;
     private Timer requestTimer;
     private Player requestRecipient;
 
@@ -53,7 +54,14 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-        this.requestTimer = new Timer(ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
+        this.playerTimer = new java.util.Timer();
+        this.playerTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+               getCurrPlayer().forcePass();
+            }
+        }, ServerPropertyLoader.getInstance().getPlayerTimer() * 1000);
+        this.requestTimer = new Timer(ServerPropertyLoader.getInstance().getRequestTimer() * 1000, actionEvent -> {
             try {
                 requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
                 requestRecipient.getView().ack("Time to decide is up!");
@@ -287,9 +295,14 @@ public class Controller{
     }
 
 
-    public void startTimer() {
-        this.playerTimer = new Timer(ServerPropertyLoader.getInstance().getPlayerTimer(), actionEvent -> getCurrPlayer().forcePass());
-        this.playerTimer.start();
+    private void startTimer() {
+        this.playerTimer = new java.util.Timer();
+        this.playerTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getCurrPlayer().forcePass();
+            }
+        }, ServerPropertyLoader.getInstance().getPlayerTimer() * 1000);
     }
 
 
@@ -329,7 +342,6 @@ public class Controller{
                 lock();
                 requestRecipient = recipient;
                 recipient.getView().request(request);
-                requestTimer.start();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

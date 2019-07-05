@@ -134,7 +134,7 @@ public class ClientSocketHandler implements Runnable {
                 view.close();
                 out.close();
                 in.close();
-                socket.close(); //TODO da rivedere
+                socket.close();
                 break;
             case RESUME_GAME:
                 GameDTO game = gson.fromJson(
