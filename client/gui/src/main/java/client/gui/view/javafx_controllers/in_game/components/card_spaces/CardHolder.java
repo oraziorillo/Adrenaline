@@ -139,7 +139,7 @@ public class CardHolder implements MapChangeListener <SquareDTO,SquareDTO>{
    
    private void chooseWeaponOnSpawnPoint(int i){
       try{
-         player.chooseWeaponOnSpawnPoint( i+1 );
+         player.chooseWeaponOnSpawnPoint( i );
          cards[i].setEffect( InGameController.selectedObjectEffect );
       } catch ( IOException e ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),e );

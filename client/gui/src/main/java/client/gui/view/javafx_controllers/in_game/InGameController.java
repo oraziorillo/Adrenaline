@@ -319,6 +319,7 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onSquareUpdate(SquareEvent event) {
+      
       squares.put( event.getDTO(),event.getDTO() );
     }
    
