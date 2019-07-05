@@ -21,7 +21,6 @@ public class UsePowerUpState extends State {
     UsePowerUpState(Controller controller) {
         super(controller);
         this.targetableSquares = new HashSet<>();
-        //cli.controller.startTimer();
     }
 
 
@@ -57,7 +56,8 @@ public class UsePowerUpState extends State {
     public void selectTarget(PcColourEnum targetPcColour) {
         Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
         if ( targetPc != null && targetPc.getCurrSquare().isTargetable()){
-            currAction.selectPc(targetPc);
+            if (currAction != null)
+                currAction.selectPc(targetPc);
             controller.ackCurrent("Is it that you want to move?");
         }
     }
@@ -66,7 +66,7 @@ public class UsePowerUpState extends State {
     @Override
     public void selectSquare(int row, int column) {
         Square s = controller.getGame().getSquare(row, column);
-        if (s != null && s.isTargetable())
+        if (s != null && s.isTargetable() && currAction != null)
             currAction.selectSquare(s);
     }
 
