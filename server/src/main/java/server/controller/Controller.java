@@ -467,6 +467,11 @@ public class Controller{
     }
 
 
+    /**
+     * sends the list containing the list of the winners
+     *
+     * @param gameWinners list of the players who won the game
+     */
     public void sendGameWinners(List<String> gameWinners) {
         players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
@@ -478,6 +483,9 @@ public class Controller{
     }
 
 
+    /**
+     * close all connections
+     */
     void closeConnections() {
         players.stream().filter(Player::isOnLine).forEach(player -> {
             try {
