@@ -35,10 +35,10 @@ public class UsePowerUpState extends State {
                 currAction = powerUpAction;
                 if(currAction.isSelfMovement()) {
                     setTargetableToValidSquares(controller.getCurrPc());
-                    controller.ackAll("\nYou can do like Goku now, teleport everywhere!");
+                    controller.ackCurrent("\nYou can do like Goku now, teleport everywhere!");
+                } else {
+                    controller.ackCurrent("\nLet's make some moves");
                 }
-                setTargetableToValidSquares(controller.getCurrPc());
-                controller.ackCurrent("\nLet's make some moves");
             }
         } catch (IllegalArgumentException e) {
             controller.ackCurrent(e.getMessage());
@@ -57,7 +57,7 @@ public class UsePowerUpState extends State {
 
     @Override
     public void selectTarget(PcColourEnum targetPcColour) {
-        if (currAction != null && !currAction.isSelfMovement()) {
+        if (currAction != null && !currAction.isSelfMovement() && !targetPcColour.equals((controller.getCurrPc().getColour()))) {
             Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
             if (targetPc != null) {
                 currAction.selectPc(targetPc);

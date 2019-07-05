@@ -4,8 +4,6 @@ import server.controller.Controller;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
-import java.net.InetAddress;
-
 import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 /**Turn beginning state*/
@@ -15,7 +13,6 @@ public class StartTurnState extends State {
 
     StartTurnState(Controller controller) {
         super(controller);
-        //cli.controller.startTimer();
         controller.ackCurrent("You can:\n> run around\n> grab stuff\n> shoot people\n> use a power up");
     }
 
@@ -58,6 +55,7 @@ public class StartTurnState extends State {
         for (PowerUpCard powerUp: controller.getCurrPlayer().getPc().getPowerUps()) {
             if (powerUp != null) {
                 nextState = new UsePowerUpState(controller);
+                controller.ackCurrent("\nUsing a powerUp sometimes can be very necessary");
                 return true;
             }
         }
@@ -67,6 +65,7 @@ public class StartTurnState extends State {
 
 
     public State forcePass() {
+        controller.ackCurrent("\nToo slow man, you''ll skip the turn!");
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }
     

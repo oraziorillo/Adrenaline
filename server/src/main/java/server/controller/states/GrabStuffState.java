@@ -181,6 +181,7 @@ class GrabStuffState extends State{
         }
         controller.resetRemainingActions();
         controller.getCurrPc().resetPowerUpAsAmmo();
+        controller.ackCurrent("\nToo slow. You will skip the turn");
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }

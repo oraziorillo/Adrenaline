@@ -207,7 +207,6 @@ public class DatabaseHandler {
 
 
     public synchronized void gameEnded(Controller controller) {
-        //Todo da rivedere e usare
         List<UUID> playersInGame = controller.getPlayers().stream().map(Player::getToken).collect(Collectors.toList());
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded());
         File gameFile = new File(generateFilePath(controller.getGameUUID()));
@@ -275,6 +274,4 @@ public class DatabaseHandler {
         return playerInfoByToken.get(playerToken).getPlayer().getCurrPc();
     }
 
-
-    //TODO mettere cli.view a null quando il player si disconnette
 }

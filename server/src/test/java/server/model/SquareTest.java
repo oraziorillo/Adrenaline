@@ -173,7 +173,6 @@ public class SquareTest {
         ok.add( gameBoard.getSquare(row, coloumn-1) );
         assertEquals(tested.allSquaresOnDirection(CardinalDirectionEnum.WEST), ok );
     }
-    //TODO test di allSquaresInDirection e allSquares
 
 
     @Test

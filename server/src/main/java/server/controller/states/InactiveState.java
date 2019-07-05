@@ -31,7 +31,7 @@ public class InactiveState extends State {
     public InactiveState(Controller controller, int nextState) {
         super(controller);
         this.nextState = nextState;
-        this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> useFirstTagbackGrenade());
+        this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer() * 1000, actionEvent -> useFirstTagbackGrenade());
         this.powerUpTimer.stop();
     }
 

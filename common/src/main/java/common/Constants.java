@@ -11,7 +11,7 @@ public final class Constants {
 
     // --------------> RULES
 
-    public static final int LIFE_POINTS = 11;
+    public static final int LIFE_POINTS = 12;
 
     //card limits
     public static final int MAX_WEAPONS_IN_HAND = 3;

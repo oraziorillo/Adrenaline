@@ -22,7 +22,6 @@ public class FirstTurnState extends State{
         this.pcToSpawn = controller.getCurrPc();
         this.pcToSpawn.drawPowerUp(2);
         controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
-        //cli.controller.startTimer();
     }
 
     
@@ -58,6 +57,7 @@ public class FirstTurnState extends State{
         Random random = new Random();
         powerUpToDropIndex = random.nextInt(2);
         spawn();
+        controller.ackCurrent("\nToo slow man, you''ll skip the turn!");
         return nextState();
     }
 

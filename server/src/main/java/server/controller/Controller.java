@@ -283,8 +283,8 @@ public class Controller{
         if (deadPlayers.isEmpty()) {
             increaseCurrPlayerIndex();
             ackCurrent("\nIt's your turn");
-            getCurrPlayer().setActive();
             startTimer();
+            getCurrPlayer().setActive();
             if (currPlayerIndex == lastPlayerIndex) {
                 gameOver();
             }
@@ -295,10 +295,12 @@ public class Controller{
 
 
     private void startTimer() {
+        this.playerTimer.cancel();
         this.playerTimer = new java.util.Timer();
         this.playerTimer.schedule(new TimerTask() {
             @Override
             public void run() {
+
                 getCurrPlayer().forcePass();
             }
         }, ServerPropertyLoader.getInstance().getPlayerTimer() * 1000);
@@ -460,6 +462,7 @@ public class Controller{
      * called when the game is over, handles
      */
     public void gameOver() {
+        this.playerTimer.cancel();
         List<Pc> winners = game.computeWinner();
         DatabaseHandler.getInstance().gameEnded(this);
         List<String> winnerNames = winners.stream().map(Pc::getName).collect(Collectors.toList());
