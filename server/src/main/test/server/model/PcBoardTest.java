@@ -47,8 +47,7 @@ public class PcBoardTest {
         short [] firstAmmo = new short[]{2,1,0};
         AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(firstAmmo);
-        //TODO aggiustare
-        // when(ammoTile.containsPowerup()).thenReturn(false);
+        when(ammoTile.hasPowerUp()).thenReturn(false);
         tested.addAmmo(ammoTile);
         assertTrue(tested.getAmmo()[AmmoEnum.BLUE.ordinal()] == 3);
         assertTrue(tested.getAmmo()[AmmoEnum.RED.ordinal()] == 2);
@@ -56,8 +55,7 @@ public class PcBoardTest {
         short [] secondAmmo = new short[]{2,1,0};
         AmmoTile ammoTile1 = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(secondAmmo);
-        //TODO aggiustare
-        // when(ammoTile.containsPowerup()).thenReturn(false);
+        when(ammoTile.hasPowerUp()).thenReturn(false);
         assertTrue(tested.getAmmo()[AmmoEnum.BLUE.ordinal()] == 3);
     }
 

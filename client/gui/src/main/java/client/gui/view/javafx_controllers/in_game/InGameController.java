@@ -301,7 +301,6 @@ public class InGameController extends AbstractJavaFxController {
    
    @Override
    public void winners(List<String> gameWinners) {
-      //TODO
    
    }
    
