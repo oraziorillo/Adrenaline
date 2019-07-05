@@ -1,0 +1,48 @@
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="mainPane" fx:controller="client.gui.view.javafx_controllers.in_game.InGameController" stylesheets="/css/style.css">
+    <center>
+        <HBox alignment="TOP_CENTER">
+            <Region HBox.hgrow="SOMETIMES"/>
+            <VBox alignment="CENTER" HBox.hgrow="SOMETIMES" maxWidth="${map.maxWidth}"> <!--Map and buttons-->
+                <fx:include source="mappa.fxml" fx:id="map" VBox.vgrow="ALWAYS" viewOrder="-1"/>
+                <HBox fx:id="underMapButtons" alignment="TOP_RIGHT" translateY = "-5">
+                    <Button text="Apply" onAction="#applyClicked"/><Button text="Undo" onAction="#undoClicked"/><Button text="Reload" onAction="#reloadClicked"/><Button text="Pass" onAction="#passClicked"/><Button text="Skip" onAction="#skipClicked"/>
+                </HBox>
+            </VBox>
+            <Region HBox.hgrow="SOMETIMES"/>
+            <ImageView preserveRatio="true" fx:id="weaponsDeck"><Image url="/images/deck_holders/armi.png" preserveRatio="true" requestedWidth="200"/> </ImageView>
+        </HBox>
+    </center>
+    <top>
+        <fx:include fx:id="top" source="top.fxml" BorderPane.alignment="TOP_CENTER"/>
+    </top>
+    <bottom>
+        <HBox fx:id="bottom" minHeight="${pcBoard.height}" maxHeight="${pcBoard.height}" prefHeight="${pcBoard.height}" alignment="BOTTOM_CENTER" >
+            <fx:include source="pc_board/pcBoard.fxml" fx:id="pcBoard" viewOrder="-Infinity" />
+            <fx:include source="chat.fxml" fx:id="chat"/>
+        </HBox>
+    </bottom>
+    <left>
+        <VBox BorderPane.alignment="CENTER_LEFT" minWidth="${cardHolderLeft.height}" maxWidth="${cardHolderLeft.height}" prefWidth="${cardHolderLeft.height}">
+            <Region VBox.vgrow="ALWAYS"/>
+            <fx:include source="card_holder.fxml" fx:id="cardHolderLeft"/>
+            <Region VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </left>
+
+    <right>
+        <HBox BorderPane.alignment="CENTER_RIGHT" alignment="CENTER_RIGHT" >
+            <VBox id="deck_box" >
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" minWidth="${cardHolderRight.height}" prefWidth="${cardHolderRight.height}">
+                <fx:include source="card_holder.fxml" fx:id="cardHolderRight" />
+            </VBox>
+        </HBox>
+
+    </right>
+
+
+</BorderPane>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.Double?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="client.gui.view.javafx_controllers.in_game.components.Chat" stylesheets="/css/chat.css"
+            fx:id="mainPane" onMouseExited="#disappear">
+    <fx:define>
+        <Double fx:id="MESSAGGI_HEIGHT" fx:value="800"/>
+    </fx:define>
+    <VBox  alignment="BOTTOM_CENTER" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <VBox fx:id="messaggi" alignment="BOTTOM_LEFT" maxHeight="$MESSAGGI_HEIGHT">
+            <Label/>
+        </VBox>
+        <TextField fx:id="input" onMouseEntered="#appear" onAction="#sendInput"/>
+    </VBox>
+</AnchorPane>
+
