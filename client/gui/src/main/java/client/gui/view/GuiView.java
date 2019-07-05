@@ -20,6 +20,7 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.UUID;
 
 import static javafx.application.Platform.runLater;
@@ -102,8 +103,24 @@ public class GuiView extends AbstractView implements ModelEventListener {
    public void resumeGame(GameDTO game) {
       currentGui.resumeGame(game);
    }
-   
-   
+
+
+   @Override
+   public void winners(List<String> winners) throws RemoteException {
+
+   }
+
+   @Override
+   public void close() throws RemoteException {
+
+   }
+
+   @Override
+   public boolean isReachable() throws RemoteException {
+      return true;
+   }
+
+
    public void nextState() {
       try {
          currentGui = currentGui.nextState();

@@ -20,6 +20,7 @@ import server.model.squares.Square;
 import javax.swing.Timer;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -29,9 +30,6 @@ import static common.Constants.ACTIONS_PER_FRENZY_TURN_AFTER_FIRST_PLAYER;
 import static common.Constants.ACTIONS_PER_TURN;
 
 public class Controller{
-
-    //private static final int TIME = Math.toIntExact(TimeUnit.SECONDS.toMillis(3000));
-
 
     private UUID gameUUID;
     private Game game;
@@ -43,7 +41,7 @@ public class Controller{
     private Set<Square> squaresToRefill;
     private LinkedList<Player> deadPlayers;
     private boolean locked;
-    private Timer timer;
+    private java.util.Timer playerTimer;
     private Timer requestTimer;
     private Player requestRecipient;
 
@@ -56,7 +54,14 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
+        this.playerTimer = new java.util.Timer();
+        this.playerTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+               getCurrPlayer().forcePass();
+            }
+        }, ServerPropertyLoader.getInstance().getPlayerTimer() * 1000);
+        this.requestTimer = new Timer(ServerPropertyLoader.getInstance().getRequestTimer() * 1000, actionEvent -> {
             try {
                 requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
                 requestRecipient.getView().ack("Time to decide is up!");
@@ -65,15 +70,14 @@ public class Controller{
             }
         });
         this.requestTimer.stop();
-        //this.timer = new javax.swing.Timer(TIME, actionEvent -> getCurrPlayer().forcePass());
     }
 
 
-//    public void startTimer() {
-//        timer.start();
-//    }
-
-
+    /**
+     * used after a server crash
+     *
+     * @param gameUUID unique id of the suspended game
+     */
     void initGame(UUID gameUUID) {
         try {
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
@@ -110,6 +114,9 @@ public class Controller{
     }
 
 
+    /**
+     * inits a new game
+     */
     void initGame(){
         game = Game.getGame();
         addListenersToModel();
@@ -138,6 +145,9 @@ public class Controller{
     }
 
 
+    /**
+     * @return true iff the controller is waiting for a response from a player
+     */
     public boolean isLocked() {
         return locked;
     }
@@ -158,9 +168,13 @@ public class Controller{
     }
 
 
+    /**
+     * @return pc colours still available to be picke
+     */
     public Set<PcColourEnum> getAvailablePcColours() {
         return availablePcColours;
     }
+
 
     public List<Player> getPlayers() {
         return players;
@@ -201,12 +215,17 @@ public class Controller{
         return remainingActions;
     }
 
-
+    /**
+     * @return the weapon that ha to be configured for shooting in this turn
+     */
     public WeaponCard getCurrWeapon() {
         return getCurrPlayer().getCurrWeapon();
     }
 
 
+    /**
+     * @return squares to be refilled
+     */
     public Set<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
@@ -265,12 +284,24 @@ public class Controller{
             increaseCurrPlayerIndex();
             ackCurrent("\nIt's your turn");
             getCurrPlayer().setActive();
-            if (currPlayerIndex == lastPlayerIndex)
-                game.computeWinner();
-                //TODO gestire il valore di ritorno del metodo precedente e implementare la fine della partita chiudendo connessioni..
+            startTimer();
+            if (currPlayerIndex == lastPlayerIndex) {
+                gameOver();
+            }
         } else {
             deadPlayers.get(0).hasToRespawn();
         }
+    }
+
+
+    private void startTimer() {
+        this.playerTimer = new java.util.Timer();
+        this.playerTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getCurrPlayer().forcePass();
+            }
+        }, ServerPropertyLoader.getInstance().getPlayerTimer() * 1000);
     }
 
 
@@ -290,11 +321,20 @@ public class Controller{
     }
 
 
+    /**
+     * @return true iff the curr player is also the last of the turn
+     */
     public boolean amITheLast() {
         return currPlayerIndex == players.size() - 1;
     }
 
 
+    /**
+     * sends a request to a specific recipient and locks the controller until the answer comes
+     *
+     * @param request
+     * @param recipient
+     */
     public void sendRequest(Request request, Player recipient) {
         if (recipient.isOnLine()) {
             try {
@@ -309,6 +349,10 @@ public class Controller{
     }
 
 
+    /**
+     * send a request to the curr player but it doesn't
+     * @param request
+     */
     public void sendNonBlockingRequest(Request request) {
         if (getCurrPlayer().isOnLine()) {
             try {
@@ -320,6 +364,10 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to the recipient of the active request if present
+     * @param msg
+     */
     public void ackRequestRecipient(String msg) {
         if (requestRecipient.isOnLine()) {
             try {
@@ -331,6 +379,11 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to a specific player
+     * @param p player to address the message to
+     * @param msg message to be sent
+     */
     public void ackPlayer(Player p, String msg) {
         if (p.isOnLine()) {
             try {
@@ -342,39 +395,46 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to the curr player
+     * @param msg to be sent
+     */
     public void ackCurrent(String msg){
         try {
             getCurrPlayer().getView().ack(msg);
         } catch (RemoteException e) {
             getCurrPlayer().setOnLine(false);
-            checkIfGameCanContinueC();
+            checkIfGameCanContinue();
         }
     }
 
 
+    /**
+     * sends an ack to all players
+     * @param msg to be sent
+     */
     public void ackAll(String msg){
         players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
                 p.getView().ack(msg);
             } catch (RemoteException e) {
                 p.setOnLine(false);
-                checkIfGameCanContinueC();
+                checkIfGameCanContinue();
             }
         });
     }
 
 
+    /**
+     * a toString for colours available to be picked
+     * @return
+     */
     public String availableColours() {
         StringBuilder availableColours = new StringBuilder();
         for (PcColourEnum c : availablePcColours) {
             availableColours.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
         }
         return availableColours.toString();
-    }
-
-
-    public void stopRequestTimer() {
-        this.requestTimer.stop();
     }
 
 
@@ -388,10 +448,59 @@ public class Controller{
     }
 
 
-    public void checkIfGameCanContinueC() {
+    public void checkIfGameCanContinue() {
         if (players.stream().filter(Player::isOnLine).count() < 3){
+            gameOver();
 
         }
+    }
+
+
+    /**
+     * called when the game is over, handles
+     */
+    public void gameOver() {
+        List<Pc> winners = game.computeWinner();
+        DatabaseHandler.getInstance().gameEnded(this);
+        List<String> winnerNames = winners.stream().map(Pc::getName).collect(Collectors.toList());
+        sendGameWinners(winnerNames);
+        try {
+            LoginController.getInstance().gameOver(gameUUID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        closeConnections();
+    }
+
+
+    /**
+     * sends the list containing the list of the winners
+     *
+     * @param gameWinners list of the players who won the game
+     */
+    public void sendGameWinners(List<String> gameWinners) {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
+            try {
+                p.getView().winners(gameWinners);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    /**
+     * close all connections
+     */
+    void closeConnections() {
+        players.stream().filter(Player::isOnLine).forEach(player -> {
+            try {
+                player.getView().close();
+                player.killView();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -403,5 +512,9 @@ public class Controller{
                 e.printStackTrace();
             }
         });
+    }
+
+    public void stopRequestTimer() {
+        requestTimer.stop();
     }
 }
