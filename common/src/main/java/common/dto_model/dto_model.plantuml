@@ -48,7 +48,7 @@ title __DTO_MODEL's Class Diagram__\n
           - columns : int
           - numberOfMap : int
           - rows : int
-          - squares : Set<SquareDTO>
+          - squares : List<SquareDTO>
           + getColumns()
           + getNumberOfMap()
           + getRows()
@@ -57,7 +57,6 @@ title __DTO_MODEL's Class Diagram__\n
           + setNumberOfMap()
           + setRows()
           + setSquares()
-          + toString()
       }
     }
   }
@@ -66,7 +65,8 @@ title __DTO_MODEL's Class Diagram__\n
   namespace common {
     namespace dto_model {
       class common.dto_model.GameDTO {
-          - pcs : Set<PcDTO>
+          ~ pcs : Set<PcDTO>
+          + addPc()
           + getCensoredDTOFor()
           + getGameBoardDTO()
           + getKillShotTrackDTO()
@@ -92,7 +92,6 @@ title __DTO_MODEL's Class Diagram__\n
           + setColour()
           + setOverkilled()
           + setSkulled()
-          + toString()
       }
     }
   }
@@ -107,7 +106,6 @@ title __DTO_MODEL's Class Diagram__\n
           + getKillShotTrack()
           + setFinalFrenzyKillShotTrack()
           + setKillShotTrack()
-          + toString()
       }
     }
   }
@@ -207,7 +205,6 @@ title __DTO_MODEL's Class Diagram__\n
           + isDefaultCard()
           + setColour()
           + setName()
-          + toString()
       }
     }
   }

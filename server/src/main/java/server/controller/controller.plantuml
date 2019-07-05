@@ -11,10 +11,11 @@ title __CONTROLLER's Class Diagram__\n
           - gameUUID : UUID
           - lastPlayerIndex : int
           - locked : boolean
+          - playerTimer : Timer
           - players : List<Player>
           - remainingActions : int
+          - requestTimer : Timer
           - squaresToRefill : Set<Square>
-          - timer : Timer
           + Controller()
           + ackAll()
           + ackCurrent()
@@ -56,11 +57,13 @@ title __CONTROLLER's Class Diagram__\n
           + sendRequest()
           + setCurrWeapon()
           + setLastPlayerIndex()
+          + stopRequestTimer()
           + unlock()
           ~ closeConnections()
           ~ initGame()
           ~ initGame()
           - addListenersToModel()
+          - startTimer()
       }
     }
   }
@@ -76,7 +79,6 @@ title __CONTROLLER's Class Diagram__\n
           + Lobby()
           + convertToDTO()
           + getPlayers()
-          + publishEvent()
           ~ Lobby()
           ~ addPlayer()
           ~ getGameUUID()

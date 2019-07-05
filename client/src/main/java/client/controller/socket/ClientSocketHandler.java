@@ -11,7 +11,7 @@ import common.events.ModelEvent;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.lobby_events.LobbyEvent;
-import common.events.lobby_events.PlayersChangedEvent;
+import common.events.lobby_events.PlayerJoinedEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.requests.Request;
@@ -68,7 +68,12 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
-
+    /**
+     * iterate over possible requests, if none is found throw exception
+     * @param args a request you wast to parse
+     * @throws IOException theorically never
+     * @throws IllegalStateException if fails to parse the answer
+     */
     private void handle(String[] args) throws IOException {
         ViewMethodsEnum viewMethod = ViewMethodsEnum.valueOf(args[0]);
         switch (viewMethod) {
@@ -97,7 +102,7 @@ public class ClientSocketHandler implements Runnable {
                 break;
             case NOTIFY_EVENT:
                 LobbyEvent lobbyEvent = gson.fromJson(
-                        new JsonReader(new StringReader(args[1])), PlayersChangedEvent.class);
+                        new JsonReader(new StringReader(args[1])), PlayerJoinedEvent.class);
                 view.notifyEvent(lobbyEvent);
                 break;
             case REQUEST:
@@ -138,8 +143,8 @@ public class ClientSocketHandler implements Runnable {
                 break;
             case RESUME_GAME:
                 GameDTO game = gson.fromJson(
-                        new JsonReader(new StringReader(args[1])), GameDTO.class);
-                view.resumeGame(game);
+                        new JsonReader( new StringReader( args[1] ) ), GameDTO.class );
+                view.resumeGame( game );
                 break;
             default:
                 throw new IllegalStateException("Unexpected command: " + viewMethod);

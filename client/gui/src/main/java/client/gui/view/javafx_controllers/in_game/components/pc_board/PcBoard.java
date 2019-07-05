@@ -16,9 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
-/**
- * Represents your board in the came. Has some clickable buttons (hidden)
- */
 public class PcBoard implements MapChangeListener<PcColourEnum, PcDTO>,ChangeListener<KillShotTrackDTO> {
    static final String DIRECTORY = "/images/pc_board/";
    static final String FRENZY_SUBDIR = "/frenzy/";

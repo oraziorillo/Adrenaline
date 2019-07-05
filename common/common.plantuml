@@ -265,7 +265,7 @@ title __COMMON's Class Diagram__\n
   namespace common {
     namespace events {
       namespace lobby_events {
-        class common.events.lobby_events.PlayersChangedEvent {
+        class common.events.lobby_events.PlayerJoinedEvent {
         }
       }
     }
@@ -557,7 +557,7 @@ title __COMMON's Class Diagram__\n
   common.events.kill_shot_track_events.KillShotTrackSetEvent -up-|> common.events.kill_shot_track_events.KillShotTrackEvent
   common.events.lobby_events.LobbyEvent .up.|> java.io.Serializable
   common.events.lobby_events.LobbyEvent o-- common.dto_model.LobbyDTO : lobby
-  common.events.lobby_events.PlayersChangedEvent -up-|> common.events.lobby_events.LobbyEvent
+  common.events.lobby_events.PlayerJoinedEvent -up-|> common.events.lobby_events.LobbyEvent
   common.events.pc_board_events.AmmoChangedEvent -up-|> common.events.pc_board_events.PcBoardEvent
   common.events.pc_board_events.DamageMarksTakenEvent -up-|> common.events.pc_board_events.PcBoardEvent
   common.events.pc_board_events.DeathEvent -up-|> common.events.pc_board_events.PcBoardEvent

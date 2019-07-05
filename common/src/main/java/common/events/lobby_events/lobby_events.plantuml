@@ -20,12 +20,12 @@ title __LOBBY_EVENTS's Class Diagram__\n
   namespace common {
     namespace events {
       namespace lobby_events {
-        class common.events.lobby_events.PlayersChangedEvent {
+        class common.events.lobby_events.PlayerJoinedEvent {
             - eventID : int
-            + PlayersChangedEvent()
+            + PlayerJoinedEvent()
             + censor()
             + toString()
-            ~ PlayersChangedEvent()
+            ~ PlayerJoinedEvent()
         }
       }
     }
@@ -34,7 +34,7 @@ title __LOBBY_EVENTS's Class Diagram__\n
 
   common.events.lobby_events.LobbyEvent .up.|> java.io.Serializable
   common.events.lobby_events.LobbyEvent o-- common.dto_model.LobbyDTO : lobby
-  common.events.lobby_events.PlayersChangedEvent -up-|> common.events.lobby_events.LobbyEvent
+  common.events.lobby_events.PlayerJoinedEvent -up-|> common.events.lobby_events.LobbyEvent
 
 
 right footer

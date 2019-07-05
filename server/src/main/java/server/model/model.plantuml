@@ -118,7 +118,7 @@ title __MODEL's Class Diagram__\n
           - spawnPoints : List<Square>
           - squares : List<Square>
           + GameBoard()
-          + convertToDTO()
+          + convertoTo()
           + getColumns()
           + getFinalFrenzyKillShotTrackArray()
           + getKillShotTrack()
@@ -270,6 +270,7 @@ title __MODEL's Class Diagram__\n
           + payAmmo()
           + resetDamageTrack()
           ~ PcBoard()
+          ~ init()
       }
     }
   }

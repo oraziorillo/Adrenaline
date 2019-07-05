@@ -31,11 +31,4 @@ public class KillShotDTO implements DTO {
     public void setOverkilled(boolean overkilled) {
         this.overkilled = overkilled;
     }
-
-    @Override
-    public String toString() {
-        return skulled
-                ? "skull"
-                : colour.toString();
-    }
 }

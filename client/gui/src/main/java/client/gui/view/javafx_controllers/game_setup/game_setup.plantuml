@@ -37,7 +37,6 @@ title __GAME_SETUP's Class Diagram__\n
               + request()
               + resumeGame()
               + setPlayer()
-              + winners()
               - chooseMap()
               - choosePcColor()
               - chooseSkulls()

@@ -7,7 +7,6 @@ title __AUTHENTICATION's Class Diagram__\n
       namespace javafx_controllers {
         namespace authentication {
           class client.gui.view.javafx_controllers.authentication.UserAuthController {
-              - stage : Stage
               + UserAuthController()
               + ack()
               + acquireConnection()
@@ -25,7 +24,6 @@ title __AUTHENTICATION's Class Diagram__\n
               + onSquareUpdate()
               + request()
               + resumeGame()
-              + winners()
           }
         }
       }

@@ -5,8 +5,7 @@
 <?import java.lang.Double?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml" fx:id="mainPane"
-      fx:controller="client.gui.view.javafx_controllers.in_game.components.pc_board.OpponentBoard"
-      stylesheets="/css/pc_board/Pc.css">
+      fx:controller="client.view.gui.javafx_controllers.in_game.components.pc_board.OpponentBoard" stylesheets="/css/pc_board/Pc.css">
 
     <HBox alignment="TOP_CENTER">
         <fx:include source="vita.fxml" fx:id="vita"/>

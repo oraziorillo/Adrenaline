@@ -3,12 +3,6 @@
 title __GUI's Class Diagram__\n
 
   namespace client.gui {
-    class client.gui.ImageCache {
-    }
-  }
-  
-
-  namespace client.gui {
     class client.gui.LaunchGui {
     }
   }
@@ -23,8 +17,8 @@ title __GUI's Class Diagram__\n
   
 
   namespace client.gui {
-    namespace controller {
-      class client.gui.controller.GuiExceptionHandler {
+    namespace view {
+      class client.gui.view.GuiExceptionHandler {
       }
     }
   }
@@ -33,6 +27,14 @@ title __GUI's Class Diagram__\n
   namespace client.gui {
     namespace view {
       class client.gui.view.GuiView {
+      }
+    }
+  }
+  
+
+  namespace client.gui {
+    namespace view {
+      class client.gui.view.ImageCache {
       }
     }
   }
@@ -362,8 +364,8 @@ title __GUI's Class Diagram__\n
   client.gui.controller.GuiController o-- common.remote_interfaces.RemotePlayer : player
   client.gui.controller.GuiController o-- client.gui.view.GuiView : view
   client.gui.controller.GuiController o-- common.remote_interfaces.RemoteLoginController : loginController
-  client.gui.controller.GuiExceptionHandler .up.|> java.lang.Thread.UncaughtExceptionHandler
-  client.gui.controller.GuiExceptionHandler o-- common.remote_interfaces.RemotePlayer : player
+  client.gui.view.GuiExceptionHandler .up.|> java.lang.Thread.UncaughtExceptionHandler
+  client.gui.view.GuiExceptionHandler o-- common.remote_interfaces.RemotePlayer : player
   client.gui.view.GuiView .up.|> common.events.ModelEventListener
   client.gui.view.GuiView -up-|> client.view.AbstractView
   client.gui.view.GuiView o-- common.remote_interfaces.RemotePlayer : player

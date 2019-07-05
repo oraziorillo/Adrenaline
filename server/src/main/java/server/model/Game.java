@@ -14,6 +14,7 @@ import common.events.game_board_events.GameBoardSetEvent;
 import common.events.kill_shot_track_events.FinalFrenzyEvent;
 import common.events.kill_shot_track_events.KillShotTrackSetEvent;
 import common.events.pc_events.PcColourChosenEvent;
+import server.controller.Controller;
 import server.model.actions.Action;
 import server.model.deserializers.ActionDeserializer;
 import server.model.deserializers.SquareDeserializer;
@@ -151,11 +152,12 @@ public class Game {
         gameBoard = preLoadedGameBoards[numberOfMap - 1];
         preLoadedGameBoards = null;
 
+        gameBoard.setNumberOfMap(numberOfMap);
         gameBoard.init(weaponsDeck, ammoDeck);
         gameBoard.addModelEventHandler(events);
 
         //notify map set
-        events.fireEvent(new GameBoardSetEvent(gameBoard.convertToDTO(), numberOfMap));
+        events.fireEvent(new GameBoardSetEvent(gameBoard.convertoTo(), numberOfMap));
     }
 
 
@@ -405,7 +407,7 @@ public class Game {
 
     public GameDTO convertToDTO(){
         GameDTO gameDTO = new GameDTO();
-        gameDTO.setGameBoardDTO(gameBoard.convertToDTO());
+        gameDTO.setGameBoardDTO(gameBoard.convertoTo());
         gameDTO.setPcs(pcs.stream().map(Pc::convertToDTO).collect(Collectors.toSet()));
         gameDTO.setKillShotTrackDTO(gameBoard.getKillShotTrack().convertToDTO());
         return gameDTO;

@@ -15,6 +15,7 @@ public class RespawnState extends State {
     RespawnState(Controller controller) {
         super(controller);
         this.powerUpIndex = -1;
+        //cli.controller.startTimer();
         recordDeath();
         if (!deadPlayer.isOnLine()) {
             powerUpIndex = deadPlayer.getPc().getPowerUps().size() - 1;
@@ -25,9 +26,11 @@ public class RespawnState extends State {
 
     private void recordDeath() {
         deadPlayer = controller.getDeadPlayers().poll();
-        if (controller.getGame().scoreDeath(deadPlayer.getPc(), controller.getDeadPlayers().size() == 1))
-            controller.setLastPlayerIndex(controller.getCurrPlayerIndex());
-        deadPlayer.getPc().drawPowerUp(1);
+        if (deadPlayer != null) {
+            if (controller.getGame().scoreDeath(deadPlayer.getPc(), controller.getDeadPlayers().size() == 1))
+                controller.setLastPlayerIndex(controller.getCurrPlayerIndex());
+            deadPlayer.getPc().drawPowerUp(1);
+        }
     }
 
 

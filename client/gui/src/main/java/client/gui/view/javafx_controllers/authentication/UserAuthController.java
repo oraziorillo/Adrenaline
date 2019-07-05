@@ -16,29 +16,21 @@ import common.events.square_events.SquareEvent;
 import common.remote_interfaces.RemoteLoginController;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static common.enums.ControllerMethodsEnum.LOG_IN;
 import static common.enums.ControllerMethodsEnum.SIGN_UP;
 
-/**
- * contains authentication methods implemented
- */
 public class UserAuthController extends AbstractJavaFxController {
    
-   private final Stage stage;
-   
-   public UserAuthController(Stage stage) {
-      this.stage = stage;
+   public UserAuthController() {
    }
    
    @Override
@@ -67,7 +59,7 @@ public class UserAuthController extends AbstractJavaFxController {
     */
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
-      Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?\nI suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
+      Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");
       Optional<ButtonType> response = rmiOrSocket.showAndWait();
@@ -111,7 +103,7 @@ public class UserAuthController extends AbstractJavaFxController {
               new ButtonType("Login", ButtonBar.ButtonData.NO),
               new ButtonType("Register", ButtonBar.ButtonData.YES)
       );
-      return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES ) ? SIGN_UP : LOG_IN;
+      return firstTime.showAndWait().get().getButtonData().equals( ButtonBar.ButtonData.YES )?SIGN_UP:LOG_IN;
    }
    
    /**
@@ -141,7 +133,6 @@ public class UserAuthController extends AbstractJavaFxController {
    @Override
    public UUID acquireToken() {
       TextInputDialog tokenDialog = new TextInputDialog("Login");
-      tokenDialog.setOnCloseRequest( e -> stage.close());
       tokenDialog.setHeaderText("Insert your token");
       tokenDialog.setContentText(null);
       Button okButton = (Button) tokenDialog.getDialogPane().lookupButton( ButtonType.OK);
@@ -199,16 +190,11 @@ public class UserAuthController extends AbstractJavaFxController {
    }
    
    /**
-    * @throws IllegalStateException always: this controller is not supposed to handle a game
+    * @throws IllegalStateException always: this cli.controller is not supposed to handle a game
     */
    @Override
    public void resumeGame(GameDTO game) {
       throw new IllegalStateException( "Should be in InGameState" );
-   }
-   
-   @Override
-   public void winners(List<String> gameWinners) {
-   
    }
    
    @Override

@@ -27,17 +27,6 @@ title __DESERIALIZERS's Class Diagram__\n
   namespace server {
     namespace model {
       namespace deserializers {
-        class server.model.deserializers.GameBoardDeserializer {
-            + deserialize()
-        }
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      namespace deserializers {
         class server.model.deserializers.PowerUpsDeckDeserializer {
             + deserialize()
         }
@@ -70,7 +59,6 @@ title __DESERIALIZERS's Class Diagram__\n
 
   server.model.deserializers.ActionDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.AmmoDeckDeserializer .up.|> com.google.gson.JsonDeserializer
-  server.model.deserializers.GameBoardDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.PowerUpsDeckDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.SquareDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.WeaponsDeckDeserializer .up.|> com.google.gson.JsonDeserializer

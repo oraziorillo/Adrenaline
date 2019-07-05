@@ -89,7 +89,6 @@ title __VIEW_STATES's Class Diagram__\n
             {abstract} + resumeGame()
             + setPlayer()
             {static} + setTopView()
-            + winners()
             # getJavafxController()
             # setJavafxController()
             ~ ViewState()

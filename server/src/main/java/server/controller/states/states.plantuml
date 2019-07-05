@@ -67,6 +67,7 @@ title __STATES's Class Diagram__\n
             - hasToRespawn : boolean
             - nextState : int
             - numberOfTagbackGrenades : int
+            - powerUpTimer : Timer
             - wantToUseTagbackGrenade : boolean
             + InactiveState()
             + checkTagbackGrenadeConditions()

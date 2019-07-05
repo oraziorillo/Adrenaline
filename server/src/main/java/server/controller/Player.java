@@ -5,11 +5,11 @@ import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
 import common.enums.PcColourEnum;
 import common.events.requests.Request;
-import common.exceptions.PlayerAlreadyLoggedInException;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
 import server.controller.states.State;
 import server.database.DatabaseHandler;
+import common.exceptions.PlayerAlreadyLoggedInException;
 import server.model.Game;
 import server.model.Pc;
 import server.model.WeaponCard;
@@ -45,11 +45,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     public RemoteView getView() {
         return view;
-    }
-
-
-    public void killView() {
-        view = null;
     }
 
 
@@ -102,9 +97,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-    /**
-     * used when a player has to respawn
-     */
     synchronized void hasToRespawn(){
         if (currState.isInactive()){
             currState.setHasToRespawn(true);
@@ -119,19 +111,11 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-    /**
-     *
-     */
     public void notifyDamaged() {
         currState.checkTagbackGrenadeConditions(this);
     }
 
 
-    /**
-     * used to handle disconnection
-     *
-     * @param onLine
-     */
     public void setOnLine(boolean onLine) {
         this.onLine = onLine;
     }
@@ -338,6 +322,10 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
         return true;
     }
 
+
+    public void killView(){
+        this.view = null;
+    }
 
     public synchronized void forcePass(){
         currState = currState.forcePass();

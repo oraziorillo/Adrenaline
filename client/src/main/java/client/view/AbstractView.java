@@ -49,9 +49,5 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
     }
     
     public void error(String error) {}
-
-    @Override
-    public boolean isReachable() throws RemoteException {
-        return true;
-    }
+   
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 public interface RemotePlayer extends Remote {
 
-
     void chooseMap(int n) throws RemoteException;
 
     void chooseNumberOfSkulls(int n) throws RemoteException;

@@ -26,6 +26,16 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:16.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:12" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:linux:12" level="project" />
+    <orderEntry type="library" name="Maven: org.testng:testng:7.0.0-beta7" level="project" />
+    <orderEntry type="library" name="Maven: com.beust:jcommander:1.72" level="project" />
   </component>
   <component name="sonarModuleSettings">
     <option name="localAnalysisScripName" value="&lt;PROJECT&gt;" />

@@ -13,22 +13,10 @@ title __CONTROLLER's Class Diagram__\n
   }
   
 
-  namespace client.gui {
-    namespace controller {
-      class client.gui.controller.GuiExceptionHandler {
-          + GuiExceptionHandler()
-          + uncaughtException()
-      }
-    }
-  }
-  
-
   client.gui.controller.GuiController -up-|> javafx.application.Application
   client.gui.controller.GuiController o-- common.remote_interfaces.RemotePlayer : player
   client.gui.controller.GuiController o-- client.gui.view.GuiView : view
   client.gui.controller.GuiController o-- common.remote_interfaces.RemoteLoginController : loginController
-  client.gui.controller.GuiExceptionHandler .up.|> java.lang.Thread.UncaughtExceptionHandler
-  client.gui.controller.GuiExceptionHandler o-- common.remote_interfaces.RemotePlayer : player
 
 
 right footer

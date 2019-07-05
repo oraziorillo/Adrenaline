@@ -4,6 +4,8 @@ import server.controller.Controller;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
+import java.net.InetAddress;
+
 import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 /**Turn beginning state*/
@@ -13,6 +15,7 @@ public class StartTurnState extends State {
 
     StartTurnState(Controller controller) {
         super(controller);
+        //cli.controller.startTimer();
         controller.ackCurrent("You can:\n> run around\n> grab stuff\n> shoot people\n> use a power up");
     }
 

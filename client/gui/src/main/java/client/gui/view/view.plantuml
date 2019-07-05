@@ -4,6 +4,16 @@ title __VIEW's Class Diagram__\n
 
   namespace client.gui {
     namespace view {
+      class client.gui.view.GuiExceptionHandler {
+          + GuiExceptionHandler()
+          + uncaughtException()
+      }
+    }
+  }
+  
+
+  namespace client.gui {
+    namespace view {
       class client.gui.view.GuiView {
           # hostServices : HostServices
           + GuiView()
@@ -34,6 +44,20 @@ title __VIEW's Class Diagram__\n
   }
   
 
+  namespace client.gui {
+    namespace view {
+      class client.gui.view.ImageCache {
+          {static} - cached : HashMap<String, Image>
+          {static} + loadImage()
+          - ImageCache()
+          {static} - loadNewImage()
+      }
+    }
+  }
+  
+
+  client.gui.view.GuiExceptionHandler .up.|> java.lang.Thread.UncaughtExceptionHandler
+  client.gui.view.GuiExceptionHandler o-- common.remote_interfaces.RemotePlayer : player
   client.gui.view.GuiView .up.|> common.events.ModelEventListener
   client.gui.view.GuiView -up-|> client.view.AbstractView
   client.gui.view.GuiView o-- common.remote_interfaces.RemotePlayer : player

@@ -12,7 +12,7 @@ public class ClientPropertyLoader extends PropertyLoader {
    private static ClientPropertyLoader instance;
    
    private ClientPropertyLoader() {
-       super();
+      super();
    }
    
    public static ClientPropertyLoader getInstance() {

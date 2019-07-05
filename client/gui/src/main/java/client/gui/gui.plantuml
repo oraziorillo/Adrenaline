@@ -3,16 +3,6 @@
 title __GUI's Class Diagram__\n
 
   namespace client.gui {
-    class client.gui.ImageCache {
-        {static} - cached : HashMap<String, Image>
-        {static} + loadImage()
-        - ImageCache()
-        {static} - loadNewImage()
-    }
-  }
-  
-
-  namespace client.gui {
     class client.gui.LaunchGui {
         {static} + main()
     }

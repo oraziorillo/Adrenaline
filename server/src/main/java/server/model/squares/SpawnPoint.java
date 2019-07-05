@@ -34,11 +34,10 @@ public class SpawnPoint extends Square {
     }
 
 
-    public SpawnPoint(int row, int col, SquareColourEnum colour) {
-        super(row, col, colour);
+    public SpawnPoint(int x, int y, SquareColourEnum colour) {
+        super(x, y, colour);
         this.weaponToGrabIndex = -1;
         this.weaponToDropIndex = -1;
-        this.weapons = new WeaponCard[CARDS_ON_SPAWN_POINT];
     }
 
 
@@ -46,7 +45,7 @@ public class SpawnPoint extends Square {
     public void init(Deck<WeaponCard> weaponsDeck, Deck<AmmoTile> ammoDeck) {
         this.weaponsDeck = weaponsDeck;
         for (int i = 0; i < CARDS_ON_SPAWN_POINT; i++)
-            weapons[i] = this.weaponsDeck.draw();
+            weapons[i] = weaponsDeck.draw();
     }
 
 
@@ -168,9 +167,9 @@ public class SpawnPoint extends Square {
     @Override
     public String itemToString() {
         StringBuilder items = new StringBuilder();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 1; i <= 3; i++) {
             if (weapons[i] != null)
-                items.append("\n[").append(i+1).append("] ").append(weapons[i].toString());
+                items.append("\n[").append(i).append("] ").append(weapons[i].toString());
         }
         return items.toString();
     }
@@ -182,7 +181,7 @@ public class SpawnPoint extends Square {
         squareDTO.setCol(getCol());
         squareDTO.setColour(getColour());
         squareDTO.setTargetable(isTargetable());
-        squareDTO.setPcs(getPcs().stream().map(Pc::getColour).collect(Collectors.toSet()));
+        squareDTO.setPcs(getPcs().stream().map(pc -> pc.getColour()).collect(Collectors.toSet()));
         squareDTO.setWeapons(convertWeaponsDTO());
         return squareDTO;
     }

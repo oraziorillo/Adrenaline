@@ -15,16 +15,13 @@ import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import static common.Constants.REGEX;
 import static common.enums.ViewMethodsEnum.*;
 
 public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, ModelEventListener {
-
-   /**
-    * proxy for the remote view
-    */
 
    private Gson gson = new Gson();
 
@@ -100,25 +97,22 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    public ModelEventListener getListener() {
       return this;
    }
-
-
+   
    @Override
    public void resumeGame(GameDTO game) {
-      out.println(RESUME_GAME + REGEX + gson.toJson(game, GameDTO.class));
+      out.println( RESUME_GAME + REGEX + gson.toJson( game ) );
       out.flush();
    }
 
-
    @Override
-   public void winners(List<String> gameWinners)  {
-      out.println( WINNERS + REGEX + gson.toJson( gameWinners ));
+   public void winners(List<String> winners) throws RemoteException {
+      out.println(WINNERS + REGEX + gson.toJson(winners));
       out.flush();
    }
 
-
    @Override
-   public void close() {
-      out.println( CLOSE );
+   public void close() throws RemoteException {
+      out.println(CLOSE);
       out.flush();
    }
 

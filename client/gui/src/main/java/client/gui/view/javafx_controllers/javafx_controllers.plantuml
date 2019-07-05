@@ -26,7 +26,6 @@ title __JAVAFX_CONTROLLERS's Class Diagram__\n
             + setHostServices()
             + setPlayer()
             + setTopView()
-            {abstract} + winners()
             # AbstractJavaFxController()
         }
       }

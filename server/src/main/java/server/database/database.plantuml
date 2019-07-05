@@ -4,11 +4,11 @@ title __DATABASE's Class Diagram__\n
 
   namespace server {
     namespace database {
-      class server.database.CustomizedHashMap {
+      class server.database.Caterpillar {
           - primaryKeys : ArrayList<P>
           - secondaryKeys : ArrayList<S>
           - values : ArrayList<V>
-          + CustomizedHashMap()
+          + Caterpillar()
           + get()
           + getPrimaryAtIndex()
           + getPrimaryKey()

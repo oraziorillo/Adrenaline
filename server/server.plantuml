@@ -238,7 +238,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace database {
-      class server.database.CustomizedHashMap {
+      class server.database.Caterpillar {
       }
     }
   }
@@ -278,14 +278,6 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class AmmoSquareTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
       class server.model.AmmoTile {
       }
     }
@@ -294,31 +286,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class AmmoTileDeckTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class AmmoTileTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
       class server.model.Deck {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class DeckTest {
       }
     }
   }
@@ -350,23 +318,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class GameBoardTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
       class server.model.KillShot {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class KillShotTest {
       }
     }
   }
@@ -390,14 +342,6 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class MovementOnMapTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
       class server.model.Pc {
       }
     }
@@ -414,30 +358,6 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class PcBoardTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class PcTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class PersistenceTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
       class server.model.PowerUpCard {
       }
     }
@@ -446,63 +366,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class PowerUpDeckTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class RandomTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class SerializerTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class SpawnPointTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class SquareTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class TargetCheckerTest {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
       class server.model.WeaponCard {
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      class WeaponsDeckTest {
       }
     }
   }
@@ -552,16 +416,6 @@ title __SERVER's Class Diagram__\n
     namespace model {
       namespace deserializers {
         class server.model.deserializers.AmmoDeckDeserializer {
-        }
-      }
-    }
-  }
-  
-
-  namespace server {
-    namespace model {
-      namespace deserializers {
-        class server.model.deserializers.GameBoardDeserializer {
         }
       }
     }
@@ -859,7 +713,6 @@ title __SERVER's Class Diagram__\n
   server.model.actions.MovementAction o-- server.model.target_checkers.TargetChecker : destinationChecker
   server.model.deserializers.ActionDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.AmmoDeckDeserializer .up.|> com.google.gson.JsonDeserializer
-  server.model.deserializers.GameBoardDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.PowerUpsDeckDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.SquareDeserializer .up.|> com.google.gson.JsonDeserializer
   server.model.deserializers.WeaponsDeckDeserializer .up.|> com.google.gson.JsonDeserializer

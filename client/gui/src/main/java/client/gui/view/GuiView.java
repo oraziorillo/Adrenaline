@@ -84,7 +84,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
    @Override
    public void request(Request request) throws RemoteException {
-      currentGui.request( request );
+
    }
 
 
@@ -98,8 +98,7 @@ public class GuiView extends AbstractView implements ModelEventListener {
    public ModelEventListener getListener() {
       return this;
    }
-
-
+   
    @Override
    public void resumeGame(GameDTO game) {
       currentGui.resumeGame(game);
@@ -107,22 +106,21 @@ public class GuiView extends AbstractView implements ModelEventListener {
 
 
    @Override
-   public boolean isReachable() {
+   public void winners(List<String> winners) throws RemoteException {
+
+   }
+
+   @Override
+   public void close() throws RemoteException {
+
+   }
+
+   @Override
+   public boolean isReachable() throws RemoteException {
       return true;
    }
-   
-   
-   @Override
-   public void winners(List<String> gameWinners) {
-      currentGui.winners(gameWinners);
-   }
-   
-   @Override
-   public void close() {
-   
-   }
-   
-   
+
+
    public void nextState() {
       try {
          currentGui = currentGui.nextState();

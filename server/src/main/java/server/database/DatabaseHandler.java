@@ -60,12 +60,6 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * init a file from json
-     * @param file to be initialized
-     * @param gson the object used to serialize/deserialize json files
-     * @see Gson
-     */
     private synchronized void initFromFile(FileEnum file, Gson gson) {
         try (JsonReader reader = new JsonReader(new FileReader(file.getFilePath()))) {
             Type type;
@@ -117,10 +111,11 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * @param token
-     * @return true iff the player linked to the specified token has a game not finished to join to
-     */
+    public synchronized boolean isPendantGame(UUID gameUUID) {
+        return gamePathByUUID.containsKey(gameUUID);
+    }
+
+
     public synchronized boolean hasPendentGame(UUID token) {
         return playerInfoByToken.get(token).hasPendentGame();
     }
@@ -156,56 +151,30 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * @param playerToken
-     * @return UUID of the specified player's game
-     */
     public synchronized UUID getGameUUID(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getIncompleteGameID();
     }
 
 
-    /**
-     * @param gameUUID unique identifier for a game
-     * @return path of the saved game
-     */
     public synchronized String getGamePath(UUID gameUUID) {
         return gamePathByUUID.get(gameUUID);
     }
 
 
-    /**
-     * @param gameUUID
-     * @return true iff the game is saved
-     */
     public synchronized boolean containsGame(UUID gameUUID) {
         return gamePathByUUID.containsKey(gameUUID);
     }
 
 
-    /**
-     * adds a couple of uuid-colour in the data structure used to host the listeners
-     * @param playerToken
-     * @param pcColour
-     */
     public synchronized void setPlayerColour(UUID playerToken, PcColourEnum pcColour) {
         playerInfoByToken.get(playerToken).setPcColour(pcColour);
     }
-
-
 
     public synchronized PcColourEnum getPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPcColour();
     }
 
 
-    /**
-     * registers an entry for the database
-     *
-     * @param token    unique identifier
-     * @param username of the player
-     * @param player
-     */
     public synchronized void registerPlayer(UUID token, String username, Player player) {
         tokensByUserName.put(username, token);
         playerInfoByToken.put(token, new PlayerInfo(username, player));
@@ -214,11 +183,6 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * saves the status of the current game
-     *
-     * @param controller
-     */
     public synchronized void save(Controller controller) {
         UUID gameUUID = controller.getGameUUID();
         List<Player> players = controller.getPlayers();
@@ -229,9 +193,9 @@ public class DatabaseHandler {
         }
         GameInfo gameInfo = new GameInfo(
                 players
-                        .stream()
-                        .map(Player::getToken)
-                        .collect(Collectors.toList()));
+                .stream()
+                .map(Player::getToken)
+                .collect(Collectors.toList()));
         gameInfo.gameStarted();
         gameInfo.setCurrPlayerIndex(controller.getCurrPlayerIndex());
         gameInfo.setLastPlayerIndex(controller.getLastPlayerIndex());
@@ -242,11 +206,8 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * used when a game is ended
-     * @param controller
-     */
     public synchronized void gameEnded(Controller controller) {
+        //Todo da rivedere e usare
         List<UUID> playersInGame = controller.getPlayers().stream().map(Player::getToken).collect(Collectors.toList());
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded());
         File gameFile = new File(generateFilePath(controller.getGameUUID()));
@@ -257,13 +218,7 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * overwrites a file
-     * @param file to be overwritten
-     */
     private synchronized void overwrite(FileEnum file) {
-    
-        System.out.println(file.getFilePath());
 
         try (FileWriter writer = new FileWriter(file.getFilePath())) {
             switch (file) {
@@ -285,11 +240,6 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * used to overwrite the game info
-     * @param gameInfo to be overwritten
-     * @param gameUUID unique id for the game
-     */
     private synchronized void overWrite(GameInfo gameInfo, UUID gameUUID) {
         try (FileWriter writer = new FileWriter(gamePathByUUID.get(gameUUID))) {
             gson.toJson(gameInfo, writer);
@@ -299,10 +249,6 @@ public class DatabaseHandler {
     }
 
 
-    /**
-     * deletes the content of a file
-     * @param file to be cleared
-     */
     private synchronized void resetFile(FileEnum file) {
         switch (file) {
             case TOKENS_BY_USER_NAME:
@@ -322,10 +268,13 @@ public class DatabaseHandler {
 
 
     private synchronized String generateFilePath(UUID uuid) {
-        return "files/game_infos/" + uuid + ".json";
+        return "src/main/java/server/database/files/game_infos/" + uuid + ".json";
     }
 
     public PcColourEnum getCurrPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPlayer().getCurrPc();
     }
+
+
+    //TODO mettere cli.view a null quando il player si disconnette
 }

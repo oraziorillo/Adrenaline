@@ -26,11 +26,15 @@ public class PcBoard {
         this.pcValue = PC_VALUES;
         this.damageTrack = new PcColourEnum[LIFE_POINTS];
         this.ammo = new short[AMMO_COLOURS_NUMBER];
+        init();
+    }
+
+
+    void init(){
         for(int i = 0; i < AMMO_COLOURS_NUMBER; i++){
             ammo[i] = 1;
         }
     }
-
 
     public PcColourEnum getColour() {
         return colour;

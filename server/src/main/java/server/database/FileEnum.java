@@ -2,9 +2,9 @@ package server.database;
 
 public enum FileEnum {
 
-    TOKENS_BY_USER_NAME("files/tokensByUserName.json"),
-    PLAYER_INFO_BY_TOKEN("files/playerInfoByToken.json"),
-    GAME_PATH_BY_UUID("files/gamePathByToken.json");
+    TOKENS_BY_USER_NAME("src/main/java/server/database/files/tokensByUserName.json"),
+    PLAYER_INFO_BY_TOKEN("src/main/java/server/database/files/playerInfoByToken.json"),
+    GAME_PATH_BY_UUID("src/main/java/server/database/files/gamePathByToken.json");
 
     private String filePath;
 
@@ -12,7 +12,6 @@ public enum FileEnum {
     FileEnum(String filePath) {
         this.filePath = filePath;
     }
-
 
     public static FileEnum fromPath(String fileName) {
         for (FileEnum f : FileEnum.values())
