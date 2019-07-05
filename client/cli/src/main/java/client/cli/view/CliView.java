@@ -152,7 +152,7 @@ public class CliView extends AbstractView {
     }
 
     @Override
-    public void chatMessage(String message) throws RemoteException {
+    public synchronized void chatMessage(String message) throws RemoteException {
         //not implemented on cli
     }
 
@@ -165,7 +165,7 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public void request(Request request) throws RemoteException {
+    public synchronized void request(Request request) throws RemoteException {
         printMessage(request.toString());
     }
 
@@ -177,13 +177,13 @@ public class CliView extends AbstractView {
     
     
     @Override
-    public void resumeGame(GameDTO game) throws RemoteException {
+    public synchronized void resumeGame(GameDTO game) throws RemoteException {
         printMessage(game.toString());
     }
 
 
     @Override
-    public boolean isReachable() throws RemoteException {
+    public synchronized boolean isReachable() throws RemoteException {
         return true;
     }
 

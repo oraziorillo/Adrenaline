@@ -60,35 +60,35 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      out.println(ON_GAME_BOARD_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_GAME_BOARD_UPDATE + REGEX + gson.toJson(event, GameBoardEvent.class));
       out.flush();
    }
 
 
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-      out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + gson.toJson(event, KillShotTrackEvent.class));
       out.flush();
    }
 
 
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
-      out.println(ON_PC_BOARD_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_PC_BOARD_UPDATE + REGEX + gson.toJson(event, PcBoardEvent.class));
       out.flush();
    }
 
 
    @Override
    public void onPcUpdate(PcEvent event) {
-      out.println(ON_PC_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_PC_UPDATE + REGEX + gson.toJson(event, PcEvent.class));
       out.flush();
    }
 
 
    @Override
    public void onSquareUpdate(SquareEvent event) {
-      out.println(ON_SQUARE_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_SQUARE_UPDATE + REGEX + gson.toJson(event, SquareEvent.class));
       out.flush();
    }
 
@@ -97,10 +97,11 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    public ModelEventListener getListener() {
       return this;
    }
-   
+
+
    @Override
    public void resumeGame(GameDTO game) {
-      out.println( RESUME_GAME + REGEX + gson.toJson( game ) );
+      out.println(RESUME_GAME + REGEX + gson.toJson(game, GameDTO.class));
       out.flush();
    }
 

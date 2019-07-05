@@ -41,4 +41,10 @@ public class GameBoardDTO implements DTO {
         this.squares = squares;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder gameBoard = new StringBuilder();
+        squares.forEach(s -> gameBoard.append("\n").append(s.description()).append("\n"));
+        return gameBoard.toString();
+    }
 }

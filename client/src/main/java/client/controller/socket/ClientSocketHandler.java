@@ -138,8 +138,8 @@ public class ClientSocketHandler implements Runnable {
                 break;
             case RESUME_GAME:
                 GameDTO game = gson.fromJson(
-                        new JsonReader( new StringReader( args[1] ) ), GameDTO.class );
-                view.resumeGame( game );
+                        new JsonReader(new StringReader(args[1])), GameDTO.class);
+                view.resumeGame(game);
                 break;
             default:
                 throw new IllegalStateException("Unexpected command: " + viewMethod);

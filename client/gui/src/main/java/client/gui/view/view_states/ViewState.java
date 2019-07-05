@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Abstract cli.view state class.
+ * Abstract cli.client.view state class.
  * Most methods just throw IllegalStateException, which is non-blocking, to notify unexpected calls
  * Concrete states will override those methods so exception is no longer thrown
  */

@@ -43,7 +43,7 @@ public class Map {
    
    private EnumMap<PcColourEnum,Circle> pcCircles = new EnumMap<>( PcColourEnum.class );
    private EnumMap<PcColourEnum,VBox> opponentBoardGraphics = new EnumMap<>( PcColourEnum.class );
-   private EnumMap<PcColourEnum, OpponentBoard> opponentBoardControllers = new EnumMap<>(PcColourEnum.class);
+    private EnumMap<PcColourEnum, OpponentBoard> opponentBoardControllers = new EnumMap<>(PcColourEnum.class);
    private EnumMap<PcColourEnum,ScaleTransition> transitions = new EnumMap<>(PcColourEnum.class);
    private ImageView[][] ammos = new ImageView[ROWS][COLS];
    private DoubleProperty innerGridSize = new SimpleDoubleProperty();
@@ -190,7 +190,7 @@ public class Map {
    private void squareClicked(int row,int col){
       try {
          player.chooseSquare( row,col );
-         ammos[row][col].setEffect( InGameController.selectedObjectEffect );
+          ammos[row][col].setEffect(InGameController.selectedObjectEffect);
       } catch ( IOException ex ) {
          Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(),ex );
       }
@@ -217,7 +217,7 @@ public class Map {
       board.toFront();
       scale.setFromX( 0 ); scale.setFromY( 0 );
       scale.setToX( 1 ); scale.setToY( 1 );
-      transitions.put( color,scale );
+       transitions.put(color, scale);
       board.setScaleX( 0 ); board.setScaleY( 0 );
       opponentBoardGraphics.put( color,board );
       opponentBoardControllers.put( color,boardController );
@@ -227,7 +227,7 @@ public class Map {
    private synchronized void showBoard(PcColourEnum color){
       ScaleTransition scale = transitions.get( color );
       if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
-         scale.setRate( 1 );
+          scale.setRate(1);
          VBox board;
          Circle circle = pcCircles.get( color );
          board = opponentBoardGraphics.get( color );
@@ -241,7 +241,7 @@ public class Map {
    private synchronized void hideBoard(PcColourEnum color){
       ScaleTransition scale = transitions.get( color );
       if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
-         scale.setRate( -1 );
+          scale.setRate(-1);
          scale.stop();
          scale.setRate( -1 );
          scale.setOnFinished( e -> {
@@ -273,8 +273,8 @@ public class Map {
          c.setEffect( null );
       for(PcColourEnum c: PcColourEnum.values())
          hideBoard( c );
-      for(ImageView[] imgs: ammos)
-         for(ImageView img:imgs)
-            img.setEffect( null );
+       for (ImageView[] imgs : ammos)
+           for (ImageView img : imgs)
+               img.setEffect(null);
    }
 }

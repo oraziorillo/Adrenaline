@@ -165,6 +165,19 @@ public class Lobby {
     }
 
 
+    public void publishEvent(LobbyEvent event) {
+        LobbyEvent censored = event.censor();
+        for (Player p : players) {
+            try {
+                p.getView().notifyEvent(censored);
+            } catch (RemoteException e) {
+                p.quit();
+                removePlayer(p);
+            }
+        }
+    }
+
+
     public LobbyDTO convertToDTO() {
         List<String> userNames = new ArrayList<>();
         players.stream()

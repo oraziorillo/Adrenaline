@@ -35,7 +35,7 @@ public abstract class AbstractJavaFxController implements ChangeListener<Number>
     */
    protected RemotePlayer player;
    /**
-    * the actually exported cli.view
+    * the actually exported cli.client.view
     */
    protected GuiView topView;
    

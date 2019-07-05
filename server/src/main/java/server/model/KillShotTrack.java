@@ -59,17 +59,17 @@ public class KillShotTrack {
 
 
     public KillShotTrackDTO convertToDTO(){
-        KillShotTrackDTO killShotTracksDTO = new KillShotTrackDTO();
+        KillShotTrackDTO killShotTrackDTO = new KillShotTrackDTO();
         KillShotDTO[] killShotDTOs = new KillShotDTO[killShotTrack.length];
         for (int i = 0; i < killShotTrack.length; i++){
             killShotDTOs[i] = killShotTrack[i].convertToDTO();
         }
-        KillShotDTO[] finalFrenzykillShotDTOs = new KillShotDTO[finalFrenzyKillShotTrack.length];
+        KillShotDTO[] finalFrenzyKillShotDTOs = new KillShotDTO[finalFrenzyKillShotTrack.length];
         for (int i = 0; i < finalFrenzyKillShotTrack.length; i++){
-            killShotDTOs[i] = finalFrenzyKillShotTrack[i].convertToDTO();
+            finalFrenzyKillShotDTOs[i] = finalFrenzyKillShotTrack[i].convertToDTO();
         }
-        killShotTracksDTO.setKillShotTrack(killShotDTOs);
-        killShotTracksDTO.setFinalFrenzyKillShotTrack(finalFrenzykillShotDTOs);
-        return  killShotTracksDTO;
+        killShotTrackDTO.setKillShotTrack(killShotDTOs);
+        killShotTrackDTO.setFinalFrenzyKillShotTrack(finalFrenzyKillShotDTOs);
+        return  killShotTrackDTO;
     }
 }

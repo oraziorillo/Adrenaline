@@ -4,13 +4,14 @@ import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class GameDTO {
 
-    GameBoardDTO gameBoardDTO;
-    Set<PcDTO> pcs;
-    KillShotTrackDTO killShotTrackDTO;
+    private GameBoardDTO gameBoardDTO;
+    private Set<PcDTO> pcs;
+    private KillShotTrackDTO killShotTrackDTO;
 
 
     public GameBoardDTO getGameBoardDTO() {
@@ -29,10 +30,6 @@ public class GameDTO {
         this.pcs = pcs;
     }
 
-    public void addPc(PcDTO pc) {
-        pcs.add(pc);
-    }
-
     public KillShotTrackDTO getKillShotTrackDTO() {
         return killShotTrackDTO;
     }
@@ -43,32 +40,32 @@ public class GameDTO {
 
     public GameDTO getCensoredDTOFor(PcColourEnum colour) {
         GameDTO censoredGame = new GameDTO();
-        setKillShotTrackDTO(killShotTrackDTO);
-        setGameBoardDTO(gameBoardDTO);
+        censoredGame.setKillShotTrackDTO(killShotTrackDTO);
+        censoredGame.setGameBoardDTO(gameBoardDTO);
+        Set<PcDTO> censoredPcsDTO = new HashSet<>();
         for (PcDTO currPc : pcs) {
             if (!currPc.getColour().equals(colour)) {
                 PcDTO censoredPc = currPc.getCensoredDTO();
-                censoredGame.addPc(censoredPc);
+                censoredPcsDTO.add(censoredPc);
             } else
-                censoredGame.addPc(currPc);
+                censoredPcsDTO.add(currPc);
         }
+        censoredGame.setPcs(censoredPcsDTO);
         return censoredGame;
     }
 
     @Override
     public String toString() {
         StringBuilder gameString = new StringBuilder("Game resumed!\n");
-        for (SquareDTO s : gameBoardDTO.getSquares())
-            gameString.append(s.toString());
+        gameString.append(gameBoardDTO.toString());
         gameString.append("\nKillshot track:\n").append(killShotTrackDTO.toString());
         pcs.parallelStream().filter(p -> !p.isCensored()).findFirst().ifPresent(p -> {
-            gameString.append("\nYour character is:\n").append(p.getName())
+            gameString.append("\n\nYour character is:\n").append(p.getName())
                     .append("\n> points:\t").append(p.getPcBoard().getPoints())
                     .append("\n> position:\t").append(p.squareToString())
                     .append("\n> ammo:\t");
             appendPcBoard(gameString, p);
-            gameString.append("\n")
-                    .append("\n> weapons:\t").append(Arrays.toString(p.getWeapons()))
+            gameString.append("> weapons:\t").append(Arrays.toString(p.getWeapons()))
                     .append("\n> power ups\t").append(Arrays.toString(p.getPowerUps().toArray()));
         });
         gameString.append("\n\n");
@@ -78,8 +75,7 @@ public class GameDTO {
                     .append("\n> position:\t").append(p.squareToString())
                     .append("\n> ammo:\t");
             appendPcBoard(gameString, p);
-            gameString.append("\n")
-                    .append("\n> weapons:\t").append(Arrays.toString(p.getWeapons()))
+            gameString.append("\n> weapons:\t").append(Arrays.toString(p.getWeapons()))
                     .append("\n\n");
         });
         return gameString.toString();
@@ -88,15 +84,15 @@ public class GameDTO {
     private void appendPcBoard(StringBuilder gameString, PcDTO p) {
         for (int i = 0; i < AmmoEnum.values().length; i++)
             if (p.getPcBoard().getAmmo()[i] != 0) {
-                gameString.append(p.getPcBoard().getAmmo()[i]).append(" ").append(PcColourEnum.values()[i]).append("\t");
+                gameString.append(p.getPcBoard().getAmmo()[i]).append(" ").append(AmmoEnum.values()[i]).append("\t");
             }
-        gameString.append("\n")
-                .append("\n> damage track:\t").append(Arrays.toString(p.getPcBoard().getDamageTrack()))
-                .append("\n> marks:\t");
+        gameString.append("\n> damage track:\t").append(Arrays.toString(p.getPcBoard().getDamageTrack()))
+                .append("\n> marks:\t[");
         for (int i = 0; i < PcColourEnum.values().length; i++) {
             if (p.getPcBoard().getMarks()[i] != 0) {
                 gameString.append(p.getPcBoard().getMarks()[i]).append(" ").append(PcColourEnum.values()[i]).append("\t");
             }
         }
+        gameString.append("]");
     }
 }

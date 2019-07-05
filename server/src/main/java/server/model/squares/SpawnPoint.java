@@ -34,8 +34,8 @@ public class SpawnPoint extends Square {
     }
 
 
-    public SpawnPoint(int x, int y, SquareColourEnum colour) {
-        super(x, y, colour);
+    public SpawnPoint(int row, int col, SquareColourEnum colour) {
+        super(row, col, colour);
         this.weaponToGrabIndex = -1;
         this.weaponToDropIndex = -1;
     }

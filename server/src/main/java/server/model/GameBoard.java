@@ -109,7 +109,7 @@ public class GameBoard {
         if (row >= rows || row < 0 || col >= columns || col < 0)
             return null;
         Optional<Square> currSquare = squares.stream()
-                .filter(s -> (col == s.getCol() && row == s.getRow()))
+                .filter(s -> (row == s.getRow() && col == s.getCol()))
                 .findFirst();
         return currSquare.orElse(null);
     }
@@ -149,12 +149,12 @@ public class GameBoard {
     }
 
 
-    public GameBoardDTO convertoTo(){
+    public GameBoardDTO convertToDTO(){
         GameBoardDTO gameBoardDTO = new GameBoardDTO();
         gameBoardDTO.setNumberOfMap(numberOfMap);
         gameBoardDTO.setRows(rows);
         gameBoardDTO.setColumns(columns);
-        //gameBoardDTO.setSquares(squares.stream().map(Square::convertToDTO).collect(Collectors.toList()));
+        gameBoardDTO.setSquares(squares.stream().map(Square::convertToDTO).collect(Collectors.toSet()));
         return  gameBoardDTO;
     }
 }

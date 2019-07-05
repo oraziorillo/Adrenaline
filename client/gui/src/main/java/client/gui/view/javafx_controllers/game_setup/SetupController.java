@@ -45,12 +45,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class SetupController extends AbstractJavaFxController {
-   
-   @FXML private GridPane mainPane;
-   @FXML private HBox skullTrack;
-   @FXML private TilePane maps;
-   @FXML private HBox pcs;
-   @FXML private Chat chatController;
+
+    @FXML
+    private GridPane mainPane;
+    @FXML
+    private HBox skullTrack;
+    @FXML
+    private TilePane maps;
+    @FXML
+    private HBox pcs;
+    @FXML
+    private Chat chatController;
    private static final int LENGHT = Constants.MAX_KILL_SHOT_TRACK_SIZE;
    private Circle[] circles = new Circle[LENGHT];
    private int selectedSkulls = Constants.MIN_KILL_SHOT_TRACK_SIZE;

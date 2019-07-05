@@ -55,7 +55,7 @@ public class GuiController extends Application {
                case SIGN_UP:
                   String username = view.acquireUsername();
                   token = loginController.register( username, view );
-                  view.ack( "This is your token\n"+token );
+                   view.ack("This is your token\n" + token);
                   break;
                case QUIT: default:
                   stage.close();

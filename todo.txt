@@ -28,7 +28,7 @@ OPZIONALI:
 
 - migliorare granade launcher
 
-- mettere singleton le classi di controllo della cli.view
+- mettere singleton le classi di controllo della cli.client.view
 
 
 ROBA DA CONTROLLER

@@ -2,7 +2,6 @@ package server.database;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Caterpillar<P, S, V> {
 

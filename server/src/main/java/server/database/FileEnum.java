@@ -13,6 +13,7 @@ public enum FileEnum {
         this.filePath = filePath;
     }
 
+
     public static FileEnum fromPath(String fileName) {
         for (FileEnum f : FileEnum.values())
             if (f.getFilePath().equals(fileName))

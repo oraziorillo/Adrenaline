@@ -268,13 +268,10 @@ public class DatabaseHandler {
 
 
     private synchronized String generateFilePath(UUID uuid) {
-        return "src/main/java/server/database/files/game_infos/" + uuid + ".json";
+        return "files/game_infos/" + uuid + ".json";
     }
 
     public PcColourEnum getCurrPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPlayer().getCurrPc();
     }
-
-
-    //TODO mettere cli.view a null quando il player si disconnette
 }
