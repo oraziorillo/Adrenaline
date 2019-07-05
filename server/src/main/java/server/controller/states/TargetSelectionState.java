@@ -26,7 +26,7 @@ public class TargetSelectionState extends State {
     private Action currAction;
     private Square squareToMemorize;
     private LinkedList<Pc> shotTargets;
-    private LinkedList<Pc> targetsShotTwice;    //per la machine gun....
+    private LinkedList<Pc> targetsShotTwice;
     private Set<Square> targetableSquares;
 
 
@@ -39,7 +39,6 @@ public class TargetSelectionState extends State {
         this.effectsToApply = controller.getCurrWeapon().getEffectsToApply();
         this.currEffect = effectsToApply.get(effectIndex);
         this.currAction = currEffect.getActionAtIndex(actionIndex);
-        //cli.controller.startTimer();
         setAction();
         checkIfOriented();
     }
@@ -76,16 +75,6 @@ public class TargetSelectionState extends State {
 
         LinkedList<Pc> justShotPc = new LinkedList<>(currEffect.execute(controller.getCurrPc()));
         if (!justShotPc.isEmpty()) {
-//            List<Player> players = cli.controller.getPlayers();
-//            for (Pc pc: justShotPc) {
-//                players.forEach(player -> {
-//                    if (player.getPc() == pc){
-//                        player.setAttacked();
-//                        //TODO qui dovremmo notificare tutti i player attaccati per il powerUp
-//                    }
-//                });
-//            }
-
             for (Pc pc : justShotPc) {
                 if (shotTargets.contains(pc))
                     targetsShotTwice.add(pc);
@@ -104,13 +93,13 @@ public class TargetSelectionState extends State {
         if (!currAction.isParameterized()) {
             if (currAction.needsOldSquare())
                 currAction.selectSquare(squareToMemorize);
-            else if (controller.getCurrWeapon().isChained()) {          //per la shockWave
+            else if (controller.getCurrWeapon().isChained()) {
                 for (Square square : currAction.validSquares(controller.getCurrPc().getCurrSquare())) {
                     square.getPcs().forEach(pc -> currAction.selectPc(pc));
                 }
             }
             else
-                currAction.selectSquare(controller.getCurrPc().getCurrSquare());    //tractor beam  e electroscyte
+                currAction.selectSquare(controller.getCurrPc().getCurrSquare());
             return;
         }
         if (controller.getCurrWeapon().isChained() && !currEffect.isAsynchronous()) {
@@ -121,7 +110,7 @@ public class TargetSelectionState extends State {
             else if (shotTargets != null && !shotTargets.isEmpty())
                 setTargetableToValidSquares(shotTargets.getLast());
             else
-                setTargetableToValidSquares(controller.getCurrPc());        //verificare per le chained
+                setTargetableToValidSquares(controller.getCurrPc());
         }
         else
             setTargetableToValidSquares(controller.getCurrPc());
@@ -138,7 +127,7 @@ public class TargetSelectionState extends State {
 
     @Override
     void setTargetableToValidSquares(Pc referencePc) {
-        if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets())       //questo controllo è da verificare
+        if (!currAction.isAdditionalDamage() && !currAction.isExclusiveForOldTargets())
             setTargettableSquares(referencePc.getCurrSquare());
     }
 
@@ -157,7 +146,7 @@ public class TargetSelectionState extends State {
                 if (currAction.isOptional())
                     skip();
                 else
-                    executeEffect();       //da rivedere
+                    executeEffect();
             } else
                 controller.getCurrPlayer().setCurrState(nextState());
         }
@@ -193,7 +182,7 @@ public class TargetSelectionState extends State {
                 }
                 if (hasNextAction() && !currEffect.memorizeTargetSquare() && currEffect.hasSameTarget()) {
                     squareToMemorize = s;
-                    nextAction();           //qui fa next per bypassare isComplete
+                    nextAction();
                 }
             }
             else if ((!currEffect.isOriented() || directionSelected) && s.isTargetable()) {
@@ -211,7 +200,7 @@ public class TargetSelectionState extends State {
             if ((!currEffect.isOriented() || directionSelected) && !currAction.isExplosive()) {
                 if (currEffect.memorizeTargetSquare() && squareToMemorize == null) {
                     squareToMemorize = targetPc.getCurrSquare();
-                    if (controller.getCurrWeapon().isChained()) {           //per il rocket launcher
+                    if (controller.getCurrWeapon().isChained()) {
                         for (Effect effect : effectsToApply) {
                             for (Action action : effect.getActions()) {
                                 if (action.isExplosive())
