@@ -15,6 +15,9 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
+/**
+ * The buttons for run,grab and shoot. And their graphics
+ */
 public class Azioni implements ChangeListener<KillShotTrackDTO> {
    @FXML private StackPane mainPane;
    @FXML private ImageView azioniImages;
@@ -30,21 +33,42 @@ public class Azioni implements ChangeListener<KillShotTrackDTO> {
       azioniImages.setImage( new Image( PcBoard.DIRECTORY+color.getName().toLowerCase()+"/azioni.png",0,PcBoard.HEIGHT,true,false ) );
    }
    
+   /**
+    * Wraps player run method
+    * @throws IOException if Remote Player is unreachable
+    * @see RemotePlayer
+    */
    @FXML
    private void moveButton() throws IOException {
       player.runAround();
    }
    
+   /**
+    * Wraps player grab method
+    * @throws IOException if Remote Player is unreachable
+    * @see RemotePlayer
+    */
    @FXML
    private void collectButton() throws IOException {
       player.grabStuff();
    }
    
+   /**
+    * Wraps player shoot method
+    * @throws IOException if Remote Player is unreachable
+    * @see RemotePlayer
+    */
    @FXML
    private void shootButton() throws IOException {
       player.shootPeople();
    }
    
+   /**
+    * Listens killshottrack to detect final frenzy and swap actions
+    * @param obsTrack unused
+    * @param oldV unused
+    * @param newV the new killshottrack value. if the last skull is removed, the image changes
+    */
    @Override
    public void changed(ObservableValue<? extends KillShotTrackDTO> obsTrack, KillShotTrackDTO oldV, KillShotTrackDTO newV) {
       if (!newV.getKillShotTrack()[Constants.MAX_KILL_SHOT_TRACK_SIZE-1].isSkulled()) {
