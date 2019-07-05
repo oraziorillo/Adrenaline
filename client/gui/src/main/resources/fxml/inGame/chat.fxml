@@ -6,7 +6,7 @@
 <?import java.lang.Double?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:cli.controller="gui.cli.view.javafx_controllers.in_game.components.Chat" stylesheets="/css/chat.css"
+            fx:controller="client.gui.view.javafx_controllers.in_game.components.Chat" stylesheets="/css/chat.css"
             fx:id="mainPane" onMouseExited="#disappear">
     <fx:define>
         <Double fx:id="MESSAGGI_HEIGHT" fx:value="800"/>

@@ -1,6 +1,6 @@
 package client.gui.view.javafx_controllers.game_setup;
 
-import client.gui.view.ImageCache;
+import client.gui.ImageCache;
 import client.gui.view.javafx_controllers.AbstractJavaFxController;
 import client.gui.view.javafx_controllers.in_game.components.Chat;
 import client.gui.view.javafx_controllers.in_game.components.Top;
@@ -45,11 +45,11 @@ import java.util.UUID;
 
 public class SetupController extends AbstractJavaFxController {
    
-   @FXML private transient GridPane mainPane;
-   @FXML private transient HBox skullTrack;
-   @FXML private transient TilePane maps;
-   @FXML private transient HBox pcs;
-   @FXML private transient Chat chatController;
+   @FXML private GridPane mainPane;
+   @FXML private HBox skullTrack;
+   @FXML private TilePane maps;
+   @FXML private HBox pcs;
+   @FXML private Chat chatController;
    private static final int LENGHT = Constants.MAX_KILL_SHOT_TRACK_SIZE;
    private Circle[] circles = new Circle[LENGHT];
    private int selectedSkulls = Constants.MIN_KILL_SHOT_TRACK_SIZE;

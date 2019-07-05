@@ -1,6 +1,5 @@
 package client.gui.controller;
 
-import client.gui.view.GuiExceptionHandler;
 import client.gui.view.GuiView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -57,7 +56,7 @@ public class GuiController extends Application {
                case SIGN_UP:
                   String username = view.acquireUsername();
                   token = loginController.register( username, view );
-                  view.ack( "This is your token"+System.lineSeparator()+token );
+                  view.ack( "This is your token\n"+token );
                   break;
                case QUIT: default:
                   stage.close();

@@ -138,7 +138,7 @@ public class CliView extends AbstractView {
 
     @Override
     public synchronized void error(String msg){
-        inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
+        inputReader.requestString(msg + "\nPress enter to exit.");
         System.exit(1);
     }
 

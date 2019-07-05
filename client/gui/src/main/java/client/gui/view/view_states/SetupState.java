@@ -1,5 +1,6 @@
 package client.gui.view.view_states;
 
+import client.gui.view.javafx_controllers.game_setup.SetupController;
 import common.dto_model.GameDTO;
 import common.events.game_board_events.GameBoardEvent;
 import common.events.kill_shot_track_events.KillShotTrackEvent;

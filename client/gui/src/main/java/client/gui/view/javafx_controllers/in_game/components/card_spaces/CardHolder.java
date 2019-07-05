@@ -1,6 +1,6 @@
 package client.gui.view.javafx_controllers.in_game.components.card_spaces;
 
-import client.gui.view.ImageCache;
+import client.gui.ImageCache;
 import client.gui.view.javafx_controllers.in_game.InGameController;
 import common.dto_model.SquareDTO;
 import common.dto_model.WeaponCardDTO;

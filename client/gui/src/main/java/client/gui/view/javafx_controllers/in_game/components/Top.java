@@ -1,6 +1,6 @@
 package client.gui.view.javafx_controllers.in_game.components;
 
-import client.gui.view.ImageCache;
+import client.gui.ImageCache;
 import client.gui.view.javafx_controllers.in_game.components.card_spaces.CardHolder;
 import client.gui.view.javafx_controllers.in_game.dialogs.SettingsMenu;
 import common.Constants;

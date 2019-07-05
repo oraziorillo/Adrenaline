@@ -59,7 +59,7 @@ public class UserAuthController extends AbstractJavaFxController {
     */
    @Override
    public ConnectionMethodEnum acquireConnectionMethod(){
-      Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?"+System.lineSeparator()+"I suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
+      Alert rmiOrSocket = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to connect with socket?\nI suggest it, cause rmi is just 2 lines of code", new ButtonType("SOCKET"), new ButtonType("RMI"));
       rmiOrSocket.setHeaderText(null);
       rmiOrSocket.setTitle("Select connection");
       Optional<ButtonType> response = rmiOrSocket.showAndWait();

@@ -1,6 +1,6 @@
 package client.gui.view.javafx_controllers.in_game.components;
 
-import client.gui.view.ImageCache;
+import client.gui.ImageCache;
 import client.gui.view.javafx_controllers.in_game.InGameController;
 import client.gui.view.javafx_controllers.in_game.components.pc_board.OpponentBoard;
 import common.dto_model.AmmoTileDTO;
