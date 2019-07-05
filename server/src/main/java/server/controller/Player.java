@@ -102,6 +102,9 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    /**
+     * used when a player has to respawn
+     */
     synchronized void hasToRespawn(){
         if (currState.isInactive()){
             currState.setHasToRespawn(true);
@@ -116,11 +119,19 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    /**
+     *
+     */
     public void notifyDamaged() {
         currState.checkTagbackGrenadeConditions(this);
     }
 
 
+    /**
+     * used to handle disconnection
+     *
+     * @param onLine
+     */
     public void setOnLine(boolean onLine) {
         this.onLine = onLine;
     }

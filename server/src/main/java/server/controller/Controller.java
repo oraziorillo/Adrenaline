@@ -7,7 +7,6 @@ import com.google.gson.stream.JsonReader;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.requests.Request;
-import server.ServerPropertyLoader;
 import server.controller.states.InactiveState;
 import server.controller.states.SetupMapState;
 import server.database.DatabaseHandler;
@@ -54,7 +53,6 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-        System.out.println(ServerPropertyLoader.getInstance().getRequestTimer());
         this.requestTimer = new Timer(ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
             try {
                 requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
@@ -468,6 +466,11 @@ public class Controller{
     }
 
 
+    /**
+     * sends the list containing the list of the winners
+     *
+     * @param gameWinners list of the players who won the game
+     */
     public void sendGameWinners(List<String> gameWinners) {
         players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
@@ -479,6 +482,9 @@ public class Controller{
     }
 
 
+    /**
+     * close all connections
+     */
     void closeConnections() {
         players.stream().filter(Player::isOnLine).forEach(player -> {
             try {

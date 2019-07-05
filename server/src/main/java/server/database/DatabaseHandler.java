@@ -262,6 +262,8 @@ public class DatabaseHandler {
      * @param file to be overwritten
      */
     private synchronized void overwrite(FileEnum file) {
+    
+        System.out.println(file.getFilePath());
 
         try (FileWriter writer = new FileWriter(file.getFilePath())) {
             switch (file) {

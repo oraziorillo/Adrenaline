@@ -16,6 +16,11 @@ import java.util.UUID;
 import static common.Constants.*;
 
 public class ServerSocketHandler implements Runnable {
+
+    /**
+     * handler for methods caught on the socket input stream
+     */
+
     private final Socket socket;
     private final PrintWriter out;
     private final Scanner in;

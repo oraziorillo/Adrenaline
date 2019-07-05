@@ -48,9 +48,11 @@ public class Lobby {
         return !gameStarted && players.size() <= 5;
     }
 
+
     boolean isGameStarted() {
         return gameStarted;
     }
+
 
     UUID getGameUUID() {
         return gameUUID;

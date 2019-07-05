@@ -22,6 +22,10 @@ import static common.enums.ViewMethodsEnum.*;
 
 public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, ModelEventListener {
 
+   /**
+    * proxy for the remote view
+    */
+
    private Gson gson = new Gson();
 
 

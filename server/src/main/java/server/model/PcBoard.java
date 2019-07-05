@@ -27,7 +27,7 @@ public class PcBoard {
         this.damageTrack = new PcColourEnum[LIFE_POINTS];
         this.ammo = new short[AMMO_COLOURS_NUMBER];
         for(int i = 0; i < AMMO_COLOURS_NUMBER; i++){
-            ammo[i] = 3;                //TODO da cambiare
+            ammo[i] = 1;
         }
     }
 
