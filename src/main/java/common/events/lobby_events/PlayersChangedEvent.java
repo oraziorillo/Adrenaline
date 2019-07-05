@@ -4,15 +4,15 @@ import common.dto_model.LobbyDTO;
 
 import static common.Constants.PLAYER_JOINED;
 
-public class PlayerJoinedEvent extends LobbyEvent{
+public class PlayersChangedEvent extends LobbyEvent{
 
     private int eventID = PLAYER_JOINED;
 
-    public PlayerJoinedEvent(LobbyDTO lobby) {
+    public PlayersChangedEvent(LobbyDTO lobby) {
         super(lobby);
     }
 
-    PlayerJoinedEvent(LobbyDTO lobby, boolean censored) {
+    PlayersChangedEvent(LobbyDTO lobby, boolean censored) {
         super(lobby, censored);
     }
 
@@ -32,8 +32,8 @@ public class PlayerJoinedEvent extends LobbyEvent{
     }
 
     @Override
-    public PlayerJoinedEvent censor() {
-        return new PlayerJoinedEvent(lobby, true);
+    public PlayersChangedEvent censor() {
+        return new PlayersChangedEvent(lobby, true);
     }
 
 

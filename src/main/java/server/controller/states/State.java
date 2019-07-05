@@ -156,4 +156,9 @@ public abstract class State {
     public void removeListener(UUID token) {
         controller.getGame().removeListener(token);
     }
+
+
+    public PcColourEnum getCurrPc() {
+        return controller.getCurrPc().getColour();
+    }
 }

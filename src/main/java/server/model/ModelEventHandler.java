@@ -18,7 +18,6 @@ public class ModelEventHandler {
 
     private Caterpillar<UUID, PcColourEnum, ModelEventListener> listeners;
 
-
     ModelEventHandler(){
         this.listeners = new Caterpillar<>();
     }
@@ -94,16 +93,12 @@ public class ModelEventHandler {
 
     public synchronized void fireEvent(SquareEvent event) {
         try {
-            PcColourEnum publisherColour = event.getPublisherColour();
-            if (publisherColour == null) {
-                for (ModelEventListener l : listeners.values())
-                    l.onSquareUpdate(event);
-            } else {
-                listeners.get(publisherColour).onSquareUpdate(event);
-                for (PcColourEnum colour : listeners.secondaryKeySet()) {
-                    if (publisherColour != colour) {
-                        listeners.get(colour).onSquareUpdate(event.censor());
-                    }
+            UUID aPlayerUUID = listeners.getPrimaryAtIndex(0);
+            PcColourEnum publisherColour = DatabaseHandler.getInstance().getCurrPlayerColour(aPlayerUUID);
+            listeners.get(publisherColour).onSquareUpdate(event);
+            for (PcColourEnum colour : listeners.secondaryKeySet()) {
+                if (publisherColour != colour) {
+                    listeners.get(colour).onSquareUpdate(event.censor());
                 }
             }
         } catch (RemoteException e) {

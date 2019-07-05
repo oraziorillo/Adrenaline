@@ -1,14 +1,15 @@
 package server.model;
 
 import common.enums.SquareColourEnum;
+import common.exceptions.EmptySquareException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import common.exceptions.EmptySquareException;
 import server.model.squares.AmmoSquare;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -30,11 +31,15 @@ public class AmmoSquareTest {
     @Mock
     private Pc pc;
 
+    @Mock
+    private ModelEventHandler events;
+
     @Before
     public void setup() {
         Mockito.when(deck.draw()).thenReturn(card1).thenReturn(card2);
         tested = new AmmoSquare(row, coloumn,SquareColourEnum.BLUE);
         tested.init(null, deck);
+        tested.addModelEventHandler(events);
     }
 
     @Test

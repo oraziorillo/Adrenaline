@@ -3,7 +3,7 @@ package server.controller;
 import com.google.gson.annotations.Expose;
 import common.dto_model.LobbyDTO;
 import common.events.lobby_events.LobbyEvent;
-import common.events.lobby_events.PlayerJoinedEvent;
+import common.events.lobby_events.PlayersChangedEvent;
 import server.ServerPropertyLoader;
 import server.database.DatabaseHandler;
 
@@ -90,7 +90,7 @@ public class Lobby {
             e.printStackTrace();
         }
         players.add(player);
-        publishEvent(new PlayerJoinedEvent(this.convertToDTO()), player);
+        publishEvent(new PlayersChangedEvent(this.convertToDTO()), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
             ackAll("\nThe game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes...");
@@ -162,6 +162,19 @@ public class Lobby {
                 p.quit();
                 removePlayer(p);
             }
+    }
+
+
+    public void publishEvent(LobbyEvent event) {
+        LobbyEvent censored = event.censor();
+        for (Player p : players) {
+            try {
+                p.getView().notifyEvent(censored);
+            } catch (RemoteException e) {
+                p.quit();
+                removePlayer(p);
+            }
+        }
     }
 
 

@@ -137,6 +137,9 @@ public class ServerSocketHandler implements Runnable {
             case CHOOSE_TARGET:
                 player.chooseTarget( args[1] );
                 break;
+            case CHOOSE_AMMO:
+                player.chooseAmmo(args[1]);
+                break;
             case CHOOSE_DIRECTION:
                 argInt = Integer.parseInt(args[1]);
                 player.chooseDirection( argInt );

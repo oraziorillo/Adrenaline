@@ -2,6 +2,9 @@ package server.model;
 
 import common.enums.CardinalDirectionEnum;
 import common.enums.SquareColourEnum;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import server.model.squares.AmmoSquare;
 import server.model.squares.Square;
 import org.junit.Before;
@@ -13,21 +16,27 @@ import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SquareTest {
     
     private Square tested;
     private Square onRight, s1,s2,s3;
-    private final int row = 9;
-    private final int coloumn = 7;
+    private final int row = 2;
+    private final int coloumn = 2;
     private final SquareColourEnum colour = SquareColourEnum.BLUE;
-    
+
+    @Mock
+    private ModelEventHandler eventHandler;
+
+    @Mock
+    private Deck<AmmoTile> uselessDeck;
+
     @Before
     public void setupAndContructorTest(){
-        Deck<AmmoTile> uselessDeck = Mockito.mock( Deck.class );
         AmmoTile uselessTile = Mockito.mock( AmmoTile.class );
-        Mockito.when( uselessDeck.draw() ).thenReturn( uselessTile );
         setupSquareMocks();
         tested = new AmmoSquare(row, coloumn,colour );
+        tested.addModelEventHandler(eventHandler);
         //test constructor
         assertTrue( tested.getVisibles().isEmpty() );assertEquals(tested.getRow(), row);
         assertEquals( tested.getCol(), coloumn);

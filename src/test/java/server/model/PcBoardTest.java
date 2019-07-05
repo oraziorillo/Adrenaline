@@ -11,35 +11,35 @@ import static org.mockito.Mockito.when;
 
 public class PcBoardTest {
 
-    private PcBoard tested;
+    private PcBoard testedPcBoard;
 
     @Before
     public void setupTest() {
-        tested = new PcBoard(PcColourEnum.GREEN);
+        testedPcBoard = new PcBoard(PcColourEnum.GREEN);
     }
 
     @Test
     public void increasePointsWorksFine() {
-        tested.increasePoints(10);
-        assertTrue(tested.getPoints() == 10);
+        testedPcBoard.increasePoints(10);
+        assertEquals(10, testedPcBoard.getPoints());
     }
 
     @Test
     public void getMarksReturnsTheNUmberOfMarksRelatedToEachPc() {
         short numOfMarks = 2;
-        tested.addMarks(PcColourEnum.YELLOW, numOfMarks);
-        assertTrue(tested.getMarks(PcColourEnum.PURPLE) == 0);
-        assertTrue(tested.getMarks(PcColourEnum.YELLOW) ==  numOfMarks);
+        testedPcBoard.addMarks(PcColourEnum.YELLOW, numOfMarks);
+        assertEquals(0, testedPcBoard.getMarks(PcColourEnum.PURPLE));
+        assertEquals(testedPcBoard.getMarks(PcColourEnum.YELLOW), numOfMarks);
     }
 
     @Test
     public void getMarksNeverReturnsANumberOfMarksBiggerThan3() {
         short numOfMarks = 4;
-        tested.addMarks(PcColourEnum.YELLOW, numOfMarks);
-        assertTrue(tested.getMarks(PcColourEnum.YELLOW) == 3);
-        assertFalse(tested.getMarks(PcColourEnum.YELLOW) ==  numOfMarks);
-        tested.addMarks(PcColourEnum.YELLOW, (short)1);
-        assertTrue(tested.getMarks(PcColourEnum.YELLOW) == 3);
+        testedPcBoard.addMarks(PcColourEnum.YELLOW, numOfMarks);
+        assertEquals(3, testedPcBoard.getMarks(PcColourEnum.YELLOW));
+        assertNotEquals(testedPcBoard.getMarks(PcColourEnum.YELLOW), numOfMarks);
+        testedPcBoard.addMarks(PcColourEnum.YELLOW, (short)1);
+        assertEquals(3, testedPcBoard.getMarks(PcColourEnum.YELLOW));
     }
 
     @Test
@@ -47,56 +47,54 @@ public class PcBoardTest {
         short [] firstAmmo = new short[]{2,1,0};
         AmmoTile ammoTile = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(firstAmmo);
-        //TODO aggiustare
-        // when(ammoTile.containsPowerup()).thenReturn(false);
-        tested.addAmmo(ammoTile);
-        assertTrue(tested.getAmmo()[AmmoEnum.BLUE.ordinal()] == 3);
-        assertTrue(tested.getAmmo()[AmmoEnum.RED.ordinal()] == 2);
-        assertTrue(tested.getAmmo()[AmmoEnum.YELLOW.ordinal()] == 1);
+        when(ammoTile.hasPowerUp()).thenReturn(false);
+        testedPcBoard.addAmmo(ammoTile);
+        assertEquals(3, testedPcBoard.getAmmo()[AmmoEnum.BLUE.ordinal()]);
+        assertEquals(2, testedPcBoard.getAmmo()[AmmoEnum.RED.ordinal()]);
+        assertEquals(1, testedPcBoard.getAmmo()[AmmoEnum.YELLOW.ordinal()]);
         short [] secondAmmo = new short[]{2,1,0};
         AmmoTile ammoTile1 = Mockito.mock(AmmoTile.class);
         when(ammoTile.getAmmo()).thenReturn(secondAmmo);
-        //TODO aggiustare
-        // when(ammoTile.containsPowerup()).thenReturn(false);
-        assertTrue(tested.getAmmo()[AmmoEnum.BLUE.ordinal()] == 3);
+        when(ammoTile.hasPowerUp()).thenReturn(false);
+        assertEquals(3, testedPcBoard.getAmmo()[AmmoEnum.BLUE.ordinal()]);
     }
 
     @Test
     public void addDamageWorksFine() {
         short inflictedDamage = 7;
-        tested.addDamage(PcColourEnum.YELLOW, inflictedDamage);
+        testedPcBoard.addDamage(PcColourEnum.YELLOW, inflictedDamage);
         for (int i = 0; i < inflictedDamage; i++)
-            assertTrue(tested.getDamageTrack()[i] == PcColourEnum.YELLOW);
-        assertFalse(tested.getDamageTrack()[inflictedDamage] == PcColourEnum.YELLOW);
-        assertNull(tested.getDamageTrack()[inflictedDamage]);
-        tested.addDamage(PcColourEnum.BLUE, inflictedDamage);
-        assertTrue(tested.getDamageTrack()[inflictedDamage] == PcColourEnum.BLUE);
+            assertEquals(testedPcBoard.getDamageTrack()[i], PcColourEnum.YELLOW);
+        assertNotEquals(testedPcBoard.getDamageTrack()[inflictedDamage], PcColourEnum.YELLOW);
+        assertNull(testedPcBoard.getDamageTrack()[inflictedDamage]);
+        testedPcBoard.addDamage(PcColourEnum.BLUE, inflictedDamage);
+        assertEquals(testedPcBoard.getDamageTrack()[inflictedDamage], PcColourEnum.BLUE);
     }
 
     @Test
     public void hasAtLeastOneAmmoWorksFine() {
         short [] ammoToPay = new short[]{3,3,3};
-        assertTrue(tested.hasAtLeastOneAmmo() == true);
-        tested.payAmmo(ammoToPay);
-        assertFalse(tested.hasAtLeastOneAmmo());
+        assertEquals(true, testedPcBoard.hasAtLeastOneAmmo());
+        testedPcBoard.payAmmo(ammoToPay);
+        assertFalse(testedPcBoard.hasAtLeastOneAmmo());
     }
 
     @Test
     public void payAmmoDecreaseTheNumberOfAmmosAndReturnsTheRemainingAmmosToPay() {
         short [] ammoToPay = new short[]{2,1,2};
         short [] remainingAmmos = new short[]{1,0,1};
-        assertArrayEquals(remainingAmmos, tested.payAmmo(ammoToPay));
+        assertArrayEquals(remainingAmmos, testedPcBoard.payAmmo(ammoToPay));
     }
 
     @Test
     public void resetDamageTrackFlushesTheOldValuesAndSetsTheDamageTrackIndexToZero() {
         PcColourEnum attackerColour = PcColourEnum.YELLOW;
         short valueOfDamage = 5;
-        tested.addDamage(attackerColour, valueOfDamage);
-        assertTrue(tested.getDamageTrackIndex() == 5);
-        tested.resetDamageTrack();
-        assertTrue(tested.getDamageTrackIndex() == 0);
+        testedPcBoard.addDamage(attackerColour, valueOfDamage);
+        assertEquals(5, testedPcBoard.getDamageTrackIndex());
+        testedPcBoard.resetDamageTrack();
+        assertEquals(0, testedPcBoard.getDamageTrackIndex());
         for(int i =0; i < valueOfDamage; i++)
-            assertNull(tested.getDamageTrack()[i]);
+            assertNull(testedPcBoard.getDamageTrack()[i]);
     }
 }

@@ -225,7 +225,7 @@ public class Map {
    
    private synchronized void showBoard(PcColourEnum color){
       ScaleTransition scale = transitions.get( color );
-      if(!scale.getStatus().equals( Animation.Status.RUNNING )) {
+      if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
          VBox board;
          Circle circle = pcCircles.get( color );
          board = opponentBoardGraphics.get( color );
@@ -238,7 +238,7 @@ public class Map {
    
    private synchronized void hideBoard(PcColourEnum color){
       ScaleTransition scale = transitions.get( color );
-      if(!scale.getStatus().equals( Animation.Status.RUNNING )) {
+      if(scale != null && !scale.getStatus().equals( Animation.Status.RUNNING )) {
          scale.stop();
          scale.setRate( -1 );
          scale.setOnFinished( e -> {

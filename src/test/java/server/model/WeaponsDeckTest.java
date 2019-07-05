@@ -4,19 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import server.model.Deck;
-import server.model.WeaponCard;
-import server.model.actions.Action;
-import server.model.deserializers.ActionDeserializer;
 import org.junit.Before;
 import org.junit.Test;
+import server.model.actions.Action;
+import server.model.deserializers.ActionDeserializer;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,14 +37,11 @@ public class WeaponsDeckTest {
 
     @Test
     public void testOnWeaponDrawnFromDeck(){
-        WeaponCard weaponCard = deck.draw();
-        assertTrue (weaponCard.getEffectsToApply().size() >= 0);
-        weaponCard.getFireModes().get(0).getActions().get(0);
-    }
-
-
-    @Test
-    public void printDeck(){
-        deck.print();
+        WeaponCard weaponCard;
+        deck.getCards().forEach(WeaponCard::init);
+        while (deck.size() != 0) {
+            weaponCard = deck.draw();
+            assertTrue(weaponCard.getEffectsToApply().contains(weaponCard.getFireModes().get(0)));
+        }
     }
 }

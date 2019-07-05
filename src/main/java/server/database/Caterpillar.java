@@ -52,6 +52,11 @@ public class Caterpillar<P, S, V> {
     }
 
 
+    public P getPrimaryAtIndex(int index) {
+        return primaryKeys.get(index);
+    }
+
+
     public void insertSK(S k) {
         secondaryKeys.add(secondaryKeys.size(), k);
     }

@@ -41,4 +41,9 @@ public class PowerUpCardDTO extends AbstractCardDTO {
     public void setColour(AmmoEnum colour) {
         this.colour = colour;
     }
+
+    @Override
+    public String toString() {
+        return colour.toString() + " " + name;
+    }
 }

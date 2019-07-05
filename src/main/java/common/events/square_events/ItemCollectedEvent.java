@@ -39,12 +39,6 @@ public class ItemCollectedEvent extends SquareEvent {
 
 
     @Override
-    public PcColourEnum getPublisherColour() {
-        return pcColour;
-    }
-
-
-    @Override
     public SquareEvent censor() {
         return new ItemCollectedEvent(pcColour, square, item, true);
     }
