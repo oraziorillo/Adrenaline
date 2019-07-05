@@ -1,0 +1,209 @@
+@startuml
+
+title __TARGET_CHECKERS's Class Diagram__\n
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.BeyondWallsStraightLineDecorator {
+            ~ type : String
+            + BeyondWallsStraightLineDecorator()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.BlindnessDecorator {
+            - type : String
+            + BlindnessDecorator()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.DifferentRoomDecorator {
+            - type : String
+            + DifferentRoomDecorator()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.EmptyChecker {
+            - type : String
+            + getbase()
+            + propertyName()
+            + propertyValue()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.MaxDistanceDecorator {
+            - maxDistance : int
+            - type : String
+            + MaxDistanceDecorator()
+            + propertyName()
+            + propertyValue()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.MaxDistanceFromVIsiblesDecorator {
+            - maxDistance : int
+            - type : String
+            + MaxDistanceFromVIsiblesDecorator()
+            + propertyName()
+            + propertyValue()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.MinDistanceDecorator {
+            - minDistance : int
+            - type : String
+            + MinDistanceDecorator()
+            + propertyName()
+            + propertyValue()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.SameRoomDecorator {
+            - type : String
+            + SameRoomDecorator()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.SimpleStraightLineDecorator {
+            - type : String
+            + SimpleStraightLineDecorator()
+            + type()
+            + validSquares()
+            - addSquareOnDirection()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        interface server.model.target_checkers.TargetChecker {
+            {abstract} + getbase()
+            {abstract} + propertyName()
+            {abstract} + propertyValue()
+            {abstract} + type()
+            {abstract} + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        abstract class server.model.target_checkers.TargetCheckerDecorator {
+            + getbase()
+            + propertyName()
+            + propertyValue()
+            ~ TargetCheckerDecorator()
+        }
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      namespace target_checkers {
+        class server.model.target_checkers.VisibilityDecorator {
+            - type : String
+            + VisibilityDecorator()
+            + type()
+            + validSquares()
+        }
+      }
+    }
+  }
+  
+
+  server.model.target_checkers.BeyondWallsStraightLineDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.BeyondWallsStraightLineDecorator o-- common.enums.CardinalDirectionEnum : direction
+  server.model.target_checkers.BlindnessDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.DifferentRoomDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.EmptyChecker .up.|> server.model.target_checkers.TargetChecker
+  server.model.target_checkers.MaxDistanceDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.MaxDistanceFromVIsiblesDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.MinDistanceDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.SameRoomDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.SimpleStraightLineDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+  server.model.target_checkers.SimpleStraightLineDecorator o-- common.enums.CardinalDirectionEnum : direction
+  server.model.target_checkers.TargetCheckerDecorator .up.|> server.model.target_checkers.TargetChecker
+  server.model.target_checkers.TargetCheckerDecorator o-- server.model.target_checkers.TargetChecker : base
+  server.model.target_checkers.VisibilityDecorator -up-|> server.model.target_checkers.TargetCheckerDecorator
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
