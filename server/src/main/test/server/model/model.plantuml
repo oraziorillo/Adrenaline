@@ -4,7 +4,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.AmmoSquareTest {
+      class AmmoSquareTest {
           - card1 : AmmoTile
           - card2 : AmmoTile
           - coloumn : int
@@ -27,7 +27,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.AmmoTileDeckTest {
+      class AmmoTileDeckTest {
           - deck : Deck<AmmoTile>
           + ammoTileDeckConstructionFine()
           + printDeck()
@@ -38,7 +38,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.AmmoTileTest {
+      class AmmoTileTest {
       }
     }
   }
@@ -46,7 +46,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.DeckTest {
+      class DeckTest {
           - g : Game
           - tested : Deck<Integer>
           {static} - zeroTo99 : ArrayList<Integer>
@@ -66,7 +66,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.GameBoardTest {
+      class GameBoardTest {
           ~ ammoDeck : Deck<AmmoTile>
           ~ weaponsDeck : Deck<WeaponCard>
           {static} - COL : int
@@ -86,7 +86,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.KillShotTest {
+      class KillShotTest {
           - charColour : PcColourEnum
           - tested : KillShot
           + beginsSkulledNotOverkilledAndWithNullColour()
@@ -101,7 +101,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.MovementOnMapTest {
+      class MovementOnMapTest {
           - game : Game
           - gameBoard : GameBoard
           - pc1 : Pc
@@ -115,7 +115,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PcBoardTest {
+      class PcBoardTest {
           - tested : PcBoard
           + addAmmoWorksFineAndNeverSetsForEachColourMoreThanThreeAmmos()
           + addDamageWorksFine()
@@ -133,7 +133,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PcTest {
+      class PcTest {
           - ammoTile : AmmoTile
           - card0 : WeaponCard
           - card1 : WeaponCard
@@ -165,7 +165,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PersistenceTest {
+      class PersistenceTest {
           - gameInfo : GameInfo
           + initSavedGameFine()
           + squaresInitFine()
@@ -176,7 +176,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PowerUpDeckTest {
+      class PowerUpDeckTest {
           - deck : Deck<PowerUpCard>
           + initPowerUpsDeck()
           + printDeck()
@@ -187,7 +187,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.RandomTest {
+      class RandomTest {
           + pcColorEnumTest()
           + randomNumbers()
           + randomTest()
@@ -200,7 +200,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.SerializerTest {
+      class SerializerTest {
           + initSavedGameFine()
       }
     }
@@ -209,7 +209,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.SpawnPointTest {
+      class SpawnPointTest {
           - card0 : WeaponCard
           - card1 : WeaponCard
           - card2 : WeaponCard
@@ -232,7 +232,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.SquareTest {
+      class SquareTest {
           - coloumn : int
           - colour : SquareColourEnum
           - onRight : Square
@@ -257,7 +257,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.TargetCheckerTest {
+      class TargetCheckerTest {
           ~ coloumn : int
           ~ row : int
           - gameBoard : GameBoard
@@ -281,7 +281,7 @@ title __MODEL's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.WeaponsDeckTest {
+      class WeaponsDeckTest {
           - deck : Deck<WeaponCard>
           + printDeck()
           + testOnWeaponDrawnFromDeck()

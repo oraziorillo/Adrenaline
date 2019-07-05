@@ -238,7 +238,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace database {
-      class server.database.Caterpillar {
+      class server.database.CustomizedHashMap {
       }
     }
   }
@@ -278,7 +278,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.AmmoSquareTest {
+      class AmmoSquareTest {
       }
     }
   }
@@ -294,7 +294,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.AmmoTileDeckTest {
+      class AmmoTileDeckTest {
       }
     }
   }
@@ -302,7 +302,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.AmmoTileTest {
+      class AmmoTileTest {
       }
     }
   }
@@ -318,7 +318,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.DeckTest {
+      class DeckTest {
       }
     }
   }
@@ -350,7 +350,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.GameBoardTest {
+      class GameBoardTest {
       }
     }
   }
@@ -366,7 +366,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.KillShotTest {
+      class KillShotTest {
       }
     }
   }
@@ -390,7 +390,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.MovementOnMapTest {
+      class MovementOnMapTest {
       }
     }
   }
@@ -414,7 +414,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PcBoardTest {
+      class PcBoardTest {
       }
     }
   }
@@ -422,7 +422,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PcTest {
+      class PcTest {
       }
     }
   }
@@ -430,7 +430,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PersistenceTest {
+      class PersistenceTest {
       }
     }
   }
@@ -446,7 +446,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.PowerUpDeckTest {
+      class PowerUpDeckTest {
       }
     }
   }
@@ -454,7 +454,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.RandomTest {
+      class RandomTest {
       }
     }
   }
@@ -462,7 +462,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.SerializerTest {
+      class SerializerTest {
       }
     }
   }
@@ -470,7 +470,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.SpawnPointTest {
+      class SpawnPointTest {
       }
     }
   }
@@ -478,7 +478,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.SquareTest {
+      class SquareTest {
       }
     }
   }
@@ -486,7 +486,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.TargetCheckerTest {
+      class TargetCheckerTest {
       }
     }
   }
@@ -502,7 +502,7 @@ title __SERVER's Class Diagram__\n
 
   namespace server {
     namespace model {
-      class server.model.WeaponsDeckTest {
+      class WeaponsDeckTest {
       }
     }
   }

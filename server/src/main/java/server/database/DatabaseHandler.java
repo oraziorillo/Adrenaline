@@ -60,6 +60,12 @@ public class DatabaseHandler {
     }
 
 
+    /**
+     * init a file from json
+     * @param file to be initialized
+     * @param gson the object used to serialize/deserialize json files
+     * @see Gson
+     */
     private synchronized void initFromFile(FileEnum file, Gson gson) {
         try (JsonReader reader = new JsonReader(new FileReader(file.getFilePath()))) {
             Type type;
@@ -111,11 +117,10 @@ public class DatabaseHandler {
     }
 
 
-    public synchronized boolean isPendantGame(UUID gameUUID) {
-        return gamePathByUUID.containsKey(gameUUID);
-    }
-
-
+    /**
+     * @param token
+     * @return true iff the player linked to the specified token has a game not finished to join to
+     */
     public synchronized boolean hasPendentGame(UUID token) {
         return playerInfoByToken.get(token).hasPendentGame();
     }
@@ -151,24 +156,43 @@ public class DatabaseHandler {
     }
 
 
+    /**
+     * @param playerToken
+     * @return UUID of the specified player's game
+     */
     public synchronized UUID getGameUUID(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getIncompleteGameID();
     }
 
 
+    /**
+     * @param gameUUID unique identifier for a game
+     * @return path of the saved game
+     */
     public synchronized String getGamePath(UUID gameUUID) {
         return gamePathByUUID.get(gameUUID);
     }
 
 
+    /**
+     * @param gameUUID
+     * @return true iff the game is saved
+     */
     public synchronized boolean containsGame(UUID gameUUID) {
         return gamePathByUUID.containsKey(gameUUID);
     }
 
 
+    /**
+     * adds a couple of uuid-colour in the data structure used to host the listeners
+     * @param playerToken
+     * @param pcColour
+     */
     public synchronized void setPlayerColour(UUID playerToken, PcColourEnum pcColour) {
         playerInfoByToken.get(playerToken).setPcColour(pcColour);
     }
+
+
 
     public synchronized PcColourEnum getPlayerColour(UUID playerToken) {
         return playerInfoByToken.get(playerToken).getPcColour();

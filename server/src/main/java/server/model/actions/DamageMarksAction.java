@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DamageMarksAction extends Action {
+
+    /**
+     * this class contains the logic of the usage of damage and marks effect
+     */
     @Expose private short damage;
     @Expose private short marks;
     @Expose private boolean squareExplosive;
@@ -61,24 +65,37 @@ public class DamageMarksAction extends Action {
     }
 
 
+    /**
+     * @return true iff an action must hit all players on a single square
+     */
     @Override
     public boolean isSquareExplosive() {
         return squareExplosive;
     }
 
 
+    /**
+     * @return true iff an action must hit all players in the same room
+     */
     @Override
     public boolean isRoomExplosive() {
         return roomExplosive;
     }
 
-
+    /**
+     * @return true iff an action can't hit other targets already hit by another effect of the same card
+     */
     @Override
     public boolean isExclusiveForOldTargets(){
         return exclusiveForOldTargets;
     }
 
 
+    /**
+     * used to check valid squares that can be hit by using an action if that action requires a direction
+     * @param direction through which the player wants to shoot
+     * @param isBeyondWalls signals whether an action can hit people through walls
+     */
     @Override
     public void setOrientedTargetChecker(CardinalDirectionEnum direction, boolean isBeyondWalls){
         orientedTargetChecker = isBeyondWalls ? new BeyondWallsStraightLineDecorator(targetChecker, direction)
@@ -86,12 +103,20 @@ public class DamageMarksAction extends Action {
     }
 
 
+    /**
+     * method used to check valid squares for an action
+     * @param shooterSquare the square of the player who is shooting
+     * @return the set of square that can be used as target
+     */
     public Set<Square> validSquares(Square shooterSquare) {
         return (orientedTargetChecker == null) ? targetChecker.validSquares(shooterSquare)
                 : orientedTargetChecker.validSquares(shooterSquare);
     }
 
 
+    /**
+     * sets a pc as the target for an action whether it requires a target
+     */
     @Override
     public void selectPc(Pc targetPc) {
         if(!roomExplosive && !squareExplosive) {
@@ -106,6 +131,10 @@ public class DamageMarksAction extends Action {
     }
 
 
+    /**
+     * sets a square as target whether an action requires it
+     * @param targetSquare
+     */
     @Override
     public void selectSquare(Square targetSquare) {
         if (this.targetSquare == null) {
@@ -122,6 +151,9 @@ public class DamageMarksAction extends Action {
     }
 
 
+    /**
+     * used after action's execution
+     */
     @Override
     public void resetAction() {
         targetSquare = null;
@@ -130,6 +162,11 @@ public class DamageMarksAction extends Action {
     }
 
 
+    /**
+     * applies the action on the selected targets
+     * @param shooter pc who is shooting
+     * @return set of hit pcs
+     */
     @Override
     public Set<Pc> apply(Pc shooter) {
         //if shooter has been added to the targets set, it is removed before damage is applied
