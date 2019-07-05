@@ -1,13 +1,13 @@
 package common.dto_model;
 
-import java.util.Set;
+import java.util.List;
 
 public class GameBoardDTO implements DTO {
 
     private int numberOfMap;
     private int rows;
     private int columns;
-    private Set<SquareDTO> squares;
+    private List<SquareDTO> squares;
 
     public int getNumberOfMap() {
         return numberOfMap;
@@ -33,18 +33,12 @@ public class GameBoardDTO implements DTO {
         this.columns = columns;
     }
 
-    public Set<SquareDTO> getSquares() {
+    public List<SquareDTO> getSquares() {
         return squares;
     }
 
-    public void setSquares(Set<SquareDTO> squares) {
+    public void setSquares(List<SquareDTO> squares) {
         this.squares = squares;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder gameBoard = new StringBuilder();
-        squares.forEach(s -> gameBoard.append("\n").append(s.description()).append("\n"));
-        return gameBoard.toString();
-    }
 }

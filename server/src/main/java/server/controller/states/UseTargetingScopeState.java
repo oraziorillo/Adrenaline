@@ -24,6 +24,7 @@ public class UseTargetingScopeState extends State {
     UseTargetingScopeState(Controller controller, List<Pc> targetables) {
         super(controller);
         this.targetablePcs = targetables;
+        //cli.controller.startTimer();
     }
 
 
@@ -43,7 +44,7 @@ public class UseTargetingScopeState extends State {
                     controller.getCurrPlayer().getView().ack("You have selected this powerUp as an ammo!");
                 } catch (RemoteException e) {
                     controller.getCurrPlayer().setOnLine(false);
-                    controller.checkIfGameCanContinue();
+                    controller.checkIfGameCanContinueC();
                 }
             }
         }
@@ -52,7 +53,7 @@ public class UseTargetingScopeState extends State {
                 controller.getCurrPlayer().getView().ack("Be careful! " + ex );
             } catch (RemoteException e) {
                 controller.getCurrPlayer().setOnLine(false);
-                controller.checkIfGameCanContinue();
+                controller.checkIfGameCanContinueC();
             }
         }
     }

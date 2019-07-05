@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Abstract cli.client.view state class.
+ * Abstract cli.view state class.
  * Most methods just throw IllegalStateException, which is non-blocking, to notify unexpected calls
  * Concrete states will override those methods so exception is no longer thrown
  */
@@ -134,12 +134,8 @@ public abstract class ViewState {
    }
    
    public void request(Request request) throws RemoteException {
-      javafxController.request( request );
+   
    }
    
    public abstract void resumeGame(GameDTO game);
-   
-   public void winners(List<String> gameWinners){
-      javafxController.winners(gameWinners);
-   };
 }

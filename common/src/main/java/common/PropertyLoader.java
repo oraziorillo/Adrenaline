@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public abstract class PropertyLoader {
    protected Properties properties = new Properties();
-   private static final String[] sharedProps = {"common.rmi.port = 9999", "common.socket.port = 10000", "common.request.timer = 30", "common.hostname = localhost"};
+   private static final String[] sharedProps = {"common.rmi.port = 9999","common.socket.port = 10000","common.request.timer = 30","common.hostname = localhost"};
    private static final String FILENAME = "config.properties";
    protected PropertyLoader(String... defaultProps) {
       try {

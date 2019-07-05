@@ -11,7 +11,5 @@ public enum ViewMethodsEnum {
     ON_PC_UPDATE,
     ON_SQUARE_UPDATE,
     CHAT_MESSAGE,
-    WINNERS,
-    CLOSE,
     RESUME_GAME
 }

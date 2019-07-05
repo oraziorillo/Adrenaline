@@ -5,15 +5,13 @@ import common.dto_model.GameDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.remote_interfaces.RemoteLoginController;
-import javafx.stage.Stage;
 
-import java.util.List;
 import java.util.UUID;
 
 public class UserAuthState extends ViewState {
    UserAuthState() {
       super();
-      setJavafxController( new UserAuthController( stage) );
+      setJavafxController( new UserAuthController() );
    }
 
    @Override

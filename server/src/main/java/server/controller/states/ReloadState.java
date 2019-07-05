@@ -17,6 +17,7 @@ public class ReloadState extends State {
 
     ReloadState(Controller controller) {
         super(controller);
+        //cli.controller.startTimer();
     }
 
 

@@ -43,7 +43,6 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class InGameController extends AbstractJavaFxController {
@@ -300,12 +299,6 @@ public class InGameController extends AbstractJavaFxController {
    }
    
    @Override
-   public void winners(List<String> gameWinners) {
-      //TODO
-   
-   }
-   
-   @Override
     public void onPcBoardUpdate(PcBoardEvent event) {
       PcDTO relatedPc = pcs.remove( event.getDTO().getColour() );
       relatedPc.setPcBoard( event.getDTO() );
@@ -326,7 +319,6 @@ public class InGameController extends AbstractJavaFxController {
 
     @Override
     public void onSquareUpdate(SquareEvent event) {
-      
       squares.put( event.getDTO(),event.getDTO() );
     }
    

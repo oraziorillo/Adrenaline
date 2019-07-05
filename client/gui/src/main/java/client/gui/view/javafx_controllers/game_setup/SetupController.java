@@ -1,6 +1,6 @@
 package client.gui.view.javafx_controllers.game_setup;
 
-import client.gui.ImageCache;
+import client.gui.view.ImageCache;
 import client.gui.view.javafx_controllers.AbstractJavaFxController;
 import client.gui.view.javafx_controllers.in_game.components.Chat;
 import client.gui.view.javafx_controllers.in_game.components.Top;
@@ -41,24 +41,15 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.UUID;
 
-/**
- * Controls the game setup
- */
 public class SetupController extends AbstractJavaFxController {
-
-    @FXML
-    private GridPane mainPane;
-    @FXML
-    private HBox skullTrack;
-    @FXML
-    private TilePane maps;
-    @FXML
-    private HBox pcs;
-    @FXML
-    private Chat chatController;
+   
+   @FXML private transient GridPane mainPane;
+   @FXML private transient HBox skullTrack;
+   @FXML private transient TilePane maps;
+   @FXML private transient HBox pcs;
+   @FXML private transient Chat chatController;
    private static final int LENGHT = Constants.MAX_KILL_SHOT_TRACK_SIZE;
    private Circle[] circles = new Circle[LENGHT];
    private int selectedSkulls = Constants.MIN_KILL_SHOT_TRACK_SIZE;
@@ -68,12 +59,10 @@ public class SetupController extends AbstractJavaFxController {
    private boolean firstPlayer;
    
    
-   public SetupController() {
+   public SetupController() throws RemoteException {
    }
    
-   /**
-    * Loads the setup graphics. The events are stored, not managed and thrown to the next state on creation
-    */
+   
    public void initialize(){
       GridPane.setValignment( maps,VPos.CENTER );
       GridPane.setValignment( pcs, VPos.BOTTOM );
@@ -166,21 +155,11 @@ public class SetupController extends AbstractJavaFxController {
       }
    }
    
-   /**
-    * acks are shower as server messages on chat
-    * @see Chat
-    * @param message the message from the server
-    */
    @Override
    public void ack(String message) {
       chatController.showServerMessage( message );
    }
    
-   /**
-    * chat messages are displayed on chat
-    * @param message the message from the server
-    * @see Chat
-    */
    @Override
    public void chatMessage(String message) {
       chatController.showUserMessage( message );
@@ -228,28 +207,16 @@ public class SetupController extends AbstractJavaFxController {
       setPcSelectable( color,false );
    }
    
-   /**
-    *
-    * @param event stored end not managed
-    */
    @Override
    public void onPcUpdate(PcEvent event) {
       setPcSelected( event.getDTO().getColour() );
    }
    
-   /**
-    *
-    * @param event stored end not managed
-    */
    @Override
    public void onSquareUpdate(SquareEvent event) {
    
    }
    
-   /**
-    *
-    * @param event stored end not managed
-    */
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       for(PcColourEnum col:PcColourEnum.values())
@@ -259,30 +226,16 @@ public class SetupController extends AbstractJavaFxController {
       showCirclesBeforeIndex( l );
    }
    
-   /**
-    * passed to the next state immediatly
-    */
    @Override
    public void resumeGame(GameDTO game) {
-      topView.nextState();
-      topView.resumeGame( game );
-   }
-   
-   /**ignored*/
-   @Override
-   public void winners(List<String> gameWinners) {
    
    }
-   /**ignored*/
+   
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
    
    }
    
-   /**
-    *
-    * @param event passed to the next state and not managed
-    */
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
       setMapSelectable( false );
@@ -309,13 +262,11 @@ public class SetupController extends AbstractJavaFxController {
       
    }
 
-   /**ignored*/
    @Override
    public void notifyEvent(LobbyEvent event) {
 
    }
 
-   /**ignored*/
    @Override
    public void request(Request request) {
 

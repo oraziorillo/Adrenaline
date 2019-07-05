@@ -18,7 +18,6 @@ import javafx.application.HostServices;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Alert;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,7 +34,7 @@ public abstract class AbstractJavaFxController implements ChangeListener<Number>
     */
    protected RemotePlayer player;
    /**
-    * the actually exported cli.client.view
+    * the actually exported cli.view
     */
    protected GuiView topView;
    
@@ -110,6 +109,4 @@ public abstract class AbstractJavaFxController implements ChangeListener<Number>
    public abstract void onKillShotTrackUpdate(KillShotTrackEvent event);
    
    public abstract void resumeGame(GameDTO game);
-   
-   public abstract void winners(List<String> gameWinners);
 }

@@ -15,9 +15,6 @@ import java.util.Set;
 
 public abstract class Action {
 
-    /**
-     * abstract class for an atomic action of damage/marks or movement
-     */
     @Expose private boolean isMovement;
     @Expose private boolean optional;
     @Expose private boolean necessaryForNextAction;

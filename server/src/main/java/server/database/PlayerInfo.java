@@ -8,9 +8,6 @@ import java.util.UUID;
 
 class PlayerInfo {
 
-    /**
-     * contains all the info for a player
-     */
     private Player player;
     @Expose private String username;
     @Expose private PcColourEnum pcColour;

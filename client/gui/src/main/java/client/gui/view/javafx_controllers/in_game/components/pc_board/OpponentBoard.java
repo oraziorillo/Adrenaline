@@ -15,10 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-/**
- * this is like a read-only version of a pc board. it can even display cards and ammos
- * @see PcBoard
- */
+
 public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
    @FXML private VBox mainPane;
    @FXML private ImageView immagine;
@@ -41,47 +38,34 @@ public class OpponentBoard implements MapChangeListener<PcColourEnum,PcDTO> {
       immagine.fitHeightProperty().bind( HEIGHT );
    }
    
-   /**
-    *To listen to Pcs changes, and display always updated values
-    * @param change cha change of the pc
-    */
    @Override
    public void onChanged(Change<? extends PcColourEnum, ? extends PcDTO> change) {
       if(change.getKey().equals( this.settedColor ) && change.wasAdded()) {
-         
-         //clean up
             weapons.getChildren().clear();
             powerups.getChildren().clear();
+            if(change.getValueAdded().getWeapons()!=null)
+               for (WeaponCardDTO weapon : change.getValueAdded().getWeapons()) {
+                  if (weapon != null) {
+                     ImageView img = new ImageView( new Image( weapon.getImagePath(), 0, 0, true, false ) );
+                     img.setPreserveRatio( true );
+                     img.fitHeightProperty().bind( HEIGHT );
+                     weapons.getChildren().add( img );
+                  }
+               }
             
-            //update life
-         vitaController.onChanged( change );
-         
-         //update weapons
-         if(change.getValueAdded().getWeapons()!=null)
-            for (WeaponCardDTO weapon : change.getValueAdded().getWeapons()) {
-               if (weapon != null) {
-                  ImageView img = new ImageView( new Image( weapon.getImagePath(), 0, 0, true, false ) );
-                  img.setPreserveRatio( true );
-                  img.fitHeightProperty().bind( HEIGHT );
-                  weapons.getChildren().add( img );
+            if(change.getValueAdded().getPowerUps()!=null)
+               for (PowerUpCardDTO powerUp : change.getValueAdded().getPowerUps()) {
+                  if (powerUp != null) {
+                     ImageView img = new ImageView( new Image( powerUp.getImagePath(), 0, 0, true, false ) );
+                     img.fitHeightProperty().bind( Bindings.divide( HEIGHT, 2 ) );
+                     img.setPreserveRatio( true );
+                     powerups.getChildren().add( img );
+                  }
                }
-            }
-         
-         //update powerups
-         if(change.getValueAdded().getPowerUps()!=null)
-            for (PowerUpCardDTO powerUp : change.getValueAdded().getPowerUps()) {
-               if (powerUp != null) {
-                  ImageView img = new ImageView( new Image( powerUp.getImagePath(), 0, 0, true, false ) );
-                  img.fitHeightProperty().bind( Bindings.divide( HEIGHT, 2 ) );
-                  img.setPreserveRatio( true );
-                  powerups.getChildren().add( img );
-               }
-            }
-         
-         //update ammos
-         if(change.getValueAdded().getPcBoard()!=null&&change.getValueAdded().getPcBoard().getAmmo()!=null)
-            ammosController.setAmmos( change.getValueAdded().getPcBoard().getAmmo() );
-         
+            
+            if(change.getValueAdded().getPcBoard()!=null&&change.getValueAdded().getPcBoard().getAmmo()!=null)
+               ammosController.setAmmos( change.getValueAdded().getPcBoard().getAmmo() );
+            
       }
    }
    
