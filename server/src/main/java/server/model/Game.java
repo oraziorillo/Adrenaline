@@ -151,7 +151,6 @@ public class Game {
         gameBoard = preLoadedGameBoards[numberOfMap - 1];
         preLoadedGameBoards = null;
 
-        gameBoard.setNumberOfMap(numberOfMap);
         gameBoard.init(weaponsDeck, ammoDeck);
         gameBoard.addModelEventHandler(events);
 
