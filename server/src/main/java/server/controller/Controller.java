@@ -54,7 +54,7 @@ public class Controller{
         this.availablePcColours = Arrays.stream(PcColourEnum.values()).collect(Collectors.toSet());
         this.lastPlayerIndex = -1;
         this.remainingActions = 2;
-        this.requestTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
+        this.requestTimer = new Timer(ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> {
             try {
                 requestRecipient.response(requestRecipient.getActiveRequest().getChoices().get(1));
                 requestRecipient.getView().ack("Time to decide is up!");
@@ -66,7 +66,11 @@ public class Controller{
     }
 
 
-
+    /**
+     * used after a server crash
+     *
+     * @param gameUUID unique id of the suspended game
+     */
     void initGame(UUID gameUUID) {
         try {
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
@@ -103,6 +107,9 @@ public class Controller{
     }
 
 
+    /**
+     * inits a new game
+     */
     void initGame(){
         game = Game.getGame();
         addListenersToModel();
@@ -131,6 +138,9 @@ public class Controller{
     }
 
 
+    /**
+     * @return true iff the controller is waiting for a response from a player
+     */
     public boolean isLocked() {
         return locked;
     }
@@ -151,9 +161,13 @@ public class Controller{
     }
 
 
+    /**
+     * @return pc colours still available to be picke
+     */
     public Set<PcColourEnum> getAvailablePcColours() {
         return availablePcColours;
     }
+
 
     public List<Player> getPlayers() {
         return players;
@@ -195,11 +209,17 @@ public class Controller{
     }
 
 
+    /**
+     * @return the weapon that ha to be configured for shooting in this turn
+     */
     public WeaponCard getCurrWeapon() {
         return getCurrPlayer().getCurrWeapon();
     }
 
 
+    /**
+     * @return squares to be refilled
+     */
     public Set<Square> getSquaresToRefill(){
         return squaresToRefill;
     }
@@ -290,18 +310,27 @@ public class Controller{
     }
 
 
+    /**
+     * @return true iff the curr player is also the last of the turn
+     */
     public boolean amITheLast() {
         return currPlayerIndex == players.size() - 1;
     }
 
 
+    /**
+     * sends a request to a specific recipient and locks the controller until the answer comes
+     *
+     * @param request
+     * @param recipient
+     */
     public void sendRequest(Request request, Player recipient) {
         if (recipient.isOnLine()) {
             try {
                 lock();
                 requestRecipient = recipient;
                 recipient.getView().request(request);
-                //requestTimer.start();
+                requestTimer.start();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -309,6 +338,10 @@ public class Controller{
     }
 
 
+    /**
+     * send a request to the curr player but it doesn't
+     * @param request
+     */
     public void sendNonBlockingRequest(Request request) {
         if (getCurrPlayer().isOnLine()) {
             try {
