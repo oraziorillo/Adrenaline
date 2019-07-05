@@ -15,7 +15,6 @@ import common.remote_interfaces.RemoteView;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.List;
 
 import static common.Constants.REGEX;
@@ -60,35 +59,35 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      out.println(ON_GAME_BOARD_UPDATE + REGEX + gson.toJson(event, GameBoardEvent.class));
+      out.println(ON_GAME_BOARD_UPDATE + REGEX + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-      out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + gson.toJson(event, KillShotTrackEvent.class));
+      out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
-      out.println(ON_PC_BOARD_UPDATE + REGEX + gson.toJson(event, PcBoardEvent.class));
+      out.println(ON_PC_BOARD_UPDATE + REGEX + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onPcUpdate(PcEvent event) {
-      out.println(ON_PC_UPDATE + REGEX + gson.toJson(event, PcEvent.class));
+      out.println(ON_PC_UPDATE + REGEX + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onSquareUpdate(SquareEvent event) {
-      out.println(ON_SQUARE_UPDATE + REGEX + gson.toJson(event, SquareEvent.class));
+      out.println(ON_SQUARE_UPDATE + REGEX + gson.toJson(event));
       out.flush();
    }
 

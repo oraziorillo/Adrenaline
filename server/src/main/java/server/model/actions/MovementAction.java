@@ -24,6 +24,10 @@ public class MovementAction extends Action {
     }
 
 
+    /**
+     * builds an action from a json object
+     * @param jsonAction
+     */
     public MovementAction(JsonObject jsonAction) {
         super(jsonAction);
         this.selfMovement = jsonAction.get("selfMovement").getAsBoolean();
@@ -50,12 +54,18 @@ public class MovementAction extends Action {
     }
 
 
+    /**
+     * @return true iff the movement is referred to the shooter
+     */
     @Override
     public boolean isSelfMovement() {
         return selfMovement;
     }
 
 
+    /**
+     * @param targetPc the pc that has to be moved
+     */
     @Override
     public void selectPc(Pc targetPc) {
         if (!targets.isEmpty() && maxNumberOfTargets == 1)
@@ -69,12 +79,16 @@ public class MovementAction extends Action {
     }
 
 
+    /**
+     * @param targetSquare the destination of the movement
+     */
     @Override
     public void selectSquare(Square targetSquare) {
         if (this.targetSquare == null) {
             this.targetSquare = targetSquare;
         }
     }
+
 
 
     @Override
@@ -90,6 +104,9 @@ public class MovementAction extends Action {
     }
 
 
+    /**
+     * used to reset an action after usage
+     */
     @Override
     public void resetAction() {
         targets.clear();
@@ -97,6 +114,11 @@ public class MovementAction extends Action {
     }
 
 
+    /**
+     * applies the movement effect
+     * @param shooter the pc who is using the weapon
+     * @return set of pcs moved (usually one)
+     */
     @Override
     public Set<Pc> apply(Pc shooter) {
         if (selfMovement)
@@ -108,6 +130,9 @@ public class MovementAction extends Action {
     }
 
 
+    /**
+     * @return true iff the action is ready to be used
+     */
     @Override
     public boolean isComplete() {
         return !isParameterized() ||

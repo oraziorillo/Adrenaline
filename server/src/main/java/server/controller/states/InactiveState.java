@@ -23,7 +23,7 @@ public class InactiveState extends State {
     private boolean hasToRespawn;
     private boolean wantToUseTagbackGrenade;
     private Pc damagedPc;
-    //private Timer powerUpTimer;
+    private Timer powerUpTimer;
     private int numberOfTagbackGrenades;
 
 
@@ -31,8 +31,8 @@ public class InactiveState extends State {
     public InactiveState(Controller controller, int nextState) {
         super(controller);
         this.nextState = nextState;
-        //this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> useFirstTagbackGrenade());
-        //this.powerUpTimer.stop();
+        this.powerUpTimer = new Timer( ServerPropertyLoader.getInstance().getRequestTimer(), actionEvent -> useFirstTagbackGrenade());
+        this.powerUpTimer.stop();
     }
 
 
@@ -53,9 +53,9 @@ public class InactiveState extends State {
         switch (response) {
             case "yes":
                 this.wantToUseTagbackGrenade = true;
-                //controller.stopRequestTimer();
+                controller.stopRequestTimer();
                 if (numberOfTagbackGrenades > 1) {
-                    //powerUpTimer.start();
+                    powerUpTimer.start();
                     controller.ackRequestRecipient("\nNow choose a Tagback Grenade to use");
                 }
                 else
@@ -63,7 +63,7 @@ public class InactiveState extends State {
                 break;
             case "no":
                 this.wantToUseTagbackGrenade = false;
-                //controller.stopRequestTimer();
+                controller.stopRequestTimer();
                 controller.unlock();
                 break;
             default:

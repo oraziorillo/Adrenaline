@@ -7,7 +7,7 @@ import common.events.kill_shot_track_events.KillShotTrackEvent;
 import common.events.pc_board_events.PcBoardEvent;
 import common.events.pc_events.PcEvent;
 import common.events.square_events.SquareEvent;
-import server.database.Caterpillar;
+import server.database.CustomizedHashMap;
 import server.database.DatabaseHandler;
 
 import java.rmi.RemoteException;
@@ -16,10 +16,10 @@ import java.util.UUID;
 public class ModelEventHandler {
 
 
-    private Caterpillar<UUID, PcColourEnum, ModelEventListener> listeners;
+    private CustomizedHashMap<UUID, PcColourEnum, ModelEventListener> listeners;
 
     ModelEventHandler(){
-        this.listeners = new Caterpillar<>();
+        this.listeners = new CustomizedHashMap<>();
     }
 
 

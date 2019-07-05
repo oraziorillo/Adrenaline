@@ -1,0 +1,303 @@
+@startuml
+
+title __MODEL's Class Diagram__\n
+
+  namespace server {
+    namespace model {
+      class AmmoSquareTest {
+          - card1 : AmmoTile
+          - card2 : AmmoTile
+          - coloumn : int
+          - colour : SquareColourEnum
+          - deck : Deck<AmmoTile>
+          - pc : Pc
+          - row : int
+          - tested : AmmoSquare
+          + collectLaunchExceptionWhenAmmoSquareIsEmpty()
+          + collectWorksFine()
+          + constructedFine()
+          + drawsOnSpawnTheFirstCardOfDeck()
+          + isEmptyWorksAndDoesntAutoRefill()
+          + refillWorksFine()
+          + setup()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class AmmoTileDeckTest {
+          - deck : Deck<AmmoTile>
+          + ammoTileDeckConstructionFine()
+          + printDeck()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class AmmoTileTest {
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class DeckTest {
+          - g : Game
+          - tested : Deck<Integer>
+          {static} - zeroTo99 : ArrayList<Integer>
+          + containsAddedObjects()
+          + drawnCardsAreRemovedFromDeck()
+          + equalsReturnsFalseOnOtherClasses()
+          + equalsWorksWithSameCardsInSameOrder()
+          + equalsisOrderSensitive()
+          + sameHashcodeWithSameCards()
+          {static} + setUpClass()
+          + setup()
+          + shuffleWorksFine()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class GameBoardTest {
+          ~ ammoDeck : Deck<AmmoTile>
+          ~ weaponsDeck : Deck<WeaponCard>
+          {static} - COL : int
+          {static} - N_MAP : int
+          {static} - ROW : int
+          - gameBoard : GameBoard
+          + allSquaresOnDirectionTest()
+          + allSquaresTest()
+          + atDistanceWorksFine()
+          + checkVisibles()
+          + getSpawnPointWorksFine()
+          + initFine()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class KillShotTest {
+          - charColour : PcColourEnum
+          - tested : KillShot
+          + beginsSkulledNotOverkilledAndWithNullColour()
+          + killMethodWorksFineWhenNotOverkilled()
+          + killMethodWorksFineWhenOverkilled()
+          + setup()
+          + throwsExceptionIfKilled2Times()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class MovementOnMapTest {
+          - game : Game
+          - gameBoard : GameBoard
+          - pc1 : Pc
+          + init()
+          + movementTest()
+          + spawnTest()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class PcBoardTest {
+          - tested : PcBoard
+          + addAmmoWorksFineAndNeverSetsForEachColourMoreThanThreeAmmos()
+          + addDamageWorksFine()
+          + getMarksNeverReturnsANumberOfMarksBiggerThan3()
+          + getMarksReturnsTheNUmberOfMarksRelatedToEachPc()
+          + hasAtLeastOneAmmoWorksFine()
+          + increasePointsWorksFine()
+          + payAmmoDecreaseTheNumberOfAmmosAndReturnsTheRemainingAmmosToPay()
+          + resetDamageTrackFlushesTheOldValuesAndSetsTheDamageTrackIndexToZero()
+          + setupTest()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class PcTest {
+          - ammoTile : AmmoTile
+          - card0 : WeaponCard
+          - card1 : WeaponCard
+          - card2 : WeaponCard
+          - colour : PcColourEnum
+          - deck : Deck<PowerUpCard>
+          - game : Game
+          - tested : Pc
+          + SetupTest()
+          + addAmmoWorksFine()
+          + addWeaponAddsSelectedWeaponAtSelectedIndex()
+          + discardPowerUpRemoveTheGivenPowerUpIfPresent()
+          + drawPowerUpWorksFine()
+          + getAdrenalineWorksFine()
+          + getColourWorksFine()
+          + getPowerUpCardReturnsPowerUpAtTheSelectedIndex()
+          + getWeaponAtIndexReturnsWeaponAtSelectedIndex()
+          + hasAtLeastOneAvailableAmmoWorksFine()
+          + hasEnoughAmmoConsidersAvailableSelectedPowerUpsAndPcAmmo()
+          + hasMAxPowerUpNumberWorksFine()
+          + isFullyArmedReturnsTrueIfPcHasThreeWeaponCards()
+          + payAmmoUsesAmmoAndSelectedPOwerUpsToPay()
+          + spawnAndMoveToTakeAsParameterTheNewPositionOfPcAndMoveHimThere()
+          + takeDamageAddsToThePcBoardTheRequiredAmountOfDamage()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class PersistenceTest {
+          - gameInfo : GameInfo
+          + initSavedGameFine()
+          + squaresInitFine()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class PowerUpDeckTest {
+          - deck : Deck<PowerUpCard>
+          + initPowerUpsDeck()
+          + printDeck()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class RandomTest {
+          + pcColorEnumTest()
+          + randomNumbers()
+          + randomTest()
+          + system()
+          + timerTest()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class SerializerTest {
+          + initSavedGameFine()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class SpawnPointTest {
+          - card0 : WeaponCard
+          - card1 : WeaponCard
+          - card2 : WeaponCard
+          - colour : SquareColourEnum
+          - deck : Deck<WeaponCard>
+          - pc : Pc
+          - tested : SpawnPoint
+          - x : int
+          - y : int
+          + collectWorksFineWhenPcIsFullyArmed()
+          + collectWorksFineWhenPcIsNotFullyArmed()
+          + refillRefillsTheEntireSquare()
+          + resetIndexWorksFine()
+          + setupAndConstructorTest()
+          + weaponAtIndexWorksFine()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class SquareTest {
+          - coloumn : int
+          - colour : SquareColourEnum
+          - onRight : Square
+          - row : int
+          - s1 : Square
+          - s2 : Square
+          - s3 : Square
+          - tested : Square
+          + SettersWorksFine()
+          + addAndRemovePcWorksAsOnSets()
+          + atDistanceReturnedCollectionContainsAllTheInterestedSquaresAndNoMore()
+          + atDistanceReturnsCallingSquareOnlyWithDistance0()
+          + atDistanceThrowsExceptionWithNegativeDistances()
+          + onCardinalDirectionReturnsNullWhenNoSquareInThatDirection()
+          + onCardinalDirectionReturnsTheVisibleSquareOnTheSelectedDirectionIfThereIsOne()
+          + setupAndContructorTest()
+          - setupSquareMocks()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class TargetCheckerTest {
+          ~ coloumn : int
+          ~ row : int
+          - gameBoard : GameBoard
+          + beyondWallsStraightLineCheckerReturnAllSquaresInTheSelectedDirection()
+          + beyondWallsStraightLineCheckerReturnsSquaresInAllDirectionsAndThenSpecificDirection()
+          + blindnessCheckerReturnsAllNonVisibileSquaresFromTheSelectedOne()
+          + differentRoomCheckerReturnsSquaresOfDifferentRoomWithRespectToTheSelectedOne()
+          + emptyCheckerReturnsAllSquaresOfTheGameBoard()
+          + initMap()
+          + maxDistanceCheckerReturnsAllSquareAtTheSelectedMaximumDistance()
+          + maxDistanceFromVisibleCheckerReturnsAllSquaresAtMaxDIstanceFromEachVisibleSquare()
+          + minDistanceCheckerReturnsAllSquareAtTheSelectedMinimumDistance()
+          + sameRoomCheckerReturnsSquaresOfTheSameRoomWithRespectToTheSelectedOne()
+          + simpleStraightLineCheckerReturnsAllSquareInTheSelectedDirection()
+          + simpleStraightLineCheckerReturnsSquaresInAllDirectionsAndThenSpecificDirection()
+          + visibilityCheckerReturnsAllVisiblesOfADefinedsquare()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace model {
+      class WeaponsDeckTest {
+          - deck : Deck<WeaponCard>
+          + printDeck()
+          + testOnWeaponDrawnFromDeck()
+          + weaponsDeckConstrucionFine()
+      }
+    }
+  }
+  
+
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

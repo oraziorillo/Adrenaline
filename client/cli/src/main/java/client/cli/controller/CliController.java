@@ -94,7 +94,6 @@ public class CliController {
         } catch (NoSuchObjectException e) {
             e.printStackTrace();
         }
-        //TODO logout
     }
 
 
