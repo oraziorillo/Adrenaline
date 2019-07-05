@@ -44,6 +44,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Controls the game setup
+ */
 public class SetupController extends AbstractJavaFxController {
 
     @FXML
@@ -68,6 +71,9 @@ public class SetupController extends AbstractJavaFxController {
    public SetupController() {
    }
    
+   /**
+    * Loads the setup graphics. The events are stored, not managed and thrown to the next state on creation
+    */
    public void initialize(){
       GridPane.setValignment( maps,VPos.CENTER );
       GridPane.setValignment( pcs, VPos.BOTTOM );
@@ -160,11 +166,21 @@ public class SetupController extends AbstractJavaFxController {
       }
    }
    
+   /**
+    * acks are shower as server messages on chat
+    * @see Chat
+    * @param message the message from the server
+    */
    @Override
    public void ack(String message) {
       chatController.showServerMessage( message );
    }
    
+   /**
+    * chat messages are displayed on chat
+    * @param message the message from the server
+    * @see Chat
+    */
    @Override
    public void chatMessage(String message) {
       chatController.showUserMessage( message );
@@ -212,16 +228,28 @@ public class SetupController extends AbstractJavaFxController {
       setPcSelectable( color,false );
    }
    
+   /**
+    *
+    * @param event stored end not managed
+    */
    @Override
    public void onPcUpdate(PcEvent event) {
       setPcSelected( event.getDTO().getColour() );
    }
    
+   /**
+    *
+    * @param event stored end not managed
+    */
    @Override
    public void onSquareUpdate(SquareEvent event) {
    
    }
    
+   /**
+    *
+    * @param event stored end not managed
+    */
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
       for(PcColourEnum col:PcColourEnum.values())
@@ -231,21 +259,30 @@ public class SetupController extends AbstractJavaFxController {
       showCirclesBeforeIndex( l );
    }
    
+   /**
+    * passed to the next state immediatly
+    */
    @Override
    public void resumeGame(GameDTO game) {
-   
+      topView.nextState();
+      topView.resumeGame( game );
    }
    
+   /**ignored*/
    @Override
    public void winners(List<String> gameWinners) {
    
    }
-   
+   /**ignored*/
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
    
    }
    
+   /**
+    *
+    * @param event passed to the next state and not managed
+    */
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
       setMapSelectable( false );
@@ -272,11 +309,13 @@ public class SetupController extends AbstractJavaFxController {
       
    }
 
+   /**ignored*/
    @Override
    public void notifyEvent(LobbyEvent event) {
 
    }
 
+   /**ignored*/
    @Override
    public void request(Request request) {
 

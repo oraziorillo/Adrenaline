@@ -30,6 +30,9 @@ import java.util.UUID;
 import static common.enums.ControllerMethodsEnum.LOG_IN;
 import static common.enums.ControllerMethodsEnum.SIGN_UP;
 
+/**
+ * contains authentication methods implemented
+ */
 public class UserAuthController extends AbstractJavaFxController {
    
    private final Stage stage;
@@ -196,7 +199,7 @@ public class UserAuthController extends AbstractJavaFxController {
    }
    
    /**
-    * @throws IllegalStateException always: this cli.controller is not supposed to handle a game
+    * @throws IllegalStateException always: this controller is not supposed to handle a game
     */
    @Override
    public void resumeGame(GameDTO game) {
