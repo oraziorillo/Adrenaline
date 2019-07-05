@@ -2,6 +2,7 @@ package server.model;
 
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
+import org.mockito.Mock;
 import server.model.squares.AmmoSquare;
 import server.model.squares.SpawnPoint;
 import server.model.squares.Square;
@@ -26,13 +27,14 @@ public class PcTest {
     private Deck<PowerUpCard> deck;
     private AmmoTile ammoTile;
     private WeaponCard card0, card1, card2;
-
-
+    @Mock
+    private ModelEventHandler eventHandler;
 
     @Before
     public void SetupTest() {
         game = Mockito.mock(Game.class);
         tested = new Pc(colour, game);
+        tested.addModelEventHandler(eventHandler);
         deck = Mockito.mock(Deck.class);
         ammoTile = Mockito.mock(AmmoTile.class);
         card0 = Mockito.mock(WeaponCard.class);

@@ -102,6 +102,12 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    }
 
 
+   public void gameOver(UUID gameID) {
+       Lobby deadLobby = lobbies.stream().filter(l -> l.getGameUUID() == gameID).findFirst().get();
+       lobbies.remove(deadLobby);
+   }
+
+
    boolean isInStartedGame(UUID token) {
       return lobbies.parallelStream()
               .filter(l -> l.hasPlayer(token) && l.isGameStarted())

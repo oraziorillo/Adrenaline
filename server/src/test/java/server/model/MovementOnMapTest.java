@@ -25,6 +25,9 @@ public class MovementOnMapTest {
     private GameBoard gameBoard;
     private Pc pc1;
 
+    @Mock
+    private ModelEventHandler eventHandler;
+
 
     @Before
     public void init() throws FileNotFoundException {
@@ -38,7 +41,9 @@ public class MovementOnMapTest {
                 new FileReader("src/main/resources/json/game_boards/gameBoard" + (numberOfMap + 1) + ".json"));
         gameBoard = customGson.fromJson(reader, GameBoard.class);
 
+        gameBoard.addModelEventHandler(eventHandler);
         pc1 = new Pc(PcColourEnum.BLUE, game);
+        pc1.addModelEventHandler(eventHandler);
     }
 
 

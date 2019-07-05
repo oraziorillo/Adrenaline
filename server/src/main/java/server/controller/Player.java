@@ -323,6 +323,10 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
+    public void killView(){
+        this.view = null;
+    }
+
     public synchronized void forcePass(){
         currState = currState.forcePass();
     }

@@ -67,11 +67,16 @@ public class GameBoardTest {
 
     @Test
     public void atDistanceWorksFine(){
-        Set<Square> s;
-        s = gameBoard.getSquare(1, 3).atDistance(4);
-        for (Square square: s) {
-            System.out.println("Ecco: " + square.getRow() + square.getCol()  + square.getColour());
-        }
+        Set<Square> atDistance4 = gameBoard.getSquare(2, 3).atDistance(3);
+        for (int r = 1; r < gameBoard.getRows(); r++)
+            for (int c = 1; c < gameBoard.getColumns(); c++)
+                assert atDistance4.contains(gameBoard.getSquare(r, c));
+        assert atDistance4.contains(gameBoard.getSquare(0, 2));
+        assert atDistance4.contains(gameBoard.getSquare(0, 3));
+        assert atDistance4.contains(gameBoard.getSquare(2, 0 ));
+        assert !atDistance4.contains(gameBoard.getSquare(0, 0));
+        assert !atDistance4.contains(gameBoard.getSquare(0, 1));
+        assert !atDistance4.contains(gameBoard.getSquare(1, 0));
     }
 
 

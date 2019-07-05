@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class AmmoTileDeckTest {
 
     private Deck<AmmoTile> deck;
@@ -35,5 +37,33 @@ public class AmmoTileDeckTest {
     @Test
     public void printDeck(){
         deck.print();
+    }
+
+
+    @Test
+    public void validAmmoTiles() {
+        for (AmmoTile a : deck.getCards()) {
+            short numOfAmmo = sumArray(a.getAmmo());
+            if (numOfAmmo == 3)
+                assertFalse(a.hasPowerUp());
+            else if (numOfAmmo == 2)
+                assertTrue(a.hasPowerUp());
+            else
+                fail();
+        }
+    }
+
+
+    @Test
+    public void sizeFine(){
+        assertEquals(36, deck.size());
+    }
+
+
+    private short sumArray(short[] array){
+        short counter = 0;
+        for (short s : array)
+            counter += s;
+        return counter;
     }
 }
