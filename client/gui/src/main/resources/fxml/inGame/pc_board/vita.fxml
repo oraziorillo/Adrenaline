@@ -5,7 +5,12 @@
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:id="mainPane"
+<<<<<<< HEAD
            fx:controller="client.view.gui.javafx_controllers.in_game.components.pc_board.Vita" stylesheets="/css/pc_board/Pc.css">
+=======
+           fx:controller="client.gui.view.javafx_controllers.in_game.components.pc_board.Vita"
+           stylesheets="/css/pc_board/Pc.css">
+>>>>>>> 1d762017ed51c975d0c9e88d81c5ff6cb37a9e72
     <ImageView fx:id="background" preserveRatio="true"/>
     <GridPane>
         <rowConstraints>
