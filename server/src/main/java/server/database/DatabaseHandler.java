@@ -247,7 +247,6 @@ public class DatabaseHandler {
      * @param controller
      */
     public synchronized void gameEnded(Controller controller) {
-        //Todo da rivedere e usare
         List<UUID> playersInGame = controller.getPlayers().stream().map(Player::getToken).collect(Collectors.toList());
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded());
         File gameFile = new File(generateFilePath(controller.getGameUUID()));

@@ -353,6 +353,10 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to the recipient of the active request if present
+     * @param msg
+     */
     public void ackRequestRecipient(String msg) {
         if (requestRecipient.isOnLine()) {
             try {
@@ -364,6 +368,11 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to a specific player
+     * @param p player to address the message to
+     * @param msg message to be sent
+     */
     public void ackPlayer(Player p, String msg) {
         if (p.isOnLine()) {
             try {
@@ -375,6 +384,10 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to the curr player
+     * @param msg to be sent
+     */
     public void ackCurrent(String msg){
         try {
             getCurrPlayer().getView().ack(msg);
@@ -385,6 +398,10 @@ public class Controller{
     }
 
 
+    /**
+     * sends an ack to all players
+     * @param msg to be sent
+     */
     public void ackAll(String msg){
         players.parallelStream().filter(Player::isOnLine).forEach(p -> {
             try {
@@ -397,6 +414,10 @@ public class Controller{
     }
 
 
+    /**
+     * a toString for colours available to be picked
+     * @return
+     */
     public String availableColours() {
         StringBuilder availableColours = new StringBuilder();
         for (PcColourEnum c : availablePcColours) {
@@ -423,12 +444,15 @@ public class Controller{
 
     public void checkIfGameCanContinue() {
         if (players.stream().filter(Player::isOnLine).count() < 3){
-            List<Pc> winners = game.computeWinner();
+            gameOver();
 
         }
     }
 
 
+    /**
+     * called when the game is over, handles
+     */
     public void gameOver() {
         List<Pc> winners = game.computeWinner();
         DatabaseHandler.getInstance().gameEnded(this);
