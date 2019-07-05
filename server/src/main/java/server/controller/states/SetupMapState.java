@@ -17,6 +17,7 @@ public class SetupMapState extends State{
     public SetupMapState(Controller controller) {
         super(controller);
         this.mapIndex = -1;
+        //cli.controller.startTimer();
     }
 
 

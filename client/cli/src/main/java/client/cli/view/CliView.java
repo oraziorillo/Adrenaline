@@ -139,7 +139,7 @@ public class CliView extends AbstractView {
 
     @Override
     public synchronized void error(String msg){
-        inputReader.requestString(msg + "\nPress enter to exit.");
+        inputReader.requestString(msg + System.lineSeparator() + "Press enter to exit.");
         System.exit(1);
     }
 
@@ -152,7 +152,7 @@ public class CliView extends AbstractView {
     }
 
     @Override
-    public synchronized void chatMessage(String message) throws RemoteException {
+    public void chatMessage(String message) throws RemoteException {
         //not implemented on cli
     }
 
@@ -165,7 +165,7 @@ public class CliView extends AbstractView {
 
 
     @Override
-    public synchronized void request(Request request) throws RemoteException {
+    public void request(Request request) throws RemoteException {
         printMessage(request.toString());
     }
 
@@ -177,25 +177,29 @@ public class CliView extends AbstractView {
     
     
     @Override
-    public synchronized void resumeGame(GameDTO game) throws RemoteException {
+    public void resumeGame(GameDTO game) throws RemoteException {
         printMessage(game.toString());
     }
 
 
     @Override
-    public synchronized boolean isReachable() throws RemoteException {
+    public void winners(List<String> winners) throws RemoteException {
+        printMessage(winners.size() == 1
+                ? "\nIt seems we have a winner. And he/she is...\n" + winners.get(0)
+                : "We have a draw between " + winners.get(0) + " and " + winners.get(1));
+    }
+
+
+    @Override
+    public void close() throws RemoteException {
+
+    }
+
+
+    @Override
+    public boolean isReachable() throws RemoteException {
         return true;
     }
-
-    @Override
-    public void winners(List<String> gameWinners) throws RemoteException {
-        printMessage(gameWinners.size() == 1 ? gameWinners.toString() + "is the winner!!"
-                : gameWinners.toString() + "are the winners");
-    }
-
-
-    @Override
-    public void close() throws RemoteException {}
 
 
     @Override

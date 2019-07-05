@@ -1,5 +1,6 @@
 package client.gui.controller;
 
+import client.gui.view.GuiExceptionHandler;
 import client.gui.view.GuiView;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
@@ -12,10 +13,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.UUID;
 
-/**
- * Controller for gui flow, launched by launch gui
- * @see client.gui.LaunchGui
- */
 public class GuiController extends Application {
 
    RemoteLoginController loginController;
@@ -23,8 +20,10 @@ public class GuiController extends Application {
    protected RemotePlayer player;
 
    public GuiController() {
+
     }
-   
+
+
     @Override
     public void start(Stage stage) throws Exception {
         Thread.setDefaultUncaughtExceptionHandler( new GuiExceptionHandler(player) );
@@ -46,12 +45,7 @@ public class GuiController extends Application {
            }
         } );
     }
-   
-   /**
-    * Login protocol
-    * @param stage passed to the view
-    * @return the token obtained after login
-    */
+    
     private UUID authUser(Stage stage){
         try {
             this.loginController = view.acquireConnection(view.acquireConnectionMethod());
@@ -63,7 +57,7 @@ public class GuiController extends Application {
                case SIGN_UP:
                   String username = view.acquireUsername();
                   token = loginController.register( username, view );
-                   view.ack("This is your token\n" + token);
+                  view.ack( "This is your token"+System.lineSeparator()+token );
                   break;
                case QUIT: default:
                   stage.close();

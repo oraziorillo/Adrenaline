@@ -215,7 +215,6 @@ public class Controller{
         return remainingActions;
     }
 
-
     /**
      * @return the weapon that ha to be configured for shooting in this turn
      */
@@ -342,6 +341,7 @@ public class Controller{
                 lock();
                 requestRecipient = recipient;
                 recipient.getView().request(request);
+                requestTimer.start();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -436,11 +436,6 @@ public class Controller{
         }
         return availableColours.toString();
     }
-
-
-//    public void stopRequestTimer() {
-//        this.requestTimer.stop();
-//    }
 
 
     public void lock() {

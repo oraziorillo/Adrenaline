@@ -1,6 +1,5 @@
 package server.controller;
 
-import common.events.lobby_events.PlayersChangedEvent;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
 import common.remote_interfaces.RemoteView;
@@ -103,6 +102,12 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
    }
 
 
+   public void gameOver(UUID gameID) {
+       Lobby deadLobby = lobbies.stream().filter(l -> l.getGameUUID() == gameID).findFirst().get();
+       lobbies.remove(deadLobby);
+   }
+
+
    boolean isInStartedGame(UUID token) {
       return lobbies.parallelStream()
               .filter(l -> l.hasPlayer(token) && l.isGameStarted())
@@ -111,18 +116,7 @@ public class LoginController extends UnicastRemoteObject implements RemoteLoginC
 
 
    void quitFromLobby(UUID token) {
-      lobbies.parallelStream()
-              .filter(l -> l.hasPlayer(token))
-              .forEach(l -> {
-                 l.removePlayer(token);
-                 l.publishEvent(new PlayersChangedEvent(l.convertToDTO()));
-              });
-   }
-
-
-   public void gameOver(UUID gameUUID) {
-      Lobby deadLobby = lobbies.stream().filter(lobby -> lobby.getGameUUID() == gameUUID).findFirst().get();
-      lobbies.remove(deadLobby);
+      lobbies.parallelStream().filter(l -> l.hasPlayer(token)).forEach(l -> l.removePlayer(token));
    }
 }
 

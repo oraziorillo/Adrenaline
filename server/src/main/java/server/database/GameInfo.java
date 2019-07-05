@@ -8,10 +8,6 @@ import java.util.UUID;
 
 public class GameInfo {
 
-    /**
-     * contains all the necessary info for a game
-     */
-
     private boolean active;
     @Expose private Game game;
     @Expose private List<UUID> playersTokens;

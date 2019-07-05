@@ -1,6 +1,6 @@
 package client.gui.view.javafx_controllers.in_game.components.card_spaces.player_hands;
 
-import client.gui.ImageCache;
+import client.gui.view.ImageCache;
 import client.gui.view.javafx_controllers.in_game.components.weapons.GeneralWeapon;
 import common.dto_model.AbstractCardDTO;
 import common.enums.PcColourEnum;

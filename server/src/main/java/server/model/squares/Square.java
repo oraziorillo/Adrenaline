@@ -85,14 +85,10 @@ public abstract class Square {
 
 
     public void setTargetable(boolean targetable){
-        boolean changed = false;
-        if (this.targetable != targetable)
-            changed = true;
         this.targetable = targetable;
 
         //notify listeners
-        if (changed)
-            events.fireEvent(new TargetableSetEvent(convertToDTO()));
+        events.fireEvent(new TargetableSetEvent(convertToDTO()));
     }
 
 
