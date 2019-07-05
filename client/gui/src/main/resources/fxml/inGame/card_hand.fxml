@@ -5,8 +5,12 @@
 <?import java.lang.Double?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
+<<<<<<< HEAD
+      fx:controller="client.view.gui.javafx_controllers.in_game.components.card_spaces.player_hands.CardHand" fx:id="mainPane"
+=======
       fx:controller="client.gui.view.javafx_controllers.in_game.components.card_spaces.player_hands.CardHand"
       fx:id="mainPane"
+>>>>>>> 1d762017ed51c975d0c9e88d81c5ff6cb37a9e72
       stylesheets="/css/style.css" spacing="10" alignment="BOTTOM_CENTER">
 
     <fx:define>

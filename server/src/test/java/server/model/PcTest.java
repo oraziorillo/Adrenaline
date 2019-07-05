@@ -2,20 +2,17 @@ package server.model;
 
 import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
-import org.mockito.Mock;
-import server.model.squares.AmmoSquare;
-import server.model.squares.SpawnPoint;
-import server.model.squares.Square;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import static junit.framework.TestCase.assertSame;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -45,8 +42,6 @@ public class PcTest {
 
     @Test
     public void isFullyArmedReturnsTrueIfPcHasThreeWeaponCards() {
-//        Deck<WeaponCard> deck = Mockito.mock(Deck.class);
-//
         tested.addWeapon(card0, 0);
         tested.addWeapon(card1, 1);
         tested.addWeapon(card2, 2);
@@ -91,20 +86,6 @@ public class PcTest {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> tested.weaponAtIndex(-1));
     }
 
-    @Test
-    public void spawnAndMoveToTakeAsParameterTheNewPositionOfPcAndMoveHimThere() {
-        Square firstDestinationSquare = Mockito.mock(SpawnPoint.class);
-        Square secondDestinationSquare = Mockito.mock(AmmoSquare.class);
-        when(firstDestinationSquare.isSpawnPoint()).thenReturn(true);
-        assumeTrue(firstDestinationSquare.getPcs().isEmpty());
-        tested.spawn(firstDestinationSquare);
-        assertSame(firstDestinationSquare, tested.getCurrSquare());
-//        assertTrue(firstDestinationSquare.getPcs().contains(tested));
-        tested.moveTo(secondDestinationSquare);
-//        assertFalse(firstDestinationSquare.getPcs().contains(tested));
-//        assertTrue(secondDestinationSquare.getPcs().contains(tested));
-        assertSame(secondDestinationSquare, tested.getCurrSquare());
-    }
 
     @Test
     public void drawPowerUpWorksFine() {

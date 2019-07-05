@@ -1,0 +1,196 @@
+@startuml
+
+title __CONTROLLER's Class Diagram__\n
+
+  namespace server {
+    namespace controller {
+      class server.controller.Controller {
+          - availablePcColours : Set<PcColourEnum>
+          - currPlayerIndex : int
+          - deadPlayers : LinkedList<Player>
+          - gameUUID : UUID
+          - lastPlayerIndex : int
+          - locked : boolean
+          - playerTimer : Timer
+          - players : List<Player>
+          - remainingActions : int
+          - requestTimer : Timer
+          - squaresToRefill : Set<Square>
+          + Controller()
+          + ackAll()
+          + ackCurrent()
+          + ackPlayer()
+          + ackRequestRecipient()
+          + addDeadPlayer()
+          + addSquareToRefill()
+          + amITheLast()
+          + availableColours()
+          + beforeFirstPlayer()
+          + checkAvailableColour()
+          + checkIfGameCanContinue()
+          + decreaseRemainingActions()
+          + gameOver()
+          + getAvailablePcColours()
+          + getCurrPc()
+          + getCurrPlayer()
+          + getCurrPlayerIndex()
+          + getCurrWeapon()
+          + getDeadPlayers()
+          + getGame()
+          + getGameUUID()
+          + getLastPlayerIndex()
+          + getPlayers()
+          + getRemainingActions()
+          + getSquaresToRefill()
+          + increaseCurrPlayerIndex()
+          + isFinalFrenzy()
+          + isLocked()
+          + isNextOnDuty()
+          + lock()
+          + nextTurn()
+          + removeAvailableColour()
+          + resetRemainingActions()
+          + resetSquaresToRefill()
+          + sendChatMessage()
+          + sendGameWinners()
+          + sendNonBlockingRequest()
+          + sendRequest()
+          + setCurrWeapon()
+          + setLastPlayerIndex()
+          + stopRequestTimer()
+          + unlock()
+          ~ closeConnections()
+          ~ initGame()
+          ~ initGame()
+          - addListenersToModel()
+          - startTimer()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace controller {
+      class server.controller.Lobby {
+          - gameStarted : boolean
+          - gameUUID : UUID
+          - players : List<Player>
+          - timer : Timer
+          + Lobby()
+          + convertToDTO()
+          + getPlayers()
+          ~ Lobby()
+          ~ addPlayer()
+          ~ getGameUUID()
+          ~ hasPlayer()
+          ~ isAvailable()
+          ~ isGameStarted()
+          ~ removePlayer()
+          - ackAll()
+          - publishEvent()
+          - removePlayer()
+          - startNewGame()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace controller {
+      class server.controller.LoginController {
+          {static} - instance : LoginController
+          - lobbies : List<Lobby>
+          + gameOver()
+          {static} + getInstance()
+          + joinLobby()
+          + login()
+          + register()
+          ~ isInStartedGame()
+          ~ quitFromLobby()
+          - LoginController()
+      }
+    }
+  }
+  
+
+  namespace server {
+    namespace controller {
+      class server.controller.Player {
+          - onLine : boolean
+          - token : UUID
+          + Player()
+          + chooseAmmo()
+          + chooseAsynchronousEffectOrder()
+          + chooseDirection()
+          + chooseMap()
+          + chooseNumberOfSkulls()
+          + choosePcColour()
+          + choosePowerUp()
+          + chooseSquare()
+          + chooseTarget()
+          + chooseUpgrade()
+          + chooseWeaponOfMine()
+          + chooseWeaponOnSpawnPoint()
+          + forcePass()
+          + getActiveRequest()
+          + getCurrPc()
+          + getPc()
+          + getToken()
+          + getView()
+          + grabStuff()
+          + isConnected()
+          + isOnLine()
+          + killView()
+          + notifyDamaged()
+          + ok()
+          + pass()
+          + quit()
+          + reload()
+          + response()
+          + resumeGame()
+          + runAround()
+          + sendMessage()
+          + setActiveRequest()
+          + setCurrState()
+          + setOnLine()
+          + setPc()
+          + setView()
+          + shootPeople()
+          + skip()
+          + switchFireMode()
+          + undo()
+          + usePowerUp()
+          ~ getCurrWeapon()
+          ~ hasToRespawn()
+          ~ setActive()
+          ~ setCurrWeapon()
+      }
+    }
+  }
+  
+
+  server.controller.Controller o-- server.model.Game : game
+  server.controller.Controller o-- server.controller.Player : requestRecipient
+  server.controller.Lobby o-- server.controller.Controller : controller
+  server.controller.Lobby o-- server.database.DatabaseHandler : databaseHandler
+  server.controller.LoginController .up.|> common.remote_interfaces.RemoteLoginController
+  server.controller.LoginController -up-|> java.rmi.server.UnicastRemoteObject
+  server.controller.LoginController o-- server.database.DatabaseHandler : databaseHandler
+  server.controller.LoginController o-- server.controller.Lobby : newLobby
+  server.controller.Player .up.|> common.remote_interfaces.RemotePlayer
+  server.controller.Player -up-|> java.rmi.server.UnicastRemoteObject
+  server.controller.Player o-- common.events.requests.Request : activeRequest
+  server.controller.Player o-- server.controller.states.State : currState
+  server.controller.Player o-- server.model.WeaponCard : currWeapon
+  server.controller.Player o-- server.model.Pc : pc
+  server.controller.Player o-- common.remote_interfaces.RemoteView : view
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

@@ -1,0 +1,149 @@
+@startuml
+
+title __COMPONENTS's Class Diagram__\n
+
+  namespace client.gui {
+    namespace view {
+      namespace javafx_controllers {
+        namespace in_game {
+          namespace components {
+            class client.gui.view.javafx_controllers.in_game.components.Ammo {
+                ~ grid : GridPane
+                {static} - INITIAL_AMMOS_PER_COLOR : int
+                {static} - MAX_AMMOS_PER_COLOR : int
+                - ammos : Region[][]
+                + changed()
+                + deselectAll()
+                + initialize()
+                + onChanged()
+                + setAmmos()
+                + setColour()
+                + setPlayer()
+                - selectAmmo()
+            }
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace client.gui {
+    namespace view {
+      namespace javafx_controllers {
+        namespace in_game {
+          namespace components {
+            class client.gui.view.javafx_controllers.in_game.components.Chat {
+                - MESSAGGI_HEIGHT : Double
+                - duration : Duration
+                - input : TextField
+                - isOpened : boolean
+                - mainPane : AnchorPane
+                - messaggi : VBox
+                - scale : ScaleTransition
+                - transition : ParallelTransition
+                - translate : TranslateTransition
+                + appear()
+                + disappear()
+                + initialize()
+                + setPlayer()
+                + showServerMessage()
+                + showUserMessage()
+                - sendInput()
+                - test()
+            }
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace client.gui {
+    namespace view {
+      namespace javafx_controllers {
+        namespace in_game {
+          namespace components {
+            class client.gui.view.javafx_controllers.in_game.components.Map {
+                + playerObserver : MapChangeListener<PcColourEnum, PcDTO>
+                + squareObserver : MapChangeListener<SquareDTO, SquareDTO>
+                ~ grid : GridPane
+                {static} - COLS : int
+                {static} - ROWS : int
+                {static} - TARGETABLECOLOR : Paint
+                - ammos : ImageView[][]
+                - innerGridSize : DoubleProperty
+                - opponentBoardControllers : EnumMap<PcColourEnum, OpponentBoard>
+                - opponentBoardGraphics : EnumMap<PcColourEnum, VBox>
+                - pcCircles : EnumMap<PcColourEnum, Circle>
+                - squares : Pane[][]
+                - stackPanes : StackPane[][]
+                - transitions : EnumMap<PcColourEnum, ScaleTransition>
+                + deselectAll()
+                + initialize()
+                + setMap()
+                + setPlayer()
+                - chooseTarget()
+                - hideBoard()
+                - loadNewBoard()
+                - showBoard()
+                - squareClicked()
+            }
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace client.gui {
+    namespace view {
+      namespace javafx_controllers {
+        namespace in_game {
+          namespace components {
+            class client.gui.view.javafx_controllers.in_game.components.Top {
+                {static} + KILLSHOT_HEIGHT : double
+                + pcListener : MapChangeListener<PcColourEnum, PcDTO>
+                + squareListener : MapChangeListener<SquareDTO, SquareDTO>
+                - cardHolder : AnchorPane
+                - frenzyTrackPane : FlowPane
+                - hostServices : HostServices
+                - killShotTrack : HBox
+                - killshotTrackPanes : StackPane[]
+                - punti : Label
+                + changed()
+                + deselectAll()
+                + initialize()
+                + setColour()
+                + setHostServices()
+                + setPlayer()
+                + showSettings()
+            }
+          }
+        }
+      }
+    }
+  }
+  
+
+  client.gui.view.javafx_controllers.in_game.components.Ammo .up.|> javafx.beans.value.ChangeListener
+  client.gui.view.javafx_controllers.in_game.components.Ammo .up.|> javafx.collections.MapChangeListener
+  client.gui.view.javafx_controllers.in_game.components.Ammo o-- common.remote_interfaces.RemotePlayer : player
+  client.gui.view.javafx_controllers.in_game.components.Ammo o-- common.enums.PcColourEnum : settedColor
+  client.gui.view.javafx_controllers.in_game.components.Chat o-- common.remote_interfaces.RemotePlayer : player
+  client.gui.view.javafx_controllers.in_game.components.Map o-- common.remote_interfaces.RemotePlayer : player
+  client.gui.view.javafx_controllers.in_game.components.Top .up.|> javafx.beans.value.ChangeListener
+  client.gui.view.javafx_controllers.in_game.components.Top o-- client.gui.view.javafx_controllers.in_game.components.Ammo : ammoController
+  client.gui.view.javafx_controllers.in_game.components.Top o-- client.gui.view.javafx_controllers.in_game.components.card_spaces.CardHolder : cardHolderController
+  client.gui.view.javafx_controllers.in_game.components.Top o-- common.remote_interfaces.RemotePlayer : player
+  client.gui.view.javafx_controllers.in_game.components.Top o-- common.enums.PcColourEnum : settedColour
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

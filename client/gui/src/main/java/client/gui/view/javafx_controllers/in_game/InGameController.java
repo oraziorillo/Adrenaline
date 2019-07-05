@@ -299,6 +299,11 @@ public class InGameController extends AbstractJavaFxController {
       killShotTrackData.set( game.getKillShotTrackDTO() );
       
    }
+
+
+   public void winners(List<String> gameWinners) {
+   
+   }
    
    @Override
     public void onPcBoardUpdate(PcBoardEvent event) {

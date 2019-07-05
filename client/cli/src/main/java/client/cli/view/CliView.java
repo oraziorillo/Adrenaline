@@ -58,8 +58,8 @@ public class CliView extends AbstractView {
             try {
                 cme = ConnectionMethodEnum.parseString(inputReader.requestString(
                         "Please, provide a connection method:\n" +
-                                "\t:s\t\tSocket\n" +
-                                "\t:r\t\tRmi")
+                                "\t> s\t\tSocket\n" +
+                                "\t> r\t\tRmi")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
                 printMessage(e.getMessage());
@@ -98,8 +98,8 @@ public class CliView extends AbstractView {
             try {
                 cmd = ControllerMethodsEnum.parseString(inputReader.requestString(
                         "Are you new?\n" +
-                                "\t:s\t\tSign up\n" +
-                                "\t:l\t\tLog in")
+                                "\t> s\t\tSign up\n" +
+                                "\t> l\t\tLog in")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
                 printMessage(e.getMessage());
@@ -107,17 +107,6 @@ public class CliView extends AbstractView {
         } while (cmd == null);
 
         return cmd;
-        /*
-        switch (cmd) {
-            case SIGN_UP:
-            case LOG_IN:
-            case QUIT:
-                return cmd;
-            default:
-
-        }
-
-         */
     }
 
 

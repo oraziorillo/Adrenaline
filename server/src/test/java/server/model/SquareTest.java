@@ -130,7 +130,7 @@ public class SquareTest {
     
     @Test
     public void onCardinalDirectionReturnsTheVisibleSquareOnTheSelectedDirectionIfThereIsOne(){
-        onRight = gameBoard.getSquare(row+1, coloumn);
+        onRight = gameBoard.getSquare(row, coloumn + 1);
         assertSame(onRight, tested.onDirection( CardinalDirectionEnum.EAST ) );
     }
     

@@ -31,7 +31,7 @@ public class Lobby {
     Lobby() {
         this.gameUUID = UUID.randomUUID();
         this.players = new LinkedList<>();
-        this.timer = new Timer(ServerPropertyLoader.getInstance().getLobbyTimer(), actionEvent -> startNewGame());
+        this.timer = new Timer(ServerPropertyLoader.getInstance().getLobbyTimer() * 1000, actionEvent -> startNewGame());
         this.timer.stop();
     }
 

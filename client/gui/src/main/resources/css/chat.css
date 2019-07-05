@@ -1,6 +1,9 @@
 #input{
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 1d762017ed51c975d0c9e88d81c5ff6cb37a9e72
 #messaggi{
     -fx-background-color: rgb(5,4,2,0.8);
 }
@@ -15,4 +18,8 @@
     width: 300;
     -fx-max-height: height;
     -fx-max-width: width;
+<<<<<<< HEAD
+
+=======
+>>>>>>> 1d762017ed51c975d0c9e88d81c5ff6cb37a9e72
 }

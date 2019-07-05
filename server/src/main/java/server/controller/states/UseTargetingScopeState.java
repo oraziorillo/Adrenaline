@@ -13,7 +13,6 @@ import java.util.List;
 
 public class UseTargetingScopeState extends State {
 
-    private boolean undo = false;
     private PowerUpCard currPowerUp;
     private PowerUpCard powerUpSelectedAsAmmo;
     private AmmoEnum ammoToUse;
@@ -24,7 +23,6 @@ public class UseTargetingScopeState extends State {
     UseTargetingScopeState(Controller controller, List<Pc> targetables) {
         super(controller);
         this.targetablePcs = targetables;
-        //cli.controller.startTimer();
     }
 
 
@@ -84,7 +82,6 @@ public class UseTargetingScopeState extends State {
     public boolean undo() {
         if (currAction != null)
             currAction.resetAction();
-        undo = true;
         return true;
     }
 
@@ -93,7 +90,6 @@ public class UseTargetingScopeState extends State {
     public boolean skip() {
         if (currAction != null)
             currAction.resetAction();
-        undo = true;
         return true;
     }
 

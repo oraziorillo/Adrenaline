@@ -66,7 +66,7 @@ public class KillShotTrack {
         }
         KillShotDTO[] finalFrenzykillShotDTOs = new KillShotDTO[finalFrenzyKillShotTrack.length];
         for (int i = 0; i < finalFrenzyKillShotTrack.length; i++){
-            killShotDTOs[i] = finalFrenzyKillShotTrack[i].convertToDTO();
+            finalFrenzykillShotDTOs[i] = finalFrenzyKillShotTrack[i].convertToDTO();
         }
         killShotTracksDTO.setKillShotTrack(killShotDTOs);
         killShotTracksDTO.setFinalFrenzyKillShotTrack(finalFrenzykillShotDTOs);
