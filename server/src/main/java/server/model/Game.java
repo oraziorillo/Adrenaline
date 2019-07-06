@@ -79,7 +79,7 @@ public class Game {
             Type weaponArrayListType = new TypeToken<ArrayList<WeaponCard>>() {
             }.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/weapons.json"));
+            JsonReader reader = new JsonReader(new FileReader("resources/json/weapons.json"));
             ArrayList<WeaponCard> weapons = gson.fromJson(reader, weaponArrayListType);
 
             weapons.forEach(w -> {
@@ -99,7 +99,7 @@ public class Game {
             Type powerUpArrayListType = new TypeToken<ArrayList<PowerUpCard>>() {
             }.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/powerUps.json"));
+            JsonReader reader = new JsonReader(new FileReader("json/powerUps.json"));
             ArrayList<PowerUpCard> powerUps = gson.fromJson(reader, powerUpArrayListType);
 
             powerUps.forEach(p -> powerUpsDeck.add(p));
@@ -115,7 +115,7 @@ public class Game {
 
             Type ammoTileArrayListType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("src/main/resources/json/ammoTiles.json"));
+            JsonReader reader = new JsonReader(new FileReader("json/ammoTiles.json"));
             ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileArrayListType);
 
             ammoTiles.forEach(a -> ammoDeck.add(a));
@@ -135,7 +135,7 @@ public class Game {
         try {
             for (int numberOfMap = FIRST_MAP; numberOfMap <= LAST_MAP; numberOfMap++) {
                 JsonReader reader = new JsonReader(
-                        new FileReader("src/main/resources/json/game_boards/gameBoard" + numberOfMap + ".json"));
+                        new FileReader("json/game_boards/gameBoard" + numberOfMap + ".json"));
                 preLoadedGameBoards[numberOfMap - 1] = gson.fromJson(reader, GameBoard.class);
             }
         } catch (FileNotFoundException e) {
