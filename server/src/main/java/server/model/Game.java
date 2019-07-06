@@ -79,7 +79,7 @@ public class Game {
             Type weaponArrayListType = new TypeToken<ArrayList<WeaponCard>>() {
             }.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("resources/json/weapons.json"));
+            JsonReader reader = new JsonReader(new FileReader("json/weapons.json"));
             ArrayList<WeaponCard> weapons = gson.fromJson(reader, weaponArrayListType);
 
             weapons.forEach(w -> {
