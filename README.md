@@ -31,25 +31,25 @@ On his very first turn, each player starts by determining its own spawnpoint:
 
 After this setup phase, each turn will be structured in the following way.
 
-Each player executes 2 actions on his turn. The possible actions are:
-    - RUN AROUND
-    - GRAB STUFF
-    - SHOOT
+Each player executes 2 actions on his turn. The possible actions are:  
+    - RUN AROUND  
+    - GRAB STUFF  
+    - SHOOT  
 The RUN AROUND action allows the player to move 1, 2 or 3 squares. A move is always from one square to an adjacent square
-(not diagonally). You can move through a door but not through a wall.
-The GRAB STUFF action allows you to grab stuff on the squares. Every square has stuff. This action includes a free move. You can either:
-    - Move one square and grab the stuff in that new square.
-    - Or stay and grab the stuff in your current square.
-Depending on the kind of square you grab your item (simple square or spawnpoint square) you can either gain:
-    - An ammo card, that contains ammos which are required for the shooting phase
-    - An already loaded weapon. To grab a weapong you need to pay it with the ammos you own. You can have a maximum of 3 weapons.
-The SHOOT action is the most exciting part. This action is also the most singular one as the way you execute the shooting is strongly connected with the weapon you are using. In order to shoot you need to:
-    1. Select one among your loaded weapons
-    2. Specifiy one or more targets
-    3. (Optional) Pay an additional cost if you want to strengthen your attack
-    4. Resolve the effects involved by your attack
-Every time a player is attacked he receives damage and lose life points. When a player is particularly weak, the adrenaline level increases and this leads to more performing actions. In particular:
-    - If your board has 3 or more points of damage, your GRAB STUFF action improves. When you use it, you can move up to 2 squares before grabbing.
-    - If your board has at least 6 damage, your SHOOT action also improves. As part of that action, you can move 1 square before shooting.
-Whenever a player fills its board with damage points, he dies and needs to respawn in a new square. When a player dies, a skull from the killshot track is removed and different points are assigned to the other players according to the amount of damage each of them inferred to the dead player. The objective of the game is to get the most points. 
+(not diagonally). You can move through a door but not through a wall.  
+The GRAB STUFF action allows you to grab stuff on the squares. Every square has stuff. This action includes a free move. You can either:  
+    - Move one square and grab the stuff in that new square.  
+    - Or stay and grab the stuff in your current square.  
+Depending on the kind of square you grab your item (simple square or spawnpoint square) you can either gain:  
+    - An ammo card, that contains ammos which are required for the shooting phase  
+    - An already loaded weapon. To grab a weapong you need to pay it with the ammos you own. You can have a maximum of 3 weapons    
+The SHOOT action is the most exciting part. This action is also the most singular one as the way you execute the shooting is strongly connected with the weapon you are using.  In order to shoot you need to:  
+    1. Select one among your loaded weapons  
+    2. Specifiy one or more targets  
+    3. (Optional) Pay an additional cost if you want to strengthen your attack  
+    4. Resolve the effects involved by your attack  
+Every time a player is attacked he receives damage and lose life points. When a player is particularly weak, the adrenaline level increases and this leads to more performing actions. In particular:  
+    - If your board has 3 or more points of damage, your GRAB STUFF action improves. When you use it, you can move up to 2 squares before grabbing.  
+    - If your board has at least 6 damage, your SHOOT action also improves. As part of that action, you can move 1 square before shooting.  
+Whenever a player fills its board with damage points, he dies and needs to respawn in a new square. When a player dies, a skull from the killshot track is removed and different points are assigned to the other players according to the amount of damage each of them inferred to the dead player. The objective of the game is to get the most points.   
 More detailed game rules can be found [here](https://github.com/user/repo/blob/branch/other_file.md).
