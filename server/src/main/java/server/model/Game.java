@@ -22,6 +22,7 @@ import server.model.squares.Square;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,7 +80,8 @@ public class Game {
             Type weaponArrayListType = new TypeToken<ArrayList<WeaponCard>>() {
             }.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("json/weapons.json"));
+            URL fileName = getClass().getClassLoader().getResource("json/weapons.json");
+            JsonReader reader = new JsonReader(new FileReader(fileName.getPath()));
             ArrayList<WeaponCard> weapons = gson.fromJson(reader, weaponArrayListType);
 
             weapons.forEach(w -> {
@@ -99,7 +101,8 @@ public class Game {
             Type powerUpArrayListType = new TypeToken<ArrayList<PowerUpCard>>() {
             }.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("json/powerUps.json"));
+            URL fileName = getClass().getClassLoader().getResource("json/powerUps.json");
+            JsonReader reader = new JsonReader(new FileReader(fileName.getPath()));
             ArrayList<PowerUpCard> powerUps = gson.fromJson(reader, powerUpArrayListType);
 
             powerUps.forEach(p -> powerUpsDeck.add(p));
@@ -115,7 +118,8 @@ public class Game {
 
             Type ammoTileArrayListType = new TypeToken<ArrayList<AmmoTile>>(){}.getType();
 
-            JsonReader reader = new JsonReader(new FileReader("json/ammoTiles.json"));
+            URL fileName = getClass().getClassLoader().getResource("json/ammoTiles.json");
+            JsonReader reader = new JsonReader(new FileReader(fileName.getPath()));
             ArrayList<AmmoTile> ammoTiles = gson.fromJson(reader, ammoTileArrayListType);
 
             ammoTiles.forEach(a -> ammoDeck.add(a));
@@ -134,8 +138,10 @@ public class Game {
                 .create();
         try {
             for (int numberOfMap = FIRST_MAP; numberOfMap <= LAST_MAP; numberOfMap++) {
-                JsonReader reader = new JsonReader(
-                        new FileReader("json/game_boards/gameBoard" + numberOfMap + ".json"));
+                URL fileName = getClass().getClassLoader().getResource(
+                        "json/game_boards/gameBoard" + numberOfMap + ".json"
+                );
+                JsonReader reader = new JsonReader(new FileReader(fileName.getPath()));
                 preLoadedGameBoards[numberOfMap - 1] = gson.fromJson(reader, GameBoard.class);
             }
         } catch (FileNotFoundException e) {
