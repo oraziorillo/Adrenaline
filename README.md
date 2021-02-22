@@ -15,16 +15,11 @@ For each player that wants to enter the lobby of the game you need to launch on 
 Each game can contain from 3 to 5 players. Each player joins a lobby and when the required number of players is reached, a timer is started. When the timer ends the game starts. If a new player joins the lobby before the time is up, the timer is restarted unless the maximum number of players has been reached.
 At the beginning of the game there are some setup steps that need to be done. They are performed by the first player who entered the lobby. They involve choosing:
 
-    - the map (indicate a number between 1 and 4)
-    
-    - the number of starting skulls to put on the killshot track (varies between 5 and 8)
-    
-After that, each player will choose its own colour. Possible choices are: red, white, violet, yellow, green.
-
-Each choice made in the game (both in the setup phase and in the core one) must be confirmed by sending an "ok" command to the server. If not sure about the choice you can use an "undo" command in specific situations of the game.
-
-Each player will be then provided with an ammo cube for each of the three colours (red, yellow, blue).
-
+    - the map (indicate a number between 1 and 4)  
+    - the number of starting skulls to put on the killshot track (varies between 5 and 8)      
+After that, each player will choose its own colour. Possible choices are: red, white, violet, yellow, green.  
+Each choice made in the game (both in the setup phase and in the core one) must be confirmed by sending an "ok" command to the server. If not sure about the choice you can use an "undo" command in specific situations of the game.  
+Each player will be then provided with an ammo cube for each of the three colours (red, yellow, blue).  
 At this point the game can start.
 
 #### Overview of game rules
