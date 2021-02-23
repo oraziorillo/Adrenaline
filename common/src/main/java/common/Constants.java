@@ -70,14 +70,14 @@ public final class Constants {
     public static final int SQUARE_REFILLED = 16;
     public static final int TARGETABLE_SET = 17;
 
-    // --------------> SOCKET
-
+    // socket
     public static final String REGEX = "#";
 
-    // --------------> MESSAGES
-
+    // messages
     public static final String WRONG_TIME = "\nOak's words echoed... There's a time and place for everything, but not now";
 
+    public static String DATA_PATH = "src/main/java/server/database/data/";
+    public static String GAMES_PATH = "src/main/java/server/database/data/games_data/";
 
     Constants() {
     }

@@ -15,7 +15,7 @@ buildNumber.properties
 .idea/
 **/*.iml
 **/*.jar
-**/files/
+**/data/
 .gradle
 
 # Cartella per prove varie e mezze idee

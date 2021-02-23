@@ -24,7 +24,7 @@ public enum ControllerMethodsEnum {
     CHOOSE_WEAPON_ON_SPAWN_POINT("cws", "\"cws\"", "choose a weapon on a spawn point"),
     CHOOSE_WEAPON_OF_MINE("cwm", "\"cwm\"", "choose one of your weapons"),
     SWITCH_FIRE_MODE("sfm", "\"sfm\"", "switch fire mode"),
-    CHOOSE_POWER_UP("cpu", "\"cpu\"","choose a power up"),
+    CHOOSE_POWER_UP("cpu", "\"cpu\" x, x an integer","select the power up with index x in your inventory"),
     CHOOSE_TARGET("ct", "\"ct\"", "choose a target for your card"),
     CHOOSE_UPGRADE("cu", "\"cu\"", "choose an upgrade"),
     CHOOSE_AMMO("ca", "\"ca\"", "choose an ammo for the targeting scope"),

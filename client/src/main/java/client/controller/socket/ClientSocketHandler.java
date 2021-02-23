@@ -69,26 +69,28 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * iterate over possible requests, if none is found throw exception
+     * iterate over the possible requests, if none is found throw exception
      * @param args a request you wast to parse
-     * @throws IOException theorically never
-     * @throws IllegalStateException if fails to parse the answer
+     * @throws IOException in theory this should never happen
+     * @throws IllegalStateException if it fails to parse the answer
      */
     private void handle(String[] args) throws IOException {
         ViewMethodsEnum viewMethod = ViewMethodsEnum.valueOf(args[0]);
         switch (viewMethod) {
             case ACK:
                 StringBuilder ack = new StringBuilder();
-                for (String s : Arrays.copyOfRange(args, 1, args.length)) {
-                    ack.append(s).append(System.lineSeparator());
+                for (int i = 1; i < args.length-1; i++) {
+                    ack.append(args[i]).append(System.lineSeparator());
                 }
+                ack.append(args[args.length-1]);
                 view.ack(ack.toString());
                 break;
             case ERROR:
                 StringBuilder error = new StringBuilder();
-                for (String s : Arrays.copyOfRange(args, 1, args.length)) {
-                    error.append(s).append(System.lineSeparator());
+                for (int i = 1; i < args.length-1; i++) {
+                    error.append(args[i]).append(System.lineSeparator());
                 }
+                error.append(args[args.length-1]);
                 view.error(error.toString());
                 break;
             case CHAT_MESSAGE:

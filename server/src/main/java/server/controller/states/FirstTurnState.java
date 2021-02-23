@@ -36,7 +36,7 @@ public class FirstTurnState extends State{
     public void selectPowerUp (Player p, int powerUpToDropIndex) {
         if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
             this.powerUpToDropIndex = powerUpToDropIndex;
-            controller.ackCurrent("\nYou'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". Is it ok? (\"ok\" to confirm your choice)\"");
+            controller.ackCurrent("\nYou'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". Is it ok? (\"ok\" to confirm your choice)");
         }
     }
 

@@ -78,6 +78,7 @@ public class SetupKillShotTrackState extends State{
             colourChoice.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
         }
         controller.ackCurrent(colourChoice.toString());
+        controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_PC_COLOUR.getUsage() + ". Type \"h\" for details on all available commands)");
         return new PcSelectionState(controller);
     }
 }

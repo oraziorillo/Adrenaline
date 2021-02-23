@@ -17,6 +17,9 @@ import server.model.target_checkers.TargetChecker;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +27,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static common.Constants.DATA_PATH;
+import static common.Constants.GAMES_PATH;
 import static server.database.FileEnum.*;
 
 public class DatabaseHandler {
@@ -46,6 +51,11 @@ public class DatabaseHandler {
 
 
     private DatabaseHandler() {
+        try {
+            Files.createDirectories(Paths.get(GAMES_PATH));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initFromFile(TOKENS_BY_USER_NAME, gson);
         initFromFile(PLAYER_INFO_BY_TOKEN, gson);
         initFromFile(GAME_PATH_BY_UUID, gson);
@@ -187,7 +197,7 @@ public class DatabaseHandler {
         UUID gameUUID = controller.getGameUUID();
         List<Player> players = controller.getPlayers();
         if (!gamePathByUUID.containsKey(gameUUID)) {
-            String filePath = generateFilePath(gameUUID);
+            String filePath = generateGamePath(gameUUID);
             gamePathByUUID.put(gameUUID, filePath);
             players.forEach(p -> playerInfoByToken.get(p.getToken()).setIncompleteGameID(gameUUID));
         }
@@ -209,7 +219,7 @@ public class DatabaseHandler {
     public synchronized void gameEnded(Controller controller) {
         List<UUID> playersInGame = controller.getPlayers().stream().map(Player::getToken).collect(Collectors.toList());
         playersInGame.forEach(t -> playerInfoByToken.get(t).gameEnded());
-        File gameFile = new File(generateFilePath(controller.getGameUUID()));
+        File gameFile = new File(generateGamePath(controller.getGameUUID()));
         gameFile.delete();
         gamePathByUUID.remove(controller.getGameUUID());
         overwrite(PLAYER_INFO_BY_TOKEN);
@@ -266,8 +276,8 @@ public class DatabaseHandler {
     }
 
 
-    private synchronized String generateFilePath(UUID uuid) {
-        return "src/main/java/server/database/files/game_infos/" + uuid + ".json";
+    private synchronized String generateGamePath(UUID uuid) {
+        return GAMES_PATH + uuid + ".json";
     }
 
     public PcColourEnum getCurrPlayerColour(UUID playerToken) {

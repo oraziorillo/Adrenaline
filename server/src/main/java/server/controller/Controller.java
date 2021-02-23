@@ -127,9 +127,9 @@ public class Controller{
             else
                 p.setCurrState(new InactiveState(this, InactiveState.PC_SELECTION_STATE));
         }
-        ackAll("Game started!");
-        ackCurrent("It's your turn!");
-        ackCurrent("You're the first to join this lobby, so I'll reward you by making you choose the game board we'll play on");
+        ackAll("\nGame started!");
+        ackCurrent("\nIt's your turn!");
+        ackCurrent("You were the first to join this lobby, so you choose the game board we're playing on");
         ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_MAP.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
