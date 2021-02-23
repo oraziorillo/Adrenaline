@@ -50,6 +50,8 @@ public interface RemotePlayer extends Remote {
 
     void reload() throws RemoteException;
 
+    void help() throws RemoteException;
+
     void pass() throws RemoteException;
 
     void quit() throws RemoteException;

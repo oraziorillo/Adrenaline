@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 import server.database.DatabaseHandler;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
@@ -23,11 +24,13 @@ public class ReloadState extends State {
 
     /**
      * Selects a powerup to use as an ammo
+     *
+     * @param p
      * @param index the powerup card index
      * @see PowerUpCard
      */
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null) {
             powerUp.setSelectedAsAmmo(!powerUp.isSelectedAsAmmo());
@@ -41,7 +44,7 @@ public class ReloadState extends State {
      * @param index the WeaponCard index
      */
     @Override
-    public void selectWeaponOfMine(int index) {
+    public void selectWeaponOfMine(Player p, int index) {
         WeaponCard currWeapon = controller.getCurrPc().weaponAtIndex(index);
         if (currWeapon != null && !currWeapon.isLoaded()) {
             this.weaponToReload = currWeapon;
@@ -59,7 +62,7 @@ public class ReloadState extends State {
      * @return true iif a weapon was pre-selected
      */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (weaponToReload != null){
             short [] weaponCost = weaponToReload.getAmmo();
             if (controller.getCurrPc().hasEnoughAmmo(weaponCost)) {
@@ -79,7 +82,7 @@ public class ReloadState extends State {
      * @return true
      */
     @Override
-    public boolean pass() {
+    public boolean pass(Player p) {
         if (!controller.isLocked()) {
             controller.getSquaresToRefill().forEach(Square::refill);
             controller.resetSquaresToRefill();
@@ -92,7 +95,7 @@ public class ReloadState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
         controller.ackCurrent("\nBe a good boy/girl until your next turn\n");

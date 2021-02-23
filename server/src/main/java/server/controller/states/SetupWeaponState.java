@@ -2,6 +2,7 @@ package server.controller.states;
 
 import common.events.requests.Request;
 import server.controller.Controller;
+import server.controller.Player;
 import server.model.Effect;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
@@ -37,7 +38,7 @@ public class SetupWeaponState extends State {
      * @param weapon a WeaponCard
      */
     @Override
-    public void switchFireMode(WeaponCard weapon) {
+    public void switchFireMode(Player p, WeaponCard weapon) {
         List<Effect> fireModes = weapon.getFireModes();
         if (fireModes.size() > 1) {
             short [] newCost = sumArray(controller.getCurrWeapon().getCurrentCost(), fireModes.get(fireModeIndex).getCost());
@@ -54,7 +55,7 @@ public class SetupWeaponState extends State {
     * @see Effect
     */
     @Override
-    public void selectUpgrade(WeaponCard weapon, int upgradeIndex) {
+    public void selectUpgrade(Player p, WeaponCard weapon, int upgradeIndex) {
         if (!waiting) {
             List<Effect> upgrades = weapon.getUpgrades();
             if (upgradeIndex < upgrades.size()) {
@@ -84,7 +85,7 @@ public class SetupWeaponState extends State {
     * @see Effect
     */
     @Override
-    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect){
+    public void setAsynchronousEffectOrder(Player p, WeaponCard weapon, boolean beforeBasicEffect){
         if (waiting) {
             if (beforeBasicEffect) {
                 weapon.pushFirstUpgrade(asynchronousUpgradeIndex);
@@ -99,11 +100,12 @@ public class SetupWeaponState extends State {
    
    /**
     * Selects the powerup on the specified position in the current player's hand to be used as an ammo, see the rules
+    * @param p
     * @param index the index of the card to be used as ammo
     */
     //con questa implementazione l'utente non può deselezionare il powerUpAsAmmo a meno che non usi undo
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null && !powerUp.isSelectedAsAmmo()) {
             powerUp.setSelectedAsAmmo(true);
@@ -114,12 +116,13 @@ public class SetupWeaponState extends State {
    /**
     * Deselects every powerup selected to be used ad ammo, clears the current weapon, and prepares to restart this state
     * @return true
+    * @param p
     */
     @Override
-    public boolean undo() {
-        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
-            if (p.isSelectedAsAmmo())
-                p.setSelectedAsAmmo(false);
+    public boolean isUndoable(Player p) {
+        for (PowerUpCard pu: controller.getCurrPc().getPowerUps()) {
+            if (pu.isSelectedAsAmmo())
+                pu.setSelectedAsAmmo(false);
         }
         controller.getCurrWeapon().reset();
         undo = true;
@@ -131,16 +134,16 @@ public class SetupWeaponState extends State {
     * @return true
     */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         return true;
     }
 
 
     @Override
-    public State forcePass() {
-        for (PowerUpCard p: controller.getCurrPc().getPowerUps()) {
-            if (p.isSelectedAsAmmo())
-                p.setSelectedAsAmmo(false);
+    public State forcePass(Player p) {
+        for (PowerUpCard pu: controller.getCurrPc().getPowerUps()) {
+            if (pu.isSelectedAsAmmo())
+                pu.setSelectedAsAmmo(false);
         }
         controller.getCurrWeapon().reset();
         controller.nextTurn();

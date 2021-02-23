@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 import server.model.Pc;
 import server.model.squares.Square;
 
@@ -29,7 +30,7 @@ public class RunAroundState extends State{
     * @param column of the selected square
     */
    @Override
-   public void selectSquare(int row, int column) {
+   public void selectSquare(Player p, int row, int column) {
       Square s = controller.getGame().getSquare(row, column);
       if (s != null && s.isTargetable()) {
          this.targetSquare = s;
@@ -52,9 +53,10 @@ public class RunAroundState extends State{
    /**
     * disables targetable squares. Influences the transition
     * @return true
+    * @param p
     */
    @Override
-   public boolean undo() {
+   public boolean isUndoable(Player p) {
       controller.getGame().setTargetableSquares(targetableSquares, false);
       undo = true;
       return true;
@@ -65,7 +67,7 @@ public class RunAroundState extends State{
     * @return false if no target to move to was setted before, true else
     */
    @Override
-   public boolean ok() {
+   public boolean ok(Player p) {
       if (targetSquare != null) {
          controller.getCurrPc().moveTo(targetSquare);
          controller.getGame().setTargetableSquares(targetableSquares, false);
@@ -75,7 +77,7 @@ public class RunAroundState extends State{
    }
 
 
-   public State forcePass() {
+   public State forcePass(Player p) {
          controller.getGame().setTargetableSquares(targetableSquares, false);
          controller.resetRemainingActions();
          controller.nextTurn();

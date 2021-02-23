@@ -133,14 +133,15 @@ public class TargetSelectionState extends State {
 
 
     private void setTargettableSquares(Square square) {
+        Player currPlayer = controller.getCurrPlayer();
         targetableSquares = currAction.validSquares(square);
         if (validateSquares(targetableSquares))
             controller.getGame().setTargetableSquares(targetableSquares, true);
-        else if (undo())
-            controller.getCurrPlayer().undo();
+        else if (isUndoable(currPlayer))
+            currPlayer.undo();
         else if (!controller.getCurrWeapon().isChained() && effectIndex != effectsToApply.size() - 1) {
             if (currAction.isOptional())
-                skip();
+                skip(currPlayer);
             else
                 executeEffect();       //da rivedere
         } else
@@ -165,7 +166,7 @@ public class TargetSelectionState extends State {
 
 
     @Override
-    public void selectSquare(int row, int column) {
+    public void selectSquare(Player p, int row, int column) {
         Square s = controller.getGame().getSquare(row, column);
         if (s != null && s.isTargetable()) {
             if (controller.getCurrWeapon().isChained() && effectIndex == 0 && !currAction.isMovement()){            //per il vortex
@@ -240,7 +241,7 @@ public class TargetSelectionState extends State {
 
 
     @Override
-    public void selectDirection(CardinalDirectionEnum direction) {
+    public void selectDirection(Player p, CardinalDirectionEnum direction) {
         if(currEffect.isOriented() && !directionSelected) {
             currEffect.assignDirection(direction);
             controller.getGame().setTargetableSquares(targetableSquares, false);
@@ -251,7 +252,7 @@ public class TargetSelectionState extends State {
 
 
     @Override
-    public boolean skip() {
+    public boolean skip(Player p) {
         if (currAction.isOptional()) {
             if (currAction.isNecessaryForNextAction()){
                 if (effectIndex == effectsToApply.size() - 1)
@@ -270,7 +271,7 @@ public class TargetSelectionState extends State {
 
 
     @Override
-    public boolean undo(){
+    public boolean isUndoable(Player p){
         if (controller.getCurrWeapon().getEffectsToApply().get(0) == currEffect && !moved){
             controller.getCurrWeapon().reset();
             undo = true;
@@ -281,7 +282,7 @@ public class TargetSelectionState extends State {
 
 
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (currEffect.isOriented() && !directionSelected)
             return false;
         if (currAction.isComplete()) {
@@ -300,7 +301,7 @@ public class TargetSelectionState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
         controller.resetRemainingActions();

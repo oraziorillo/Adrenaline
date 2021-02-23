@@ -6,7 +6,6 @@ import common.remote_interfaces.RemotePlayer;
 
 import java.io.IOException;
 
-
 public interface CommandParser {
     static void executeCommand(ControllerMethodsEnum command, String[] args, RemotePlayer player) throws IOException {
         try {
@@ -89,7 +88,7 @@ public interface CommandParser {
                     player.quit();
                     break;
                 case HELP:
-                    ControllerMethodsEnum.help();
+                    player.help();
                     break;
                 default:
                     throw new IllegalArgumentException("This command is illegal");

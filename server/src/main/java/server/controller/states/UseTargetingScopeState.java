@@ -27,7 +27,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         PowerUpCard powerUp;
         Action powerUpAction;
         try {
@@ -58,7 +58,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public void selectAmmo(AmmoEnum ammoColour){
+    public void selectAmmo(Player p, AmmoEnum ammoColour){
         short[] cost = new short[3];
         cost[ammoColour.ordinal()]++;
         if (controller.getCurrPlayer().getPc().hasEnoughAmmo(cost)){
@@ -68,7 +68,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public void selectTarget(PcColourEnum targetPcColour) {
+    public void selectTarget(Player p, PcColourEnum targetPcColour) {
         Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
         if ( targetPc != null && targetablePcs.contains(targetPc)) {
             if (currAction != null) {
@@ -79,7 +79,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public boolean undo() {
+    public boolean isUndoable(Player p) {
         if (currAction != null)
             currAction.resetAction();
         return true;
@@ -87,7 +87,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public boolean skip() {
+    public boolean skip(Player p) {
         if (currAction != null)
             currAction.resetAction();
         return true;
@@ -95,7 +95,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (currPowerUp != null && currAction.isComplete()) {
             if (ammoToUse != null || powerUpSelectedAsAmmo != null){
                 currPowerUp.useAction(controller.getCurrPc());
@@ -136,7 +136,7 @@ public class UseTargetingScopeState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getCurrPc().resetPowerUpAsAmmo();
         if (currAction != null)
             currAction.resetAction();

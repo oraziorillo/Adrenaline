@@ -1,8 +1,10 @@
 package server.controller.states;
 
+import common.enums.ControllerMethodsEnum;
 import server.controller.Controller;
 import common.exceptions.EmptySquareException;
 import common.exceptions.NotEnoughAmmoException;
+import server.controller.Player;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
@@ -28,6 +30,7 @@ class GrabStuffState extends State{
         super(controller);
         targetableSquares = new HashSet<>();
         setTargetableToValidSquares(controller.getCurrPc());
+        controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_SQUARE.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
 
@@ -37,11 +40,11 @@ class GrabStuffState extends State{
      * @param index the index to pass to the method
      */
     @Override
-    public void selectWeaponOnBoard(int index) {
+    public void selectWeaponOnBoard(Player p, int index) {
         if (targetSquare != null) {
             try {
                 targetSquare.setWeaponToGrabIndex(index);
-                controller.ackCurrent("\nMmh.. good choice!");
+                controller.ackCurrent("\nMmh.. good choice! (\"ok\" to confirm your choice)");
             } catch (NullPointerException e) {
                 controller.ackCurrent(e.getMessage());
             }
@@ -55,7 +58,7 @@ class GrabStuffState extends State{
      * @see Square
      */
     @Override
-    public void selectWeaponOfMine(int index) {
+    public void selectWeaponOfMine(Player p, int index) {
         if (targetSquare != null && Arrays.stream(controller
                 .getCurrPlayer()
                 .getPc()
@@ -75,14 +78,14 @@ class GrabStuffState extends State{
      * @param column of the selected square
      */
     @Override
-    public void selectSquare(int row, int column){
+    public void selectSquare(Player p, int row, int column){
         Square s = controller.getGame().getSquare(row, column);
         if (s != null && !s.isEmpty() && targetableSquares.contains(s)) {
             this.targetSquare = s;
             targetSquare.resetWeaponIndexes();
             controller.ackCurrent(targetSquare.isSpawnPoint()
-                    ? "\nOhw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString()
-                    : "\nI see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString());
+                    ? "\nOhw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString() + "(\"ok\" to confirm your choice)"
+                    : "\nI see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString() + "(\"ok\" to confirm your choice)");
         }
     }
 
@@ -92,11 +95,11 @@ class GrabStuffState extends State{
      * @param index the powerup card index
      */
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null && !powerUp.isSelectedAsAmmo()) {
             powerUp.setSelectedAsAmmo(true);
-            controller.ackCurrent("\nYou will lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo");
+            controller.ackCurrent("\nYou will lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo (\"ok\" to confirm your choice)");
         }
     }
 
@@ -128,9 +131,10 @@ class GrabStuffState extends State{
     /**
      * undos the setup
      * @return true
+     * @param p
      */
     @Override
-    public boolean undo() {
+    public boolean isUndoable(Player p) {
         controller.getGame().setTargetableSquares(targetableSquares, false);
         controller.getCurrPc().resetPowerUpAsAmmo();
         if (targetSquare != null) {
@@ -142,11 +146,11 @@ class GrabStuffState extends State{
 
     
     /**
-     * executes the setted up collect action
+     * executes the set up collect action
      * @return true
      */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (targetSquare != null) {
             try {
                 Pc currPc = controller.getCurrPc();
@@ -173,7 +177,7 @@ class GrabStuffState extends State{
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getGame().setTargetableSquares(targetableSquares, false);
         controller.getCurrPc().resetPowerUpAsAmmo();
         if (targetSquare != null) {

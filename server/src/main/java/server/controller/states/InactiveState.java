@@ -73,7 +73,7 @@ public class InactiveState extends State {
 
 
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         if (wantToUseTagbackGrenade){
             PowerUpCard powerUpCard = damagedPc.getPowerUpCard(index);
             if (!powerUpCard.getAction().isParameterized()){
@@ -136,7 +136,7 @@ public class InactiveState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         return this;
     }
 

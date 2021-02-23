@@ -171,6 +171,9 @@ public class ServerSocketHandler implements Runnable {
             case QUIT:
                 player.quit();
                 break;
+            case HELP:
+                player.help();
+                break;
             default:
                 break;
         }

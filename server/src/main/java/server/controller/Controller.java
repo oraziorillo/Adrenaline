@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
 import common.events.ModelEventListener;
 import common.events.requests.Request;
@@ -129,6 +130,7 @@ public class Controller{
         ackAll("Game started!");
         ackCurrent("It's your turn!");
         ackCurrent("You're the first to join this lobby, so I'll reward you by making you choose the game board we'll play on");
+        ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_MAP.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
 

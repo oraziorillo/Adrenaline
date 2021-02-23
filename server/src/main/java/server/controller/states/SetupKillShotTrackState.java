@@ -1,7 +1,9 @@
 package server.controller.states;
 
+import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
 import server.controller.Controller;
+import server.controller.Player;
 
 import java.util.Random;
 
@@ -21,6 +23,7 @@ public class SetupKillShotTrackState extends State{
         super(controller);
         this.killShotTrackIndex = -1;
         controller.ackCurrent("\nI'll let you choose even the number of skulls to place on the killshot track (5 to 8)");
+        controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_NUMBER_OF_SKULLS.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
     
@@ -29,16 +32,15 @@ public class SetupKillShotTrackState extends State{
      * @param n the number of skulls
      */
     @Override
-    public void selectNumberOfSkulls(int n) {
+    public void selectNumberOfSkulls(Player p, int n) {
         if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE) {
             this.killShotTrackIndex = n;
             if (n == MIN_KILL_SHOT_TRACK_SIZE)
-                controller.ackCurrent("\nJust " + MIN_KILL_SHOT_TRACK_SIZE + " kills?! That's for cowards!");
+                controller.ackCurrent("\nJust " + MIN_KILL_SHOT_TRACK_SIZE + " kills?! That's for cowards! (\"ok\" to confirm your choice)");
             else if (n < MAX_KILL_SHOT_TRACK_SIZE)
-                controller.ackCurrent("\nThat sounds good. Fair enough.");
+                controller.ackCurrent("\nThat sounds good. Fair enough. (\"ok\" to confirm your choice)");
             else
-                controller.ackCurrent("\nYour testosterone level is nearly as high as DOZER's one!!");
-
+                controller.ackCurrent("\nYour testosterone level is nearly as high as DOZER's one!! (\"ok\" to confirm your choice)");
         }
     }
 
@@ -48,7 +50,7 @@ public class SetupKillShotTrackState extends State{
      * @return false if a negative number of skulls was set, true else
      */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (killShotTrackIndex >= MIN_KILL_SHOT_TRACK_SIZE && killShotTrackIndex <= MAX_KILL_SHOT_TRACK_SIZE){
             controller.getGame().initKillShotTrack(killShotTrackIndex);
             return true;
@@ -58,7 +60,7 @@ public class SetupKillShotTrackState extends State{
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         Random random = new Random();
         controller.getGame().initKillShotTrack(random.nextInt(3) + 5);
         return new PcSelectionState(controller);

@@ -133,26 +133,26 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     @Override
     public synchronized void chooseMap(int n) {
         if (n >= FIRST_MAP && n <= LAST_MAP)
-            currState.selectMap(n);
+            currState.selectMap(this, n);
     }
 
 
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
         if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE)
-            currState.selectNumberOfSkulls(n);
+            currState.selectNumberOfSkulls(this, n);
     }
 
 
     @Override
     public synchronized void choosePcColour(String colour) {
-            currState.selectPcColour(colour);
+            currState.selectPcColour(this, colour);
     }
 
 
     @Override
     public synchronized void runAround() {
-        if (currState.runAround()){
+        if (currState.runAround(this)){
             currState = currState.nextState();
         }
     }
@@ -160,7 +160,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void grabStuff() {
-        if (currState.grabStuff()){
+        if (currState.grabStuff(this)){
             currState = currState.nextState();
         }
     }
@@ -168,7 +168,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void shootPeople() {
-        if (currState.shootPeople()){
+        if (currState.shootPeople(this)){
             currState = currState.nextState();
         }
     }
@@ -176,7 +176,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void usePowerUp() {
-        if (currState.usePowerUp()){
+        if (currState.usePowerUp(this)){
             currState = currState.nextState();
         }
     }
@@ -185,62 +185,62 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     @Override
     public synchronized void chooseTarget(String pcColour){
         if (PcColourEnum.fromString(pcColour) != null){
-            currState.selectTarget(PcColourEnum.fromString(pcColour));
+            currState.selectTarget(this, PcColourEnum.fromString(pcColour));
         }
     }
 
 
     @Override
     public synchronized void chooseSquare(int row, int col) {
-        currState.selectSquare(row, col);
+        currState.selectSquare(this, row, col);
     }
 
 
     @Override
     public synchronized void choosePowerUp(int index) {
         if (index >= 0 && index <= 3)
-            currState.selectPowerUp(index);
+            currState.selectPowerUp(this, index);
     }
 
 
     @Override
     public synchronized void chooseWeaponOnSpawnPoint(int index) {
         if (index >= 0 && index <= 2)
-            currState.selectWeaponOnBoard(index);
+            currState.selectWeaponOnBoard(this, index);
     }
 
 
     @Override
     public synchronized void chooseWeaponOfMine(int index) {
         if (index >= 0 && index <= 2)
-            currState.selectWeaponOfMine(index);
+            currState.selectWeaponOfMine(this, index);
     }
 
 
     @Override
     public synchronized void switchFireMode() {
         if(currWeapon.getFireModes().size() > 1)
-            currState.switchFireMode(currWeapon);
+            currState.switchFireMode(this, currWeapon);
     }
 
 
     @Override
     public synchronized void chooseUpgrade(int index) {
         if(index > -1 && index < currWeapon.getUpgrades().size())
-            currState.selectUpgrade(currWeapon, index);
+            currState.selectUpgrade(this, currWeapon, index);
     }
 
 
     @Override
     public synchronized void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
-        currState.setAsynchronousEffectOrder(currWeapon, beforeBasicEffect);
+        currState.setAsynchronousEffectOrder(this, currWeapon, beforeBasicEffect);
     }
 
 
     @Override
     public synchronized void chooseAmmo(String ammoColour){
         if (AmmoEnum.fromString(ammoColour) != null){
-            currState.selectAmmo(AmmoEnum.fromString(ammoColour));
+            currState.selectAmmo(this, AmmoEnum.fromString(ammoColour));
         }
     }
 
@@ -249,7 +249,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     public synchronized void chooseDirection(int cardinalDirectionIndex){
         for (CardinalDirectionEnum cardinalDirection: CardinalDirectionEnum.values()) {
             if (cardinalDirection.ordinal() == cardinalDirectionIndex)
-                currState.selectDirection(cardinalDirection);
+                currState.selectDirection(this, cardinalDirection);
         }
     }
 
@@ -262,35 +262,40 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public synchronized void skip() {
-        if (currState.skip())
+        if (currState.skip(this))
             currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void undo() {
-        if (currState.undo())
+        if (currState.isUndoable(this))
             currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void ok() {
-        if (currState.ok())
+        if (currState.ok(this))
             currState = currState.nextState();
     }
 
 
     @Override
     public synchronized void reload() {
-        if (currState.reload())
+        if (currState.reload(this))
             currState = currState.nextState();
+    }
+
+    @Override
+    public void help() throws RemoteException {
+        currState.help(this);
     }
 
 
     @Override
     public synchronized void pass() {
-        if (currState.pass()) {
+        if (currState.pass(this)) {
             currState = currState.nextState();
         }
     }
@@ -323,7 +328,7 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
     public synchronized void forcePass(){
-        currState = currState.forcePass();
+        currState = currState.forcePass(this);
     }
 
 

@@ -2,6 +2,7 @@ package server.controller.states;
 
 import common.enums.AmmoEnum;
 import common.enums.CardinalDirectionEnum;
+import common.enums.ControllerMethodsEnum;
 import common.enums.PcColourEnum;
 import server.controller.Controller;
 import server.controller.Player;
@@ -27,100 +28,109 @@ public abstract class State {
 
     void setTargetableToValidSquares(Pc referencePc) throws RemoteException {}
 
-    public void selectMap(int n) {
-        controller.ackCurrent(WRONG_TIME);
+    public void selectMap(Player p, int n) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
     
-    public void selectNumberOfSkulls(int n) {
-        controller.ackCurrent(WRONG_TIME);
+    public void selectNumberOfSkulls(Player p, int n) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
     
-    public void selectPcColour(String pcColour) {
-        controller.ackCurrent(WRONG_TIME);
+    public void selectPcColour(Player p, String pcColour) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public boolean runAround(){
-        controller.ackCurrent(WRONG_TIME);
+    public boolean runAround(Player p){
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public boolean grabStuff(){
-        controller.ackCurrent(WRONG_TIME);
+    public boolean grabStuff(Player p){
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public boolean shootPeople(){
-        controller.ackCurrent(WRONG_TIME);
+    public boolean shootPeople(Player p){
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public boolean usePowerUp() {
-        controller.ackCurrent(WRONG_TIME);
+    public boolean usePowerUp(Player p) {
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public void selectSquare(int row, int col) {
-        controller.ackCurrent(WRONG_TIME);
+    public void selectSquare(Player p, int row, int col) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
     public void response(String response) {}
 
-    public void selectPowerUp(int index) {
-
+    public void selectPowerUp(Player p, int index) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void selectWeaponOnBoard(int index) {
-
+    public void selectWeaponOnBoard(Player p, int index) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void selectWeaponOfMine(int index) {
-
+    public void selectWeaponOfMine(Player p, int index) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void switchFireMode(WeaponCard weapon) {
-
+    public void switchFireMode(Player p, WeaponCard weapon) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void selectUpgrade(WeaponCard weapon, int index) {
-
+    public void selectUpgrade(Player p, WeaponCard weapon, int index) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void setAsynchronousEffectOrder(WeaponCard weapon, boolean beforeBasicEffect) {
-
+    public void setAsynchronousEffectOrder(Player p, WeaponCard weapon, boolean beforeBasicEffect) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void selectAmmo(AmmoEnum fromString) {
-
+    public void selectAmmo(Player p, AmmoEnum fromString) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void selectTarget(PcColourEnum pcColour) {
-
+    public void selectTarget(Player p, PcColourEnum pcColour) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
-    public void selectDirection(CardinalDirectionEnum direction) {
+    public void selectDirection(Player p, CardinalDirectionEnum direction) {
+        controller.ackPlayer(p, WRONG_TIME);
     }
 
     public void setHasToRespawn(boolean hasToRespawn) {
     }
 
-    public boolean skip() {
+    public boolean skip(Player p) {
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public boolean undo() {
-        controller.ackCurrent("No regrets. No going back.");
+    public boolean isUndoable(Player p) {
+        controller.ackPlayer(p, "No regrets. No going back.");
         return false;
     }
 
-    public boolean ok() {
+    public boolean ok(Player p) {
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public boolean reload() {
+    public void help(Player p) {
+        controller.ackPlayer(p, ControllerMethodsEnum.help());
+    }
+
+    public boolean reload(Player p) {
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
-    public boolean pass() {
+    public boolean pass(Player p) {
+        controller.ackPlayer(p, WRONG_TIME);
         return false;
     }
 
@@ -144,7 +154,7 @@ public abstract class State {
     }
 
 
-    public State forcePass() {
+    public State forcePass(Player p) {
         return new InactiveState(controller, InactiveState.START_TURN_STATE);
     }
 

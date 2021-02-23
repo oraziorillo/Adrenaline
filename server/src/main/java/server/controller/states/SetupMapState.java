@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 
 import java.util.Random;
 
@@ -26,11 +27,12 @@ public class SetupMapState extends State{
      * @param mapIndex the index of the map
      */
     @Override
-    public void selectMap(int mapIndex) {
+    public void selectMap(Player p, int mapIndex) {
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
             this.mapIndex = mapIndex;
             controller.ackCurrent("\nThis is the Game Board you chose, do you like it?" +
-                    controller.getGame().preLoadedGameBoardToString(mapIndex));
+                    controller.getGame().preLoadedGameBoardToString(mapIndex) +
+                    "\n(\"ok\" to confirm your choice)");
         }
     }
 
@@ -40,7 +42,7 @@ public class SetupMapState extends State{
      * @return true if the index was non-negative (and then the map is selected), false else
      */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
             controller.getGame().initMap(mapIndex);
             return true;
@@ -50,7 +52,7 @@ public class SetupMapState extends State{
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         Random random = new Random();
         controller.getGame().initMap(random.nextInt(4) + 1);
         return nextState();

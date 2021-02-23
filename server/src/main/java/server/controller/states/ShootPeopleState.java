@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 import server.model.Pc;
 import server.model.WeaponCard;
 import server.model.squares.Square;
@@ -31,7 +32,7 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public void selectSquare(int row, int column) {
+    public void selectSquare(Player p, int row, int column) {
         Square s = controller.getGame().getSquare(row, column);
         if (!moved && s != null && s.isTargetable()) {
             this.targetSquare = s;
@@ -43,7 +44,7 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public void selectWeaponOfMine(int index) {
+    public void selectWeaponOfMine(Player p, int index) {
         WeaponCard currWeapon = controller.getCurrPc().weaponAtIndex(index);
         if (currWeapon != null && currWeapon.isLoaded()) {
             controller.setCurrWeapon(currWeapon);
@@ -54,7 +55,7 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public boolean reload(){
+    public boolean reload(Player p){
         if (controller.isFinalFrenzy() && !reloadDone) {
             this.wantsToReload = true;
             return true;
@@ -85,7 +86,7 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public boolean undo() {
+    public boolean isUndoable(Player p) {
         if (!moved && !reloadDone){
             if (targetableSquares != null) {
                 controller.getGame().setTargetableSquares(targetableSquares, false);
@@ -98,7 +99,7 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (targetSquare != null && !moved) {
             controller.getCurrPc().moveTo(targetSquare);
             controller.getGame().setTargetableSquares(targetableSquares, false);
@@ -110,7 +111,7 @@ public class ShootPeopleState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getGame().setTargetableSquares(targetableSquares, false);
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);

@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 import server.database.DatabaseHandler;
 import server.model.squares.Square;
 
@@ -22,7 +23,7 @@ class EndTurnState extends State {
      * @return true
      */
     @Override
-    public boolean reload() {
+    public boolean reload(Player p) {
         toReload = true;
         controller.ackCurrent("\nOhw! You really want to reload? You will have to pay all of your ammo!");
         return true;
@@ -33,7 +34,7 @@ class EndTurnState extends State {
      * @return true
      */
     @Override
-    public boolean pass() {
+    public boolean pass(Player p) {
         if (!controller.isLocked()) {
             controller.getSquaresToRefill().forEach(Square::refill);
             controller.resetSquaresToRefill();
@@ -46,7 +47,7 @@ class EndTurnState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
         controller.ackCurrent("\nBe a good boy/girl until your next turn\n");

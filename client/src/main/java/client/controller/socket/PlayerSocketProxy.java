@@ -5,6 +5,7 @@ import common.remote_interfaces.RemotePlayer;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.UUID;
 
 import static common.Constants.REGEX;
@@ -170,6 +171,12 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
     @Override
     public synchronized void reload() {
         out.println(RELOAD);
+        out.flush();
+    }
+
+    @Override
+    public void help() throws RemoteException {
+        out.println(HELP);
         out.flush();
     }
 

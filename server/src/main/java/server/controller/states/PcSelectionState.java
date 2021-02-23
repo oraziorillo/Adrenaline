@@ -1,11 +1,11 @@
 package server.controller.states;
 
+import common.enums.ControllerMethodsEnum;
 import server.controller.Controller;
 import common.enums.PcColourEnum;
+import server.controller.Player;
 import server.database.DatabaseHandler;
 import server.model.Pc;
-
-import java.util.Random;
 
 /**
  * Each player selects a Pc
@@ -26,14 +26,14 @@ public class PcSelectionState extends State {
      * @param pcColour the colour of the pc chosen
      */
     @Override
-    public void selectPcColour(String pcColour) {
+    public void selectPcColour(Player p, String pcColour) {
         if (controller.checkAvailableColour(pcColour)) {
             this.pcColour = pcColour;
             PcColourEnum colourChosen = PcColourEnum.fromString(pcColour);
             if (colourChosen != null)
                 controller.ackCurrent("\n" + colourChosen.getName() +
                         "\n" + colourChosen.getDescription() +
-                        "\n\nI guess it's what you wanted");
+                        "\n\nI guess it's what you wanted! (\"ok\" to confirm your choice)");
         }
     }
 
@@ -43,7 +43,7 @@ public class PcSelectionState extends State {
      * @return true
      */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (pcColour != null) {
             controller.removeAvailableColour(pcColour);
             Pc pc = new Pc(PcColourEnum.fromString(pcColour), controller.getGame());
@@ -57,15 +57,14 @@ public class PcSelectionState extends State {
 
 
     @Override
-    public State forcePass() {
-        Random random = new Random();
+    public State forcePass(Player p) {
         for (PcColourEnum pcColour: PcColourEnum.values()) {
             if (controller.getAvailablePcColours().contains(pcColour)){
                 this.pcColour = pcColour.toString();
                 break;
             }
         }
-        ok();
+        ok(p);
         return nextState();
     }
 
@@ -86,6 +85,8 @@ public class PcSelectionState extends State {
             controller.nextTurn();
             controller.ackCurrent("\nChoose your character, each of them is particular in its own way:\n" +
                     controller.availableColours());
+            controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_PC_COLOUR.getUsage() + ". Type \"h\" for details on all available commands)");
+
         }
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }

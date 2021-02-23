@@ -24,7 +24,7 @@ public class UsePowerUpState extends State {
 
 
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         PowerUpCard powerUp;
         Action powerUpAction;
         try {
@@ -56,7 +56,7 @@ public class UsePowerUpState extends State {
 
 
     @Override
-    public void selectTarget(PcColourEnum targetPcColour) {
+    public void selectTarget(Player p, PcColourEnum targetPcColour) {
         if (currAction != null && !currAction.isSelfMovement() && !targetPcColour.equals((controller.getCurrPc().getColour()))) {
             Pc targetPc = controller.getPlayers().stream().map(Player::getPc).filter(pc -> pc.getColour() == targetPcColour).findFirst().orElse(null);
             if (targetPc != null) {
@@ -69,7 +69,7 @@ public class UsePowerUpState extends State {
 
 
     @Override
-    public void selectSquare(int row, int column) {
+    public void selectSquare(Player p, int row, int column) {
         if (currAction != null) {
             Square s = controller.getGame().getSquare(row, column);
             if (s != null && s.isTargetable() && currAction != null)
@@ -79,7 +79,7 @@ public class UsePowerUpState extends State {
 
 
     @Override
-    public boolean undo() {
+    public boolean isUndoable(Player p) {
         controller.getGame().setTargetableSquares(targetableSquares, false);
         if (currAction != null)
             currAction.resetAction();
@@ -88,7 +88,7 @@ public class UsePowerUpState extends State {
 
 
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (currAction != null && currAction.isComplete()) {
             controller.getGame().setTargetableSquares(targetableSquares, false);
             currPowerUp.useAction(controller.getCurrPc());
@@ -100,7 +100,7 @@ public class UsePowerUpState extends State {
     }
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.getGame().setTargetableSquares(targetableSquares, false);
         if (currAction != null)
             currAction.resetAction();

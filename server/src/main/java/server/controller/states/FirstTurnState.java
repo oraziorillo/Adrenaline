@@ -1,7 +1,9 @@
 package server.controller.states;
 
 import common.enums.AmmoEnum;
+import common.enums.ControllerMethodsEnum;
 import server.controller.Controller;
+import server.controller.Player;
 import server.model.Pc;
 import server.model.PowerUpCard;
 import server.model.squares.Square;
@@ -22,6 +24,7 @@ public class FirstTurnState extends State{
         this.pcToSpawn = controller.getCurrPc();
         this.pcToSpawn.drawPowerUp(2);
         controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
+        controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_POWER_UP.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
     
@@ -30,10 +33,10 @@ public class FirstTurnState extends State{
      * @param powerUpToDropIndex the index of the power up card the pc will use to respawn
      */
     @Override
-    public void selectPowerUp (int powerUpToDropIndex) {
+    public void selectPowerUp (Player p, int powerUpToDropIndex) {
         if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
             this.powerUpToDropIndex = powerUpToDropIndex;
-            controller.ackCurrent("\nYou'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". It's ok?");
+            controller.ackCurrent("\nYou'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". Is it ok? (\"ok\" to confirm your choice)\"");
         }
     }
 
@@ -43,7 +46,7 @@ public class FirstTurnState extends State{
      * @return true if pc is respawn fine, false if some parameters was invalid
      */
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (powerUpToDropIndex > -1) {
             spawn();
             return true;
@@ -53,7 +56,7 @@ public class FirstTurnState extends State{
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         Random random = new Random();
         powerUpToDropIndex = random.nextInt(2);
         spawn();

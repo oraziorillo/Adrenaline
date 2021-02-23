@@ -1,6 +1,7 @@
 package server.controller.states;
 
 import server.controller.Controller;
+import server.controller.Player;
 import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
@@ -18,7 +19,7 @@ public class StartTurnState extends State {
 
 
     @Override
-    public boolean runAround(){
+    public boolean runAround(Player p){
         controller.ackCurrent("\nJust run? Well, you can move on:");
         nextState = new RunAroundState(controller);
         return true;
@@ -26,14 +27,14 @@ public class StartTurnState extends State {
 
 
     @Override
-    public boolean grabStuff(){
+    public boolean grabStuff(Player p){
         controller.ackCurrent("\nShopping time! You can grab on:");
         nextState = new GrabStuffState(controller);
         return true;
     }
 
     @Override
-    public boolean shootPeople(){
+    public boolean shootPeople(Player p){
         WeaponCard[] weaponCards = controller.getCurrPlayer().getPc().getWeapons();
         for (int i = 0; i < MAX_WEAPONS_IN_HAND; i++) {
             if (weaponCards[i] != null && weaponCards[i].isLoaded()) {
@@ -51,7 +52,7 @@ public class StartTurnState extends State {
 
 
     @Override
-    public boolean usePowerUp() {
+    public boolean usePowerUp(Player p) {
         for (PowerUpCard powerUp: controller.getCurrPlayer().getPc().getPowerUps()) {
             if (powerUp != null) {
                 nextState = new UsePowerUpState(controller);
@@ -64,7 +65,7 @@ public class StartTurnState extends State {
     }
 
 
-    public State forcePass() {
+    public State forcePass(Player p) {
         controller.ackCurrent("\nToo slow man, you''ll skip the turn!");
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }

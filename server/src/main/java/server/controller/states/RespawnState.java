@@ -34,14 +34,14 @@ public class RespawnState extends State {
 
 
     @Override
-    public void selectPowerUp(int index) {
+    public void selectPowerUp(Player p, int index) {
         if( deadPlayer.getPc().getPowerUps().get(index) != null)
             this.powerUpIndex = index;
     }
 
 
     @Override
-    public boolean ok() {
+    public boolean ok(Player p) {
         if (powerUpIndex > -1) {
             respawn();
             return true;
@@ -64,7 +64,7 @@ public class RespawnState extends State {
 
 
     @Override
-    public State forcePass() {
+    public State forcePass(Player p) {
         powerUpIndex = deadPlayer.getPc().getPowerUps().size() - 1;
         respawn();
         deadPlayer.ok();
