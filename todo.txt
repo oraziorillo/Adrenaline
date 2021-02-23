@@ -43,16 +43,8 @@ REGOLE DA IMPLEMENTARE:
 
 -"Choose starting player" opzionale
 
-- Action-hero comment
-
 - controllare il numero di powerUp1 massimi di un utente
 
-
-
-DOMANDE:
--dobbiamo usare due porte diverse per socket e rmi?
-
-- non va sonarqube
 
 
  

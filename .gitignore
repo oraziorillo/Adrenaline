@@ -11,15 +11,12 @@ buildNumber.properties
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
 
-
 # Custom Ignore
 .idea/
-ing-sw-2019-23.iml
-**/**.iml
-**.mp4
-**.mp3
-main/resources/gimp_files/*
-/main/java/server/database/files/*
+**/*.iml
+**/*.jar
+**/files/
+.gradle
 
 # Cartella per prove varie e mezze idee
 Sandbox/
