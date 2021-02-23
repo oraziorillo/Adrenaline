@@ -24,7 +24,7 @@ public enum ControllerMethodsEnum {
     CHOOSE_WEAPON_ON_SPAWN_POINT("cws", "\"cws\"", "choose a weapon on a spawn point"),
     CHOOSE_WEAPON_OF_MINE("cwm", "\"cwm\"", "choose one of your weapons"),
     SWITCH_FIRE_MODE("sfm", "\"sfm\"", "switch fire mode"),
-    CHOOSE_POWER_UP("cpu", "\"cpu\" x, x an integer","select the power up with index x in your inventory"),
+    CHOOSE_POWER_UP("cpu", "\"cpu x\", x an integer","select the power up with index x in your inventory"),
     CHOOSE_TARGET("ct", "\"ct\"", "choose a target for your card"),
     CHOOSE_UPGRADE("cu", "\"cu\"", "choose an upgrade"),
     CHOOSE_AMMO("ca", "\"ca\"", "choose an ammo for the targeting scope"),
@@ -77,54 +77,54 @@ public enum ControllerMethodsEnum {
         StringBuilder sb = new StringBuilder();
         Formatter fmt = new Formatter(sb);
         sb.append(">>> Available commands:\n\n");
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n", "COMMAND", "USAGE", "DESCRIPTION");
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n", "COMMAND", "USAGE", "DESCRIPTION");
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_MAP.getCommand(), CHOOSE_MAP.getUsage(), CHOOSE_MAP.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_NUMBER_OF_SKULLS.getCommand(), CHOOSE_NUMBER_OF_SKULLS.getUsage(), CHOOSE_NUMBER_OF_SKULLS.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_PC_COLOUR.getCommand(), CHOOSE_PC_COLOUR.getUsage(), CHOOSE_PC_COLOUR.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 SHOW_COMMENT.getCommand(), SHOW_COMMENT.getUsage(), SHOW_COMMENT.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 RUN_AROUND.getCommand(), RUN_AROUND.getUsage(), RUN_AROUND.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 GRAB_STUFF.getCommand(), GRAB_STUFF.getUsage(), GRAB_STUFF.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 SHOOT_PEOPLE.getCommand(), SHOOT_PEOPLE.getUsage(), SHOOT_PEOPLE.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 USE_POWER_UP.getCommand(), USE_POWER_UP.getUsage(), USE_POWER_UP.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_SQUARE.getCommand(), CHOOSE_SQUARE.getUsage(), CHOOSE_SQUARE.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_WEAPON_ON_SPAWN_POINT.getCommand(), CHOOSE_WEAPON_ON_SPAWN_POINT.getUsage(), CHOOSE_WEAPON_ON_SPAWN_POINT.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_WEAPON_OF_MINE.getCommand(), CHOOSE_WEAPON_OF_MINE.getUsage(), CHOOSE_WEAPON_OF_MINE.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 SWITCH_FIRE_MODE.getCommand(), SWITCH_FIRE_MODE.getUsage(), SWITCH_FIRE_MODE.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_TARGET.getCommand(), CHOOSE_TARGET.getUsage(), CHOOSE_TARGET.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_AMMO.getCommand(), CHOOSE_AMMO.getUsage(), CHOOSE_AMMO.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_POWER_UP.getCommand(), CHOOSE_POWER_UP.getUsage(), CHOOSE_POWER_UP.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_UPGRADE.getCommand(), CHOOSE_UPGRADE.getUsage(), CHOOSE_UPGRADE.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_ASYNCHRONOUS_EFFECT_ORDER.getCommand(), CHOOSE_ASYNCHRONOUS_EFFECT_ORDER.getUsage(), CHOOSE_ASYNCHRONOUS_EFFECT_ORDER.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_DIRECTION.getCommand(), CHOOSE_DIRECTION.getUsage(), CHOOSE_DIRECTION.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 RELOAD.getCommand(), RELOAD.getUsage(), RELOAD.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 SKIP.getCommand(), SKIP.getUsage(), SKIP.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 OK.getCommand(), OK.getUsage(), OK.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 PASS.getCommand(), PASS.getUsage(), PASS.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 UNDO.getCommand(), UNDO.getUsage(), UNDO.getDescription());
-        fmt.format("\t%-40.40s | %-40.40s | %-40.40s%n",
+        fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 QUIT.getCommand(), QUIT.getUsage(), QUIT.getDescription());
         return sb.toString();
     }
