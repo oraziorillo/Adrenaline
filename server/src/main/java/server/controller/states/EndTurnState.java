@@ -5,6 +5,9 @@ import server.controller.Player;
 import server.database.DatabaseHandler;
 import server.model.squares.Square;
 
+import static common.enums.ControllerMethodsEnum.PASS;
+import static common.enums.ControllerMethodsEnum.RELOAD;
+
 /**
  * State representing the action to "pass", when the current player has no actions left
  */
@@ -14,7 +17,8 @@ class EndTurnState extends State {
 
     EndTurnState(Controller controller) {
         super(controller);
-        controller.ackCurrent("Now the only things left for you to do are to reload or just pass");
+        controller.ackCurrent("Now the only things left for you to do are to reload (use the command " +
+                RELOAD.getUsage() + ") or just pass (use the command " + PASS.getUsage() + ")");
     }
     
     /**

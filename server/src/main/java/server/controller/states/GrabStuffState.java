@@ -73,7 +73,7 @@ class GrabStuffState extends State{
 
 
     /**
-     * Prepares a square for doing something
+     * Select a square
      * @param row of the selected square
      * @param column of the selected square
      */
@@ -84,14 +84,14 @@ class GrabStuffState extends State{
             this.targetSquare = s;
             targetSquare.resetWeaponIndexes();
             controller.ackCurrent(targetSquare.isSpawnPoint()
-                    ? "\nOhw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString() + "(\"ok\" to confirm your choice)"
-                    : "\nI see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString() + "(\"ok\" to confirm your choice)");
+                    ? "\nOhw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString() + "\n(Use the command " + ControllerMethodsEnum.CHOOSE_WEAPON_ON_SPAWN_POINT.getUsage() + ". Type \"h\" for details on all available commands)"
+                    : "\nI see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString() + "\n(\"ok\" to confirm your choice)");
         }
     }
 
     
     /**
-     * Selects a powerUp to use as an ammo when collecting a weapon
+     * Select a powerUp to use as an ammo when collecting a weapon
      * @param index the powerup card index
      */
     @Override
@@ -105,8 +105,7 @@ class GrabStuffState extends State{
 
     
     /**
-     * Prepares an arrayList containing the Squares reachable with the collect action.
-     * Sets it up in Game,
+     * Prepare an arrayList containing the Squares reachable using the collect action.
      * @see server.model.Game
      * @param referencePc the pc using the action
      */
@@ -129,9 +128,9 @@ class GrabStuffState extends State{
 
     
     /**
-     * undos the setup
-     * @return true
-     * @param p
+     * Checks whether the action just done is undoable
+     * @return true if the action is undoable
+     * @param p the player for which we need to check the undoability of the action
      */
     @Override
     public boolean isUndoable(Player p) {
@@ -146,8 +145,8 @@ class GrabStuffState extends State{
 
     
     /**
-     * executes the set up collect action
-     * @return true
+     * Confirm the choice
+     * @return true if everything is fine or false if there is any problem with the selected action
      */
     @Override
     public boolean ok(Player p) {
@@ -176,6 +175,11 @@ class GrabStuffState extends State{
     }
 
 
+    /**
+     * Forces a player to pass
+     * @param p the player forced to pass
+     * @return the new state of the player
+     */
     @Override
     public State forcePass(Player p) {
         controller.getGame().setTargetableSquares(targetableSquares, false);
@@ -192,8 +196,9 @@ class GrabStuffState extends State{
 
 
     /**
-     * Transition
-     * @return EndTurnState if this was the 2nd action of the player, StartTurnState else
+     * Complete the transition to the next state
+     * @return EndTurnState if this was the 2nd action of the player, StartTurnState otherwise
+     * (2 action are allowed per turn)
      */
     @Override
     public State nextState() {

@@ -1,5 +1,6 @@
 package server.controller.states;
 
+import common.enums.ControllerMethodsEnum;
 import server.controller.Controller;
 import server.controller.Player;
 import server.model.Pc;
@@ -9,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * When user chooses the Runaround action
+ * When user chooses the Run around action
  */
 public class RunAroundState extends State{
    
@@ -22,6 +23,7 @@ public class RunAroundState extends State{
       this.undo = false;
       targetableSquares = new HashSet<>();
       setTargetableToValidSquares(controller.getCurrPc());
+      controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_SQUARE.getUsage() + ". Type \"h\" for details on all available commands)");
    }
    
    /**
@@ -51,9 +53,9 @@ public class RunAroundState extends State{
    }
    
    /**
-    * disables targetable squares. Influences the transition
+    * Undo the run action
     * @return true
-    * @param p
+    * @param p player for which the run action is undone
     */
    @Override
    public boolean isUndoable(Player p) {

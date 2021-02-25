@@ -6,6 +6,7 @@ import server.model.PowerUpCard;
 import server.model.WeaponCard;
 
 import static common.Constants.MAX_WEAPONS_IN_HAND;
+import static common.enums.ControllerMethodsEnum.*;
 
 /**Turn beginning state*/
 public class StartTurnState extends State {
@@ -14,7 +15,11 @@ public class StartTurnState extends State {
 
     StartTurnState(Controller controller) {
         super(controller);
-        controller.ackCurrent("You can:\n> run around\n> grab stuff\n> shoot people\n> use a power up");
+        controller.ackCurrent("You can:\n" +
+                "> run around (use the command " + RUN_AROUND.getUsage() + ")\n" +
+                "> grab stuff (use the command " + GRAB_STUFF.getUsage() + ")\n" +
+                "> shoot people (use the command " + SHOOT_PEOPLE.getUsage() + ")\n" +
+                "> use a power up (use the command " + USE_POWER_UP.getUsage() + ")");
     }
 
 
@@ -53,10 +58,10 @@ public class StartTurnState extends State {
 
     @Override
     public boolean usePowerUp(Player p) {
-        for (PowerUpCard powerUp: controller.getCurrPlayer().getPc().getPowerUps()) {
+        for (PowerUpCard powerUp: p.getPc().getPowerUps()) {
             if (powerUp != null) {
                 nextState = new UsePowerUpState(controller);
-                controller.ackCurrent("\nUsing a powerUp sometimes can be very necessary");
+                controller.ackCurrent("\nUsing a powerUp sometimes can be necessary");
                 return true;
             }
         }

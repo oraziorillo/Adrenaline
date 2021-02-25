@@ -1,7 +1,7 @@
 package common;
 
 /**
- * Some game contants
+ * Some game constants
  */
 public final class Constants {
 

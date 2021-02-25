@@ -79,10 +79,10 @@ public class ClientSocketHandler implements Runnable {
         switch (viewMethod) {
             case ACK:
                 StringBuilder ack = new StringBuilder();
-                for (int i = 1; i < args.length-1; i++) {
+                for (int i = 1; i < args.length - 1; i++) {
                     ack.append(args[i]).append(System.lineSeparator());
                 }
-                ack.append(args[args.length-1]);
+                ack.append(args[args.length - 1]);
                 view.ack(ack.toString());
                 break;
             case ERROR:
