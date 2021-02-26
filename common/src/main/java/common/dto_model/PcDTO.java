@@ -1,5 +1,6 @@
 package common.dto_model;
 
+import common.enums.AmmoEnum;
 import common.enums.PcColourEnum;
 
 import java.util.ArrayList;
@@ -8,14 +9,6 @@ import static common.Constants.MAX_POWER_UPS_IN_HAND;
 import static common.Constants.MAX_WEAPONS_IN_HAND;
 
 public class PcDTO implements DTO {
-
-    public boolean isCensored() {
-        return censored;
-    }
-
-    public void setCensored(boolean censored) {
-        this.censored = censored;
-    }
 
     private boolean censored;
     private PcColourEnum colour;
@@ -26,6 +19,13 @@ public class PcDTO implements DTO {
     private int squareRow;
     private int squareCol;
 
+    public boolean isCensored() {
+        return censored;
+    }
+
+    public void setCensored(boolean censored) {
+        this.censored = censored;
+    }
 
     public String getName() {
         return pcBoard.getColour().getName();
@@ -67,11 +67,9 @@ public class PcDTO implements DTO {
         return weapons;
     }
 
-
     public ArrayList<PowerUpCardDTO> getPowerUps() {
         return powerUps;
     }
-
 
     public short getAdrenaline() {
         return adrenaline;
@@ -93,6 +91,24 @@ public class PcDTO implements DTO {
         return "(" + squareRow + "," + squareCol + ")";
     }
 
+    public String weaponsToString() {
+        StringBuilder weapons = new StringBuilder("\nYour weapons:");
+        int i = 0;
+        for (WeaponCardDTO w : this.weapons) {
+            if (w != null)
+                weapons.append("\n[").append(i + 1).append("]").append(" ").append(w.toString());
+            i++;
+        }
+        return weapons.toString();
+    }
+
+    public String ammoToString() {
+        StringBuilder ammo = new StringBuilder("\nYour ammo:");
+        for (AmmoEnum a : AmmoEnum.values())
+            ammo.append("\n• ").append(pcBoard.getAmmo()[a.ordinal()]).append(" ").append(a.toString()).append(" ammo");
+        return ammo.toString();
+    }
+
     public String powerUpsToString() {
         StringBuilder powerUpsString = new StringBuilder("\nYour power ups:");
         int i = 0;
@@ -104,6 +120,9 @@ public class PcDTO implements DTO {
         return powerUpsString.toString();
     }
 
+    public String getInventory(){
+        return weaponsToString() + ammoToString() + powerUpsToString();
+    }
 
     public PcDTO getCensoredDTO() {
         PcDTO censoredPcDTO = new PcDTO();
@@ -134,4 +153,5 @@ public class PcDTO implements DTO {
         censoredPcDTO.setPcBoard(pcBoard);
         return censoredPcDTO;
     }
+
 }

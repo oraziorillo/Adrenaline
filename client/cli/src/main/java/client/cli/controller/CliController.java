@@ -21,7 +21,7 @@ import static common.Constants.WRONG_TIME;
 public class CliController {
 
     private RemoteLoginController loginController;
-    protected AbstractView view;
+    protected CliView view;
     protected RemotePlayer player;
 
     public CliController() throws IOException {
@@ -81,7 +81,7 @@ public class CliController {
                 command = ControllerMethodsEnum.parseString(input[0]);
                 String[] args = new String[input.length - 1];
                 System.arraycopy(input, 1, args, 0, input.length - 1);
-                CommandParser.executeCommand(command, args, player);
+                CommandParser.executeCommand(command, args, player, view);
             } catch (IOException serverUnreachable) {
                 view.printMessage("Server unreachable");
             } catch (IllegalArgumentException unsupportedCommand) {

@@ -70,7 +70,7 @@ public class ReloadState extends State {
                 weaponToReload.setLoaded(true);
                 weaponToReload = null;
             } else {
-                controller.ackCurrent("Not enough ammo to reload that weapon. You should have collected it before!");
+                controller.ackCurrent("Not enough ammo to reload that weapon. You should have collected some before!");
             }
         }
         return false;

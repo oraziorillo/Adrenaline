@@ -20,6 +20,7 @@ public enum ControllerMethodsEnum {
     GRAB_STUFF("grab", "\"grab\"", "select the action grab stuff"),
     SHOOT_PEOPLE("shoot", "\"shoot\"", "select the action shoot people"),
     USE_POWER_UP("power up", "\"power up\"",  "use power up"),
+    SHOW_INVENTORY("si", "\"si\"", "show your inventory"),
     CHOOSE_SQUARE("cs", "\"cs x y\", 0<=x<=2 and 0<=y<=3", "choose the square (x,y) on the map"),
     CHOOSE_WEAPON_ON_SPAWN_POINT("cws", "\"cws\"", "choose a weapon on a spawn point"),
     CHOOSE_WEAPON_OF_MINE("cwm", "\"cwm\"", "choose one of your weapons"),

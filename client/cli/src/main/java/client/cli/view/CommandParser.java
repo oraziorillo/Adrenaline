@@ -7,7 +7,7 @@ import common.remote_interfaces.RemotePlayer;
 import java.io.IOException;
 
 public interface CommandParser {
-    static void executeCommand(ControllerMethodsEnum command, String[] args, RemotePlayer player) throws IOException {
+    static void executeCommand(ControllerMethodsEnum command, String[] args, RemotePlayer player, CliView view) throws IOException {
         try {
             switch (command) {
                 case CHOOSE_MAP:
@@ -30,6 +30,9 @@ public interface CommandParser {
                     break;
                 case USE_POWER_UP:
                     player.usePowerUp();
+                    break;
+                case SHOW_INVENTORY:
+                    view.show_inventory();
                     break;
                 case CHOOSE_SQUARE:
                     player.chooseSquare(Integer.parseInt(args[0]), Integer.parseInt(args[1]));

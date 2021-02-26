@@ -4,6 +4,7 @@ import client.controller.socket.LoginControllerSocketProxy;
 import client.view.AbstractView;
 import client.view.InputReader;
 import common.dto_model.GameDTO;
+import common.dto_model.PcDTO;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.events.ModelEventListener;
@@ -30,11 +31,18 @@ import static common.Constants.WRONG_TIME;
 public class CliView extends AbstractView {
 
     private transient InputReader inputReader;
+    private PcDTO pc;
 
 
     public CliView() throws RemoteException {
         super();
         this.inputReader = new CliInputReader();
+        this.pc = new PcDTO();
+    }
+
+
+    public void show_inventory() {
+        printMessage(pc.getInventory());
     }
 
 
@@ -205,6 +213,7 @@ public class CliView extends AbstractView {
     @Override
     public synchronized void onPcUpdate(PcEvent event) throws RemoteException {
         printMessage(event.toString());
+        this.pc = event.getDTO();
     }
 
 
