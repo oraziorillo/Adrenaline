@@ -48,7 +48,7 @@ public class CliView extends AbstractView {
 
     @Override
     public String nextCommand() {
-        return inputReader.requestCommand("Insert command\n").toLowerCase();
+        return inputReader.requestCommand("").toLowerCase();
     }
 
 
@@ -213,7 +213,8 @@ public class CliView extends AbstractView {
     @Override
     public synchronized void onPcUpdate(PcEvent event) throws RemoteException {
         printMessage(event.toString());
-        this.pc = event.getDTO();
+        if (!event.isCensored())
+            this.pc = event.getDTO();
     }
 
 
