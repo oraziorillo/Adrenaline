@@ -2,13 +2,11 @@ package client.cli.controller;
 
 import client.cli.view.CliView;
 import client.cli.view.CommandParser;
-import client.view.AbstractView;
 import common.enums.ConnectionMethodEnum;
 import common.enums.ControllerMethodsEnum;
 import common.exceptions.PlayerAlreadyLoggedInException;
 import common.remote_interfaces.RemoteLoginController;
 import common.remote_interfaces.RemotePlayer;
-
 
 import java.io.IOException;
 import java.rmi.NoSuchObjectException;
