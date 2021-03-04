@@ -96,7 +96,7 @@ public class PcDTO implements DTO {
         int i = 0;
         for (WeaponCardDTO w : this.weapons) {
             if (w != null)
-                weapons.append("\n[").append(i + 1).append("]").append(" ").append(w.toString());
+                weapons.append("\n[").append(i + 1).append("]").append(w.toString()).append(" (loaded = ").append(w.isLoaded()).append(")");
             i++;
         }
         return weapons.toString();
@@ -120,8 +120,11 @@ public class PcDTO implements DTO {
         return powerUpsString.toString();
     }
 
-    public String getInventory(){
-        return weaponsToString() + ammoToString() + powerUpsToString();
+    public String getPcStatus(){
+        return "\nYour character: " + this.colour.getName() +
+                "\nYour position: (" + this.squareRow + "," + this.squareCol + ")" +
+                weaponsToString() + ammoToString() + powerUpsToString() +
+                pcBoard.toString();
     }
 
     public PcDTO getCensoredDTO() {

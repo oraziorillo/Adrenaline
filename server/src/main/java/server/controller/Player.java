@@ -70,7 +70,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
     }
 
 
-
     public Pc getPc() {
         return pc;
     }
@@ -126,21 +125,19 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
 
     @Override
     public void sendMessage(String msg) {
-        currState.sendChatMessage("@"+DatabaseHandler.getInstance().getUsername( this.getToken() )+": "+msg);
+        currState.sendChatMessage(this, "@"+DatabaseHandler.getInstance().getUsername(this.getToken())+": " + msg);
     }
 
 
     @Override
     public synchronized void chooseMap(int n) {
-        if (n >= FIRST_MAP && n <= LAST_MAP)
-            currState.selectMap(this, n);
+        currState.selectMap(this, n);
     }
 
 
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
-        if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE)
-            currState.selectNumberOfSkulls(this, n);
+        currState.selectNumberOfSkulls(this, n);
     }
 
 
@@ -339,7 +336,6 @@ public class Player extends UnicastRemoteObject implements RemotePlayer {
             e.printStackTrace();
         }
     }
-
 
 
     public PcColourEnum getCurrPc() {

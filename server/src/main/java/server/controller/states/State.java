@@ -149,8 +149,8 @@ public abstract class State {
     public abstract State nextState();
 
 
-    public void sendChatMessage(String msg) {
-        controller.sendChatMessage(msg);
+    public void sendChatMessage(Player sender, String msg) {
+        controller.sendChatMessage(sender, msg);
     }
 
 

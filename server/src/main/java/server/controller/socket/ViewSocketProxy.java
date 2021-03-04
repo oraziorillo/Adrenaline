@@ -18,7 +18,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import static common.Constants.REGEX;
+import static common.Constants.ARGS_SEPARATOR;
 import static common.enums.ViewMethodsEnum.*;
 
 public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, ModelEventListener {
@@ -33,62 +33,62 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
 
    @Override
    public void ack(String msg) {
-      out.println(ACK + REGEX + msg.replaceAll(System.lineSeparator(), REGEX));
+      out.println(ACK + ARGS_SEPARATOR + msg.replaceAll(System.lineSeparator(), ARGS_SEPARATOR));
       out.flush();
    }
 
 
    @Override
    public void notifyEvent(LobbyEvent event) {
-      out.println(NOTIFY_EVENT + REGEX + gson.toJson(event, LobbyEvent.class));
+      out.println(NOTIFY_EVENT + ARGS_SEPARATOR + gson.toJson(event, LobbyEvent.class));
       out.flush();
    }
 
    @Override
    public void request(Request request) {
-      out.println(REQUEST + REGEX + gson.toJson(request));
+      out.println(REQUEST + ARGS_SEPARATOR + gson.toJson(request));
       out.flush();
    }
 
 
    @Override
    public void chatMessage(String message) {
-      out.println(CHAT_MESSAGE + REGEX + message.replaceAll(System.lineSeparator(), REGEX));
+      out.println(CHAT_MESSAGE + ARGS_SEPARATOR + message.replaceAll(" ", ARGS_SEPARATOR));
       out.flush();
    }
    
    
    @Override
    public void onGameBoardUpdate(GameBoardEvent event) {
-      out.println(ON_GAME_BOARD_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_GAME_BOARD_UPDATE + ARGS_SEPARATOR + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onKillShotTrackUpdate(KillShotTrackEvent event) {
-      out.println(ON_KILL_SHOT_TRACK_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_KILL_SHOT_TRACK_UPDATE + ARGS_SEPARATOR + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onPcBoardUpdate(PcBoardEvent event) {
-      out.println(ON_PC_BOARD_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_PC_BOARD_UPDATE + ARGS_SEPARATOR + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onPcUpdate(PcEvent event) {
-      out.println(ON_PC_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_PC_UPDATE + ARGS_SEPARATOR + gson.toJson(event));
       out.flush();
    }
 
 
    @Override
    public void onSquareUpdate(SquareEvent event) {
-      out.println(ON_SQUARE_UPDATE + REGEX + gson.toJson(event));
+      out.println(ON_SQUARE_UPDATE + ARGS_SEPARATOR + gson.toJson(event));
       out.flush();
    }
 
@@ -100,13 +100,13 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
    
    @Override
    public void resumeGame(GameDTO game) {
-      out.println( RESUME_GAME + REGEX + gson.toJson( game ) );
+      out.println( RESUME_GAME + ARGS_SEPARATOR + gson.toJson( game ) );
       out.flush();
    }
 
    @Override
    public void winners(List<String> winners) throws RemoteException {
-      out.println(WINNERS + REGEX + gson.toJson(winners));
+      out.println(WINNERS + ARGS_SEPARATOR + gson.toJson(winners));
       out.flush();
    }
 

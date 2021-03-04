@@ -1,5 +1,6 @@
 package server.controller.states;
 
+import common.enums.ControllerMethodsEnum;
 import server.controller.Controller;
 import server.controller.Player;
 import server.model.PowerUpCard;
@@ -45,9 +46,13 @@ public class StartTurnState extends State {
             if (weaponCards[i] != null && weaponCards[i].isLoaded()) {
                 nextState = new ShootPeopleState(controller, false, false);
                 if (controller.getCurrPc().getAdrenaline() == 2)
-                    controller.ackCurrent("FINALLY! It's showtime! You can move on:");
+                    controller.ackCurrent("The adrenaline runs strong in you" +
+                            "\n(Use the command " + CHOOSE_SQUARE.getUsage() + "to move before shooting or " +
+                            CHOOSE_WEAPON_OF_MINE.getUsage() + " to select the weapon to use. Type \"h\" for details on all available commands)" +
+                            "You can move on:");
                 else
-                    controller.ackCurrent("FINALLY! It's showtime!");
+                    controller.ackCurrent("FINALLY! It's showtime!\n" +
+                            "(Use the command " + CHOOSE_WEAPON_OF_MINE.getUsage() + ". Type \"h\" for details on all available commands)");
                 return true;
             }
         }
@@ -61,11 +66,12 @@ public class StartTurnState extends State {
         for (PowerUpCard powerUp: p.getPc().getPowerUps()) {
             if (powerUp != null) {
                 nextState = new UsePowerUpState(controller);
-                controller.ackCurrent("\nUsing a powerUp sometimes can be necessary");
+                controller.ackCurrent("\nUsing a power up is sometimes necessary. Choose the power up you want to use" +
+                        "\n(Use the command " + CHOOSE_POWER_UP.getUsage() + ". Type \"h\" for details on all available commands)");
                 return true;
             }
         }
-        controller.ackCurrent("\nA power up can make the difference between life and death");
+        controller.ackCurrent("\nA power up can make the difference between life and death. You have no power up cards");
         return false;
     }
 

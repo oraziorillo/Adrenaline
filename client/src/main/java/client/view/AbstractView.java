@@ -49,5 +49,4 @@ public abstract class AbstractView extends UnicastRemoteObject implements Remote
     }
     
     public void error(String error) {}
-   
 }

@@ -37,12 +37,14 @@ public class CliView extends AbstractView {
     public CliView() throws RemoteException {
         super();
         this.inputReader = new CliInputReader();
-        this.pc = new PcDTO();
     }
 
 
-    public void show_inventory() {
-        printMessage(pc.getInventory());
+    public void showPcStatus() {
+        if (pc != null)
+            printMessage(pc.getPcStatus());
+        else
+            printMessage("You haven't still selected your character");
     }
 
 
@@ -150,7 +152,7 @@ public class CliView extends AbstractView {
 
     @Override
     public void chatMessage(String message) throws RemoteException {
-        //not implemented on cli
+        printMessage(message);
     }
 
 

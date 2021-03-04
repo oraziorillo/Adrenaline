@@ -31,8 +31,8 @@ public interface CommandParser {
                 case USE_POWER_UP:
                     player.usePowerUp();
                     break;
-                case SHOW_INVENTORY:
-                    view.show_inventory();
+                case SHOW_PC_STATUS:
+                    view.showPcStatus();
                     break;
                 case CHOOSE_SQUARE:
                     player.chooseSquare(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
@@ -80,6 +80,14 @@ public interface CommandParser {
                     break;
                 case OK:
                     player.ok();
+                    break;
+                case SEND_MESSAGE:
+                    StringBuilder msg = new StringBuilder();
+                    for (int i = 0; i < args.length - 1; i++) {
+                        msg.append(args[i]).append(" ");
+                    }
+                    msg.append(args[args.length - 1]);
+                    player.sendMessage(msg.toString());
                     break;
                 case PASS:
                     player.pass();

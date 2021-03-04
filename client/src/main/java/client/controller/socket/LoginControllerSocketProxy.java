@@ -35,7 +35,7 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
 
     @Override
     public synchronized UUID register(String username, RemoteView view) {
-        out.println(SIGN_UP.toString() + REGEX + username);
+        out.println(SIGN_UP.toString() + ARGS_SEPARATOR + username);
         out.flush();
         String stringToken;
         try {
@@ -52,7 +52,7 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
     public synchronized RemotePlayer login(UUID token, RemoteView view) throws IOException, PlayerAlreadyLoggedInException {
         if (token != null) {
             RemotePlayer tmpPlayer = new PlayerSocketProxy(socket, token);
-            out.println(LOG_IN + REGEX + token);
+            out.println(LOG_IN + ARGS_SEPARATOR + token);
             out.flush();
             try {
                 String outcome = buffer.take()[0];
@@ -72,7 +72,7 @@ public class LoginControllerSocketProxy extends AbstractSocketProxy implements R
 
     @Override
     public synchronized void joinLobby(UUID token) {
-        out.println(JOIN_LOBBY.toString() + REGEX + token);
+        out.println(JOIN_LOBBY.toString() + ARGS_SEPARATOR + token);
         out.flush();
     }
 }

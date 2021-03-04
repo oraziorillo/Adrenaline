@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
-import static common.Constants.REGEX;
+import static common.Constants.ARGS_SEPARATOR;
 import static common.enums.ControllerMethodsEnum.*;
 
 public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlayer {
@@ -24,21 +24,21 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
 
     @Override
     public synchronized void chooseMap(int n) {
-        out.println(CHOOSE_MAP.toString() + REGEX + n);
+        out.println(CHOOSE_MAP.toString() + ARGS_SEPARATOR + n);
         out.flush();
     }
 
 
     @Override
     public synchronized void chooseNumberOfSkulls(int n) {
-        out.println(CHOOSE_NUMBER_OF_SKULLS.toString() + REGEX + n);
+        out.println(CHOOSE_NUMBER_OF_SKULLS.toString() + ARGS_SEPARATOR + n);
         out.flush();
     }
 
 
     @Override
     public synchronized void choosePcColour(String colour) {
-        out.println(CHOOSE_PC_COLOUR + REGEX + colour);
+        out.println(CHOOSE_PC_COLOUR + ARGS_SEPARATOR + colour);
         out.flush();
     }
 
@@ -73,28 +73,28 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
 
     @Override
     public synchronized void chooseSquare(int x, int y) {
-        out.println(CHOOSE_SQUARE + REGEX + x + REGEX + y);
+        out.println(CHOOSE_SQUARE + ARGS_SEPARATOR + x + ARGS_SEPARATOR + y);
         out.flush();
     }
 
 
     @Override
     public synchronized void choosePowerUp(int index) {
-        out.println(CHOOSE_POWER_UP + REGEX + index);
+        out.println(CHOOSE_POWER_UP + ARGS_SEPARATOR + index);
         out.flush();
     }
 
 
     @Override
     public synchronized void chooseWeaponOnSpawnPoint(int n) {
-        out.println(CHOOSE_WEAPON_ON_SPAWN_POINT + REGEX + n);
+        out.println(CHOOSE_WEAPON_ON_SPAWN_POINT + ARGS_SEPARATOR + n);
         out.flush();
     }
 
 
     @Override
     public synchronized void chooseWeaponOfMine(int n) {
-        out.println(CHOOSE_WEAPON_OF_MINE + REGEX + n);
+        out.println(CHOOSE_WEAPON_OF_MINE + ARGS_SEPARATOR + n);
         out.flush();
     }
 
@@ -108,41 +108,41 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
 
     @Override
     public synchronized void chooseUpgrade(int index) {
-        out.println(CHOOSE_UPGRADE + REGEX + index);
+        out.println(CHOOSE_UPGRADE + ARGS_SEPARATOR + index);
         out.flush();
     }
 
 
     @Override
     public synchronized void chooseAsynchronousEffectOrder(boolean beforeBasicEffect) {
-        out.println(CHOOSE_ASYNCHRONOUS_EFFECT_ORDER + REGEX + beforeBasicEffect);
+        out.println(CHOOSE_ASYNCHRONOUS_EFFECT_ORDER + ARGS_SEPARATOR + beforeBasicEffect);
         out.flush();
     }
 
 
     @Override
     public void chooseTarget(String pcColour)  {
-        out.println(CHOOSE_TARGET + REGEX + pcColour);
+        out.println(CHOOSE_TARGET + ARGS_SEPARATOR + pcColour);
         out.flush();
     }
 
 
     @Override
     public void chooseAmmo(String ammoColour) {
-        out.println(CHOOSE_AMMO + REGEX + ammoColour);
+        out.println(CHOOSE_AMMO + ARGS_SEPARATOR + ammoColour);
         out.flush();
     }
 
 
     @Override
     public synchronized void chooseDirection(int index) {
-        out.println(CHOOSE_DIRECTION + REGEX + index);
+        out.println(CHOOSE_DIRECTION + ARGS_SEPARATOR + index);
         out.flush();
     }
 
     @Override
     public void response(String response){
-        out.println(RESPONSE + REGEX + response);
+        out.println(RESPONSE + ARGS_SEPARATOR + response);
         out.flush();
     }
 
@@ -203,7 +203,7 @@ public class PlayerSocketProxy extends AbstractSocketProxy implements RemotePlay
 
     @Override
     public void sendMessage(String s) {
-        out.println(SEND_MESSAGE + REGEX + s);
+        out.println(SEND_MESSAGE + ARGS_SEPARATOR + s);
         out.flush();
     }
 

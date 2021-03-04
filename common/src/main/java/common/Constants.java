@@ -71,7 +71,7 @@ public final class Constants {
     public static final int TARGETABLE_SET = 17;
 
     // socket
-    public static final String REGEX = "#";
+    public static final String ARGS_SEPARATOR = "#";
 
     // messages
     public static final String WRONG_TIME = "\nOak's words echoed... There's a time and place for everything, but not now";

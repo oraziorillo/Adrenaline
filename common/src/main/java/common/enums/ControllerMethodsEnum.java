@@ -15,17 +15,16 @@ public enum ControllerMethodsEnum {
     CHOOSE_MAP("map", "\"map x\", 1<=x<=4", "choose map number x"),
     CHOOSE_NUMBER_OF_SKULLS( "skulls", "\"skulls x\", 5<=x<=8", "set the number of skulls to x" ),
     CHOOSE_PC_COLOUR("colour", "\"colour x\", x a colour", "choose pc colour"),
-    SHOW_COMMENT("hero", "\"hero\"", "show your ACTION-HERO comment to the other players"),
+    SHOW_PC_STATUS("status", "\"status\"", "show the status of you character"),
     RUN_AROUND("run", "\"run\"","select the action run around"),
     GRAB_STUFF("grab", "\"grab\"", "select the action grab stuff"),
     SHOOT_PEOPLE("shoot", "\"shoot\"", "select the action shoot people"),
-    USE_POWER_UP("power up", "\"power up\"",  "use power up"),
-    SHOW_INVENTORY("si", "\"si\"", "show your inventory"),
+    USE_POWER_UP("upu", "\"cpu x\", x the index of the power up",  "use power up"),
     CHOOSE_SQUARE("cs", "\"cs x y\", 0<=x<=2 and 0<=y<=3", "choose the square (x,y) on the map"),
-    CHOOSE_WEAPON_ON_SPAWN_POINT("cws", "\"cws\"", "choose a weapon on a spawn point"),
-    CHOOSE_WEAPON_OF_MINE("cwm", "\"cwm\"", "choose one of your weapons"),
+    CHOOSE_WEAPON_ON_SPAWN_POINT("cws", "\"cws x\", x the index of the weapon", "choose a weapon on a spawn point"),
+    CHOOSE_WEAPON_OF_MINE("cwm", "\"cwm x\", x the index of the weapon", "choose one of your weapons"),
     SWITCH_FIRE_MODE("sfm", "\"sfm\"", "switch fire mode"),
-    CHOOSE_POWER_UP("cpu", "\"cpu x\", x an integer","select the power up with index x in your inventory"),
+    CHOOSE_POWER_UP("cpu", "\"cpu x\", the index of the power up","select the power up with index x in your inventory"),
     CHOOSE_TARGET("ct", "\"ct\"", "choose a target for your card"),
     CHOOSE_UPGRADE("cu", "\"cu\"", "choose an upgrade"),
     CHOOSE_AMMO("ca", "\"ca\"", "choose an ammo for the targeting scope"),
@@ -37,7 +36,7 @@ public enum ControllerMethodsEnum {
     PASS("pass", "\"pass\"", "pass turn"),
     SKIP("skip", "\"skip\"", "skip the action (if optional) for which your are selecting targets"),
     UNDO("undo", "\"undo\"", "undo last action (you can do it only if your last action has not been confirmed yet"),
-    SEND_MESSAGE("msg", "\"msg x\", x a string", "send message"),
+    SEND_MESSAGE("msg", "\"msg x\", x a string", "send a message to all players"),
     QUIT("q", "\"q\"", "quit the lobby"),
     HELP("h", "\"h\"", "print help");
 
@@ -77,7 +76,7 @@ public enum ControllerMethodsEnum {
     public static String help() {
         StringBuilder sb = new StringBuilder();
         Formatter fmt = new Formatter(sb);
-        sb.append(">>> Available commands:\n\n");
+        sb.append(">>> Available commands:\n");
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n", "COMMAND", "USAGE", "DESCRIPTION");
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_MAP.getCommand(), CHOOSE_MAP.getUsage(), CHOOSE_MAP.getDescription());
@@ -86,7 +85,7 @@ public enum ControllerMethodsEnum {
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_PC_COLOUR.getCommand(), CHOOSE_PC_COLOUR.getUsage(), CHOOSE_PC_COLOUR.getDescription());
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
-                SHOW_COMMENT.getCommand(), SHOW_COMMENT.getUsage(), SHOW_COMMENT.getDescription());
+                SHOW_PC_STATUS.getCommand(), SHOW_PC_STATUS.getUsage(), SHOW_PC_STATUS.getDescription());
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 RUN_AROUND.getCommand(), RUN_AROUND.getUsage(), RUN_AROUND.getDescription());
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",

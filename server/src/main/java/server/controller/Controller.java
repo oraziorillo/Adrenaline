@@ -285,6 +285,10 @@ public class Controller{
         if (deadPlayers.isEmpty()) {
             increaseCurrPlayerIndex();
             ackCurrent("\nIt's your turn");
+            for (int i = 0; i < players.size(); i++) {
+                if (i != currPlayerIndex)
+                    ackPlayer(players.get(i), "\n@" + DatabaseHandler.getInstance().getUsername(getCurrPlayer().getToken()) + "'s turn");
+            }
             startTimer();
             getCurrPlayer().setActive();
             if (currPlayerIndex == lastPlayerIndex) {
@@ -428,6 +432,16 @@ public class Controller{
         });
     }
 
+    public void sendChatMessage(Player sender, String msg) {
+        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
+            try {
+                p.getView().chatMessage(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     /**
      * a toString for colours available to be picked
@@ -502,17 +516,6 @@ public class Controller{
             try {
                 player.getView().close();
                 player.killView();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-
-    public void sendChatMessage(String msg) {
-        players.parallelStream().filter(Player::isOnLine).forEach(p -> {
-            try {
-                p.getView().chatMessage(msg);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

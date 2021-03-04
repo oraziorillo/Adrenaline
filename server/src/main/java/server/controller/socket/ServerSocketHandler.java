@@ -36,7 +36,7 @@ public class ServerSocketHandler implements Runnable {
     @Override
     public void run() {
         while (!socket.isClosed()) {
-            String[] args = in.nextLine().split(REGEX);
+            String[] args = in.nextLine().split(ARGS_SEPARATOR);
             try {
                 handle(args);
             } catch (IOException e) {

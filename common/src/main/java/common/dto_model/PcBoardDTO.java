@@ -2,6 +2,8 @@ package common.dto_model;
 
 import common.enums.PcColourEnum;
 
+import static common.Constants.LIFE_POINTS;
+
 public class PcBoardDTO implements DTO {
 
     private PcColourEnum colour;
@@ -78,4 +80,30 @@ public class PcBoardDTO implements DTO {
         this.points = points;
     }
 
+    public String toString(){
+
+        StringBuilder s = new StringBuilder();
+        s.append("\nPoints: ").append(points);
+        s.append("\nDeaths: ").append(numOfDeaths);
+
+        // damage track
+        s.append("\nYour damage track: [");
+        for( int i = 0; i < LIFE_POINTS; i++){
+
+            if (i < damageTrackIndex)
+                s.append(damageTrack[i]);
+            else
+                s.append("/");
+
+            if (i < LIFE_POINTS - 1)
+                s.append(", ");
+        }
+
+        //marks
+        s.append("]\nYour marks: ");
+        for (int i = 0; i < PcColourEnum.values().length; i++){
+            s.append("[").append(PcColourEnum.values()[i]).append(", ").append(marks[i]).append("]  ");
+        }
+        return s.toString();
+    }
 }

@@ -41,6 +41,8 @@ public class SetupKillShotTrackState extends State{
                 controller.ackCurrent("\nThat sounds good. Fair enough. (\"ok\" to confirm your choice)");
             else
                 controller.ackCurrent("\nYour testosterone level is nearly as high as DOZER's one!! (\"ok\" to confirm your choice)");
+        } else {
+            controller.ackCurrent("\nThe number of skulls should be between 5 and 8");
         }
     }
 
@@ -54,6 +56,8 @@ public class SetupKillShotTrackState extends State{
         if (killShotTrackIndex >= MIN_KILL_SHOT_TRACK_SIZE && killShotTrackIndex <= MAX_KILL_SHOT_TRACK_SIZE){
             controller.getGame().initKillShotTrack(killShotTrackIndex);
             return true;
+        } else {
+            controller.ackCurrent("\nChoose the skulls first");
         }
         return false;
     }

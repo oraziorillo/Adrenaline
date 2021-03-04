@@ -86,7 +86,7 @@ public class CliController {
                 view.printMessage("Server unreachable");
             } catch (IllegalArgumentException unsupportedCommand) {
                 view.printMessage(unsupportedCommand.getMessage());
-                view.printMessage(ControllerMethodsEnum.help());
+                //view.printMessage(ControllerMethodsEnum.help());
             }
         }
         try {

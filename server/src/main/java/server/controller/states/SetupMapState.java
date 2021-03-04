@@ -33,6 +33,8 @@ public class SetupMapState extends State{
             controller.ackCurrent("\nThis is the Game Board you chose, do you like it?" +
                     controller.getGame().preLoadedGameBoardToString(mapIndex) +
                     "\n(\"ok\" to confirm your choice)");
+        } else {
+            controller.ackCurrent("\nMaps are enumerated from 1 to 4");
         }
     }
 
@@ -46,6 +48,8 @@ public class SetupMapState extends State{
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
             controller.getGame().initMap(mapIndex);
             return true;
+        } else {
+            controller.ackCurrent("\nChoose the map first");
         }
         return false;
     }
@@ -67,6 +71,4 @@ public class SetupMapState extends State{
     public State nextState() {
         return new SetupKillShotTrackState(controller);
     }
-
-
 }

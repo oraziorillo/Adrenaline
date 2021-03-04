@@ -20,11 +20,10 @@ import common.events.square_events.SquareEvent;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import static common.Constants.REGEX;
+import static common.Constants.ARGS_SEPARATOR;
 
 public class ClientSocketHandler implements Runnable {
 
@@ -52,7 +51,7 @@ public class ClientSocketHandler implements Runnable {
         while (!socket.isClosed()) {
             String[] args = null;
             try {
-                args = in.readLine().split(REGEX);
+                args = in.readLine().split(ARGS_SEPARATOR);
                 handle(args);
             } catch (IllegalArgumentException notAViewMethod) {
                 if (args != null)
@@ -87,14 +86,19 @@ public class ClientSocketHandler implements Runnable {
                 break;
             case ERROR:
                 StringBuilder error = new StringBuilder();
-                for (int i = 1; i < args.length-1; i++) {
+                for (int i = 1; i < args.length - 1; i++) {
                     error.append(args[i]).append(System.lineSeparator());
                 }
                 error.append(args[args.length-1]);
                 view.error(error.toString());
                 break;
             case CHAT_MESSAGE:
-                view.chatMessage(args[1]);
+                StringBuilder msg = new StringBuilder();
+                for (int i = 1; i < args.length - 1; i++) {
+                    msg.append(args[i]).append(" ");
+                }
+                msg.append(args[args.length - 1]);
+                view.chatMessage(msg.toString());
                 break;
             case WINNERS:
                 List<String> winners = new ArrayList<>();
