@@ -170,7 +170,7 @@ public class SpawnPoint extends Square {
         StringBuilder items = new StringBuilder();
         for (int i = 0; i < 3; i++) {
             if (weapons[i] != null)
-                items.append("\n[").append(i+1).append("] ").append(weapons[i].toString());
+                items.append(System.lineSeparator()).append("[").append(i+1).append("] ").append(weapons[i].toString());
         }
         return items.toString();
     }

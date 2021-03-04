@@ -23,7 +23,7 @@ public class FirstTurnState extends State{
         powerUpToDropIndex = -1;
         this.pcToSpawn = controller.getCurrPc();
         this.pcToSpawn.drawPowerUp(2);
-        controller.ackCurrent("\nChoose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
+        controller.ackCurrent(System.lineSeparator() + "Choose a power up to discard, you'll spawn on the spawn point of discarded power up's colour");
         controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_POWER_UP.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
@@ -36,7 +36,7 @@ public class FirstTurnState extends State{
     public void selectPowerUp (Player p, int powerUpToDropIndex) {
         if (powerUpToDropIndex == 0 || powerUpToDropIndex == 1) {
             this.powerUpToDropIndex = powerUpToDropIndex;
-            controller.ackCurrent("\nYou'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". Is it ok? (\"ok\" to confirm your choice)");
+            controller.ackCurrent(System.lineSeparator() + "You'll discard an incredible " + pcToSpawn.getPowerUpCard(powerUpToDropIndex).toString() + ". Is it ok? (\"ok\" to confirm your choice)");
         }
     }
 
@@ -60,7 +60,7 @@ public class FirstTurnState extends State{
         Random random = new Random();
         powerUpToDropIndex = random.nextInt(2);
         spawn();
-        controller.ackCurrent("\nToo slow man, you''ll skip the turn!");
+        controller.ackCurrent(System.lineSeparator() + "Too slow man, you''ll skip the turn!");
         return nextState();
     }
 

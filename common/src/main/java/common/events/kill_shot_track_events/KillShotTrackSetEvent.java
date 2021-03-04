@@ -16,6 +16,6 @@ public class KillShotTrackSetEvent extends KillShotTrackEvent {
 
     @Override
     public String toString() {
-        return "\nThe host decided: " + killShotTrack.getKillShotTrack().length + " kills to win";
+        return System.lineSeparator() + "The host decided: " + killShotTrack.getKillShotTrack().length + " kills to win";
     }
 }

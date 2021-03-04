@@ -53,7 +53,7 @@ public class ViewSocketProxy extends AbstractSocketProxy implements RemoteView, 
 
    @Override
    public void chatMessage(String message) {
-      out.println(CHAT_MESSAGE + ARGS_SEPARATOR + message.replaceAll(" ", ARGS_SEPARATOR));
+      out.println(CHAT_MESSAGE + ARGS_SEPARATOR + message);
       out.flush();
    }
    

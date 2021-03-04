@@ -59,7 +59,7 @@ public class RespawnState extends State {
         pcToRespawn.discardPowerUp(powerUp);
         pcToRespawn.spawn(s);
         oldSquare.getPcs().remove(pcToRespawn);
-        controller.ackPlayer(deadPlayer, "\nA well-known historical figure took three days to resurrect, but you... you took a half turn");
+        controller.ackPlayer(deadPlayer, System.lineSeparator() + "A well-known historical figure took three days to resurrect, but you... you took a half turn");
     }
 
 

@@ -22,7 +22,7 @@ public class SetupKillShotTrackState extends State{
     SetupKillShotTrackState(Controller controller) {
         super(controller);
         this.killShotTrackIndex = -1;
-        controller.ackCurrent("\nI'll let you choose even the number of skulls to place on the killshot track (5 to 8)");
+        controller.ackCurrent(System.lineSeparator() + "I'll let you choose even the number of skulls to place on the killshot track (5 to 8)");
         controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_NUMBER_OF_SKULLS.getUsage() + ". Type \"h\" for details on all available commands)");
     }
 
@@ -36,13 +36,13 @@ public class SetupKillShotTrackState extends State{
         if (n >= MIN_KILL_SHOT_TRACK_SIZE && n <= MAX_KILL_SHOT_TRACK_SIZE) {
             this.killShotTrackIndex = n;
             if (n == MIN_KILL_SHOT_TRACK_SIZE)
-                controller.ackCurrent("\nJust " + MIN_KILL_SHOT_TRACK_SIZE + " kills?! That's for cowards! (\"ok\" to confirm your choice)");
+                controller.ackCurrent(System.lineSeparator() + "Just " + MIN_KILL_SHOT_TRACK_SIZE + " kills?! That's for cowards! (\"ok\" to confirm your choice)");
             else if (n < MAX_KILL_SHOT_TRACK_SIZE)
-                controller.ackCurrent("\nThat sounds good. Fair enough. (\"ok\" to confirm your choice)");
+                controller.ackCurrent(System.lineSeparator() + "That sounds good. Fair enough. (\"ok\" to confirm your choice)");
             else
-                controller.ackCurrent("\nYour testosterone level is nearly as high as DOZER's one!! (\"ok\" to confirm your choice)");
+                controller.ackCurrent(System.lineSeparator() + "Your testosterone level is nearly as high as DOZER's one!! (\"ok\" to confirm your choice)");
         } else {
-            controller.ackCurrent("\nThe number of skulls should be between 5 and 8");
+            controller.ackCurrent(System.lineSeparator() + "The number of skulls should be between 5 and 8");
         }
     }
 
@@ -57,7 +57,7 @@ public class SetupKillShotTrackState extends State{
             controller.getGame().initKillShotTrack(killShotTrackIndex);
             return true;
         } else {
-            controller.ackCurrent("\nChoose the skulls first");
+            controller.ackCurrent(System.lineSeparator() + "Choose the skulls first");
         }
         return false;
     }
@@ -77,9 +77,9 @@ public class SetupKillShotTrackState extends State{
      */
     @Override
     public State nextState(){
-        StringBuilder colourChoice = new StringBuilder("\nAnd finally choose your character, each of them is particular in its own way:");
+        StringBuilder colourChoice = new StringBuilder(System.lineSeparator() + "And finally choose your character, each of them is particular in its own way:");
         for (PcColourEnum c : PcColourEnum.values()) {
-            colourChoice.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
+            colourChoice.append(System.lineSeparator()).append("> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
         }
         controller.ackCurrent(colourChoice.toString());
         controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_PC_COLOUR.getUsage() + ". Type \"h\" for details on all available commands)");

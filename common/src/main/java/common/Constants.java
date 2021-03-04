@@ -74,7 +74,7 @@ public final class Constants {
     public static final String ARGS_SEPARATOR = "#";
 
     // messages
-    public static final String WRONG_TIME = "\nOak's words echoed... There's a time and place for everything, but not now";
+    public static final String WRONG_TIME = System.lineSeparator() + "Oak's words echoed... There's a time and place for everything, but not now (Illegal command)";
 
     public static String DATA_PATH = "src/main/java/server/database/data/";
     public static String GAMES_PATH = "src/main/java/server/database/data/games_data/";

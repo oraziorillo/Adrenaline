@@ -34,7 +34,7 @@ public class AmmoChangedEvent extends PcBoardEvent {
     private String ammoDifferenceToString(short[] ammoDifference){
         StringBuilder stringBuilder = new StringBuilder();
         for (AmmoEnum a : AmmoEnum.values())
-            stringBuilder.append(isEarned ? "+ " : "- ").append(ammoDifference[a.ordinal()]).append(" ").append(a).append(" ammo\n");
+            stringBuilder.append(isEarned ? "+ " : "- ").append(ammoDifference[a.ordinal()]).append(" ").append(a).append(" ammo").append(System.lineSeparator());
         return stringBuilder.toString();
     }
 
@@ -47,12 +47,12 @@ public class AmmoChangedEvent extends PcBoardEvent {
                     ? pcBoard.getColour().getName()
                     : "You"));
         if(isEarned)
-            dynamicMessageBuilder.append(" earned:\n").append(ammoDifferenceToString(ammoDifference));
+            dynamicMessageBuilder.append(" earned:").append(System.lineSeparator()).append(ammoDifferenceToString(ammoDifference));
         else
-            dynamicMessageBuilder.append(" paid:\n").append(ammoDifferenceToString(ammoDifference)).append(
+            dynamicMessageBuilder.append(" paid:").append(System.lineSeparator()).append(ammoDifferenceToString(ammoDifference)).append(
                     powerUpsDiscarded.isEmpty()
                     ? ""
-                    : "and used:\n" + powerUpsDiscarded.toString() + "\nto pay the difference");
+                    : "and used:" + System.lineSeparator() + powerUpsDiscarded.toString() + System.lineSeparator() + "to pay the difference");
         return dynamicMessageBuilder.toString();
     }
 

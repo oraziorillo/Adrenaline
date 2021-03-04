@@ -37,7 +37,7 @@ public class AmmoTile {
     public String toString() {
         StringBuilder ammoString = new StringBuilder();
         for (AmmoEnum a : AmmoEnum.values())
-            ammoString.append("\n+" + ammo[a.ordinal()] + " " + a.toString() + " ammo");
+            ammoString.append(System.lineSeparator()).append("+").append(ammo[a.ordinal()]).append(" ").append(a.toString()).append(" ammo");
         return ammoString.toString();
     }
 

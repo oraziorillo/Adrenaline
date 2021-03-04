@@ -21,14 +21,14 @@ public class CliInputReader implements InputReader {
      */
     @Override
     public int requestInt(String message) {
-        System.out.println("\n>>> " + message);
+        System.out.println(System.lineSeparator() + ">>> " + message);
         return in.nextInt();
     }
 
 
     @Override
     public String requestString(String message) {
-        System.out.println("\n>>> " + message);
+        System.out.println(System.lineSeparator() + ">>> " + message);
         return in.next();
     }
 

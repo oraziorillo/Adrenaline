@@ -57,30 +57,29 @@ public class GameDTO {
 
     @Override
     public String toString() {
-        StringBuilder gameString = new StringBuilder("Game resumed!\n");
+        StringBuilder gameString = new StringBuilder("Game resumed!" + System.lineSeparator());
         for (SquareDTO s : gameBoardDTO.getSquares())
             gameString.append(s.toString());
-        gameString.append("\nKillshot track:\n").append(killShotTrackDTO.toString());
+        gameString.append(System.lineSeparator()).append("Killshot track:").append(System.lineSeparator()).append(killShotTrackDTO.toString());
         pcs.parallelStream().filter(p -> !p.isCensored()).findFirst().ifPresent(p -> {
-            gameString.append("\nYour character is:\n").append(p.getName())
-                    .append("\n> points:\t").append(p.getPcBoard().getPoints())
-                    .append("\n> position:\t").append(p.squareToString())
-                    .append("\n> ammo:\t");
+            gameString.append(System.lineSeparator()).append("Your character is:").append(System.lineSeparator()).append(p.getName())
+                    .append(System.lineSeparator()).append("> points:\t").append(p.getPcBoard().getPoints())
+                    .append(System.lineSeparator()).append("> position:\t").append(p.squareToString())
+                    .append(System.lineSeparator()).append("> ammo:\t");
             appendPcBoard(gameString, p);
-            gameString.append("\n")
-                    .append("\n> weapons:\t").append(Arrays.toString(p.getWeapons()))
-                    .append("\n> power ups\t").append(Arrays.toString(p.getPowerUps().toArray()));
+            gameString.append(System.lineSeparator())
+                    .append(System.lineSeparator()).append("> weapons:\t").append(Arrays.toString(p.getWeapons()))
+                    .append(System.lineSeparator()).append("> power ups\t").append(Arrays.toString(p.getPowerUps().toArray()));
         });
-        gameString.append("\n\n");
+        gameString.append(System.lineSeparator()).append(System.lineSeparator());
         pcs.parallelStream().filter(PcDTO::isCensored).forEach(p -> {
             gameString.append(p.getName())
-                    .append("\n> points:\t").append(p.getPcBoard().getPoints())
-                    .append("\n> position:\t").append(p.squareToString())
-                    .append("\n> ammo:\t");
+                    .append(System.lineSeparator()).append("> points:\t").append(p.getPcBoard().getPoints())
+                    .append(System.lineSeparator()).append("> position:\t").append(p.squareToString())
+                    .append(System.lineSeparator()).append("> ammo:\t");
             appendPcBoard(gameString, p);
-            gameString.append("\n")
-                    .append("\n> weapons:\t").append(Arrays.toString(p.getWeapons()))
-                    .append("\n\n");
+            gameString.append(System.lineSeparator())
+                    .append(System.lineSeparator()).append("> weapons:\t").append(Arrays.toString(p.getWeapons())).append(System.lineSeparator()).append(System.lineSeparator());
         });
         return gameString.toString();
     }
@@ -90,9 +89,9 @@ public class GameDTO {
             if (p.getPcBoard().getAmmo()[i] != 0) {
                 gameString.append(p.getPcBoard().getAmmo()[i]).append(" ").append(PcColourEnum.values()[i]).append("\t");
             }
-        gameString.append("\n")
-                .append("\n> damage track:\t").append(Arrays.toString(p.getPcBoard().getDamageTrack()))
-                .append("\n> marks:\t");
+        gameString.append(System.lineSeparator())
+                .append(System.lineSeparator()).append("> damage track:\t").append(Arrays.toString(p.getPcBoard().getDamageTrack()))
+                .append(System.lineSeparator()).append("> marks:\t");
         for (int i = 0; i < PcColourEnum.values().length; i++) {
             if (p.getPcBoard().getMarks()[i] != 0) {
                 gameString.append(p.getPcBoard().getMarks()[i]).append(" ").append(PcColourEnum.values()[i]).append("\t");

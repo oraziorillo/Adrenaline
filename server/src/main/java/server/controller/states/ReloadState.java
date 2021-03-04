@@ -34,7 +34,7 @@ public class ReloadState extends State {
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null) {
             powerUp.setSelectedAsAmmo(!powerUp.isSelectedAsAmmo());
-            controller.ackCurrent("\nYou'll lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo");
+            controller.ackCurrent(System.lineSeparator() + "You'll lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo");
         }
     }
 
@@ -49,8 +49,8 @@ public class ReloadState extends State {
         if (currWeapon != null && !currWeapon.isLoaded()) {
             this.weaponToReload = currWeapon;
             controller.ackCurrent("Humankind cannot gain anything without first giving something in return." +
-                    "\nTo obtain, something of equal value must be lost." +
-                    "\nTo reload a " + currWeapon.toString() + " you have to pay:" + currWeapon.ammoToString());
+                    System.lineSeparator() + "To obtain, something of equal value must be lost." +
+                    System.lineSeparator() + "To reload a " + currWeapon.toString() + " you have to pay:" + currWeapon.ammoToString());
         }
     }
 
@@ -86,10 +86,10 @@ public class ReloadState extends State {
         if (!controller.isLocked()) {
             controller.getSquaresToRefill().forEach(Square::refill);
             controller.resetSquaresToRefill();
-            controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+            controller.ackCurrent(System.lineSeparator() + "Be a good boy/girl until your next turn" + System.lineSeparator());
             return true;
         }
-        controller.ackCurrent("\nBe patient! A player is choosing whether to use or not a Tagback Grenade");
+        controller.ackCurrent(System.lineSeparator() + "Be patient! A player is choosing whether to use or not a Tagback Grenade");
         return false;
     }
 
@@ -98,7 +98,7 @@ public class ReloadState extends State {
     public State forcePass(Player p) {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
-        controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+        controller.ackCurrent(System.lineSeparator() + "Be a good boy/girl until your next turn" + System.lineSeparator());
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }

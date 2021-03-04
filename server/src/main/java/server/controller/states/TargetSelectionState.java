@@ -235,7 +235,7 @@ public class TargetSelectionState extends State {
             possibilities.add("S");
             possibilities.add("E");
             possibilities.add("W");
-            controller.sendNonBlockingRequest(new Request("\nChoose a cardinal direction: (N/S/E/W)", possibilities));
+            controller.sendNonBlockingRequest(new Request(System.lineSeparator() + "Choose a cardinal direction: (N/S/E/W)", possibilities));
         }
     }
 

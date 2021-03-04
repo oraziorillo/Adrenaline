@@ -76,7 +76,7 @@ public enum ControllerMethodsEnum {
     public static String help() {
         StringBuilder sb = new StringBuilder();
         Formatter fmt = new Formatter(sb);
-        sb.append(">>> Available commands:\n");
+        sb.append(">>> Available commands:").append(System.lineSeparator());
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n", "COMMAND", "USAGE", "DESCRIPTION");
         fmt.format("\t%-40.40s | %-40.40s | %-40.80s%n",
                 CHOOSE_MAP.getCommand(), CHOOSE_MAP.getUsage(), CHOOSE_MAP.getDescription());

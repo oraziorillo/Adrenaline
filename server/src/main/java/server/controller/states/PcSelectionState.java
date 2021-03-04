@@ -31,9 +31,9 @@ public class PcSelectionState extends State {
             this.pcColour = pcColour;
             PcColourEnum colourChosen = PcColourEnum.fromString(pcColour);
             if (colourChosen != null)
-                controller.ackCurrent("\n" + colourChosen.getName() +
-                        "\n" + colourChosen.getDescription() +
-                        "\n\nI guess it's what you wanted! (\"ok\" to confirm your choice)");
+                controller.ackCurrent(System.lineSeparator() + colourChosen.getName() +
+                        System.lineSeparator() + colourChosen.getDescription() +
+                        System.lineSeparator() + "I guess it's what you wanted! (\"ok\" to confirm your choice)");
         }
     }
 
@@ -76,14 +76,14 @@ public class PcSelectionState extends State {
     @Override
     public State nextState() {
         if (controller.amITheLast()) {
-            controller.ackCurrent("\nGood Choice!");
-            controller.ackAll("\nLet's start!");
+            controller.ackCurrent(System.lineSeparator() + "Good Choice!");
+            controller.ackAll(System.lineSeparator() + "Let's start!");
             controller.nextTurn();
             DatabaseHandler.getInstance().save(controller);
         } else {
-            controller.ackCurrent("\nGood choice! Now wait for the others choosing their character...");
+            controller.ackCurrent(System.lineSeparator() + "Good choice! Now wait for the others choosing their character...");
             controller.nextTurn();
-            controller.ackCurrent("\nChoose your character, each of them is particular in its own way:\n" +
+            controller.ackCurrent(System.lineSeparator() + "Choose your character, each of them is particular in its own way:" + System.lineSeparator() +
                     controller.availableColours());
             controller.ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_PC_COLOUR.getUsage() + ". Type \"h\" for details on all available commands)");
 

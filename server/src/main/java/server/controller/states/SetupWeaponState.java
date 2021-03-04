@@ -63,12 +63,12 @@ public class SetupWeaponState extends State {
                 if (controller.getCurrPc().hasEnoughAmmo(newCost)) {
                     if (!upgrades.get(upgradeIndex).isAsynchronous()) {
                         weapon.addUpgrade(upgradeIndex);
-                        controller.ackCurrent("\nNow you weapon is huge");
+                        controller.ackCurrent(System.lineSeparator() + "Now you weapon is huge");
                     } else {
                         List<String> possibilities = new ArrayList<>();
                         possibilities.add("before");
                         possibilities.add("after");
-                        controller.sendNonBlockingRequest(new Request("\nYou can use it *before* or *after* the basic effect. So tell me, what do you prefer?", possibilities));
+                        controller.sendNonBlockingRequest(new Request(System.lineSeparator() + "You can use it *before* or *after* the basic effect. So tell me, what do you prefer?", possibilities));
                         waiting = true;
                         asynchronousUpgradeIndex = upgradeIndex;
                     }
@@ -89,10 +89,10 @@ public class SetupWeaponState extends State {
         if (waiting) {
             if (beforeBasicEffect) {
                 weapon.pushFirstUpgrade(asynchronousUpgradeIndex);
-                controller.ackCurrent("\nBefore, huh? I'd have use it after...");
+                controller.ackCurrent(System.lineSeparator() + "Before, huh? I'd have use it after...");
             } else {
                 weapon.addUpgrade(asynchronousUpgradeIndex);
-                controller.ackCurrent("\nAfter, huh? I'd have use it before...");
+                controller.ackCurrent(System.lineSeparator() + "After, huh? I'd have use it before...");
             }
             waiting = false;
         }

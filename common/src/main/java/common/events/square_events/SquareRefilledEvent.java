@@ -25,19 +25,19 @@ public class SquareRefilledEvent extends SquareEvent {
 
     @Override
     public String toString() {
-        StringBuilder squareRefilled = new StringBuilder("\n");
+        StringBuilder squareRefilled = new StringBuilder(System.lineSeparator());
         if (isSpawnPoint) {
             StringBuilder weaponsString = new StringBuilder();
             int i = 1;
             for (WeaponCardDTO w : square.getWeapons()) {
-                weaponsString.append("\n[").append(i).append("] ").append(w.getName());
+                weaponsString.append(System.lineSeparator()).append("[").append(i).append("] ").append(w.getName());
                 i++;
             }
-            squareRefilled.append(square.toString()).append(" refilled\nNow there are these weapon cards on it:")
+            squareRefilled.append(square.toString()).append(" refilled").append(System.lineSeparator()).append("Now there are these weapon cards on it:")
                     .append(weaponsString.toString());
         } else
-            squareRefilled.append(square.toString()).append(" refilled\nNow there is a:")
-                    .append(square.getAmmoTile().toString()).append("\nammo tile on it");
+            squareRefilled.append(square.toString()).append(" refilled").append(System.lineSeparator()).append("Now there is a:")
+                    .append(square.getAmmoTile().toString()).append(System.lineSeparator()).append("ammo tile on it");
         return squareRefilled.toString();
     }
 

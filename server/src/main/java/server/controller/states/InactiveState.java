@@ -56,7 +56,7 @@ public class InactiveState extends State {
                 controller.stopRequestTimer();
                 if (numberOfTagbackGrenades > 1) {
                     powerUpTimer.start();
-                    controller.ackRequestRecipient("\nNow choose a Tagback Grenade to use");
+                    controller.ackRequestRecipient(System.lineSeparator() + "Now choose a Tagback Grenade to use");
                 }
                 else
                     useFirstTagbackGrenade();

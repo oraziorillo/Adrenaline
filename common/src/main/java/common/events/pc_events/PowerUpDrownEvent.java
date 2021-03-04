@@ -31,7 +31,7 @@ public class PowerUpDrownEvent extends PcEvent {
     public String toString() {
         StringBuilder string = new StringBuilder();
         if (!censored) {
-            string.append("\nYou drew a ").append(powerUp1.getColour()).append(" ").append(powerUp1.getName()).append((powerUp2 != null)
+            string.append(System.lineSeparator()).append("You drew a ").append(powerUp1.getColour()).append(" ").append(powerUp1.getName()).append((powerUp2 != null)
                     ? " and a " + powerUp2.getColour() + " " + powerUp2.getName()
                     : "")
                     .append(pc.powerUpsToString());

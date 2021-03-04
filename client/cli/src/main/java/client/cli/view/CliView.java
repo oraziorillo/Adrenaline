@@ -67,8 +67,8 @@ public class CliView extends AbstractView {
         do {
             try {
                 cme = ConnectionMethodEnum.parseString(inputReader.requestString(
-                        "Please, provide a connection method:\n" +
-                                "\t> s\t\tSocket\n" +
+                        "Please, provide a connection method:" + System.lineSeparator() +
+                                "\t> s\t\tSocket" + System.lineSeparator() +
                                 "\t> r\t\tRmi")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
@@ -107,8 +107,8 @@ public class CliView extends AbstractView {
         do {
             try {
                 cmd = ControllerMethodsEnum.parseString(inputReader.requestString(
-                        "Are you new?\n" +
-                                "\t> s\t\tSign up\n" +
+                        "Are you new?" + System.lineSeparator() +
+                                "\t> s\t\tSign up" + System.lineSeparator() +
                                 "\t> l\t\tLog in")
                         .toLowerCase());
             } catch (IllegalArgumentException e) {
@@ -183,7 +183,7 @@ public class CliView extends AbstractView {
 
     public void winners(List<String> winners) throws RemoteException {
         printMessage(winners.size() == 1
-                ? "\nIt seems we have a winner. And he/she is...\n" + winners.get(0)
+                ? System.lineSeparator() + "It seems we have a winner. And he/she is..." + System.lineSeparator() + winners.get(0)
                 : "We have a draw between " + winners.get(0) + " and " + winners.get(1));
     }
 
@@ -196,7 +196,7 @@ public class CliView extends AbstractView {
     @Override
     public synchronized void onGameBoardUpdate(GameBoardEvent event) throws RemoteException {
         printMessage(event.toString());
-        event.getDTO().getSquares().forEach(s -> printMessage( "\n" + s.description()));
+        event.getDTO().getSquares().forEach(s -> printMessage( System.lineSeparator() + s.description()));
     }
 
 

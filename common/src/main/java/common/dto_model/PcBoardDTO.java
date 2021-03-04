@@ -83,11 +83,11 @@ public class PcBoardDTO implements DTO {
     public String toString(){
 
         StringBuilder s = new StringBuilder();
-        s.append("\nPoints: ").append(points);
-        s.append("\nDeaths: ").append(numOfDeaths);
+        s.append(System.lineSeparator()).append("Points: ").append(points);
+        s.append(System.lineSeparator()).append("Deaths: ").append(numOfDeaths);
 
         // damage track
-        s.append("\nYour damage track: [");
+        s.append(System.lineSeparator()).append("Your damage track: [");
         for( int i = 0; i < LIFE_POINTS; i++){
 
             if (i < damageTrackIndex)
@@ -100,7 +100,7 @@ public class PcBoardDTO implements DTO {
         }
 
         //marks
-        s.append("]\nYour marks: ");
+        s.append("]").append(System.lineSeparator()).append("Your marks: ");
         for (int i = 0; i < PcColourEnum.values().length; i++){
             s.append("[").append(PcColourEnum.values()[i]).append(", ").append(marks[i]).append("]  ");
         }

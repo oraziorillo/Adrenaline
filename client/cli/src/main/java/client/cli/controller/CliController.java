@@ -49,8 +49,8 @@ public class CliController {
                             token = loginController.register(username, view);
                         } while (token == null);
                         view.printMessage("Signed up as @" + username +
-                                "\nThis is your token: " + token +
-                                "\nUse it to login next time");
+                                System.lineSeparator() + "This is your token: " + token +
+                                System.lineSeparator() + "Use it to login next time");
                         player = tryLogin(token);
                         break;
                     case LOG_IN:
@@ -120,7 +120,7 @@ public class CliController {
         try {
             tmpPlayer = loginController.login(token, view);
             if (tmpPlayer != null)
-                view.printMessage("\nLogging in");
+                view.printMessage(System.lineSeparator() + "Logging in");
         } catch ( PlayerAlreadyLoggedInException e) {
             view.printMessage(e.getMessage());
             tmpPlayer = null;

@@ -36,7 +36,7 @@ public class RunAroundState extends State{
       Square s = controller.getGame().getSquare(row, column);
       if (s != null && s.isTargetable()) {
          this.targetSquare = s;
-         controller.ackCurrent("\nSo you want to move to " + s.toString() + "...");
+         controller.ackCurrent(System.lineSeparator() + "So you want to move to " + s.toString() + "...");
       }
    }
    

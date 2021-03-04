@@ -161,8 +161,9 @@ public class ServerSocketHandler implements Runnable {
                 break;
             case SEND_MESSAGE:
                 StringBuilder builder = new StringBuilder();
-                for(String s: Arrays.copyOfRange( args,1,args.length ))
-                    builder.append( s ).append( System.lineSeparator() );
+                for(String s: Arrays.copyOfRange(args,1,args.length - 1))
+                    builder.append(s).append(" ");
+                builder.append(args[args.length - 1]);
                 player.sendMessage( builder.toString() );
                 break;
             case SKIP:

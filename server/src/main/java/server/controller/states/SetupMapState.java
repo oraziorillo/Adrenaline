@@ -30,11 +30,11 @@ public class SetupMapState extends State{
     public void selectMap(Player p, int mapIndex) {
         if (mapIndex >= FIRST_MAP && mapIndex <= LAST_MAP) {
             this.mapIndex = mapIndex;
-            controller.ackCurrent("\nThis is the Game Board you chose, do you like it?" +
+            controller.ackCurrent(System.lineSeparator() + "This is the Game Board you chose, do you like it?" +
                     controller.getGame().preLoadedGameBoardToString(mapIndex) +
-                    "\n(\"ok\" to confirm your choice)");
+                    System.lineSeparator() + "(\"ok\" to confirm your choice)");
         } else {
-            controller.ackCurrent("\nMaps are enumerated from 1 to 4");
+            controller.ackCurrent(System.lineSeparator() + "Maps are enumerated from 1 to 4");
         }
     }
 
@@ -49,7 +49,7 @@ public class SetupMapState extends State{
             controller.getGame().initMap(mapIndex);
             return true;
         } else {
-            controller.ackCurrent("\nChoose the map first");
+            controller.ackCurrent(System.lineSeparator() + "Choose the map first");
         }
         return false;
     }

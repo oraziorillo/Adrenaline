@@ -18,14 +18,14 @@ public class PlayerJoinedEvent extends LobbyEvent{
 
     @Override
     public String toString() {
-        String m1 = "\nSay hello to @" + lobby.lastPlayerAddedName();
-        String m2 = "\nYou joined a lobby";
+        String m1 = System.lineSeparator() + "Say hello to @" + lobby.lastPlayerAddedName();
+        String m2 = System.lineSeparator() + "You joined a lobby";
         StringBuilder m3 = new StringBuilder(((lobby.size() > 1)
-                ? "\nThere are " + lobby.size() + " players"
-                : "\nThere is " + 1 + " player") + " in this lobby");
+                ? System.lineSeparator() + "There are " + lobby.size() + " players"
+                : System.lineSeparator() + "There is " + 1 + " player") + " in this lobby");
         for (String u : lobby.otherUserNames())
-            m3.append("\n@").append(u);
-        m3.append("\n@").append(lobby.lastPlayerAddedName());
+            m3.append(System.lineSeparator()).append("@").append(u);
+        m3.append(System.lineSeparator()).append("@").append(lobby.lastPlayerAddedName());
         return censored
                 ? m1 + m3
                 : m2 + m3;

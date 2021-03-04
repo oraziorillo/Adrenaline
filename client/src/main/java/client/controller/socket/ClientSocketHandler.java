@@ -93,12 +93,7 @@ public class ClientSocketHandler implements Runnable {
                 view.error(error.toString());
                 break;
             case CHAT_MESSAGE:
-                StringBuilder msg = new StringBuilder();
-                for (int i = 1; i < args.length - 1; i++) {
-                    msg.append(args[i]).append(" ");
-                }
-                msg.append(args[args.length - 1]);
-                view.chatMessage(msg.toString());
+                view.chatMessage(args[1]);
                 break;
             case WINNERS:
                 List<String> winners = new ArrayList<>();

@@ -21,7 +21,7 @@ public class SpawnEvent extends PcEvent {
 
     @Override
     public String toString() {
-        return "\n" + (censored ? pc.getName() : "You")
+        return System.lineSeparator() + (censored ? pc.getName() : "You")
                     + " spawned on " + pc.squareToString();
     }
 

@@ -127,8 +127,8 @@ public class Controller{
             else
                 p.setCurrState(new InactiveState(this, InactiveState.PC_SELECTION_STATE));
         }
-        ackAll("\nGame started!");
-        ackCurrent("\nIt's your turn!");
+        ackAll(System.lineSeparator() + "Game started!");
+        ackCurrent(System.lineSeparator() + "It's your turn!");
         ackCurrent("You were the first to join this lobby, so you choose the game board we're playing on");
         ackCurrent("(Use the command " + ControllerMethodsEnum.CHOOSE_MAP.getUsage() + ". Type \"h\" for details on all available commands)");
     }
@@ -284,10 +284,10 @@ public class Controller{
     public void nextTurn() {
         if (deadPlayers.isEmpty()) {
             increaseCurrPlayerIndex();
-            ackCurrent("\nIt's your turn");
+            ackCurrent(System.lineSeparator() + "It's your turn");
             for (int i = 0; i < players.size(); i++) {
                 if (i != currPlayerIndex)
-                    ackPlayer(players.get(i), "\n@" + DatabaseHandler.getInstance().getUsername(getCurrPlayer().getToken()) + "'s turn");
+                    ackPlayer(players.get(i), System.lineSeparator() + "@" + DatabaseHandler.getInstance().getUsername(getCurrPlayer().getToken()) + "'s turn");
             }
             startTimer();
             getCurrPlayer().setActive();
@@ -450,7 +450,7 @@ public class Controller{
     public String availableColours() {
         StringBuilder availableColours = new StringBuilder();
         for (PcColourEnum c : availablePcColours) {
-            availableColours.append("\n> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
+            availableColours.append(System.lineSeparator()).append("> ").append(c.toString()).append(c.getTabs()).append("(").append(c.getName()).append(")");
         }
         return availableColours.toString();
     }

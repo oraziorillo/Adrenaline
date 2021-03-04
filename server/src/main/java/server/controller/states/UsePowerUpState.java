@@ -35,9 +35,9 @@ public class UsePowerUpState extends State {
                 currAction = powerUpAction;
                 if(currAction.isSelfMovement()) {
                     setTargetableToValidSquares(controller.getCurrPc());
-                    controller.ackCurrent("\nYou can do like Goku now, teleport everywhere!");
+                    controller.ackCurrent(System.lineSeparator() + "You can do like Goku now, teleport everywhere!");
                 } else {
-                    controller.ackCurrent("\nLet's make some moves");
+                    controller.ackCurrent(System.lineSeparator() + "Let's make some moves");
                 }
             }
         } catch (IllegalArgumentException e) {

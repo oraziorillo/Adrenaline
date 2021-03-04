@@ -29,7 +29,7 @@ class EndTurnState extends State {
     @Override
     public boolean reload(Player p) {
         toReload = true;
-        controller.ackCurrent("\nOhw! You really want to reload? You will have to pay all of your ammo!");
+        controller.ackCurrent(System.lineSeparator() + "Ohw! You really want to reload? You will have to pay all of your ammo!");
         return true;
     }
     
@@ -42,10 +42,10 @@ class EndTurnState extends State {
         if (!controller.isLocked()) {
             controller.getSquaresToRefill().forEach(Square::refill);
             controller.resetSquaresToRefill();
-            controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+            controller.ackCurrent(System.lineSeparator() + "Be a good boy/girl until your next turn" + System.lineSeparator());
             return true;
         }
-        controller.ackCurrent("\nBe patient! A player is choosing whether to use or not a Tagback Grenade");
+        controller.ackCurrent(System.lineSeparator() + "Be patient! A player is choosing whether to use or not a Tagback Grenade");
         return false;
     }
 
@@ -54,7 +54,7 @@ class EndTurnState extends State {
     public State forcePass(Player p) {
         controller.getSquaresToRefill().forEach(Square::refill);
         controller.resetSquaresToRefill();
-        controller.ackCurrent("\nBe a good boy/girl until your next turn\n");
+        controller.ackCurrent(System.lineSeparator() + "Be a good boy/girl until your next turn" + System.lineSeparator());
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }

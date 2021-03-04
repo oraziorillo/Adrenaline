@@ -143,7 +143,7 @@ public class GameBoard {
     String simplifiedToString(){
         StringBuilder b = new StringBuilder();
         for (Square s : squares) {
-            b.append("\n").append(s.toString()).append("\t\t").append(s.getColour()).append((s.isSpawnPoint() ? " Spawn point" : " Ammo square"));
+            b.append(System.lineSeparator()).append(s.toString()).append("\t\t").append(s.getColour()).append((s.isSpawnPoint() ? " Spawn point" : " Ammo square"));
         }
         return b.toString();
     }

@@ -44,7 +44,7 @@ class GrabStuffState extends State{
         if (targetSquare != null) {
             try {
                 targetSquare.setWeaponToGrabIndex(index);
-                controller.ackCurrent("\nMmh.. good choice! (\"ok\" to confirm your choice)");
+                controller.ackCurrent(System.lineSeparator() + "Mmh.. good choice! (\"ok\" to confirm your choice)");
             } catch (NullPointerException e) {
                 controller.ackCurrent(e.getMessage());
             }
@@ -67,7 +67,7 @@ class GrabStuffState extends State{
                 .count() == 3 )
             targetSquare.setWeaponToDropIndex(index);
         else {
-            controller.ackCurrent("\nYou'd better use that weapon to hurt people");
+            controller.ackCurrent(System.lineSeparator() + "You'd better use that weapon to hurt people");
         }
     }
 
@@ -84,8 +84,8 @@ class GrabStuffState extends State{
             this.targetSquare = s;
             targetSquare.resetWeaponIndexes();
             controller.ackCurrent(targetSquare.isSpawnPoint()
-                    ? "\nOhw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString() + "\n(Use the command " + ControllerMethodsEnum.CHOOSE_WEAPON_ON_SPAWN_POINT.getUsage() + ". Type \"h\" for details on all available commands)"
-                    : "\nI see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString() + "\n(\"ok\" to confirm your choice)");
+                    ? System.lineSeparator() + "Ohw! A spawn point, choose a weapon and use it to hurt people:" + targetSquare.itemToString() + System.lineSeparator() + "(Use the command " + ControllerMethodsEnum.CHOOSE_WEAPON_ON_SPAWN_POINT.getUsage() + ". Type \"h\" for details on all available commands)"
+                    : System.lineSeparator() + "I see you a strategist. There is an ammo tile on that square. Grab it to earn:" + targetSquare.itemToString() + System.lineSeparator() + "(\"ok\" to confirm your choice)");
         }
     }
 
@@ -99,7 +99,7 @@ class GrabStuffState extends State{
         PowerUpCard powerUp = controller.getCurrPc().getPowerUpCard(index);
         if (powerUp != null && !powerUp.isSelectedAsAmmo()) {
             powerUp.setSelectedAsAmmo(true);
-            controller.ackCurrent("\nYou will lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo (\"ok\" to confirm your choice)");
+            controller.ackCurrent(System.lineSeparator() + "You will lose a " + powerUp.toString() + " instead of paying one " + powerUp.getColour() + " ammo (\"ok\" to confirm your choice)");
         }
     }
 
@@ -161,10 +161,10 @@ class GrabStuffState extends State{
                 controller.addSquareToRefill(targetSquare);
                 return true;
             } catch (EmptySquareException e) {
-                controller.ackCurrent("\nThere's nothing to grab here!");
+                controller.ackCurrent(System.lineSeparator() + "There's nothing to grab here!");
                 return false;
             } catch (NotEnoughAmmoException e) {
-                controller.ackCurrent("\nNot enough ammo. You had to grab them first! Do I have to teach you how to play?");
+                controller.ackCurrent(System.lineSeparator() + "Not enough ammo. You had to grab them first! Do I have to teach you how to play?");
                 return false;
             } catch (Exception e){
                 controller.ackCurrent(e.getMessage());
@@ -189,7 +189,7 @@ class GrabStuffState extends State{
         }
         controller.resetRemainingActions();
         controller.getCurrPc().resetPowerUpAsAmmo();
-        controller.ackCurrent("\nToo slow. You will skip the turn");
+        controller.ackCurrent(System.lineSeparator() + "Too slow. You will skip the turn");
         controller.nextTurn();
         return new InactiveState(controller, InactiveState.FIRST_TURN_STATE);
     }

@@ -175,7 +175,7 @@ public class WeaponCard {
     public String ammoToString(){
         StringBuilder ammoString = new StringBuilder();
         for (AmmoEnum a : AmmoEnum.values())
-            ammoString.append("\n-").append(this.ammo[a.ordinal()]).append(" " + a.toString() + " ammo");
+            ammoString.append(System.lineSeparator()).append("-").append(this.ammo[a.ordinal()]).append(" " + a.toString() + " ammo");
         return ammoString.toString();
     }
 

@@ -91,11 +91,11 @@ public class SquareDTO implements DTO {
     public String description(){
         StringBuilder description = new StringBuilder();
         description.append("(").append(row).append(",").append(col).append(")");
-        description.append("\n").append(colour).append("\n").append(ammoTile == null ? "Spawn point\nWeapons:" : "Ammo square\nAmmo tile:");
+        description.append(System.lineSeparator()).append(colour).append(System.lineSeparator()).append(ammoTile == null ? "Spawn point" + System.lineSeparator() + "Weapons:" : "Ammo square" + System.lineSeparator() + "Ammo tile:");
         int i = 1;
         if (ammoTile == null)
             for (WeaponCardDTO w : weapons) {
-                description.append("\n[").append(i).append("] ").append(w.getName());
+                description.append(System.lineSeparator()).append("[").append(i).append("] ").append(w.getName());
                 i++;
             }
         else

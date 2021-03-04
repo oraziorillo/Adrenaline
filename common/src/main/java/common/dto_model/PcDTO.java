@@ -92,28 +92,28 @@ public class PcDTO implements DTO {
     }
 
     public String weaponsToString() {
-        StringBuilder weapons = new StringBuilder("\nYour weapons:");
+        StringBuilder weapons = new StringBuilder(System.lineSeparator()).append("Your weapons:");
         int i = 0;
         for (WeaponCardDTO w : this.weapons) {
             if (w != null)
-                weapons.append("\n[").append(i + 1).append("]").append(w.toString()).append(" (loaded = ").append(w.isLoaded()).append(")");
+                weapons.append(System.lineSeparator()).append("[").append(i + 1).append("]").append(w.toString()).append(" (loaded = ").append(w.isLoaded()).append(")");
             i++;
         }
         return weapons.toString();
     }
 
     public String ammoToString() {
-        StringBuilder ammo = new StringBuilder("\nYour ammo:");
+        StringBuilder ammo = new StringBuilder(System.lineSeparator()).append("Your ammo:");
         for (AmmoEnum a : AmmoEnum.values())
-            ammo.append("\n• ").append(pcBoard.getAmmo()[a.ordinal()]).append(" ").append(a.toString()).append(" ammo");
+            ammo.append(System.lineSeparator()).append("• ").append(pcBoard.getAmmo()[a.ordinal()]).append(" ").append(a.toString()).append(" ammo");
         return ammo.toString();
     }
 
     public String powerUpsToString() {
-        StringBuilder powerUpsString = new StringBuilder("\nYour power ups:");
+        StringBuilder powerUpsString = new StringBuilder(System.lineSeparator()).append("Your power ups:");
         int i = 0;
         for (PowerUpCardDTO p : this.powerUps) {
-            powerUpsString.append("\n[").append(i + 1).append("]").append(" ")
+            powerUpsString.append(System.lineSeparator()).append("[").append(i + 1).append("]").append(" ")
                     .append(p.getColour()).append(p.getColour().getTabs()).append(p.getName());
             i++;
         }
@@ -121,8 +121,8 @@ public class PcDTO implements DTO {
     }
 
     public String getPcStatus(){
-        return "\nYour character: " + this.colour.getName() +
-                "\nYour position: (" + this.squareRow + "," + this.squareCol + ")" +
+        return System.lineSeparator() + "Your character: " + this.colour.getName() +
+                System.lineSeparator() + "Your position: (" + this.squareRow + "," + this.squareCol + ")" +
                 weaponsToString() + ammoToString() + powerUpsToString() +
                 pcBoard.toString();
     }

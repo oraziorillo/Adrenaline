@@ -264,7 +264,7 @@ public abstract class Square {
 
 
     public String description(){
-        return (isSpawnPoint ? "\nSpawnPoint " : "\nAmmoSquare ") + "(" + row + "," + col + ")";
+        return System.lineSeparator() + (isSpawnPoint ? "SpawnPoint " : "AmmoSquare ") + "(" + row + "," + col + ")";
     }
 
     public abstract String itemToString();
