@@ -26,7 +26,7 @@ Then, each player has to choose its own character. Each choice made in the game 
 
 Throughout the course of the game you will be guided as the client will suggest you the command to use in some situations. However, make sure to have a instruction book at hand (and a printed game board if you play by command-line)   
 
-At this point the game can st art.
+At this point the game can start.
 
 #### General overview of game rules
 
