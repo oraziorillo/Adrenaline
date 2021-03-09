@@ -51,7 +51,7 @@ The *shoot* action is the most exciting part. This action is also the most singu
 4. (Optional) Switch fire mode if your weapon has multiple ones
 5. Resolve the effects involved by your attack
 
-Every time a player is shot he looses life points. When a player is particularly weak, the adrenaline level increases and this leads to more performing actions. In particular: 
+Every time a player is shot he loses life points. When a player is particularly weak, the adrenaline level increases and this leads to more performing actions. In particular: 
 
 - If you took 3 or more damage points, you can *grab stuff* up to 2 squares away from your position  
 
