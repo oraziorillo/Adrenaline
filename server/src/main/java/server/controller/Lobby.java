@@ -93,7 +93,7 @@ public class Lobby {
         publishEvent(new PlayerJoinedEvent(this.convertToDTO()), player);
         if (players.size() >= 3 && players.size() < 5) {
             timer.start();
-            ackAll(System.lineSeparator() + "The game will start in " + TimeUnit.MILLISECONDS.toMinutes(timer.getDelay()) + " minutes...");
+            ackAll(System.lineSeparator() + "The game will start in " + TimeUnit.MILLISECONDS.toSeconds(timer.getDelay()) + " seconds...");
         } else if (players.size() == 5) {
             timer.stop();
             startNewGame();
