@@ -8,11 +8,11 @@ In agreement with the company Cranio Creations, our goal was to develop the digi
 As we structured our work in a client-server architecture, we needed to keep these entities separated in two different directories. The directory ```common``` contains the files that need to be shared between them.  The client directory is further divided into `cli` and `gui`, as this project is intended to work both with a command-line interface and with a graphic user interface.
 
 #### Getting started
-In order to start the game we need to launch the server with the command ```java -jar server.jar```. You can do it on either a machine connected to your LAN or on the same computer you will play on. You will see the sentence "Server listening" when everything will be ready.
+In order to start the game we need to launch the server. On a terminal, go to the root folder, than run ```cd server```, folowed by the command ```java -jar server.jar```. You can do it on either a machine connected to your LAN or on the same computer you will play on. You will see the sentence "Server listening" when everything will be ready.
 
-**Guide for *cli* users.** Each player that wants to play with the command-line has to launch the client on a different terminal (or machine connected in the same LAN) by using the command ```java -jar cli.jar```. 
+**Guide for *cli* users.** Each player that wants to play with the command-line has to launch the client on a different terminal (or machine connected in the same LAN). Once you are in the root folder use the command ```cd client/cli``` followed by the command ```java -jar cli.jar```. 
 
-**Guide for *gui* users.**  Each player that wants to play with the graphic interface has to launch the client on a different terminal (or machine connected in the same LAN) by using the command ```java -jar gui.jar```. 
+**Guide for *gui* users.**  Each player that wants to play with the graphic interface has to launch the client on a different terminal (or machine connected in the same LAN). Once you are in the root folder use the command ```cd client/gui``` followed by the command ```java -jar gui.jar```. 
 
 #### Setting up the game 
 
