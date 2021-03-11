@@ -10,8 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
-        <module>cli</module>
+        <module>client_common</module>
         <module>gui</module>
+        <module>cli</module>
     </modules>
     <dependencies>
         <dependency>
@@ -26,19 +27,7 @@
     <packaging>pom</packaging>
 
 
-
-
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-            </plugin>
-        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
