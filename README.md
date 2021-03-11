@@ -4,17 +4,17 @@ Adrenaline is a strategic board game from Cranio Creations. You will be called t
 
 In agreement with the company Cranio Creations, our goal was to develop the digital version of this game. This matters a lot for us as it is our first big project as software engineers and our Bachelor's thesis.
 
-#### Structure of the repository
+### Structure of the repository
 As we structured our work in a client-server architecture, we needed to keep these entities separated in two different directories. The directory ```common``` contains the files that need to be shared between them.  The client directory is further divided into `cli` and `gui`, as this project is intended to work both with a command-line interface and with a graphic user interface.
 
-#### Getting started
+### Getting started
 In order to start the game we need to launch the server. On a terminal, go to the root folder, than run ```cd server```, folowed by the command ```java -jar server.jar```. You can do it on either a machine connected to your LAN or on the same computer you will play on. You will see the sentence "Server listening" when everything will be ready.
 
 **Guide for *cli* users.** Each player that wants to play with the command-line has to launch the client on a different terminal (or machine connected in the same LAN). Once you are in the root folder use the command ```cd client/cli``` followed by the command ```java -jar cli.jar```. 
 
 **Guide for *gui* users.**  Each player that wants to play with the graphic interface has to launch the client on a different terminal (or machine connected in the same LAN). Once you are in the root folder use the command ```cd client/gui``` followed by the command ```java -jar gui.jar```. 
 
-#### Setting up the game 
+### Setting up the game 
 
 Each game hosts from 3 to 5 players. Each player that requests to play is put in a lobby and, when the minimum number of players to create a game is reached, a countdown starts. When the time is over the game starts. If a new player joins the lobby before the time is up, the countdown is restarted.
 At the beginning of the game there are some setup steps that need to be done. They are performed by the first player who joined the lobby. They involve choosing:
@@ -28,7 +28,7 @@ Throughout the course of the game you will be guided as the client will suggest 
 
 At this point the game can start.
 
-#### General overview of game rules
+### General overview of game rules
 
 On his very first turn, each player starts by where its character will spawn: each player draws 2 power ups from the power ups deck, then he/she chooses one of them to be kept and discards the other. Its character will spawn on the spawn point having the same colour of the discarded card. 
 
@@ -63,6 +63,6 @@ When the last skull is removed from the killshot track the game ends and the pla
 
 More detailed game rules can be found [here](https://github.com/oraziorillo/adrenalina/blob/master/handbooks/adrenaline-rules.pdf), while details about the weapons are available [here](https://github.com/oraziorillo/adrenalina/blob/master/handbooks/adrenaline-rules-weapons.pdf).
 
-#### [Update]
+### [Update]
 
 Up to now, the *cli* is complete and fully usable. However, during the last update, we noticed a bug in the *gui* that prevents it to correctly launch the game after the setup phase. We are working in order to solve this issue as soon as possible.
